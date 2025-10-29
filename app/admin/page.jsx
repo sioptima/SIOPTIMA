@@ -4808,8 +4808,9 @@ export default function Admin() {
       py-2 z-[9999] transition-transform origin-top"
                   >
                     <button
-                      onClick={() => {
+                      onClick={async () => {
                         setDropdownOpen(false);
+                        await fetch("/api/logout", { method: "POST" });
                         router.push("/");
                       }}
                       className="w-full flex items-center gap-3 px-4 py-2

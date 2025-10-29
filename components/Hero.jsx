@@ -1050,7 +1050,7 @@ export default function Hero() {
       }
 
       console.log("Redirecting to:", data.redirectTo);
-      router.push(data.redirectTo);
+      router.push(data.result.role);
       
     } catch (err) {
       console.error("Login error:", err);
