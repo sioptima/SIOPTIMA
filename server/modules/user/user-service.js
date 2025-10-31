@@ -32,8 +32,6 @@ export class UserService {
         if (!newUser) {
             throw new ResponseError(500, "Failed to create user");
         }
-        
-        await createSession(newUser.id, role.name);
 
         return {
             id: newUser.id,
@@ -50,12 +48,12 @@ export class UserService {
 
         const user = await UserRepository.findByUsername(loginRequest.username);
         if (!user) {
-            throw new ResponseError(401, "User not found");
+            throw new ResponseError(401, "Invalid username or password");
         }
 
         const passwordIsValid = await bcrypt.compare(loginRequest.password, user.password);
         if (!passwordIsValid) {
-            throw new ResponseError(401, "Invalid password");
+            throw new ResponseError(401, "Invalid username or password");
         }
 
         const role =await UserRepository.getRoleById(user.roleId)

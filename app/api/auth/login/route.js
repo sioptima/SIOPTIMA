@@ -86,16 +86,15 @@ export async function POST(request) {
     const data = await request.json();
     const user = await UserService.login(data);
     return Response.json({ 
-       error: false ,
        message: "User logged in successfully" ,
        result: user
-      }
+      },
+      { status: 200 }
     );
   } catch (error) {
-    return Response.json({ 
-       message: error.message || "Internal Server Error",
-       status: 500
-      }
+    return Response.json(
+      { message: error.message || "Internal Server Error" },
+      { status: error.status || 500 }
     );
   }
 }
