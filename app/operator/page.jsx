@@ -1,7 +1,7 @@
-// ==================================MENU DASHBOARD : START =================================================================
-// ==================================MENU DASHBOARD : START =================================================================
-// ==================================MENU DASHBOARD : START =================================================================
-// ==================================MENU DASHBOARD : START =================================================================
+// // ==================================MENU DASHBOARD OPERATOR : START =================================================================
+// // ==================================MENU DASHBOARD OPERATOR : START =================================================================
+// // ==================================MENU DASHBOARD OPERATOR : START =================================================================
+// // ==================================MENU DASHBOARD OPERATOR : START =================================================================
 
 // "use client";
 // import React, { useState, useRef, useEffect } from "react";
@@ -19,9 +19,11 @@
 //   ExclamationTriangleIcon,
 //   ClockIcon,
 //   CheckCircleIcon,
+//   CalendarIcon,
+//   DocumentTextIcon,
 // } from "@heroicons/react/24/outline";
 
-// export default function HRD() {
+// export default function Operator() {
 //   const [selectedRange, setSelectedRange] = useState("Month");
 //   const [dropdownOpen, setDropdownOpen] = useState(false);
 //   const [activeMenu, setActiveMenu] = useState("dashboard");
@@ -43,89 +45,51 @@
 
 //   const menuItems = [
 //     { id: "dashboard", name: "Dashboard", icon: ChartBarIcon },
-//     { id: "validation", name: "Attendance Validation", icon: MapPinIcon },
+//     { id: "reports", name: "Daily Reports", icon: DocumentChartBarIcon },
+//     { id: "attendance", name: "Presensi", icon: MapPinIcon },
+//     { id: "settings", name: "Help Desk", icon: CogIcon },
 //   ];
 
-//   // Data untuk Weekly Attendance Trends - SESUAI GAMBAR
-//   const weeklyAttendanceData = [
-//     { day: "Mon", present: 115, late: 5, absent: 7 },
-//     { day: "Tue", present: 118, late: 4, absent: 5 },
-//     { day: "Wed", present: 120, late: 3, absent: 4 },
-//     { day: "Thu", present: 116, late: 6, absent: 5 },
-//     { day: "Fri", present: 119, late: 4, absent: 4 },
-//     { day: "Sat", present: 110, late: 8, absent: 9 },
-//     { day: "Sun", present: 105, late: 7, absent: 15 },
+//   // Data untuk pH Level Trends
+//   const pHData = [
+//     { day: "Mon", value: 6.5 },
+//     { day: "Tue", value: 6.8 },
+//     { day: "Wed", value: 7.0 },
+//     { day: "Thu", value: 7.2 },
+//     { day: "Fri", value: 7.1 },
+//     { day: "Sat", value: 6.9 },
+//     { day: "Sun", value: 6.7 },
 //   ];
 
-//   // Data untuk Today's Status - SESUAI GAMBAR 2
-//   const todayStatusData = [
-//     { status: "Present", value: 85, color: "#10B981" },
-//     { status: "Late", value: 7, color: "#F59E0B" },
-//     { status: "Absent", value: 8, color: "#EF4444" },
+//   // Data untuk Flow Rate Trends
+//   const flowRateData = [
+//     { day: "Mon", value: 450 },
+//     { day: "Tue", value: 520 },
+//     { day: "Wed", value: 480 },
+//     { day: "Thu", value: 550 },
+//     { day: "Fri", value: 500 },
+//     { day: "Sat", value: 420 },
+//     { day: "Sun", value: 380 },
 //   ];
 
-//   // Data untuk Top Performers - SESUAI GAMBAR 3
-//   const topPerformersData = [
-//     { name: "Budi Santoso", location: "Jakarta Utara" },
-//     { name: "Siti Nurhaliza", location: "Bandung" },
-//     { name: "Ahmad Hidayat", location: "Surabaya" },
-//     { name: "David Lesteri", location: "Seoul" },
-//   ];
-
-//   // Data untuk Recent Attendance - SESUAI GAMBAR 3
-//   const recentAttendanceData = [
+//   // Data untuk Recent Activity
+//   const recentActivityData = [
 //     {
-//       name: "Budi Santoso",
-//       location: "Jakarta Utara",
-//       time: "08:00",
+//       action: "Daily report submitted",
+//       time: "2 hours ago",
 //       status: "approved",
 //     },
 //     {
-//       name: "Siti Nurhaliza",
-//       location: "Bandung",
-//       time: "08:05",
-//       status: "pending",
-//     },
-//     {
-//       name: "Ahmad Hidayat",
-//       location: "Surabaya",
-//       time: "16:02",
+//       action: "pH level recorded",
+//       time: "4 hours ago",
 //       status: "approved",
 //     },
 //     {
-//       name: "Dewi Lesteri",
-//       location: "Semarang",
-//       time: "08:10",
-//       status: "pending",
+//       action: "Flow rate measurement",
+//       time: "6 hours ago",
+//       status: "approved",
 //     },
 //   ];
-
-//   // Fungsi untuk Pie Chart dengan interaksi - TETAP SAMA seperti kode asli
-//   const calculatePieChart = () => {
-//     let accumulatedValue = 0;
-//     return todayStatusData.map((item, index) => {
-//       const startAngle = (accumulatedValue / 100) * 360;
-//       accumulatedValue += item.value;
-//       const endAngle = (accumulatedValue / 100) * 360;
-
-//       const largeArcFlag = endAngle - startAngle <= 180 ? 0 : 1;
-
-//       const startX = 50 + 40 * Math.cos((startAngle - 90) * (Math.PI / 180));
-//       const startY = 50 + 40 * Math.sin((startAngle - 90) * (Math.PI / 180));
-//       const endX = 50 + 40 * Math.cos((endAngle - 90) * (Math.PI / 180));
-//       const endY = 50 + 40 * Math.sin((endAngle - 90) * (Math.PI / 180));
-
-//       return {
-//         ...item,
-//         path: `M 50 50 L ${startX} ${startY} A 40 40 0 ${largeArcFlag} 1 ${endX} ${endY} Z`,
-//         startAngle,
-//         endAngle,
-//         middleAngle: (startAngle + endAngle) / 2,
-//       };
-//     });
-//   };
-
-//   const pieChartData = calculatePieChart();
 
 //   return (
 //     <div className="flex min-h-screen bg-gray-50">
@@ -152,8 +116,8 @@
 //             className="w-9 h-9 rounded"
 //           />
 //           <div>
-//             <h1 className="text-xl font-bold text-gray-800">SIOPTIMA</h1>
-//             <p className="text-sm text-gray-600">HRD System</p>
+//             <h1 className="text-xl font-bold text-gray-800">SIDPTIMA</h1>
+//             <p className="text-sm text-gray-600">IPAL Monitoring</p>
 //           </div>
 
 //           <button
@@ -192,19 +156,19 @@
 //           </ul>
 //         </nav>
 
-//         {/* HRD badge */}
+//         {/* Operator badge */}
 //         <div className="p-4 border border-gray-200 shadow-md bg-white mt-auto">
 //           <div className="bg-gray-50 rounded-lg p-3 border border-gray-200">
 //             <div className="flex items-center gap-3">
 //               <div
-//                 className="w-10 h-10 bg-gradient-to-r from-teal-500 to-cyan-600 rounded-full
+//                 className="w-10 h-10 bg-gradient-to-r from-blue-500 to-cyan-600 rounded-full
 //                 flex items-center justify-center text-white font-bold text-lg"
 //               >
-//                 H
+//                 O
 //               </div>
 //               <div>
-//                 <p className="font-semibold text-gray-900">HRD SIOPTIMA</p>
-//                 <p className="text-sm text-gray-600">HRD</p>
+//                 <p className="font-semibold text-gray-900">Operator SIDPTIMA</p>
+//                 <p className="text-sm text-gray-600">Operator</p>
 //               </div>
 //             </div>
 //           </div>
@@ -249,10 +213,10 @@
 //                   className="flex items-center gap-2 cursor-pointer"
 //                 >
 //                   <div
-//                     className="w-10 h-10 bg-gradient-to-r from-teal-500 to-cyan-600
+//                     className="w-10 h-10 bg-gradient-to-r from-blue-500 to-cyan-600
 //       rounded-full flex items-center justify-center text-white font-bold"
 //                   >
-//                     H
+//                     O
 //                   </div>
 
 //                   <svg
@@ -298,155 +262,228 @@
 //         {/* DASHBOARD CONTENT */}
 //         {activeMenu === "dashboard" && (
 //           <div className="px-4 sm:px-6 lg:px-10 xl:px-16 py-6 max-w-screen-2xl mx-auto">
-//             {/* Headline + Time Range Filter */}
-//             <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center mb-10">
-//               <div>
-//                 <h2 className="text-2xl lg:text-3xl font-bold text-gray-900">
-//                   HRD Dashboard
-//                 </h2>
-//                 <p className="text-gray-600 text-sm mt-1">
-//                   Monitor operator attendance and performance
-//                 </p>
-//               </div>
+//             {/* Welcome Section */}
+//             <div className="mb-6">
+//               <h2 className="text-2xl lg:text-3xl font-bold text-gray-900">
+//                 Operator Dashboard
+//               </h2>
+//               <p className="text-gray-600 mt-1">
+//                 Welcome back! Monitor your daily activities and IPAL status
+//               </p>
 //             </div>
 
-//             {/* TOP KPIs - SESUAI GAMBAR 1 */}
-//             <div className="mb-8 grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-6">
+//             {/* TOP KPIs - DIKECILKAN MENJADI PERSEGI PANJANG */}
+//             <div className="mb-8 grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
 //               {[
 //                 {
-//                   label: "Total Operators",
-//                   value: 127,
-//                   percent: "+2.1%",
-//                   icon: UsersIcon,
-//                 },
-//                 {
-//                   label: "Present Today",
-//                   value: 118,
-//                   percent: "+1.5%",
-//                   icon: CheckCircleIcon,
-//                 },
-//                 {
-//                   label: "Pending Validation",
-//                   value: 8,
-//                   percent: "-0.5%",
-//                   icon: ClockIcon,
+//                   label: "Reports Submitted",
+//                   value: 24,
+//                   percent: "+12%",
+//                   icon: DocumentChartBarIcon,
 //                 },
 //                 {
 //                   label: "Attendance Rate",
-//                   value: "96.5%",
-//                   percent: "+0.8%",
+//                   value: "98%",
+//                   percent: "+2%",
 //                   icon: ChartBarIcon,
+//                 },
+//                 {
+//                   label: "Next Shift",
+//                   value: "Tomorrow",
+//                   subValue: "08:00",
+//                   icon: ClockIcon,
+//                 },
+//                 {
+//                   label: "Current Site",
+//                   value: "Jakarta Utara A",
+//                   icon: MapPinIcon,
 //                 },
 //               ].map((item, i) => {
 //                 const Icon = item.icon;
 //                 return (
 //                   <div
 //                     key={i}
-//                     className="bg-white p-6 rounded-2xl shadow-sm border border-gray-200 shadow-md"
+//                     className="bg-white p-4 rounded-xl shadow-sm border border-gray-200"
 //                   >
-//                     <div className="flex justify-between items-start mb-4">
-//                       <p className="text-gray-800 font-semibold">
+//                     <div className="flex justify-between items-start mb-3">
+//                       <p className="text-gray-600 text-sm font-medium">
 //                         {item.label}
 //                       </p>
-//                       <div className="p-3 rounded-xl bg-teal-50">
-//                         <Icon className="w-5 h-5 text-teal-600" />
+//                       <div className="p-2 rounded-lg bg-blue-50">
+//                         <Icon className="w-4 h-4 text-blue-600" />
 //                       </div>
 //                     </div>
-//                     <p className="text-4xl font-bold text-gray-900">
-//                       {item.value}
-//                     </p>
-//                     <p
-//                       className={`text-xs font-medium mt-1 ${
-//                         item.percent.startsWith("+")
-//                           ? "text-green-600"
-//                           : "text-red-600"
-//                       }`}
-//                     >
-//                       {item.percent} vs last month
-//                     </p>
+//                     <div>
+//                       <p className="text-2xl font-bold text-gray-900">
+//                         {item.value}
+//                       </p>
+//                       {item.subValue && (
+//                         <p className="text-sm text-gray-600 mt-1">
+//                           {item.subValue}
+//                         </p>
+//                       )}
+//                     </div>
+//                     {item.percent && (
+//                       <p
+//                         className={`text-xs font-medium mt-1 ${
+//                           item.percent.startsWith("+")
+//                             ? "text-green-600"
+//                             : "text-red-600"
+//                         }`}
+//                       >
+//                         {item.percent} vs last month
+//                       </p>
+//                     )}
 //                   </div>
 //                 );
 //               })}
 //             </div>
 
-//             {/* SECOND ROW - Charts */}
-//             <div className="mb-9 grid grid-cols-1 xl:grid-cols-2 gap-6">
-//               {/* Weekly Attendance Trends - DIPERBAIKI dengan skala yang tepat */}
-//               <div className="bg-white p-6 rounded-2xl border border-gray-200 shadow-md">
-//                 <h3 className="font-semibold text-lg text-gray-800 mb-5">
-//                   Weekly Attendance Trends
+//             {/* TODAY'S LATEST READINGS - DIKECILKAN MENJADI PERSEGI PANJANG */}
+//             <div className="mb-8">
+//               <h3 className="text-lg font-bold text-gray-900 mb-4">
+//                 Today's Latest Readings
+//               </h3>
+//               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+//                 {[
+//                   {
+//                     label: "pH Level",
+//                     value: "7.2",
+//                     status: "normal",
+//                   },
+//                   {
+//                     label: "Flow Rate",
+//                     value: "450 L/h",
+//                     status: "normal",
+//                   },
+//                   {
+//                     label: "TDS",
+//                     value: "480 ppm",
+//                     status: "normal",
+//                   },
+//                   {
+//                     label: "EC",
+//                     value: "720 μS/cm",
+//                     status: "normal",
+//                   },
+//                 ].map((item, index) => (
+//                   <div
+//                     key={index}
+//                     className="bg-white p-4 rounded-xl shadow-sm border border-gray-200"
+//                   >
+//                     <div className="flex justify-between items-start mb-3">
+//                       <div>
+//                         <p className="text-gray-600 text-sm font-medium">
+//                           {item.label}
+//                         </p>
+//                         <p className="text-xl font-bold text-gray-900 mt-1">
+//                           {item.value}
+//                         </p>
+//                       </div>
+//                     </div>
+//                     <div className="flex items-center gap-2">
+//                       <div
+//                         className={`w-2 h-2 rounded-full ${
+//                           item.status === "normal"
+//                             ? "bg-green-500"
+//                             : "bg-red-500"
+//                         }`}
+//                       ></div>
+//                       <span
+//                         className={`text-xs font-medium ${
+//                           item.status === "normal"
+//                             ? "text-green-600"
+//                             : "text-red-600"
+//                         }`}
+//                       >
+//                         {item.status}
+//                       </span>
+//                     </div>
+//                   </div>
+//                 ))}
+//               </div>
+//             </div>
+
+//             {/* Quick Menu Cards */}
+//             <div className="mb-8 grid grid-cols-1 sm:grid-cols-3 gap-4">
+//               {[
+//                 {
+//                   label: "Daily Report",
+//                   icon: DocumentTextIcon,
+//                   description: "Submit daily monitoring reports",
+//                 },
+//                 {
+//                   label: "Attendance",
+//                   icon: MapPinIcon,
+//                   description: "Check-in and attendance records",
+//                 },
+//                 {
+//                   label: "Schedule",
+//                   icon: CalendarIcon,
+//                   description: "View work schedule and shifts",
+//                 },
+//               ].map((item, i) => {
+//                 const Icon = item.icon;
+//                 return (
+//                   <div
+//                     key={i}
+//                     className="bg-white p-6 rounded-xl shadow-sm border border-gray-200 hover:shadow-md transition-shadow cursor-pointer"
+//                   >
+//                     <div className="flex items-center gap-4">
+//                       <div className="p-3 rounded-lg bg-blue-50">
+//                         <Icon className="w-6 h-6 text-blue-600" />
+//                       </div>
+//                       <div>
+//                         <p className="font-semibold text-gray-900">
+//                           {item.label}
+//                         </p>
+//                         <p className="text-sm text-gray-600 mt-1">
+//                           {item.description}
+//                         </p>
+//                       </div>
+//                     </div>
+//                   </div>
+//                 );
+//               })}
+//             </div>
+
+//             {/* Charts Section */}
+//             <div className="mb-8 grid grid-cols-1 lg:grid-cols-2 gap-6">
+//               {/* pH Level Trends */}
+//               <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-200">
+//                 <h3 className="font-semibold text-lg text-gray-800 mb-6">
+//                   pH Level Trends (7 Days)
 //                 </h3>
 //                 <div className="relative">
 //                   {/* Y-axis labels */}
 //                   <div className="absolute left-0 top-0 bottom-0 w-8 flex flex-col justify-between text-xs text-gray-500 py-4">
-//                     <span>120</span>
-//                     <span>90</span>
-//                     <span>60</span>
-//                     <span>30</span>
-//                     <span>0</span>
+//                     <span>7.25</span>
+//                     <span>6.75</span>
+//                     <span>6.5</span>
 //                   </div>
 
-//                   {/* Chart area - SKALA YANG TEPAT */}
+//                   {/* Chart area */}
 //                   <div className="ml-8">
-//                     <div className="w-full h-48 flex items-end justify-between gap-1 px-2 border-b border-l border-gray-200">
-//                       {weeklyAttendanceData.map((data, index) => (
+//                     <div className="w-full h-48 flex items-end justify-between gap-2 px-2 border-b border-l border-gray-200">
+//                       {pHData.map((data, index) => (
 //                         <div
 //                           key={index}
 //                           className="flex flex-col items-center flex-1 relative"
 //                         >
-//                           {/* Grouped bars - 3 batang terpisah untuk setiap hari */}
-//                           <div className="flex items-end justify-center gap-1 w-full">
-//                             {/* Present bar - hijau */}
-//                             <div
-//                               className="w-3 bg-green-500 rounded-t transition-all duration-300 hover:bg-green-600 cursor-pointer relative group"
-//                               style={{
-//                                 height: `${(data.present / 120) * 120}px`,
-//                               }}
-//                               onMouseEnter={() =>
-//                                 setHoveredBar(`${index}-present`)
-//                               }
-//                               onMouseLeave={() => setHoveredBar(null)}
-//                             >
-//                               {hoveredBar === `${index}-present` && (
-//                                 <div className="absolute -top-8 left-1/2 transform -translate-x-1/2 bg-gray-800 text-white px-2 py-1 rounded text-xs whitespace-nowrap z-10">
-//                                   Present: {data.present}
-//                                 </div>
-//                               )}
-//                             </div>
-
-//                             {/* Late bar - kuning */}
-//                             <div
-//                               className="w-3 bg-yellow-500 rounded-t transition-all duration-300 hover:bg-yellow-600 cursor-pointer relative group"
-//                               style={{ height: `${(data.late / 120) * 120}px` }}
-//                               onMouseEnter={() =>
-//                                 setHoveredBar(`${index}-late`)
-//                               }
-//                               onMouseLeave={() => setHoveredBar(null)}
-//                             >
-//                               {hoveredBar === `${index}-late` && (
-//                                 <div className="absolute -top-8 left-1/2 transform -translate-x-1/2 bg-gray-800 text-white px-2 py-1 rounded text-xs whitespace-nowrap z-10">
-//                                   Late: {data.late}
-//                                 </div>
-//                               )}
-//                             </div>
-
-//                             {/* Absent bar - merah */}
-//                             <div
-//                               className="w-3 bg-red-500 rounded-t transition-all duration-300 hover:bg-red-600 cursor-pointer relative group"
-//                               style={{
-//                                 height: `${(data.absent / 120) * 120}px`,
-//                               }}
-//                               onMouseEnter={() =>
-//                                 setHoveredBar(`${index}-absent`)
-//                               }
-//                               onMouseLeave={() => setHoveredBar(null)}
-//                             >
-//                               {hoveredBar === `${index}-absent` && (
-//                                 <div className="absolute -top-8 left-1/2 transform -translate-x-1/2 bg-gray-800 text-white px-2 py-1 rounded text-xs whitespace-nowrap z-10">
-//                                   Absent: {data.absent}
-//                                 </div>
-//                               )}
-//                             </div>
+//                           {/* Bar */}
+//                           <div
+//                             className="w-6 bg-gradient-to-t from-blue-400 to-blue-600 rounded-t transition-all duration-300 hover:from-blue-500 hover:to-blue-700 cursor-pointer relative group"
+//                             style={{
+//                               height: `${((data.value - 6.0) / 1.5) * 120}px`,
+//                             }}
+//                             onMouseEnter={() => setHoveredBar(`ph-${index}`)}
+//                             onMouseLeave={() => setHoveredBar(null)}
+//                           >
+//                             {hoveredBar === `ph-${index}` && (
+//                               <div className="absolute -top-8 left-1/2 transform -translate-x-1/2 bg-gray-800 text-white px-2 py-1 rounded text-xs whitespace-nowrap z-10">
+//                                 {data.value}
+//                               </div>
+//                             )}
 //                           </div>
 
 //                           {/* Day label */}
@@ -456,205 +493,131 @@
 //                         </div>
 //                       ))}
 //                     </div>
-
-//                     {/* Legend di bawah SESUAI GAMBAR */}
-//                     <div className="flex justify-center gap-4 mt-4 text-xs">
-//                       <div className="flex items-center gap-1">
-//                         <div className="w-3 h-3 bg-red-500 rounded"></div>
-//                         <span className="text-gray-600">absent</span>
-//                       </div>
-//                       <div className="flex items-center gap-1">
-//                         <div className="w-3 h-3 bg-yellow-500 rounded"></div>
-//                         <span className="text-gray-600">late</span>
-//                       </div>
-//                       <div className="flex items-center gap-1">
-//                         <div className="w-3 h-3 bg-green-500 rounded"></div>
-//                         <span className="text-gray-600">present</span>
-//                       </div>
-//                     </div>
 //                   </div>
 //                 </div>
 //               </div>
 
-//               {/* Today's Status - PIE CHART TETAP SAMA */}
-//               <div className="bg-white p-6 rounded-2xl border border-gray-200 shadow-md">
-//                 <h3 className="font-semibold text-lg text-gray-800 mb-5">
-//                   Today's Status
+//               {/* Flow Rate Trends */}
+//               <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-200">
+//                 <h3 className="font-semibold text-lg text-gray-800 mb-6">
+//                   Flow Rate Trends (7 Days)
 //                 </h3>
-//                 <div className="flex flex-col lg:flex-row items-center gap-8">
-//                   {/* Pie Chart dengan interaksi - TETAP SAMA */}
-//                   <div className="relative flex flex-col items-center">
-//                     <svg
-//                       width="160"
-//                       height="160"
-//                       viewBox="0 0 100 100"
-//                       className="cursor-pointer"
-//                     >
-//                       {pieChartData.map((item, index) => (
-//                         <path
-//                           key={item.status}
-//                           d={item.path}
-//                           fill={item.color}
-//                           className={`transition-all duration-300 ${
-//                             hoveredPie === index
-//                               ? "opacity-80 scale-105"
-//                               : "opacity-100"
-//                           }`}
-//                           stroke="white"
-//                           strokeWidth="2"
-//                           onMouseEnter={() => setHoveredPie(index)}
-//                           onMouseLeave={() => setHoveredPie(null)}
-//                         />
-//                       ))}
-//                     </svg>
-
-//                     {/* Text di bawah pie chart - TETAP SAMA */}
-//                     <div className="text-center mt-4">
-//                       <div className="text-2xl font-bold text-gray-800">
-//                         85%
-//                       </div>
-//                       <div className="text-sm text-gray-600">Present</div>
-//                     </div>
-
-//                     {/* Tooltip untuk pie chart - TETAP SAMA */}
-//                     {hoveredPie !== null && (
-//                       <div className="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-full bg-gray-800 text-white px-3 py-2 rounded-lg text-sm z-10 shadow-lg">
-//                         <div className="flex items-center gap-2">
-//                           <div
-//                             className="w-3 h-3 rounded"
-//                             style={{
-//                               backgroundColor: pieChartData[hoveredPie].color,
-//                             }}
-//                           ></div>
-//                           <span>
-//                             {pieChartData[hoveredPie].status}:{" "}
-//                             {pieChartData[hoveredPie].value}%
-//                           </span>
-//                         </div>
-//                       </div>
-//                     )}
+//                 <div className="relative">
+//                   {/* Y-axis labels */}
+//                   <div className="absolute left-0 top-0 bottom-0 w-8 flex flex-col justify-between text-xs text-gray-500 py-4">
+//                     <span>600</span>
+//                     <span>450</span>
+//                     <span>300</span>
+//                     <span>150</span>
+//                     <span>0</span>
 //                   </div>
 
-//                   {/* Legend dengan interaksi hover - TETAP SAMA */}
-//                   <div className="space-y-4 flex-1">
-//                     {todayStatusData.map((item, index) => (
-//                       <div
-//                         key={item.status}
-//                         className={`flex items-center justify-between p-2 rounded-lg transition-all duration-200 cursor-pointer ${
-//                           hoveredPie === index
-//                             ? "bg-gray-50 transform scale-105"
-//                             : ""
-//                         }`}
-//                         onMouseEnter={() => setHoveredPie(index)}
-//                         onMouseLeave={() => setHoveredPie(null)}
-//                       >
-//                         <div className="flex items-center gap-3">
+//                   {/* Chart area */}
+//                   <div className="ml-8">
+//                     <div className="w-full h-48 flex items-end justify-between gap-2 px-2 border-b border-l border-gray-200">
+//                       {flowRateData.map((data, index) => (
+//                         <div
+//                           key={index}
+//                           className="flex flex-col items-center flex-1 relative"
+//                         >
+//                           {/* Bar */}
 //                           <div
-//                             className="w-4 h-4 rounded transition-transform duration-200"
-//                             style={{ backgroundColor: item.color }}
-//                           ></div>
-//                           <span className="text-sm text-gray-700 font-medium">
-//                             {item.status}
+//                             className="w-6 bg-gradient-to-t from-green-400 to-green-600 rounded-t transition-all duration-300 hover:from-green-500 hover:to-green-700 cursor-pointer relative group"
+//                             style={{
+//                               height: `${(data.value / 600) * 120}px`,
+//                             }}
+//                             onMouseEnter={() => setHoveredBar(`flow-${index}`)}
+//                             onMouseLeave={() => setHoveredBar(null)}
+//                           >
+//                             {hoveredBar === `flow-${index}` && (
+//                               <div className="absolute -top-8 left-1/2 transform -translate-x-1/2 bg-gray-800 text-white px-2 py-1 rounded text-xs whitespace-nowrap z-10">
+//                                 {data.value} L/h
+//                               </div>
+//                             )}
+//                           </div>
+
+//                           {/* Day label */}
+//                           <span className="text-xs text-gray-600 mt-2">
+//                             {data.day}
 //                           </span>
 //                         </div>
-//                         <span className="text-lg font-bold text-gray-900">
-//                           {item.value}%
-//                         </span>
-//                       </div>
-//                     ))}
+//                       ))}
+//                     </div>
 //                   </div>
 //                 </div>
 //               </div>
 //             </div>
 
-//             {/* LAST ROW - Top Performers dan Recent Attendance SESUAI GAMBAR 3 */}
-//             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-//               {/* Top Performers */}
-//               <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-200 shadow-md">
-//                 <h3 className="font-semibold text-lg text-gray-800 mb-5">
-//                   Top Performers (This Month)
-//                 </h3>
-//                 <div className="space-y-4">
-//                   {topPerformersData.map((performer, index) => (
-//                     <div
-//                       key={index}
-//                       className="flex items-center justify-between p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors"
-//                     >
-//                       <div className="flex items-center gap-3">
-//                         <div className="w-8 h-8 bg-teal-500 rounded-full flex items-center justify-center text-white font-bold text-sm">
-//                           {index + 1}
-//                         </div>
-//                         <div>
-//                           <p className="font-semibold text-gray-900">
-//                             {performer.name}
-//                           </p>
-//                           <p className="text-sm text-gray-600">
-//                             {performer.location}
-//                           </p>
-//                         </div>
-//                       </div>
-//                       <div className="text-right">
-//                         <p className="font-bold text-gray-900">
-//                           {index === 0
-//                             ? "100%"
-//                             : index === 1
-//                               ? "98%"
-//                               : index === 2
-//                                 ? "97%"
-//                                 : "96%"}
-//                         </p>
-//                         <p className="text-xs text-teal-600 font-medium">
-//                           excellent
-//                         </p>
-//                       </div>
-//                     </div>
-//                   ))}
-//                 </div>
-//               </div>
+//             {/* Bottom Section - Quick Actions & Recent Activity */}
 
-//               {/* Recent Attendance - BAGIAN YANG SUDAH DIREVISI */}
-//               <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-200 shadow-md">
-//                 <div className="flex justify-between items-center mb-5">
-//                   <h3 className="font-semibold text-lg text-gray-800">
-//                     Recent Attendance
-//                   </h3>
-//                   <button className="text-teal-600 text-sm font-medium hover:underline">
-//                     View All
-//                   </button>
+// <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+//   {/* Quick Actions - dikecilkan sedikit */}
+//   <div className="bg-white p-5 rounded-xl shadow-sm border border-gray-200">
+//     <h3 className="font-semibold text-lg text-gray-800 mb-3">
+//       Quick Actions
+//     </h3>
+//     <div className="space-y-3">
+//       <button className="w-full flex items-center gap-3 p-4 bg-blue-50 hover:bg-blue-100 rounded-lg transition-colors border border-blue-200">
+//         <DocumentTextIcon className="w-5 h-5 text-blue-600" />
+//         <span className="font-medium text-blue-700">
+//           Submit Daily Report
+//         </span>
+//       </button>
+//       <button className="w-full flex text-left gap-3 p-4 bg-green-50 hover:bg-green-100 rounded-lg transition-colors border border-green-200">
+//         <ChartBarIcon className="w-5 h-5 text-green-600" />
+//         <span className="font-medium text-green-700">
+//           Record today's readings
+//         </span>
+//       </button>
+//     </div>
+//   </div>
+
+//   {/* Recent Activity - tetap sama */}
+//   <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-200 lg:col-span-2">
+//     <h3 className="font-semibold text-lg text-gray-800 mb-4">
+//       Recent Activity
+//     </h3>
+//     <div className="space-y-4">
+//       {recentActivityData.map((activity, index) => (
+//         <div
+//           key={index}
+//           className="flex items-center justify-between p-3 border-b border-gray-100 last:border-0 hover:bg-gray-50 transition-colors"
+//         >
+//           <div className="flex-1">
+//             <p className="font-medium text-gray-900">
+//               {activity.action}
+//             </p>
+//             <p className="text-sm text-gray-600">{activity.time}</p>
+//           </div>
+//           <div className="flex items-center gap-2">
+//             <CheckCircleIcon className="w-4 h-4 text-green-500" />
+//             <span className="px-2 py-1 bg-green-100 text-green-800 rounded-full text-xs font-medium">
+//               {activity.status}
+//             </span>
+//           </div>
+//         </div>
+//       ))}
+//     </div>
+//   </div>
+// </div>
+//           </div>
+//         )}
+
+//         {/* UNTUK MENU SELAIN DASHBOARD - TAMPILAN DALAM PENGEMBANGAN */}
+//         {activeMenu !== "dashboard" && (
+//           <div className="px-4 sm:px-6 lg:px-10 xl:px-16 py-6 max-w-screen-2xl mx-auto">
+//             <div className="flex flex-col items-center justify-center min-h-[60vh] text-center">
+//               <div className="bg-yellow-50 border border-yellow-200 rounded-2xl p-8 max-w-md w-full">
+//                 <div className="w-16 h-16 bg-yellow-100 rounded-full flex items-center justify-center mx-auto mb-4">
+//                   <CogIcon className="w-8 h-8 text-yellow-600" />
 //                 </div>
-//                 <div className="space-y-4">
-//                   {recentAttendanceData.map((attendance, index) => (
-//                     <div
-//                       key={index}
-//                       className="flex items-center justify-between p-3 border-b border-gray-100 last:border-0 hover:bg-gray-50 transition-colors"
-//                     >
-//                       <div>
-//                         <p className="font-semibold text-gray-900">
-//                           {attendance.name}
-//                         </p>
-//                         <p className="text-sm text-gray-600">
-//                           {attendance.location} • {attendance.time}
-//                         </p>
-//                       </div>
-//                       <div className="flex items-center gap-2">
-//                         {attendance.status === "approved" ? (
-//                           <CheckCircleIcon className="w-5 h-5 text-green-500" />
-//                         ) : (
-//                           <ExclamationTriangleIcon className="w-5 h-5 text-yellow-500" />
-//                         )}
-//                         <span
-//                           className={`px-3 py-1 rounded-full text-xs font-medium ${
-//                             attendance.status === "approved"
-//                               ? "bg-green-100 text-green-800"
-//                               : "bg-yellow-100 text-yellow-800"
-//                           }`}
-//                         >
-//                           {attendance.status}
-//                         </span>
-//                       </div>
-//                     </div>
-//                   ))}
-//                 </div>
+//                 <h3 className="text-xl font-bold text-gray-900 mb-2">
+//                   Dalam Pengembangan
+//                 </h3>
+//                 <p className="text-gray-600">
+//                   Fitur {menuItems.find((m) => m.id === activeMenu)?.name} sedang dalam tahap pengembangan.
+//                   Tim developer kami sedang bekerja untuk menyiapkan fitur ini.
+//                 </p>
 //               </div>
 //             </div>
 //           </div>
@@ -664,16 +627,17 @@
 //   );
 // }
 
-// ==================================MENU DASHBOARD : END =================================================================
-// ==================================MENU DASHBOARD : END =================================================================
-// ==================================MENU DASHBOARD : END =================================================================
-// ==================================MENU DASHBOARD : END =================================================================
+// // ==================================MENU DASHBOARD OPERATOR: END =================================================================
+// // ==================================MENU DASHBOARD OPERATOR: END =================================================================
+// // ==================================MENU DASHBOARD OPERATOR: END =================================================================
+// // ==================================MENU DASHBOARD OPERATOR: END =================================================================
 
-// ==================================MENU Attendance Validation : START =================================================================
-// ==================================MENU Attendance Validation : START =================================================================
-// ==================================MENU Attendance Validation : START =================================================================
-// ==================================MENU Attendance Validation : START =================================================================
-// ==================================MENU Attendance Validation : START =================================================================
+// ==================================MENU DAILY REPORT OPERATOR : START =================================================================
+// ==================================MENU DAILY REPORT OPERATOR : START =================================================================
+// ==================================MENU DAILY REPORT OPERATOR : START =================================================================
+// ==================================MENU DAILY REPORT OPERATOR : START =================================================================
+// ==================================MENU DAILY REPORT OPERATOR : START =================================================================
+
 // "use client";
 // import React, { useState, useRef, useEffect } from "react";
 // import { useRouter } from "next/navigation";
@@ -687,22 +651,225 @@
 //   ArrowRightOnRectangleIcon,
 //   Bars3Icon,
 //   XMarkIcon,
-//   MagnifyingGlassIcon,
-//   PlusIcon,
-//   CheckCircleIcon,
-//   XCircleIcon,
+//   ExclamationTriangleIcon,
+//   CameraIcon,
+//   CalendarDaysIcon,
 //   ClockIcon,
-//   EyeIcon,
+//   MagnifyingGlassIcon,
+//   ExclamationCircleIcon,
 // } from "@heroicons/react/24/outline";
 
-// export default function HRD() {
-//   const [selectedFilter, setSelectedFilter] = useState("All");
+// export default function Operator() {
+//   const [selectedRange, setSelectedRange] = useState("Month");
 //   const [dropdownOpen, setDropdownOpen] = useState(false);
-//   const [activeMenu, setActiveMenu] = useState("validation");
+//   const [activeMenu, setActiveMenu] = useState("dashboard");
 //   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-//   const [searchQuery, setSearchQuery] = useState("");
+//   const [hoveredBar, setHoveredBar] = useState(null);
+//   const [hoveredPie, setHoveredPie] = useState(null);
 //   const router = useRouter();
 //   const dropdownRef = useRef(null);
+
+//   // Refs untuk input date dan time
+//   const dateInputRef = useRef(null);
+//   const timeInputRef = useRef(null);
+//   const fileInputRef = useRef(null);
+
+//   // State untuk form Daily Report
+//   const [formData, setFormData] = useState({
+//     date: "",
+//     time: "",
+//     pHLevel: "",
+//     flowRate: "",
+//     volt: "",
+//     ampere: "",
+//     tds: "",
+//     ec: "",
+//     agitatorStatus: "Normal",
+//     settleStatus: "Normal",
+//     outFilterStatus: "Normal",
+//     additionalNotes: "",
+//   });
+
+//   const [uploadedFiles, setUploadedFiles] = useState([]);
+//   const [reports, setReports] = useState([]);
+//   const [searchQuery, setSearchQuery] = useState("");
+//   const [errors, setErrors] = useState({}); // State untuk error validasi
+//   const [isSubmitting, setIsSubmitting] = useState(false); // State untuk loading submit
+
+//   const handleInputChange = (field, value) => {
+//     setFormData((prev) => ({
+//       ...prev,
+//       [field]: value,
+//     }));
+
+//     // Hapus error ketika user mulai mengisi field
+//     if (errors[field]) {
+//       setErrors((prev) => ({
+//         ...prev,
+//         [field]: "",
+//       }));
+//     }
+//   };
+
+//   // Fungsi validasi form
+//   const validateForm = () => {
+//     const newErrors = {};
+
+//     // Validasi required fields
+//     if (!formData.date.trim()) newErrors.date = "Tanggal harus diisi";
+//     if (!formData.time.trim()) newErrors.time = "Waktu harus diisi";
+//     if (!formData.pHLevel.trim()) newErrors.pHLevel = "pH Level harus diisi";
+//     if (!formData.flowRate.trim()) newErrors.flowRate = "Flow Rate harus diisi";
+//     if (!formData.volt.trim()) newErrors.volt = "Volt harus diisi";
+//     if (!formData.ampere.trim()) newErrors.ampere = "Ampere harus diisi";
+//     if (!formData.tds.trim()) newErrors.tds = "TDS harus diisi";
+//     if (!formData.ec.trim()) newErrors.ec = "EC harus diisi";
+//     if (!formData.additionalNotes.trim())
+//       newErrors.additionalNotes = "Catatan tambahan harus diisi";
+
+//     // Validasi numeric fields
+//     if (formData.pHLevel && isNaN(parseFloat(formData.pHLevel))) {
+//       newErrors.pHLevel = "pH Level harus berupa angka";
+//     }
+//     if (formData.flowRate && isNaN(parseFloat(formData.flowRate))) {
+//       newErrors.flowRate = "Flow Rate harus berupa angka";
+//     }
+//     if (formData.volt && isNaN(parseFloat(formData.volt))) {
+//       newErrors.volt = "Volt harus berupa angka";
+//     }
+//     if (formData.ampere && isNaN(parseFloat(formData.ampere))) {
+//       newErrors.ampere = "Ampere harus berupa angka";
+//     }
+//     if (formData.tds && isNaN(parseFloat(formData.tds))) {
+//       newErrors.tds = "TDS harus berupa angka";
+//     }
+//     if (formData.ec && isNaN(parseFloat(formData.ec))) {
+//       newErrors.ec = "EC harus berupa angka";
+//     }
+
+//     // Validasi file upload
+//     if (uploadedFiles.length === 0) {
+//       newErrors.files = "Minimal 1 foto harus diupload";
+//     }
+
+//     return newErrors;
+//   };
+
+//   // Fungsi untuk submit laporan
+//   const handleSubmitReport = () => {
+//     const formErrors = validateForm();
+
+//     if (Object.keys(formErrors).length > 0) {
+//       setErrors(formErrors);
+
+//       // Scroll ke error pertama
+//       const firstErrorField = Object.keys(formErrors)[0];
+//       const element = document.getElementById(firstErrorField);
+//       if (element) {
+//         element.scrollIntoView({ behavior: "smooth", block: "center" });
+//       }
+
+//       return;
+//     }
+
+//     setIsSubmitting(true);
+
+//     // Simulasi proses submit
+//     setTimeout(() => {
+//       const newReport = {
+//         id: Date.now(),
+//         ...formData,
+//         uploadedFiles: [...uploadedFiles],
+//         timestamp: new Date().toISOString(),
+//         location: "IPAL Jakarta Pusat",
+//         operator: "Budi Santoso - Pagi",
+//         status: "Submitted",
+//       };
+
+//       setReports((prev) => [newReport, ...prev]);
+
+//       // Reset form setelah submit
+//       setFormData({
+//         date: "",
+//         time: "",
+//         pHLevel: "",
+//         flowRate: "",
+//         volt: "",
+//         ampere: "",
+//         tds: "",
+//         ec: "",
+//         agitatorStatus: "Normal",
+//         settleStatus: "Normal",
+//         outFilterStatus: "Normal",
+//         additionalNotes: "",
+//       });
+//       setUploadedFiles([]);
+//       setErrors({});
+//       setIsSubmitting(false);
+
+//       alert("Laporan berhasil disubmit!");
+//     }, 1000);
+//   };
+
+//   // Fungsi untuk save as draft (tidak perlu validasi ketat)
+//   const handleSaveDraft = () => {
+//     if (!formData.date || !formData.time) {
+//       setErrors({
+//         date: !formData.date ? "Tanggal harus diisi untuk draft" : "",
+//         time: !formData.time ? "Waktu harus diisi untuk draft" : "",
+//       });
+//       return;
+//     }
+
+//     const draftReport = {
+//       id: Date.now(),
+//       ...formData,
+//       uploadedFiles: [...uploadedFiles],
+//       timestamp: new Date().toISOString(),
+//       location: "IPAL Jakarta Pusat",
+//       operator: "Budi Santoso - Pagi",
+//       status: "Draft",
+//     };
+
+//     setReports((prev) => [draftReport, ...prev]);
+
+//     alert("Laporan berhasil disimpan sebagai draft!");
+//   };
+
+//   // Fungsi untuk membuka date picker ketika icon diklik
+//   const handleDateIconClick = () => {
+//     if (dateInputRef.current) {
+//       dateInputRef.current.showPicker();
+//     }
+//   };
+
+//   // Fungsi untuk membuka time picker ketika icon diklik
+//   const handleTimeIconClick = () => {
+//     if (timeInputRef.current) {
+//       timeInputRef.current.showPicker();
+//     }
+//   };
+
+//   // Fungsi untuk membuka file dialog ketika container diklik
+//   const handleContainerClick = () => {
+//     if (fileInputRef.current) {
+//       fileInputRef.current.click();
+//     }
+//   };
+
+//   // Fungsi untuk menangani upload file
+//   const handleFileUpload = (event) => {
+//     const files = Array.from(event.target.files);
+//     setUploadedFiles(files);
+
+//     // Hapus error files jika ada file yang diupload
+//     if (files.length > 0 && errors.files) {
+//       setErrors((prev) => ({
+//         ...prev,
+//         files: "",
+//       }));
+//     }
+//   };
 
 //   useEffect(() => {
 //     function handleClickOutside(event) {
@@ -716,73 +883,24 @@
 
 //   const menuItems = [
 //     { id: "dashboard", name: "Dashboard", icon: ChartBarIcon },
-//     { id: "validation", name: "Attendance Validation", icon: MapPinIcon },
+//     { id: "reports", name: "Daily Report", icon: DocumentChartBarIcon },
+//     { id: "presensi", name: "Presence", icon: MapPinIcon },
+//     { id: "help", name: "Help Desk", icon: CogIcon },
 //   ];
 
-//   // Data untuk attendance validation
-//   const attendanceData = [
-//     {
-//       id: 1,
-//       operator: "Budi Santoso",
-//       site: "Jakarta Utara - Site A",
-//       date: "2025-01-27",
-//       checkIn: "08:00",
-//       checkOut: "16:00",
-//       status: "pending",
-//     },
-//     {
-//       id: 2,
-//       operator: "Siti Nurhaliza",
-//       site: "Bandung - Site B",
-//       date: "2025-01-27",
-//       checkIn: "08:05",
-//       checkOut: "16:02",
-//       status: "pending",
-//     },
-//     {
-//       id: 3,
-//       operator: "Ahmad Hidayat",
-//       site: "Surabaya - Site C",
-//       date: "2025-01-27",
-//       checkIn: "07:58",
-//       checkOut: "16:05",
-//       status: "approved",
-//     },
-//     {
-//       id: 4,
-//       operator: "Dewi Lestari",
-//       site: "Semarang - Site D",
-//       date: "2025-01-27",
-//       checkIn: "08:10",
-//       checkOut: "---",
-//       status: "pending",
-//     },
-//   ];
-
-//   // Filter data berdasarkan status dan pencarian
-//   const filteredData = attendanceData.filter((item) => {
-//     const matchesSearch =
-//       item.operator.toLowerCase().includes(searchQuery.toLowerCase()) ||
-//       item.site.toLowerCase().includes(searchQuery.toLowerCase());
-
-//     const matchesFilter =
-//       selectedFilter === "All" || item.status === selectedFilter.toLowerCase();
-
-//     return matchesSearch && matchesFilter;
-//   });
-
-//   // Statistik
-//   const stats = {
-//     total: attendanceData.length,
-//     pending: attendanceData.filter((item) => item.status === "pending").length,
-//     approved: attendanceData.filter((item) => item.status === "approved")
-//       .length,
-//     rejected: attendanceData.filter((item) => item.status === "rejected")
-//       .length,
-//   };
+//   // Filter laporan berdasarkan search query
+//   const filteredReports = reports.filter(
+//     (report) =>
+//       report.additionalNotes
+//         .toLowerCase()
+//         .includes(searchQuery.toLowerCase()) ||
+//       report.location.toLowerCase().includes(searchQuery.toLowerCase()) ||
+//       report.operator.toLowerCase().includes(searchQuery.toLowerCase()) ||
+//       report.status.toLowerCase().includes(searchQuery.toLowerCase())
+//   );
 
 //   return (
-//     <div className="flex min-h-screen bg-gray-50">
+//     <div className="flex min-h-screen bg-white">
 //       {/* Overlay mobile */}
 //       {isSidebarOpen && (
 //         <div
@@ -807,14 +925,14 @@
 //           />
 //           <div>
 //             <h1 className="text-xl font-bold text-gray-800">SIOPTIMA</h1>
-//             <p className="text-sm text-gray-600">HRD System</p>
+//             <p className="text-sm text-gray-600">IPAL Monitoring</p>
 //           </div>
 
 //           <button
 //             onClick={() => setIsSidebarOpen(false)}
-//             className="lg:hidden ml-auto p-2 text-gray-600 hover:text-teal-600 transition"
+//             className="lg:hidden ml-auto p-2 text-gray-800 hover:text-teal-600 transition"
 //           >
-//             <XMarkIcon className="w-5 h-5" />
+//             <XMarkIcon className="w-5 h-5 text-gray-800" />
 //           </button>
 //         </div>
 
@@ -833,11 +951,11 @@
 //                     className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg text-left transition
 //                       ${
 //                         activeMenu === item.id
-//                           ? "bg-teal-50 text-teal-700 border-r-2 border-teal-600"
-//                           : "text-gray-700 hover:bg-gray-100"
+//                           ? "bg-teal-50 text-teal-800 border-r-2 border-teal-600"
+//                           : "text-gray-800 hover:bg-gray-100"
 //                       }`}
 //                   >
-//                     <Icon className="w-5 h-5" />
+//                     <Icon className="w-5 h-5 text-gray-800" />
 //                     {item.name}
 //                   </button>
 //                 </li>
@@ -846,19 +964,19 @@
 //           </ul>
 //         </nav>
 
-//         {/* HRD badge */}
+//         {/* Operator badge */}
 //         <div className="p-4 border border-gray-200 shadow-md bg-white mt-auto">
-//           <div className="bg-gray-50 rounded-lg p-3 border border-gray-200">
+//           <div className="bg-white rounded-lg p-3 border border-gray-200">
 //             <div className="flex items-center gap-3">
 //               <div
-//                 className="w-10 h-10 bg-gradient-to-r from-teal-500 to-cyan-600 rounded-full
+//                 className="w-10 h-10 bg-gradient-to-r from-blue-500 to-cyan-600 rounded-full
 //                 flex items-center justify-center text-white font-bold text-lg"
 //               >
-//                 H
+//                 O
 //               </div>
 //               <div>
-//                 <p className="font-semibold text-gray-900">HRD SIOPTIMA</p>
-//                 <p className="text-sm text-gray-600">HRD</p>
+//                 <p className="font-semibold text-gray-900">Operator SIOPTIMA</p>
+//                 <p className="text-sm text-gray-600">Operator</p>
 //               </div>
 //             </div>
 //           </div>
@@ -869,13 +987,12 @@
 //       <div className="flex-1 lg:ml-64">
 //         <header className="bg-white shadow-sm border-b border-gray-200 sticky top-0 z-30">
 //           <div className="flex justify-between items-center px-4 lg:px-6 py-4">
-//             {/* Hamburger */}
 //             <div className="flex items-center gap-3">
 //               <button
 //                 onClick={() => setIsSidebarOpen(true)}
-//                 className="lg:hidden p-2 text-gray-600 hover:text-teal-600"
+//                 className="lg:hidden p-2 text-gray-800 hover:text-teal-600"
 //               >
-//                 <Bars3Icon className="w-6 h-6" />
+//                 <Bars3Icon className="w-6 h-6 text-gray-800" />
 //               </button>
 
 //               <h1 className="text-xl lg:text-2xl font-bold text-gray-900">
@@ -883,10 +1000,9 @@
 //               </h1>
 //             </div>
 
-//             {/* Icons right */}
 //             <div className="flex items-center gap-4">
-//               <button className="p-2 text-gray-600 hover:text-teal-600 relative">
-//                 <BellIcon className="w-6 h-6" />
+//               <button className="p-2 text-gray-800 hover:text-teal-600 relative">
+//                 <BellIcon className="w-6 h-6 text-gray-800" />
 //                 <span className="absolute top-0 right-0 w-2 h-2 bg-red-500 rounded-full"></span>
 //               </button>
 
@@ -903,10 +1019,10 @@
 //                   className="flex items-center gap-2 cursor-pointer"
 //                 >
 //                   <div
-//                     className="w-10 h-10 bg-gradient-to-r from-teal-500 to-cyan-600
+//                     className="w-10 h-10 bg-gradient-to-r from-blue-500 to-cyan-600
 //       rounded-full flex items-center justify-center text-white font-bold"
 //                   >
-//                     H
+//                     O
 //                   </div>
 
 //                   <svg
@@ -915,7 +1031,7 @@
 //                     viewBox="0 0 24 24"
 //                     strokeWidth={2}
 //                     stroke="currentColor"
-//                     className={`w-4 h-4 text-gray-600 transition-transform duration-200
+//                     className={`w-4 h-4 text-gray-800 transition-transform duration-200
 //         ${dropdownOpen ? "rotate-180" : "rotate-0"}`}
 //                   >
 //                     <path
@@ -939,7 +1055,7 @@
 //                       className="w-full flex items-center gap-3 px-4 py-2
 //         text-red-600 hover:bg-red-50 text-left text-sm"
 //                     >
-//                       <ArrowRightOnRectangleIcon className="w-4 h-4" />
+//                       <ArrowRightOnRectangleIcon className="w-4 h-4 text-red-600" />
 //                       Log Out
 //                     </button>
 //                   </div>
@@ -949,279 +1065,586 @@
 //           </div>
 //         </header>
 
-//         {/* ATTENDANCE VALIDATION CONTENT */}
-//         {activeMenu === "validation" && (
+//         {/* DAILY REPORT CONTENT */}
+//         {activeMenu === "reports" && (
 //           <div className="px-4 sm:px-6 lg:px-10 xl:px-16 py-6 max-w-screen-2xl mx-auto">
 //             {/* Header Section */}
 //             <div className="mb-8">
-//               <h1 className="text-2xl lg:text-3xl font-bold text-gray-900 mb-2">
-//                 Attendance Validation
-//               </h1>
-//               <p className="text-gray-600">
-//                 Review and validate operator attendance records
+//               <h2 className="text-2xl lg:text-3xl font-bold text-gray-900">
+//                 Daily Report
+//               </h2>
+//               <p className="text-gray-600 mt-1">
+//                 Submit your daily IPAL operational report
 //               </p>
 //             </div>
 
-//             {/* Stats Cards */}
-//             <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
-//               <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-200">
-//                 <div className="flex items-center justify-between mb-4">
-//                   <h3 className="text-gray-700 font-medium">Total Today</h3>
-//                   <div className="p-2 bg-gray-100 rounded-lg">
-//                     <DocumentChartBarIcon className="w-5 h-5 text-gray-600" />
-//                   </div>
+//             {/* Guidelines */}
+//             <div className="bg-blue-50 p-6 rounded-xl shadow-sm border border-blue-200 mb-8">
+//               <div className="flex items-start gap-3">
+//                 <div className="w-6 h-6 rounded-full bg-blue-100 flex items-center justify-center mt-0.5">
+//                   <ExclamationTriangleIcon className="w-4 h-4 text-blue-700" />
 //                 </div>
-//                 <p className="text-3xl font-bold text-gray-900">
-//                   {stats.total}
-//                 </p>
-//                 <p className="text-sm text-gray-500 mt-1">
-//                   Pending: {stats.pending}
-//                 </p>
-//               </div>
-
-//               <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-200">
-//                 <div className="flex items-center justify-between mb-4">
-//                   <h3 className="text-gray-700 font-medium">Approved</h3>
-//                   <div className="p-2 bg-green-100 rounded-lg">
-//                     <CheckCircleIcon className="w-5 h-5 text-green-600" />
-//                   </div>
+//                 <div>
+//                   <h3 className="font-bold text-blue-700 mb-2">
+//                     Daily Report Guidelines
+//                   </h3>
+//                   <p className="text-blue-800 text-sm">
+//                     Please ensure all measurements are accurate. Take photos of
+//                     equipment and upload them with your report. Reports must be
+//                     submitted before end of shift.
+//                     <strong className="block mt-2">
+//                       Semua field harus diisi sebelum submit!
+//                     </strong>
+//                   </p>
 //                 </div>
-//                 <p className="text-3xl font-bold text-gray-900">
-//                   {stats.approved}
-//                 </p>
-//                 <p className="text-sm text-gray-500 mt-1">Validated records</p>
-//               </div>
-
-//               <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-200">
-//                 <div className="flex items-center justify-between mb-4">
-//                   <h3 className="text-gray-700 font-medium">Rejected</h3>
-//                   <div className="p-2 bg-red-100 rounded-lg">
-//                     <XCircleIcon className="w-5 h-5 text-red-600" />
-//                   </div>
-//                 </div>
-//                 <p className="text-3xl font-bold text-gray-900">
-//                   {stats.rejected}
-//                 </p>
-//                 <p className="text-sm text-gray-500 mt-1">Invalid records</p>
-//               </div>
-
-//               <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-200">
-//                 <div className="flex items-center justify-between mb-4">
-//                   <h3 className="text-gray-700 font-medium">Pending Review</h3>
-//                   <div className="p-2 bg-yellow-100 rounded-lg">
-//                     <ClockIcon className="w-5 h-5 text-yellow-600" />
-//                   </div>
-//                 </div>
-//                 <p className="text-3xl font-bold text-gray-900">
-//                   {stats.pending}
-//                 </p>
-//                 <p className="text-sm text-gray-500 mt-1">
-//                   Awaiting validation
-//                 </p>
 //               </div>
 //             </div>
 
-//             {/* Filter Section */}
-//             <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-200 mb-6">
-//               <div className="flex flex-col sm:flex-row gap-4 justify-between items-start sm:items-center">
-//                 <div className="relative flex-1 max-w-lg">
-//                   <MagnifyingGlassIcon className="w-5 h-5 text-gray-400 absolute left-3 top-1/2 transform -translate-y-1/2" />
-//                   <input
-//                     type="text"
-//                     placeholder="Search by operator or site..."
-//                     value={searchQuery}
-//                     onChange={(e) => setSearchQuery(e.target.value)}
-//                     className="w-full pl-10 pr-4 py-2 bg-gray-100 border border-gray-200 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500 text-gray-900 placeholder-gray-500"
-//                   />
-//                 </div>
+//             {/* FORM INPUT SECTION */}
+//             <div className="bg-white rounded-xl shadow-sm border border-gray-200 mb-8">
+//               {/* Report Information */}
+//               <div className="p-6 border-b border-gray-200">
+//                 <h3 className="font-semibold text-lg text-gray-800 mb-4">
+//                   Report Information
+//                 </h3>
 
-//                 {/* Status Filter Buttons */}
-//                 <div className="flex gap-2 bg-gray-100 rounded-lg p-1">
-//                   {["All", "Pending", "Approved", "Rejected"].map((filter) => (
-//                     <button
-//                       key={filter}
-//                       onClick={() => setSelectedFilter(filter)}
-//                       className={`px-4 py-2 rounded-md text-sm font-medium transition ${
-//                         selectedFilter === filter
-//                           ? "bg-teal-600 text-white shadow-sm"
-//                           : "text-gray-700 hover:bg-gray-200"
-//                       }`}
+//                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+//                   {/* Date Input */}
+//                   <div id="date">
+//                     <label className="block text-sm font-medium text-gray-700 mb-2">
+//                       Date <span className="text-red-500">*</span>
+//                     </label>
+//                     <div className="relative">
+//                       <input
+//                         ref={dateInputRef}
+//                         type="date"
+//                         value={formData.date}
+//                         onChange={(e) =>
+//                           handleInputChange("date", e.target.value)
+//                         }
+//                         className={`w-full p-3 border ${
+//                           errors.date ? "border-red-500" : "border-gray-200"
+//                         } bg-white rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition placeholder-gray-400 text-gray-900`}
+//                       />
+//                       <button
+//                         type="button"
+//                         onClick={handleDateIconClick}
+//                         className="absolute right-3 top-1/2 transform -translate-y-1/2 p-1 hover:bg-gray-200 rounded transition-colors"
+//                       >
+//                         <CalendarDaysIcon className="w-5 h-5 text-gray-600" />
+//                       </button>
+//                     </div>
+//                     {errors.date && (
+//                       <p className="text-red-500 text-sm mt-1 flex items-center gap-1">
+//                         <ExclamationCircleIcon className="w-4 h-4" />
+//                         {errors.date}
+//                       </p>
+//                     )}
+//                   </div>
+
+//                   {/* Time Input */}
+//                   <div id="time">
+//                     <label className="block text-sm font-medium text-gray-700 mb-2">
+//                       Time <span className="text-red-500">*</span>
+//                     </label>
+//                     <div className="relative">
+//                       <input
+//                         ref={timeInputRef}
+//                         type="time"
+//                         value={formData.time}
+//                         onChange={(e) =>
+//                           handleInputChange("time", e.target.value)
+//                         }
+//                         className={`w-full p-3 border ${
+//                           errors.time ? "border-red-500" : "border-gray-200"
+//                         } bg-white rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition placeholder-gray-400 text-gray-900`}
+//                       />
+//                       <button
+//                         type="button"
+//                         onClick={handleTimeIconClick}
+//                         className="absolute right-3 top-1/2 transform -translate-y-1/2 p-1 hover:bg-gray-200 rounded transition-colors"
+//                       >
+//                         <ClockIcon className="w-5 h-5 text-gray-600" />
+//                       </button>
+//                     </div>
+//                     {errors.time && (
+//                       <p className="text-red-500 text-sm mt-1 flex items-center gap-1">
+//                         <ExclamationCircleIcon className="w-4 h-4" />
+//                         {errors.time}
+//                       </p>
+//                     )}
+//                   </div>
+//                 </div>
+//               </div>
+
+//               {/* Water Parameters */}
+//               <div className="p-6 border-b border-gray-200">
+//                 <h3 className="font-semibold text-lg text-gray-800 mb-4">
+//                   Water Parameters <span className="text-red-500">*</span>
+//                 </h3>
+//                 <div className="space-y-6">
+//                   <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+//                     <div id="pHLevel">
+//                       <label className="block text-sm font-medium text-gray-700 mb-2">
+//                         pH Level <span className="text-red-500">*</span>
+//                       </label>
+//                       <input
+//                         type="text"
+//                         placeholder="e.g., 7.2"
+//                         value={formData.pHLevel}
+//                         onChange={(e) =>
+//                           handleInputChange("pHLevel", e.target.value)
+//                         }
+//                         className={`w-full p-3 border ${
+//                           errors.pHLevel ? "border-red-500" : "border-gray-200"
+//                         } bg-white rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 placeholder-gray-400 text-gray-900`}
+//                       />
+//                       {errors.pHLevel && (
+//                         <p className="text-red-500 text-sm mt-1 flex items-center gap-1">
+//                           <ExclamationCircleIcon className="w-4 h-4" />
+//                           {errors.pHLevel}
+//                         </p>
+//                       )}
+//                     </div>
+//                     <div id="flowRate">
+//                       <label className="block text-sm font-medium text-gray-700 mb-2">
+//                         Flow Rate (L/h) <span className="text-red-500">*</span>
+//                       </label>
+//                       <input
+//                         type="text"
+//                         placeholder="e.g., 450"
+//                         value={formData.flowRate}
+//                         onChange={(e) =>
+//                           handleInputChange("flowRate", e.target.value)
+//                         }
+//                         className={`w-full p-3 border ${
+//                           errors.flowRate ? "border-red-500" : "border-gray-200"
+//                         } bg-white rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 placeholder-gray-400 text-gray-900`}
+//                       />
+//                       {errors.flowRate && (
+//                         <p className="text-red-500 text-sm mt-1 flex items-center gap-1">
+//                           <ExclamationCircleIcon className="w-4 h-4" />
+//                           {errors.flowRate}
+//                         </p>
+//                       )}
+//                     </div>
+//                     <div id="volt">
+//                       <label className="block text-sm font-medium text-gray-700 mb-2">
+//                         Volt (V) <span className="text-red-500">*</span>
+//                       </label>
+//                       <input
+//                         type="text"
+//                         placeholder="e.g., 220"
+//                         value={formData.volt}
+//                         onChange={(e) =>
+//                           handleInputChange("volt", e.target.value)
+//                         }
+//                         className={`w-full p-3 border ${
+//                           errors.volt ? "border-red-500" : "border-gray-200"
+//                         } bg-white rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 placeholder-gray-400 text-gray-900`}
+//                       />
+//                       {errors.volt && (
+//                         <p className="text-red-500 text-sm mt-1 flex items-center gap-1">
+//                           <ExclamationCircleIcon className="w-4 h-4" />
+//                           {errors.volt}
+//                         </p>
+//                       )}
+//                     </div>
+//                   </div>
+
+//                   <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+//                     <div id="ampere">
+//                       <label className="block text-sm font-medium text-gray-700 mb-2">
+//                         Ampere (A) <span className="text-red-500">*</span>
+//                       </label>
+//                       <input
+//                         type="text"
+//                         placeholder="e.g., 15"
+//                         value={formData.ampere}
+//                         onChange={(e) =>
+//                           handleInputChange("ampere", e.target.value)
+//                         }
+//                         className={`w-full p-3 border ${
+//                           errors.ampere ? "border-red-500" : "border-gray-200"
+//                         } bg-white rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 placeholder-gray-400 text-gray-900`}
+//                       />
+//                       {errors.ampere && (
+//                         <p className="text-red-500 text-sm mt-1 flex items-center gap-1">
+//                           <ExclamationCircleIcon className="w-4 h-4" />
+//                           {errors.ampere}
+//                         </p>
+//                       )}
+//                     </div>
+//                     <div id="tds">
+//                       <label className="block text-sm font-medium text-gray-700 mb-2">
+//                         TDS (ppm) <span className="text-red-500">*</span>
+//                       </label>
+//                       <input
+//                         type="text"
+//                         placeholder="e.g., 480"
+//                         value={formData.tds}
+//                         onChange={(e) =>
+//                           handleInputChange("tds", e.target.value)
+//                         }
+//                         className={`w-full p-3 border ${
+//                           errors.tds ? "border-red-500" : "border-gray-200"
+//                         } bg-white rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 placeholder-gray-400 text-gray-900`}
+//                       />
+//                       {errors.tds && (
+//                         <p className="text-red-500 text-sm mt-1 flex items-center gap-1">
+//                           <ExclamationCircleIcon className="w-4 h-4" />
+//                           {errors.tds}
+//                         </p>
+//                       )}
+//                     </div>
+//                     <div id="ec">
+//                       <label className="block text-sm font-medium text-gray-700 mb-2">
+//                         EC (μS/cm) <span className="text-red-500">*</span>
+//                       </label>
+//                       <input
+//                         type="text"
+//                         placeholder="e.g., 720"
+//                         value={formData.ec}
+//                         onChange={(e) =>
+//                           handleInputChange("ec", e.target.value)
+//                         }
+//                         className={`w-full p-3 border ${
+//                           errors.ec ? "border-red-500" : "border-gray-200"
+//                         } bg-white rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 placeholder-gray-400 text-gray-900`}
+//                       />
+//                       {errors.ec && (
+//                         <p className="text-red-500 text-sm mt-1 flex items-center gap-1">
+//                           <ExclamationCircleIcon className="w-4 h-4" />
+//                           {errors.ec}
+//                         </p>
+//                       )}
+//                     </div>
+//                   </div>
+//                 </div>
+//               </div>
+
+//               {/* Equipment Status */}
+//               <div className="p-6 border-b border-gray-200">
+//                 <h3 className="font-semibold text-lg text-gray-800 mb-4">
+//                   Equipment Status
+//                 </h3>
+//                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+//                   <div>
+//                     <label className="block text-sm font-medium text-gray-700 mb-2">
+//                       Agitator
+//                     </label>
+//                     <select
+//                       value={formData.agitatorStatus}
+//                       onChange={(e) =>
+//                         handleInputChange("agitatorStatus", e.target.value)
+//                       }
+//                       className="w-full p-3 border border-gray-200 bg-white rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-900"
 //                     >
-//                       {filter}
-//                     </button>
-//                   ))}
+//                       <option value="Normal">Normal</option>
+//                       <option value="Maintenance">Maintenance</option>
+//                       <option value="Broken">Broken</option>
+//                     </select>
+//                   </div>
+//                   <div>
+//                     <label className="block text-sm font-medium text-gray-700 mb-2">
+//                       Settle
+//                     </label>
+//                     <select
+//                       value={formData.settleStatus}
+//                       onChange={(e) =>
+//                         handleInputChange("settleStatus", e.target.value)
+//                       }
+//                       className="w-full p-3 border border-gray-200 bg-white rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-900"
+//                     >
+//                       <option value="Normal">Normal</option>
+//                       <option value="Maintenance">Maintenance</option>
+//                       <option value="Broken">Broken</option>
+//                     </select>
+//                   </div>
+//                   <div>
+//                     <label className="block text-sm font-medium text-gray-700 mb-2">
+//                       Out Filter
+//                     </label>
+//                     <select
+//                       value={formData.outFilterStatus}
+//                       onChange={(e) =>
+//                         handleInputChange("outFilterStatus", e.target.value)
+//                       }
+//                       className="w-full p-3 border border-gray-200 bg-white rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-900"
+//                     >
+//                       <option value="Normal">Normal</option>
+//                       <option value="Maintenance">Maintenance</option>
+//                       <option value="Broken">Broken</option>
+//                     </select>
+//                   </div>
+//                 </div>
+//               </div>
+
+//               {/* Supporting Photos */}
+//               <div className="p-6 border-b border-gray-200">
+//                 <h3 className="font-semibold text-lg text-gray-800 mb-4">
+//                   Supporting Photos <span className="text-red-500">*</span>
+//                 </h3>
+
+//                 <input
+//                   type="file"
+//                   ref={fileInputRef}
+//                   onChange={handleFileUpload}
+//                   className="hidden"
+//                   multiple
+//                   accept="image/*"
+//                 />
+
+//                 <div
+//                   onClick={handleContainerClick}
+//                   className={`border-2 border-dashed ${
+//                     errors.files ? "border-red-500" : "border-gray-300"
+//                   } rounded-lg p-8 text-center cursor-pointer hover:bg-gray-50 transition-colors`}
+//                 >
+//                   <CameraIcon
+//                     className={`w-12 h-12 ${
+//                       errors.files ? "text-red-500" : "text-gray-600"
+//                     } mx-auto mb-3`}
+//                   />
+//                   <p
+//                     className={`text-sm mb-3 ${
+//                       errors.files ? "text-red-500" : "text-gray-500"
+//                     }`}
+//                   >
+//                     {errors.files
+//                       ? errors.files
+//                       : "Click anywhere in this area to upload photos of equipment and readings"}
+//                   </p>
+
+//                   {uploadedFiles.length > 0 && (
+//                     <div className="mt-4">
+//                       <p className="text-sm font-medium text-gray-700 mb-2">
+//                         Uploaded files:
+//                       </p>
+//                       <ul className="text-sm text-gray-600">
+//                         {uploadedFiles.map((file, index) => (
+//                           <li key={index} className="truncate">
+//                             {file.name}
+//                           </li>
+//                         ))}
+//                       </ul>
+//                     </div>
+//                   )}
+//                 </div>
+//               </div>
+
+//               {/* Additional Notes */}
+//               <div className="p-6 border-b border-gray-200">
+//                 <h3 className="font-semibold text-lg text-gray-800 mb-4">
+//                   Additional Notes <span className="text-red-500">*</span>
+//                 </h3>
+//                 <div id="additionalNotes">
+//                   <label className="block text-sm font-medium text-gray-700 mb-2">
+//                     Add any additional observations, issues, or inventory
+//                     needs...
+//                   </label>
+//                   <textarea
+//                     value={formData.additionalNotes}
+//                     onChange={(e) =>
+//                       handleInputChange("additionalNotes", e.target.value)
+//                     }
+//                     rows={4}
+//                     className={`w-full p-3 border ${
+//                       errors.additionalNotes
+//                         ? "border-red-500"
+//                         : "border-gray-200"
+//                     } bg-white rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition placeholder-gray-400 text-gray-900`}
+//                     placeholder="Enter any additional information, observations, or requirements..."
+//                   />
+//                   {errors.additionalNotes && (
+//                     <p className="text-red-500 text-sm mt-1 flex items-center gap-1">
+//                       <ExclamationCircleIcon className="w-4 h-4" />
+//                       {errors.additionalNotes}
+//                     </p>
+//                   )}
+//                 </div>
+//               </div>
+
+//               {/* Action Buttons */}
+//               <div className="p-6">
+//                 <div className="flex flex-col sm:flex-row gap-4 justify-end">
+//                   <button
+//                     onClick={handleSaveDraft}
+//                     className="w-full sm:w-auto px-8 py-3 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors font-medium"
+//                   >
+//                     Save as Draft
+//                   </button>
+//                   <button
+//                     onClick={handleSubmitReport}
+//                     disabled={isSubmitting}
+//                     className={`w-full sm:w-auto px-8 py-3 ${
+//                       isSubmitting
+//                         ? "bg-gray-400 cursor-not-allowed"
+//                         : "bg-green-600 hover:bg-green-700"
+//                     } text-white rounded-lg transition-colors font-medium flex items-center justify-center gap-2`}
+//                   >
+//                     {isSubmitting ? (
+//                       <>
+//                         <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+//                         Submitting...
+//                       </>
+//                     ) : (
+//                       "Submit Report"
+//                     )}
+//                   </button>
 //                 </div>
 //               </div>
 //             </div>
 
-//             {/* Attendance Table */}
-//             <div className="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden">
-//               {/* Desktop Table Header */}
-//               <div className="hidden md:grid grid-cols-12 gap-4 px-6 py-4 bg-gray-50 border-b border-gray-200 text-sm font-semibold text-gray-700">
-//                 <div className="col-span-3">Operator</div>
-//                 <div className="col-span-2">Site</div>
-//                 <div className="col-span-1">Date</div>
-//                 <div className="col-span-1">Check-In</div>
-//                 <div className="col-span-1">Check-Out</div>
-//                 <div className="col-span-2 text-center">Status</div>
-//                 <div className="col-span-2 text-center">Actions</div>
+//             {/* MY REPORTS SECTION */}
+//             <div className="bg-white rounded-xl shadow-sm border border-gray-200">
+//               <div className="p-6 border-b border-gray-200">
+//                 <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
+//                   <div>
+//                     <h2 className="text-2xl font-bold text-gray-900">
+//                       Laporan Saya
+//                     </h2>
+//                     <p className="text-gray-600 mt-1">
+//                       Kelola laporan harian Anda
+//                     </p>
+//                   </div>
+
+//                   <div className="flex flex-col sm:flex-row gap-3">
+//                     {/* Search Input */}
+//                     <div className="relative">
+//                       <input
+//                         type="text"
+//                         placeholder="Cari laporan..."
+//                         value={searchQuery}
+//                         onChange={(e) => setSearchQuery(e.target.value)}
+//                         className="w-full sm:w-64 pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-slate-100"
+//                       />
+//                       <MagnifyingGlassIcon className="w-5 h-5 text-gray-400 absolute left-3 top-1/2 transform -translate-y-1/2" />
+//                     </div>
+
+//                     {/* Status Filter */}
+//                     <select className="px-4 py-2 border text-slate-800 bg-slate-100 border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+//                       <option>Semua Status</option>
+//                       <option>Pending</option>
+//                       Setujui <option>Tolak</option>
+//                     </select>
+
+//                     {/* Export Button */}
+//                     <button className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
+//                       Export
+//                     </button>
+//                   </div>
+//                 </div>
 //               </div>
 
-//               {/* Table Body */}
-//               <div className="divide-y divide-gray-200">
-//                 {filteredData.map((item) => (
-//                   <div
-//                     key={item.id}
-//                     className="md:grid md:grid-cols-12 md:gap-4 px-4 md:px-6 py-4 hover:bg-gray-50 transition items-center"
-//                   >
-//                     {/* Mobile View - Card Layout */}
-//                     <div className="md:hidden space-y-3">
-//                       <div className="flex justify-between items-start">
-//                         <div>
-//                           <p className="font-medium text-gray-900">
-//                             {item.operator}
-//                           </p>
-//                           <p className="text-sm text-gray-500 mt-1">
-//                             {item.site}
-//                           </p>
-//                         </div>
-//                         <span
-//                           className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-medium ${
-//                             item.status === "approved"
-//                               ? "bg-green-100 text-green-800"
-//                               : item.status === "rejected"
-//                                 ? "bg-red-100 text-red-800"
-//                                 : "bg-yellow-100 text-yellow-800"
-//                           }`}
-//                         >
-//                           {item.status}
-//                         </span>
-//                       </div>
-
-//                       <div className="grid grid-cols-2 gap-4 text-sm">
-//                         <div>
-//                           <p className="text-gray-600">Date</p>
-//                           <p className="text-gray-900 font-medium">
-//                             {item.date}
-//                           </p>
-//                         </div>
-//                         <div>
-//                           <p className="text-gray-600">Check-In/Out</p>
-//                           <div className="flex items-center gap-3 text-gray-900 font-medium">
-//                             <div className="flex items-center gap-1">
-//                               <ClockIcon className="w-4 h-4 text-green-600" />
-//                               <span className="text-sm">{item.checkIn}</span>
+//               <div className="p-6">
+//                 {filteredReports.length === 0 ? (
+//                   <div className="text-center py-8">
+//                     <p className="text-gray-500">
+//                       Belum ada laporan yang disubmit.
+//                     </p>
+//                     <p className="text-gray-400 text-sm mt-1">
+//                       Submit laporan pertama Anda di atas.
+//                     </p>
+//                   </div>
+//                 ) : (
+//                   <div className="space-y-6">
+//                     {filteredReports.map((report) => (
+//                       <div
+//                         key={report.id}
+//                         className="border border-gray-200 rounded-lg p-6 hover:shadow-md transition-shadow"
+//                       >
+//                         <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-4">
+//                           <div className="flex-1">
+//                             <div className="flex items-center gap-2 mb-2">
+//                               <h3 className="font-semibold text-gray-900">
+//                                 {report.location}
+//                               </h3>
+//                               <span className="text-gray-400">•</span>
+//                               <span className="text-gray-600">
+//                                 {report.operator}
+//                               </span>
+//                               <span
+//                                 className={`px-2 py-1 rounded-full text-xs font-medium ${
+//                                   report.status === "Submitted"
+//                                     ? "bg-green-100 text-green-800"
+//                                     : "bg-yellow-100 text-yellow-800"
+//                                 }`}
+//                               >
+//                                 {report.status}
+//                               </span>
 //                             </div>
-//                             <span className="text-gray-400">/</span>
-//                             <div className="flex items-center gap-1">
-//                               <ClockIcon className="w-4 h-4 text-red-600" />
-//                               <span className="text-sm">{item.checkOut}</span>
+//                             <p className="text-gray-500 text-sm mb-4">
+//                               {report.date} {report.time}
+//                             </p>
+
+//                             {/* Parameter Tags */}
+//                             <div className="flex flex-wrap gap-2 mb-4">
+//                               {report.flowRate && (
+//                                 <span className="inline-flex items-center gap-1 px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm">
+//                                   <MagnifyingGlassIcon className="w-3 h-3" />
+//                                   Flow Rate: {report.flowRate} L/h
+//                                 </span>
+//                               )}
+//                               {report.volt && (
+//                                 <span className="inline-flex items-center gap-1 px-3 py-1 bg-green-100 text-green-800 rounded-full text-sm">
+//                                   <MagnifyingGlassIcon className="w-3 h-3" />
+//                                   Volt: {report.volt} V
+//                                 </span>
+//                               )}
+//                               {report.ampere && (
+//                                 <span className="inline-flex items-center gap-1 px-3 py-1 bg-purple-100 text-purple-800 rounded-full text-sm">
+//                                   <MagnifyingGlassIcon className="w-3 h-3" />
+//                                   Ampere: {report.ampere} A
+//                                 </span>
+//                               )}
+//                               {report.pHLevel && (
+//                                 <span className="inline-flex items-center gap-1 px-3 py-1 bg-orange-100 text-orange-800 rounded-full text-sm">
+//                                   <MagnifyingGlassIcon className="w-3 h-3" />
+//                                   pH: {report.pHLevel}
+//                                 </span>
+//                               )}
+//                             </div>
+
+//                             {/* Additional Notes */}
+//                             {report.additionalNotes && (
+//                               <p className="text-gray-700 mb-4">
+//                                 {report.additionalNotes}
+//                               </p>
+//                             )}
+
+//                             {/* Equipment Status */}
+//                             <div className="flex flex-wrap gap-4 text-sm text-gray-600">
+//                               <span>
+//                                 Agitator:{" "}
+//                                 <span className="font-medium">
+//                                   {report.agitatorStatus}
+//                                 </span>
+//                               </span>
+//                               <span>
+//                                 Settle:{" "}
+//                                 <span className="font-medium">
+//                                   {report.settleStatus}
+//                                 </span>
+//                               </span>
+//                               <span>
+//                                 Out Filter:{" "}
+//                                 <span className="font-medium">
+//                                   {report.outFilterStatus}
+//                                 </span>
+//                               </span>
 //                             </div>
 //                           </div>
-//                         </div>
-//                       </div>
 
-//                       <div className="flex justify-between items-center pt-2 border-t border-gray-200">
-//                         <div className="flex gap-2">
-//                           {item.status === "pending" && (
-//                             <>
-//                               {/* Approve Button (Check Icon) */}
-//                               <button className="text-green-600 hover:text-green-800 transition p-2 rounded hover:bg-green-50">
-//                                 <CheckCircleIcon className="w-5 h-5" />
-//                               </button>
-
-//                               {/* Reject Button (X Icon) */}
-//                               <button className="text-red-600 hover:text-red-800 transition p-2 rounded hover:bg-red-50">
-//                                 <XCircleIcon className="w-5 h-5" />
-//                               </button>
-//                             </>
-//                           )}
-//                           {(item.status === "approved" ||
-//                             item.status === "rejected") && (
-//                             /* Review Button (Eye Icon) */
-//                             <button className="text-blue-600 hover:text-blue-800 transition p-2 rounded hover:bg-blue-50">
-//                               <EyeIcon className="w-5 h-5" />
-//                             </button>
-//                           )}
-//                         </div>
-//                       </div>
-//                     </div>
-
-//                     {/* Desktop View - Grid Layout */}
-//                     <div className="hidden md:block col-span-3">
-//                       <p className="font-medium text-gray-900">
-//                         {item.operator}
-//                       </p>
-//                     </div>
-
-//                     <div className="hidden md:block col-span-2">
-//                       <p className="text-gray-700">{item.site}</p>
-//                     </div>
-
-//                     <div className="hidden md:block col-span-1">
-//                       <p className="text-gray-700 text-sm">{item.date}</p>
-//                     </div>
-
-//                     <div className="hidden md:block col-span-1">
-//                       <div className="flex items-center gap-2 text-gray-700">
-//                         <ClockIcon className="w-4 h-4 text-green-600 flex-shrink-0" />
-//                         <span className="text-sm font-medium">
-//                           {item.checkIn}
-//                         </span>
-//                       </div>
-//                     </div>
-
-//                     <div className="hidden md:block col-span-1">
-//                       <div className="flex items-center gap-2 text-gray-700">
-//                         <ClockIcon className="w-4 h-4 text-red-600 flex-shrink-0" />
-//                         <span className="text-sm font-medium">
-//                           {item.checkOut}
-//                         </span>
-//                       </div>
-//                     </div>
-
-//                     <div className="hidden md:block col-span-2">
-//                       <div className="flex justify-center">
-//                         <span
-//                           className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-medium capitalize ${
-//                             item.status === "approved"
-//                               ? "bg-green-100 text-green-800"
-//                               : item.status === "rejected"
-//                                 ? "bg-red-100 text-red-800"
-//                                 : "bg-yellow-100 text-yellow-800"
-//                           }`}
-//                         >
-//                           {item.status}
-//                         </span>
-//                       </div>
-//                     </div>
-
-//                     <div className="hidden md:block col-span-2">
-//                       <div className="flex gap-2 justify-center">
-//                         {item.status === "pending" && (
-//                           <>
-//                             {/* Approve Button (Check Icon) */}
-//                             <button className="text-green-600 hover:text-green-800 transition p-2 rounded hover:bg-green-50">
-//                               <CheckCircleIcon className="w-5 h-5" />
-//                             </button>
-
-//                             {/* Reject Button (X Icon) */}
-//                             <button className="text-red-600 hover:text-red-800 transition p-2 rounded hover:bg-red-50">
-//                               <XCircleIcon className="w-5 h-5" />
-//                             </button>
-//                           </>
-//                         )}
-//                         {(item.status === "approved" ||
-//                           item.status === "rejected") && (
-//                           /* Review Button (Eye Icon) */
-//                           <button className="text-blue-600 hover:text-blue-800 transition p-2 rounded hover:bg-blue-50">
-//                             <EyeIcon className="w-5 h-5" />
+//                           <button className="inline-flex items-center gap-2 px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors">
+//                             <MagnifyingGlassIcon className="w-4 h-4" />
+//                             Detail
 //                           </button>
-//                         )}
+//                         </div>
 //                       </div>
-//                     </div>
+//                     ))}
 //                   </div>
-//                 ))}
+//                 )}
 //               </div>
 //             </div>
 //           </div>
@@ -1230,17 +1653,17 @@
 //     </div>
 //   );
 // }
-// ==================================MENU Recent Attendace HRD : END =================================================================
-// ==================================MENU Recent Attendace HRD : END =================================================================
-// ==================================MENU Recent Attendace HRD : END =================================================================
-// ==================================MENU Recent Attendace HRD : END =================================================================
-// ==================================MENU Recent Attendace HRD : END =================================================================
 
-// ==================================KODINGAN MERGE BEBERAPA MENU ROLE HRD :START=================================================================
-// ==================================KODINGAN MERGE BEBERAPA MENU ROLE HRD :START=================================================================
-// ==================================KODINGAN MERGE BEBERAPA MENU ROLE HRD :START=================================================================
-// ==================================KODINGAN MERGE BEBERAPA MENU ROLE HRD :START=================================================================
-// ==================================KODINGAN MERGE BEBERAPA MENU ROLE HRD :START=================================================================
+// ==================================MENU DAILY REPORT OPERATOR : END =================================================================
+// ==================================MENU DAILY REPORT OPERATOR : END =================================================================
+// ==================================MENU DAILY REPORT OPERATOR : END =================================================================
+// ==================================MENU DAILY REPORT OPERATOR : END =================================================================
+// ==================================MENU DAILY REPORT OPERATOR : END =================================================================
+
+// ==================================MENU PRESENSI OPERATOR : START =================================================================
+// ==================================MENU PRESENSI OPERATOR : START =================================================================
+// ==================================MENU PRESENSI OPERATOR : START =================================================================
+// ==================================MENU PRESENSI OPERATOR : START =================================================================
 
 "use client";
 import React, { useState, useRef, useEffect } from "react";
@@ -1255,26 +1678,438 @@ import {
   ArrowRightOnRectangleIcon,
   Bars3Icon,
   XMarkIcon,
-  MagnifyingGlassIcon,
-  PlusIcon,
-  CheckCircleIcon,
-  XCircleIcon,
-  ClockIcon,
-  EyeIcon,
   ExclamationTriangleIcon,
+  CameraIcon,
+  CalendarDaysIcon,
+  ClockIcon,
+  MagnifyingGlassIcon,
+  ExclamationCircleIcon,
+  CheckCircleIcon,
+  MapIcon,
+  EyeIcon,
+  PhotoIcon,
 } from "@heroicons/react/24/outline";
 
-export default function HRD() {
-  const [selectedFilter, setSelectedFilter] = useState("All");
+export default function Operator() {
   const [selectedRange, setSelectedRange] = useState("Month");
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [activeMenu, setActiveMenu] = useState("dashboard");
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-  const [searchQuery, setSearchQuery] = useState("");
-  const [hoveredBar, setHoveredBar] = useState(null);
-  const [hoveredPie, setHoveredPie] = useState(null);
   const router = useRouter();
   const dropdownRef = useRef(null);
+  const fileInputRef = useRef(null);
+  const cameraRef = useRef(null);
+  const videoRef = useRef(null);
+  const canvasRef = useRef(null);
+
+  // State untuk user role - sebagai operator
+  const userRole = "operator";
+
+  // State untuk Presence
+  const [attendanceData, setAttendanceData] = useState({
+    checkInTime: "--:--",
+    checkOutTime: "--:--",
+    location: "Not located yet",
+    status: "Not Checked In",
+    isCheckedIn: false,
+    isCheckedOut: false,
+  });
+
+  const [attendanceHistory, setAttendanceHistory] = useState([
+    {
+      id: 1,
+      date: "2025-01-27",
+      checkIn: "08:00 AM",
+      checkOut: "16:00 PM",
+      location: "Jakarta Utara - Site A",
+      status: "approved",
+      approvalStatus: "approved",
+      checkInStatus: "On Time",
+      checkInLocation: "Lat: -6.123456, Long: 106.123456",
+      checkOutLocation: "Lat: -6.123456, Long: 106.123456",
+      selfieCheckIn: null,
+      selfieCheckOut: null,
+      approvedBy: "Admin",
+      approvedAt: "2025-01-27 08:30 AM",
+    },
+    {
+      id: 2,
+      date: "2025-01-28",
+      checkIn: "08:05 AM",
+      checkOut: "16:02 PM",
+      location: "Jakarta Utara - Site A",
+      status: "approved",
+      approvalStatus: "approved",
+      checkInStatus: "Late",
+      checkInLocation: "Lat: -6.123456, Long: 106.123456",
+      checkOutLocation: "Lat: -6.123456, Long: 106.123456",
+      selfieCheckIn: null,
+      selfieCheckOut: null,
+      approvedBy: "Admin",
+      approvedAt: "2025-01-28 08:35 AM",
+    },
+  ]);
+
+  // State untuk modal check-in
+  const [isCheckInModalOpen, setIsCheckInModalOpen] = useState(false);
+  const [locationCaptured, setLocationCaptured] = useState(false);
+  const [selfieUploaded, setSelfieUploaded] = useState(false);
+  const [selfiePreview, setSelfiePreview] = useState(null);
+  const [currentLocation, setCurrentLocation] = useState(
+    "Click to get location"
+  );
+  const [isCameraActive, setIsCameraActive] = useState(false);
+  const [stream, setStream] = useState(null);
+
+  // State untuk modal check-out
+  const [isCheckOutModalOpen, setIsCheckOutModalOpen] = useState(false);
+  const [locationCapturedCheckOut, setLocationCapturedCheckOut] = useState(
+    false
+  );
+  const [selfieUploadedCheckOut, setSelfieUploadedCheckOut] = useState(false);
+  const [selfiePreviewCheckOut, setSelfiePreviewCheckOut] = useState(null);
+  const [currentLocationCheckOut, setCurrentLocationCheckOut] = useState(
+    "Click to get location"
+  );
+  const [isCameraActiveCheckOut, setIsCameraActiveCheckOut] = useState(false);
+  const [streamCheckOut, setStreamCheckOut] = useState(null);
+
+  // State untuk modal detail
+  const [isDetailModalOpen, setIsDetailModalOpen] = useState(false);
+  const [selectedAttendance, setSelectedAttendance] = useState(null);
+
+  // Fungsi untuk membuka modal detail
+  const openDetailModal = (attendance) => {
+    setSelectedAttendance(attendance);
+    setIsDetailModalOpen(true);
+  };
+
+  // Fungsi untuk mendapatkan lokasi
+  const getCurrentLocation = (isCheckOut = false) => {
+    if (!navigator.geolocation) {
+      alert("Geolocation is not supported by this browser.");
+      return;
+    }
+
+    if (isCheckOut) {
+      setCurrentLocationCheckOut("Getting location...");
+    } else {
+      setCurrentLocation("Getting location...");
+    }
+
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        const { latitude, longitude } = position.coords;
+
+        // Simulasi alamat berdasarkan koordinat (dalam real implementation bisa pakai geocoding API)
+        const locations = [
+          "Jakarta Utara - Site A",
+          "Jakarta Utara - Site B",
+          "Jakarta Utara - Site C",
+        ];
+        const randomLocation =
+          locations[Math.floor(Math.random() * locations.length)];
+        const locationString = `${randomLocation} (Lat: ${latitude.toFixed(
+          6
+        )}, Long: ${longitude.toFixed(6)})`;
+
+        if (isCheckOut) {
+          setCurrentLocationCheckOut(locationString);
+          setLocationCapturedCheckOut(true);
+        } else {
+          setCurrentLocation(locationString);
+          setLocationCaptured(true);
+        }
+
+        alert("Location captured successfully!");
+      },
+      (error) => {
+        console.error("Error getting location:", error);
+        let errorMessage = "Unknown error occurred";
+
+        switch (error.code) {
+          case error.PERMISSION_DENIED:
+            errorMessage = "Location access denied by user";
+            break;
+          case error.POSITION_UNAVAILABLE:
+            errorMessage = "Location information unavailable";
+            break;
+          case error.TIMEOUT:
+            errorMessage = "Location request timed out";
+            break;
+        }
+
+        if (isCheckOut) {
+          setCurrentLocationCheckOut("Location unavailable");
+        } else {
+          setCurrentLocation("Location unavailable");
+        }
+        alert(`Failed to get location: ${errorMessage}`);
+      },
+      {
+        enableHighAccuracy: true,
+        timeout: 10000,
+        maximumAge: 60000,
+      }
+    );
+  };
+
+  // Fungsi untuk mengaktifkan kamera
+  const startCamera = (isCheckOut = false) => {
+    if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+      navigator.mediaDevices
+        .getUserMedia({ video: true })
+        .then((mediaStream) => {
+          if (isCheckOut) {
+            setStreamCheckOut(mediaStream);
+            setIsCameraActiveCheckOut(true);
+            if (videoRef.current) {
+              videoRef.current.srcObject = mediaStream;
+            }
+          } else {
+            setStream(mediaStream);
+            setIsCameraActive(true);
+            if (videoRef.current) {
+              videoRef.current.srcObject = mediaStream;
+            }
+          }
+        })
+        .catch((error) => {
+          console.error("Error accessing camera:", error);
+          alert("Cannot access camera. Please check permissions.");
+        });
+    } else {
+      alert("Camera not supported in this browser.");
+    }
+  };
+
+  // Fungsi untuk menangkap foto dari kamera
+  const capturePhoto = (isCheckOut = false) => {
+    if (videoRef.current && canvasRef.current) {
+      const video = videoRef.current;
+      const canvas = canvasRef.current;
+      const context = canvas.getContext("2d");
+
+      // Set canvas size sama dengan video
+      canvas.width = video.videoWidth;
+      canvas.height = video.videoHeight;
+
+      // Gambar frame video ke canvas
+      context.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+      // Dapatkan data URL dari canvas
+      const photoDataUrl = canvas.toDataURL("image/png");
+
+      if (isCheckOut) {
+        setSelfiePreviewCheckOut(photoDataUrl);
+        setSelfieUploadedCheckOut(true);
+      } else {
+        setSelfiePreview(photoDataUrl);
+        setSelfieUploaded(true);
+      }
+
+      // Matikan kamera setelah mengambil foto
+      stopCamera(isCheckOut);
+    }
+  };
+
+  // Fungsi untuk mematikan kamera
+  const stopCamera = (isCheckOut = false) => {
+    if (isCheckOut) {
+      if (streamCheckOut) {
+        streamCheckOut.getTracks().forEach((track) => track.stop());
+        setStreamCheckOut(null);
+      }
+      setIsCameraActiveCheckOut(false);
+    } else {
+      if (stream) {
+        stream.getTracks().forEach((track) => track.stop());
+        setStream(null);
+      }
+      setIsCameraActive(false);
+    }
+  };
+
+  // Fungsi untuk upload selfie dari file
+  const handleSelfieUpload = (event, isCheckOut = false) => {
+    const file = event.target.files[0];
+    if (file) {
+      if (!file.type.startsWith("image/")) {
+        alert("Please select an image file");
+        return;
+      }
+
+      if (file.size > 5 * 1024 * 1024) {
+        alert("Please select an image smaller than 5MB");
+        return;
+      }
+
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        if (isCheckOut) {
+          setSelfiePreviewCheckOut(e.target.result);
+          setSelfieUploadedCheckOut(true);
+        } else {
+          setSelfiePreview(e.target.result);
+          setSelfieUploaded(true);
+        }
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  // Fungsi untuk trigger file input
+  const triggerFileInput = (isCheckOut = false) => {
+    if (isCheckOut) {
+      fileInputRef.current?.click();
+    } else {
+      fileInputRef.current?.click();
+    }
+  };
+
+  // Fungsi untuk membuka modal check-in
+  const openCheckInModal = () => {
+    setIsCheckInModalOpen(true);
+    setLocationCaptured(false);
+    setSelfieUploaded(false);
+    setSelfiePreview(null);
+    setCurrentLocation("Click to get location");
+    setIsCameraActive(false);
+  };
+
+  // Fungsi untuk membuka modal check-out
+  const openCheckOutModal = () => {
+    setIsCheckOutModalOpen(true);
+    setLocationCapturedCheckOut(false);
+    setSelfieUploadedCheckOut(false);
+    setSelfiePreviewCheckOut(null);
+    setCurrentLocationCheckOut("Click to get location");
+    setIsCameraActiveCheckOut(false);
+  };
+
+  // Fungsi untuk confirm check-in
+  const handleConfirmCheckIn = () => {
+    const now = new Date();
+    const hours = now.getHours().toString().padStart(2, "0");
+    const minutes = now.getMinutes().toString().padStart(2, "0");
+    const ampm = now.getHours() >= 12 ? "PM" : "AM";
+    const formattedHours = (now.getHours() % 12 || 12)
+      .toString()
+      .padStart(2, "0");
+    const checkInTime = `${formattedHours}:${minutes} ${ampm}`;
+
+    // Tentukan status berdasarkan waktu check-in
+    let checkInStatus = "On Time";
+    const currentTime = now.getHours() * 60 + now.getMinutes();
+    const deadlineTime = 8 * 60 + 15; // 08:15 dalam menit
+
+    if (currentTime > deadlineTime) {
+      checkInStatus = "Late";
+    } else if (currentTime > 8 * 60) {
+      checkInStatus = "Late";
+    }
+
+    const newAttendance = {
+      id: Date.now(),
+      date: new Date().toISOString().split("T")[0],
+      checkIn: checkInTime,
+      checkOut: "--:--",
+      location: currentLocation,
+      status: "pending",
+      approvalStatus: "pending",
+      checkInStatus: checkInStatus,
+      checkInLocation: currentLocation,
+      checkOutLocation: "--:--",
+      selfieCheckIn: selfiePreview,
+      selfieCheckOut: null,
+      approvedBy: null,
+      approvedAt: null,
+    };
+
+    setAttendanceData((prev) => ({
+      ...prev,
+      checkInTime: checkInTime,
+      status: checkInStatus,
+      isCheckedIn: true,
+      isCheckedOut: false,
+      checkOutTime: "--:--",
+      location: currentLocation,
+    }));
+
+    setAttendanceHistory((prev) => [newAttendance, ...prev]);
+
+    setIsCheckInModalOpen(false);
+    alert(
+      `Check-in berhasil! Waktu: ${checkInTime} - Status: ${checkInStatus}. Menunggu approval admin.`
+    );
+  };
+
+  // Fungsi untuk confirm check-out
+  const handleConfirmCheckOut = () => {
+    const now = new Date();
+    const hours = now.getHours().toString().padStart(2, "0");
+    const minutes = now.getMinutes().toString().padStart(2, "0");
+    const ampm = now.getHours() >= 12 ? "PM" : "AM";
+    const formattedHours = (now.getHours() % 12 || 12)
+      .toString()
+      .padStart(2, "0");
+    const checkOutTime = `${formattedHours}:${minutes} ${ampm}`;
+
+    // Update attendance data
+    setAttendanceData((prev) => ({
+      ...prev,
+      checkOutTime: checkOutTime,
+      isCheckedOut: true,
+    }));
+
+    // Update riwayat dengan check-out time, lokasi, dan selfie
+    const today = new Date().toISOString().split("T")[0];
+    const updatedHistory = attendanceHistory.map((record) =>
+      record.date === today
+        ? {
+            ...record,
+            checkOut: checkOutTime,
+            checkOutLocation: currentLocationCheckOut,
+            selfieCheckOut: selfiePreviewCheckOut,
+            status: "pending",
+            approvalStatus: "pending",
+          }
+        : record
+    );
+
+    setAttendanceHistory(updatedHistory);
+    setIsCheckOutModalOpen(false);
+    alert("Check-out berhasil! Menunggu approval admin.");
+  };
+
+  // Fungsi untuk menentukan status berdasarkan waktu check-in
+  const getStatusColor = (status) => {
+    if (status === "On Time") return "text-green-600 bg-green-100";
+    if (status === "Late") return "text-red-600 bg-red-100";
+    if (status === "Approved") return "text-green-600 bg-green-100";
+    if (status === "pending") return "text-yellow-600 bg-yellow-100";
+    return "text-gray-600 bg-gray-100";
+  };
+
+  // Fungsi untuk menentukan warna status approval
+  const getApprovalStatusColor = (status) => {
+    if (status === "approved") return "text-green-600 bg-green-100";
+    if (status === "rejected") return "text-red-600 bg-red-100";
+    if (status === "pending") return "text-yellow-600 bg-yellow-100";
+    return "text-gray-600 bg-gray-100";
+  };
+
+  // Cleanup camera ketika komponen unmount
+  useEffect(() => {
+    return () => {
+      if (stream) {
+        stream.getTracks().forEach((track) => track.stop());
+      }
+      if (streamCheckOut) {
+        streamCheckOut.getTracks().forEach((track) => track.stop());
+      }
+    };
+  }, [stream, streamCheckOut]);
 
   useEffect(() => {
     function handleClickOutside(event) {
@@ -1288,156 +2123,13 @@ export default function HRD() {
 
   const menuItems = [
     { id: "dashboard", name: "Dashboard", icon: ChartBarIcon },
-    { id: "validation", name: "Attendance Validation", icon: MapPinIcon },
+    { id: "reports", name: "Daily Report", icon: DocumentChartBarIcon },
+    { id: "presensi", name: "Presence", icon: MapPinIcon },
+    { id: "help", name: "Help Desk", icon: CogIcon },
   ];
-
-  // ==================== DASHBOARD DATA ====================
-  // Data untuk Weekly Attendance Trends
-  const weeklyAttendanceData = [
-    { day: "Mon", present: 115, late: 5, absent: 7 },
-    { day: "Tue", present: 118, late: 4, absent: 5 },
-    { day: "Wed", present: 120, late: 3, absent: 4 },
-    { day: "Thu", present: 116, late: 6, absent: 5 },
-    { day: "Fri", present: 119, late: 4, absent: 4 },
-    { day: "Sat", present: 110, late: 8, absent: 9 },
-    { day: "Sun", present: 105, late: 7, absent: 15 },
-  ];
-
-  // Data untuk Today's Status
-  const todayStatusData = [
-    { status: "Present", value: 85, color: "#10B981" },
-    { status: "Late", value: 7, color: "#F59E0B" },
-    { status: "Absent", value: 8, color: "#EF4444" },
-  ];
-
-  // Data untuk Top Performers
-  const topPerformersData = [
-    { name: "Budi Santoso", location: "Jakarta Utara" },
-    { name: "Siti Nurhaliza", location: "Bandung" },
-    { name: "Ahmad Hidayat", location: "Surabaya" },
-    { name: "David Lesteri", location: "Seoul" },
-  ];
-
-  // Data untuk Recent Attendance
-  const recentAttendanceData = [
-    {
-      name: "Budi Santoso",
-      location: "Jakarta Utara",
-      time: "08:00",
-      status: "approved",
-    },
-    {
-      name: "Siti Nurhaliza",
-      location: "Bandung",
-      time: "08:05",
-      status: "pending",
-    },
-    {
-      name: "Ahmad Hidayat",
-      location: "Surabaya",
-      time: "16:02",
-      status: "approved",
-    },
-    {
-      name: "Dewi Lesteri",
-      location: "Semarang",
-      time: "08:10",
-      status: "pending",
-    },
-  ];
-
-  // Fungsi untuk Pie Chart
-  const calculatePieChart = () => {
-    let accumulatedValue = 0;
-    return todayStatusData.map((item, index) => {
-      const startAngle = (accumulatedValue / 100) * 360;
-      accumulatedValue += item.value;
-      const endAngle = (accumulatedValue / 100) * 360;
-
-      const largeArcFlag = endAngle - startAngle <= 180 ? 0 : 1;
-
-      const startX = 50 + 40 * Math.cos((startAngle - 90) * (Math.PI / 180));
-      const startY = 50 + 40 * Math.sin((startAngle - 90) * (Math.PI / 180));
-      const endX = 50 + 40 * Math.cos((endAngle - 90) * (Math.PI / 180));
-      const endY = 50 + 40 * Math.sin((endAngle - 90) * (Math.PI / 180));
-
-      return {
-        ...item,
-        path: `M 50 50 L ${startX} ${startY} A 40 40 0 ${largeArcFlag} 1 ${endX} ${endY} Z`,
-        startAngle,
-        endAngle,
-        middleAngle: (startAngle + endAngle) / 2,
-      };
-    });
-  };
-
-  const pieChartData = calculatePieChart();
-
-  // ==================== ATTENDANCE VALIDATION DATA ====================
-  // Data untuk attendance validation
-  const attendanceData = [
-    {
-      id: 1,
-      operator: "Budi Santoso",
-      site: "Jakarta Utara - Site A",
-      date: "2025-01-27",
-      checkIn: "08:00",
-      checkOut: "16:00",
-      status: "pending",
-    },
-    {
-      id: 2,
-      operator: "Siti Nurhaliza",
-      site: "Bandung - Site B",
-      date: "2025-01-27",
-      checkIn: "08:05",
-      checkOut: "16:02",
-      status: "pending",
-    },
-    {
-      id: 3,
-      operator: "Ahmad Hidayat",
-      site: "Surabaya - Site C",
-      date: "2025-01-27",
-      checkIn: "07:58",
-      checkOut: "16:05",
-      status: "approved",
-    },
-    {
-      id: 4,
-      operator: "Dewi Lestari",
-      site: "Semarang - Site D",
-      date: "2025-01-27",
-      checkIn: "08:10",
-      checkOut: "---",
-      status: "pending",
-    },
-  ];
-
-  // Filter data berdasarkan status dan pencarian
-  const filteredData = attendanceData.filter((item) => {
-    const matchesSearch =
-      item.operator.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      item.site.toLowerCase().includes(searchQuery.toLowerCase());
-
-    const matchesFilter =
-      selectedFilter === "All" || item.status === selectedFilter.toLowerCase();
-
-    return matchesSearch && matchesFilter;
-  });
-
-  // Statistik untuk attendance validation
-  const stats = {
-    total: attendanceData.length,
-    pending: attendanceData.filter((item) => item.status === "pending").length,
-    approved: attendanceData.filter((item) => item.status === "approved")
-      .length,
-    rejected: attendanceData.filter((item) => item.status === "rejected")
-      .length,
-  };
 
   return (
-    <div className="flex min-h-screen bg-gray-50">
+    <div className="flex min-h-screen bg-white">
       {/* Overlay mobile */}
       {isSidebarOpen && (
         <div
@@ -1462,14 +2154,14 @@ export default function HRD() {
           />
           <div>
             <h1 className="text-xl font-bold text-gray-800">SIOPTIMA</h1>
-            <p className="text-sm text-gray-600">HRD System</p>
+            <p className="text-sm text-gray-600">IPAL Monitoring</p>
           </div>
 
           <button
             onClick={() => setIsSidebarOpen(false)}
-            className="lg:hidden ml-auto p-2 text-gray-600 hover:text-teal-600 transition"
+            className="lg:hidden ml-auto p-2 text-gray-800 hover:text-teal-600 transition"
           >
-            <XMarkIcon className="w-5 h-5" />
+            <XMarkIcon className="w-5 h-5 text-gray-800" />
           </button>
         </div>
 
@@ -1488,11 +2180,11 @@ export default function HRD() {
                     className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg text-left transition
                       ${
                         activeMenu === item.id
-                          ? "bg-teal-50 text-teal-700 border-r-2 border-teal-600"
-                          : "text-gray-700 hover:bg-gray-100"
+                          ? "bg-teal-50 text-teal-800 border-r-2 border-teal-600"
+                          : "text-gray-800 hover:bg-gray-100"
                       }`}
                   >
-                    <Icon className="w-5 h-5" />
+                    <Icon className="w-5 h-5 text-gray-800" />
                     {item.name}
                   </button>
                 </li>
@@ -1501,19 +2193,20 @@ export default function HRD() {
           </ul>
         </nav>
 
-        {/* HRD badge */}
+        {/* Operator badge */}
         <div className="p-4 border border-gray-200 shadow-md bg-white mt-auto">
-          <div className="bg-gray-50 rounded-lg p-3 border border-gray-200">
+          <div className="bg-white rounded-lg p-3 border border-gray-200">
             <div className="flex items-center gap-3">
               <div
-                className="w-10 h-10 bg-gradient-to-r from-teal-500 to-cyan-600 rounded-full
+                className="w-10 h-10 bg-gradient-to-r from-blue-500 to-cyan-600 rounded-full
                 flex items-center justify-center text-white font-bold text-lg"
               >
-                H
+                O
               </div>
               <div>
-                <p className="font-semibold text-gray-900">HRD SIOPTIMA</p>
-                <p className="text-sm text-gray-600">HRD</p>
+                <p className="font-semibold text-gray-900">Operator SIOPTIMA</p>
+                <p className="text-sm text-gray-600">Operator</p>
+                {/* <p className="text-xs text-gray-500 mt-1">Role: {userRole}</p> */}
               </div>
             </div>
           </div>
@@ -1524,13 +2217,12 @@ export default function HRD() {
       <div className="flex-1 lg:ml-64">
         <header className="bg-white shadow-sm border-b border-gray-200 sticky top-0 z-30">
           <div className="flex justify-between items-center px-4 lg:px-6 py-4">
-            {/* Hamburger */}
             <div className="flex items-center gap-3">
               <button
                 onClick={() => setIsSidebarOpen(true)}
-                className="lg:hidden p-2 text-gray-600 hover:text-teal-600"
+                className="lg:hidden p-2 text-gray-800 hover:text-teal-600"
               >
-                <Bars3Icon className="w-6 h-6" />
+                <Bars3Icon className="w-6 h-6 text-gray-800" />
               </button>
 
               <h1 className="text-xl lg:text-2xl font-bold text-gray-900">
@@ -1538,10 +2230,9 @@ export default function HRD() {
               </h1>
             </div>
 
-            {/* Icons right */}
             <div className="flex items-center gap-4">
-              <button className="p-2 text-gray-600 hover:text-teal-600 relative">
-                <BellIcon className="w-6 h-6" />
+              <button className="p-2 text-gray-800 hover:text-teal-600 relative">
+                <BellIcon className="w-6 h-6 text-gray-800" />
                 <span className="absolute top-0 right-0 w-2 h-2 bg-red-500 rounded-full"></span>
               </button>
 
@@ -1558,10 +2249,10 @@ export default function HRD() {
                   className="flex items-center gap-2 cursor-pointer"
                 >
                   <div
-                    className="w-10 h-10 bg-gradient-to-r from-teal-500 to-cyan-600
+                    className="w-10 h-10 bg-gradient-to-r from-blue-500 to-cyan-600
       rounded-full flex items-center justify-center text-white font-bold"
                   >
-                    H
+                    O
                   </div>
 
                   <svg
@@ -1570,7 +2261,7 @@ export default function HRD() {
                     viewBox="0 0 24 24"
                     strokeWidth={2}
                     stroke="currentColor"
-                    className={`w-4 h-4 text-gray-600 transition-transform duration-200
+                    className={`w-4 h-4 text-gray-800 transition-transform duration-200
         ${dropdownOpen ? "rotate-180" : "rotate-0"}`}
                   >
                     <path
@@ -1595,7 +2286,7 @@ export default function HRD() {
                       className="w-full flex items-center gap-3 px-4 py-2
         text-red-600 hover:bg-red-50 text-left text-sm"
                     >
-                      <ArrowRightOnRectangleIcon className="w-4 h-4" />
+                      <ArrowRightOnRectangleIcon className="w-4 h-4 text-red-600" />
                       Log Out
                     </button>
                   </div>
@@ -1608,652 +2299,815 @@ export default function HRD() {
         {/* DASHBOARD CONTENT */}
         {activeMenu === "dashboard" && (
           <div className="px-4 sm:px-6 lg:px-10 xl:px-16 py-6 max-w-screen-2xl mx-auto">
-            {/* Headline + Time Range Filter */}
-            <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center mb-10">
-              <div>
-                <h2 className="text-2xl lg:text-3xl font-bold text-gray-900">
-                  HRD Dashboard
-                </h2>
-                <p className="text-gray-600 text-sm mt-1">
-                  Monitor operator attendance and performance
+            <div className="flex flex-col items-center justify-center min-h-[60vh] text-center">
+              <div className="bg-yellow-50 border border-yellow-200 rounded-2xl p-8 max-w-md w-full">
+                <div className="w-16 h-16 bg-yellow-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <CogIcon className="w-8 h-8 text-yellow-600" />
+                </div>
+                <h3 className="text-xl font-bold text-gray-900 mb-2">
+                  Dalam Pengembangan
+                </h3>
+                <p className="text-gray-600">
+                  Fitur {menuItems.find((m) => m.id === activeMenu)?.name}{" "}
+                  sedang dalam tahap pengembangan. Tim developer kami sedang
+                  bekerja untuk menyiapkan fitur ini.
                 </p>
-              </div>
-            </div>
-
-            {/* TOP KPIs */}
-            <div className="mb-8 grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-6">
-              {[
-                {
-                  label: "Total Operators",
-                  value: 127,
-                  percent: "+2.1%",
-                  icon: UsersIcon,
-                },
-                {
-                  label: "Present Today",
-                  value: 118,
-                  percent: "+1.5%",
-                  icon: CheckCircleIcon,
-                },
-                {
-                  label: "Pending Validation",
-                  value: 8,
-                  percent: "-0.5%",
-                  icon: ClockIcon,
-                },
-                {
-                  label: "Attendance Rate",
-                  value: "96.5%",
-                  percent: "+0.8%",
-                  icon: ChartBarIcon,
-                },
-              ].map((item, i) => {
-                const Icon = item.icon;
-                return (
-                  <div
-                    key={i}
-                    className="bg-white p-6 rounded-2xl shadow-sm border border-gray-200 shadow-md"
-                  >
-                    <div className="flex justify-between items-start mb-4">
-                      <p className="text-gray-800 font-semibold">
-                        {item.label}
-                      </p>
-                      <div className="p-3 rounded-xl bg-teal-50">
-                        <Icon className="w-5 h-5 text-teal-600" />
-                      </div>
-                    </div>
-                    <p className="text-4xl font-bold text-gray-900">
-                      {item.value}
-                    </p>
-                    <p
-                      className={`text-xs font-medium mt-1 ${
-                        item.percent.startsWith("+")
-                          ? "text-green-600"
-                          : "text-red-600"
-                      }`}
-                    >
-                      {item.percent} vs last month
-                    </p>
-                  </div>
-                );
-              })}
-            </div>
-
-            {/* SECOND ROW - Charts */}
-            <div className="mb-9 grid grid-cols-1 xl:grid-cols-2 gap-6">
-              {/* Weekly Attendance Trends */}
-              <div className="bg-white p-6 rounded-2xl border border-gray-200 shadow-md">
-                <h3 className="font-semibold text-lg text-gray-800 mb-5">
-                  Weekly Attendance Trends
-                </h3>
-                <div className="relative">
-                  {/* Y-axis labels */}
-                  <div className="absolute left-0 top-0 bottom-0 w-8 flex flex-col justify-between text-xs text-gray-500 py-4">
-                    <span>120</span>
-                    <span>90</span>
-                    <span>60</span>
-                    <span>30</span>
-                    <span>0</span>
-                  </div>
-
-                  {/* Chart area */}
-                  <div className="ml-8">
-                    <div className="w-full h-48 flex items-end justify-between gap-1 px-2 border-b border-l border-gray-200">
-                      {weeklyAttendanceData.map((data, index) => (
-                        <div
-                          key={index}
-                          className="flex flex-col items-center flex-1 relative"
-                        >
-                          {/* Grouped bars - 3 batang terpisah untuk setiap hari */}
-                          <div className="flex items-end justify-center gap-1 w-full">
-                            {/* Present bar - hijau */}
-                            <div
-                              className="w-3 bg-green-500 rounded-t transition-all duration-300 hover:bg-green-600 cursor-pointer relative group"
-                              style={{
-                                height: `${(data.present / 120) * 120}px`,
-                              }}
-                              onMouseEnter={() =>
-                                setHoveredBar(`${index}-present`)
-                              }
-                              onMouseLeave={() => setHoveredBar(null)}
-                            >
-                              {hoveredBar === `${index}-present` && (
-                                <div className="absolute -top-8 left-1/2 transform -translate-x-1/2 bg-gray-800 text-white px-2 py-1 rounded text-xs whitespace-nowrap z-10">
-                                  Present: {data.present}
-                                </div>
-                              )}
-                            </div>
-
-                            {/* Late bar - kuning */}
-                            <div
-                              className="w-3 bg-yellow-500 rounded-t transition-all duration-300 hover:bg-yellow-600 cursor-pointer relative group"
-                              style={{ height: `${(data.late / 120) * 120}px` }}
-                              onMouseEnter={() =>
-                                setHoveredBar(`${index}-late`)
-                              }
-                              onMouseLeave={() => setHoveredBar(null)}
-                            >
-                              {hoveredBar === `${index}-late` && (
-                                <div className="absolute -top-8 left-1/2 transform -translate-x-1/2 bg-gray-800 text-white px-2 py-1 rounded text-xs whitespace-nowrap z-10">
-                                  Late: {data.late}
-                                </div>
-                              )}
-                            </div>
-
-                            {/* Absent bar - merah */}
-                            <div
-                              className="w-3 bg-red-500 rounded-t transition-all duration-300 hover:bg-red-600 cursor-pointer relative group"
-                              style={{
-                                height: `${(data.absent / 120) * 120}px`,
-                              }}
-                              onMouseEnter={() =>
-                                setHoveredBar(`${index}-absent`)
-                              }
-                              onMouseLeave={() => setHoveredBar(null)}
-                            >
-                              {hoveredBar === `${index}-absent` && (
-                                <div className="absolute -top-8 left-1/2 transform -translate-x-1/2 bg-gray-800 text-white px-2 py-1 rounded text-xs whitespace-nowrap z-10">
-                                  Absent: {data.absent}
-                                </div>
-                              )}
-                            </div>
-                          </div>
-
-                          {/* Day label */}
-                          <span className="text-xs text-gray-600 mt-2">
-                            {data.day}
-                          </span>
-                        </div>
-                      ))}
-                    </div>
-
-                    {/* Legend di bawah */}
-                    <div className="flex justify-center gap-4 mt-4 text-xs">
-                      <div className="flex items-center gap-1">
-                        <div className="w-3 h-3 bg-red-500 rounded"></div>
-                        <span className="text-gray-600">absent</span>
-                      </div>
-                      <div className="flex items-center gap-1">
-                        <div className="w-3 h-3 bg-yellow-500 rounded"></div>
-                        <span className="text-gray-600">late</span>
-                      </div>
-                      <div className="flex items-center gap-1">
-                        <div className="w-3 h-3 bg-green-500 rounded"></div>
-                        <span className="text-gray-600">present</span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              {/* Today's Status - PIE CHART */}
-              <div className="bg-white p-6 rounded-2xl border border-gray-200 shadow-md">
-                <h3 className="font-semibold text-lg text-gray-800 mb-5">
-                  Today's Status
-                </h3>
-                <div className="flex flex-col lg:flex-row items-center gap-8">
-                  {/* Pie Chart dengan interaksi */}
-                  <div className="relative flex flex-col items-center">
-                    <svg
-                      width="160"
-                      height="160"
-                      viewBox="0 0 100 100"
-                      className="cursor-pointer"
-                    >
-                      {pieChartData.map((item, index) => (
-                        <path
-                          key={item.status}
-                          d={item.path}
-                          fill={item.color}
-                          className={`transition-all duration-300 ${
-                            hoveredPie === index
-                              ? "opacity-80 scale-105"
-                              : "opacity-100"
-                          }`}
-                          stroke="white"
-                          strokeWidth="2"
-                          onMouseEnter={() => setHoveredPie(index)}
-                          onMouseLeave={() => setHoveredPie(null)}
-                        />
-                      ))}
-                    </svg>
-
-                    {/* Text di bawah pie chart */}
-                    <div className="text-center mt-4">
-                      <div className="text-2xl font-bold text-gray-800">
-                        85%
-                      </div>
-                      <div className="text-sm text-gray-600">Present</div>
-                    </div>
-
-                    {/* Tooltip untuk pie chart */}
-                    {hoveredPie !== null && (
-                      <div className="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-full bg-gray-800 text-white px-3 py-2 rounded-lg text-sm z-10 shadow-lg">
-                        <div className="flex items-center gap-2">
-                          <div
-                            className="w-3 h-3 rounded"
-                            style={{
-                              backgroundColor: pieChartData[hoveredPie].color,
-                            }}
-                          ></div>
-                          <span>
-                            {pieChartData[hoveredPie].status}:{" "}
-                            {pieChartData[hoveredPie].value}%
-                          </span>
-                        </div>
-                      </div>
-                    )}
-                  </div>
-
-                  {/* Legend dengan interaksi hover */}
-                  <div className="space-y-4 flex-1">
-                    {todayStatusData.map((item, index) => (
-                      <div
-                        key={item.status}
-                        className={`flex items-center justify-between p-2 rounded-lg transition-all duration-200 cursor-pointer ${
-                          hoveredPie === index
-                            ? "bg-gray-50 transform scale-105"
-                            : ""
-                        }`}
-                        onMouseEnter={() => setHoveredPie(index)}
-                        onMouseLeave={() => setHoveredPie(null)}
-                      >
-                        <div className="flex items-center gap-3">
-                          <div
-                            className="w-4 h-4 rounded transition-transform duration-200"
-                            style={{ backgroundColor: item.color }}
-                          ></div>
-                          <span className="text-sm text-gray-700 font-medium">
-                            {item.status}
-                          </span>
-                        </div>
-                        <span className="text-lg font-bold text-gray-900">
-                          {item.value}%
-                        </span>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* LAST ROW - Top Performers dan Recent Attendance */}
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-              {/* Top Performers */}
-              <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-200 shadow-md">
-                <h3 className="font-semibold text-lg text-gray-800 mb-5">
-                  Top Performers (This Month)
-                </h3>
-                <div className="space-y-4">
-                  {topPerformersData.map((performer, index) => (
-                    <div
-                      key={index}
-                      className="flex items-center justify-between p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors"
-                    >
-                      <div className="flex items-center gap-3">
-                        <div className="w-8 h-8 bg-teal-500 rounded-full flex items-center justify-center text-white font-bold text-sm">
-                          {index + 1}
-                        </div>
-                        <div>
-                          <p className="font-semibold text-gray-900">
-                            {performer.name}
-                          </p>
-                          <p className="text-sm text-gray-600">
-                            {performer.location}
-                          </p>
-                        </div>
-                      </div>
-                      <div className="text-right">
-                        <p className="font-bold text-gray-900">
-                          {index === 0
-                            ? "100%"
-                            : index === 1
-                              ? "98%"
-                              : index === 2
-                                ? "97%"
-                                : "96%"}
-                        </p>
-                        <p className="text-xs text-teal-600 font-medium">
-                          excellent
-                        </p>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              {/* Recent Attendance */}
-              <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-200 shadow-md">
-                <div className="flex justify-between items-center mb-5">
-                  <h3 className="font-semibold text-lg text-gray-800">
-                    Recent Attendance
-                  </h3>
-                  <button className="text-teal-600 text-sm font-medium hover:underline">
-                    View All
-                  </button>
-                </div>
-                <div className="space-y-4">
-                  {recentAttendanceData.map((attendance, index) => (
-                    <div
-                      key={index}
-                      className="flex items-center justify-between p-3 border-b border-gray-100 last:border-0 hover:bg-gray-50 transition-colors"
-                    >
-                      <div>
-                        <p className="font-semibold text-gray-900">
-                          {attendance.name}
-                        </p>
-                        <p className="text-sm text-gray-600">
-                          {attendance.location} • {attendance.time}
-                        </p>
-                      </div>
-                      <div className="flex items-center gap-2">
-                        {attendance.status === "approved" ? (
-                          <CheckCircleIcon className="w-5 h-5 text-green-500" />
-                        ) : (
-                          <ExclamationTriangleIcon className="w-5 h-5 text-yellow-500" />
-                        )}
-                        <span
-                          className={`px-3 py-1 rounded-full text-xs font-medium ${
-                            attendance.status === "approved"
-                              ? "bg-green-100 text-green-800"
-                              : "bg-yellow-100 text-yellow-800"
-                          }`}
-                        >
-                          {attendance.status}
-                        </span>
-                      </div>
-                    </div>
-                  ))}
-                </div>
               </div>
             </div>
           </div>
         )}
 
-        {/* ATTENDANCE VALIDATION CONTENT */}
-        {activeMenu === "validation" && (
+        {/* DAILY REPORT CONTENT - DALAM PENGEMBANGAN */}
+        {activeMenu === "reports" && (
           <div className="px-4 sm:px-6 lg:px-10 xl:px-16 py-6 max-w-screen-2xl mx-auto">
-            {/* Header Section */}
-            <div className="mb-8">
-              <h1 className="text-2xl lg:text-3xl font-bold text-gray-900 mb-2">
-                Attendance Validation
-              </h1>
-              <p className="text-gray-600">
-                Review and validate operator attendance records
-              </p>
-            </div>
-
-            {/* Stats Cards */}
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
-              <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-200">
-                <div className="flex items-center justify-between mb-4">
-                  <h3 className="text-gray-700 font-medium">Total Today</h3>
-                  <div className="p-2 bg-gray-100 rounded-lg">
-                    <DocumentChartBarIcon className="w-5 h-5 text-gray-600" />
-                  </div>
+            <div className="flex flex-col items-center justify-center min-h-[60vh] text-center">
+              <div className="bg-yellow-50 border border-yellow-200 rounded-2xl p-8 max-w-md w-full">
+                <div className="w-16 h-16 bg-yellow-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <CogIcon className="w-8 h-8 text-yellow-600" />
                 </div>
-                <p className="text-3xl font-bold text-gray-900">
-                  {stats.total}
-                </p>
-                <p className="text-sm text-gray-500 mt-1">
-                  Pending: {stats.pending}
-                </p>
-              </div>
-
-              <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-200">
-                <div className="flex items-center justify-between mb-4">
-                  <h3 className="text-gray-700 font-medium">Approved</h3>
-                  <div className="p-2 bg-green-100 rounded-lg">
-                    <CheckCircleIcon className="w-5 h-5 text-green-600" />
-                  </div>
-                </div>
-                <p className="text-3xl font-bold text-gray-900">
-                  {stats.approved}
-                </p>
-                <p className="text-sm text-gray-500 mt-1">Validated records</p>
-              </div>
-
-              <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-200">
-                <div className="flex items-center justify-between mb-4">
-                  <h3 className="text-gray-700 font-medium">Rejected</h3>
-                  <div className="p-2 bg-red-100 rounded-lg">
-                    <XCircleIcon className="w-5 h-5 text-red-600" />
-                  </div>
-                </div>
-                <p className="text-3xl font-bold text-gray-900">
-                  {stats.rejected}
-                </p>
-                <p className="text-sm text-gray-500 mt-1">Invalid records</p>
-              </div>
-
-              <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-200">
-                <div className="flex items-center justify-between mb-4">
-                  <h3 className="text-gray-700 font-medium">Pending Review</h3>
-                  <div className="p-2 bg-yellow-100 rounded-lg">
-                    <ClockIcon className="w-5 h-5 text-yellow-600" />
-                  </div>
-                </div>
-                <p className="text-3xl font-bold text-gray-900">
-                  {stats.pending}
-                </p>
-                <p className="text-sm text-gray-500 mt-1">
-                  Awaiting validation
+                <h3 className="text-xl font-bold text-gray-900 mb-2">
+                  Dalam Pengembangan
+                </h3>
+                <p className="text-gray-600">
+                  Fitur {menuItems.find((m) => m.id === activeMenu)?.name}{" "}
+                  sedang dalam tahap pengembangan. Tim developer kami sedang
+                  bekerja untuk menyiapkan fitur ini.
                 </p>
               </div>
             </div>
+          </div>
+        )}
 
-            {/* Filter Section */}
-            <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-200 mb-6">
-              <div className="flex flex-col sm:flex-row gap-4 justify-between items-start sm:items-center">
-                <div className="relative flex-1 max-w-lg">
-                  <MagnifyingGlassIcon className="w-5 h-5 text-gray-400 absolute left-3 top-1/2 transform -translate-y-1/2" />
-                  <input
-                    type="text"
-                    placeholder="Search by operator or site..."
-                    value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
-                    className="w-full pl-10 pr-4 py-2 bg-gray-100 border border-gray-200 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500 text-gray-900 placeholder-gray-500"
-                  />
-                </div>
-
-                {/* Status Filter Buttons */}
-                <div className="flex gap-2 bg-gray-100 rounded-lg p-1">
-                  {["All", "Pending", "Approved", "Rejected"].map((filter) => (
-                    <button
-                      key={filter}
-                      onClick={() => setSelectedFilter(filter)}
-                      className={`px-4 py-2 rounded-md text-sm font-medium transition ${
-                        selectedFilter === filter
-                          ? "bg-teal-600 text-white shadow-sm"
-                          : "text-gray-700 hover:bg-gray-200"
-                      }`}
-                    >
-                      {filter}
-                    </button>
-                  ))}
-                </div>
-              </div>
-            </div>
-
-            {/* Attendance Table */}
-            <div className="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden">
-              {/* Desktop Table Header */}
-              <div className="hidden md:grid grid-cols-12 gap-4 px-6 py-4 bg-gray-50 border-b border-gray-200 text-sm font-semibold text-gray-700">
-                <div className="col-span-3">Operator</div>
-                <div className="col-span-2">Site</div>
-                <div className="col-span-1">Date</div>
-                <div className="col-span-1">Check-In</div>
-                <div className="col-span-1">Check-Out</div>
-                <div className="col-span-2 text-center">Status</div>
-                <div className="col-span-2 text-center">Actions</div>
+        {/* PRESENCE CONTENT */}
+        {activeMenu === "presensi" && (
+          <div className="px-4 sm:px-6 lg:px-10 xl:px-16 py-6 max-w-screen-2xl mx-auto">
+            {/* Header Section dengan Check-in Button di samping */}
+            <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between mb-8 gap-4">
+              <div className="flex-1">
+                <h2 className="text-2xl lg:text-3xl font-bold text-gray-900">
+                  Attendance System
+                </h2>
+                <p className="text-gray-600 mt-1">
+                  Mark your attendance with location and selfie verification
+                </p>
               </div>
 
-              {/* Table Body */}
-              <div className="divide-y divide-gray-200">
-                {filteredData.map((item) => (
-                  <div
-                    key={item.id}
-                    className="md:grid md:grid-cols-12 md:gap-4 px-4 md:px-6 py-4 hover:bg-gray-50 transition items-center"
+              {/* Check-in/Check-out Button di sebelah kanan header */}
+              <div className="flex-shrink-0">
+                {!attendanceData.isCheckedIn ? (
+                  <button
+                    onClick={openCheckInModal}
+                    className="w-full lg:w-auto px-8 py-3 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 transition-colors flex items-center justify-center gap-2"
                   >
-                    {/* Mobile View - Card Layout */}
-                    <div className="md:hidden space-y-3">
-                      <div className="flex justify-between items-start">
-                        <div>
-                          <p className="font-medium text-gray-900">
-                            {item.operator}
-                          </p>
-                          <p className="text-sm text-gray-500 mt-1">
-                            {item.site}
-                          </p>
-                        </div>
+                    <CheckCircleIcon className="w-5 h-5" />
+                    Check In Now
+                  </button>
+                ) : !attendanceData.isCheckedOut ? (
+                  <button
+                    onClick={openCheckOutModal}
+                    className="w-full lg:w-auto px-8 py-3 bg-green-600 text-white rounded-lg font-medium hover:bg-green-700 transition-colors flex items-center justify-center gap-2"
+                  >
+                    <CheckCircleIcon className="w-5 h-5" />
+                    Check Out Now
+                  </button>
+                ) : (
+                  <div className="text-center px-4 py-2 bg-gray-100 text-gray-600 rounded-lg">
+                    Attendance completed for today
+                  </div>
+                )}
+              </div>
+            </div>
+
+            {/* Statistics Section // HAPUS ATAU NONAKTIF SEMENTARA
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
+              <div className="bg-white p-4 rounded-xl shadow-sm border border-gray-200">
+                <p className="text-gray-600 text-sm font-medium">This Month</p>
+                <p className="text-2xl font-bold text-gray-900">22 days</p>
+              </div>
+              <div className="bg-white p-4 rounded-xl shadow-sm border border-gray-200">
+                <p className="text-gray-600 text-sm font-medium">On Time</p>
+                <p className="text-2xl font-bold text-gray-900">95%</p>
+              </div>
+              <div className="bg-white p-4 rounded-xl shadow-sm border border-gray-200">
+                <p className="text-gray-600 text-sm font-medium">Late</p>
+                <p className="text-2xl font-bold text-gray-900">2 times</p>
+              </div>
+              <div className="bg-white p-4 rounded-xl shadow-sm border border-gray-200">
+                <p className="text-gray-600 text-sm font-medium">Attendance Rate</p>
+                <p className="text-2xl font-bold text-gray-900">98%</p>
+              </div>
+            </div> */}
+            {/* // HAPUS ATAU NONAKTIF SEMENTARA */}
+
+            {/* Today's Attendance Section */}
+            <div className="bg-white rounded-xl shadow-sm border border-gray-200 mb-8">
+              {/* Header dengan background abu-abu */}
+              <div className="p-4 border-b border-gray-200 bg-gray-50 rounded-t-xl">
+                <h3 className="font-semibold text-lg text-gray-800">
+                  Today's Attendance
+                </h3>
+              </div>
+
+              {/* Content dengan background putih */}
+              <div className="p-4 bg-white rounded-b-xl">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  {/* Check-in Time */}
+                  <div className="bg-white rounded-lg p-4 border border-gray-200">
+                    <div className="flex items-start gap-3">
+                      <div className="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
+                        <ClockIcon className="w-5 h-5 text-blue-600" />
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <h4 className="text-sm font-medium text-gray-600 mb-1">
+                          Check-in Time
+                        </h4>
+                        <p className="text-lg font-bold text-gray-900 mb-2">
+                          {attendanceData.checkInTime}
+                        </p>
                         <span
-                          className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-medium ${
-                            item.status === "approved"
-                              ? "bg-green-100 text-green-800"
-                              : item.status === "rejected"
-                                ? "bg-red-100 text-red-800"
-                                : "bg-yellow-100 text-yellow-800"
-                          }`}
+                          className={`inline-flex items-center justify-center min-w-[100px] px-2.5 py-0.5 rounded-full text-xs font-medium ${getStatusColor(
+                            attendanceData.status
+                          )}`}
                         >
-                          {item.status}
-                        </span>
-                      </div>
-
-                      <div className="grid grid-cols-2 gap-4 text-sm">
-                        <div>
-                          <p className="text-gray-600">Date</p>
-                          <p className="text-gray-900 font-medium">
-                            {item.date}
-                          </p>
-                        </div>
-                        <div>
-                          <p className="text-gray-600">Check-In/Out</p>
-                          <div className="flex items-center gap-3 text-gray-900 font-medium">
-                            <div className="flex items-center gap-1">
-                              <ClockIcon className="w-4 h-4 text-green-600" />
-                              <span className="text-sm">{item.checkIn}</span>
-                            </div>
-                            <span className="text-gray-400">/</span>
-                            <div className="flex items-center gap-1">
-                              <ClockIcon className="w-4 h-4 text-red-600" />
-                              <span className="text-sm">{item.checkOut}</span>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-
-                      <div className="flex justify-between items-center pt-2 border-t border-gray-200">
-                        <div className="flex gap-2">
-                          {item.status === "pending" && (
-                            <>
-                              {/* Approve Button (Check Icon) */}
-                              <button className="text-green-600 hover:text-green-800 transition p-2 rounded hover:bg-green-50">
-                                <CheckCircleIcon className="w-5 h-5" />
-                              </button>
-
-                              {/* Reject Button (X Icon) */}
-                              <button className="text-red-600 hover:text-red-800 transition p-2 rounded hover:bg-red-50">
-                                <XCircleIcon className="w-5 h-5" />
-                              </button>
-                            </>
-                          )}
-                          {(item.status === "approved" ||
-                            item.status === "rejected") && (
-                            /* Review Button (Eye Icon) */
-                            <button className="text-blue-600 hover:text-blue-800 transition p-2 rounded hover:bg-blue-50">
-                              <EyeIcon className="w-5 h-5" />
-                            </button>
-                          )}
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* Desktop View - Grid Layout */}
-                    <div className="hidden md:block col-span-3">
-                      <p className="font-medium text-gray-900">
-                        {item.operator}
-                      </p>
-                    </div>
-
-                    <div className="hidden md:block col-span-2">
-                      <p className="text-gray-700">{item.site}</p>
-                    </div>
-
-                    <div className="hidden md:block col-span-1">
-                      <p className="text-gray-700 text-sm">{item.date}</p>
-                    </div>
-
-                    <div className="hidden md:block col-span-1">
-                      <div className="flex items-center gap-2 text-gray-700">
-                        <ClockIcon className="w-4 h-4 text-green-600 flex-shrink-0" />
-                        <span className="text-sm font-medium">
-                          {item.checkIn}
+                          {attendanceData.status}
                         </span>
                       </div>
                     </div>
+                  </div>
 
-                    <div className="hidden md:block col-span-1">
-                      <div className="flex items-center gap-2 text-gray-700">
-                        <ClockIcon className="w-4 h-4 text-red-600 flex-shrink-0" />
-                        <span className="text-sm font-medium">
-                          {item.checkOut}
-                        </span>
+                  {/* Check-out Time */}
+                  <div className="bg-white rounded-lg p-4 border border-gray-200">
+                    <div className="flex items-start gap-3">
+                      <div className="w-10 h-10 bg-red-100 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
+                        <ClockIcon className="w-5 h-5 text-red-600" />
                       </div>
-                    </div>
-
-                    <div className="hidden md:block col-span-2">
-                      <div className="flex justify-center">
-                        <span
-                          className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-medium capitalize ${
-                            item.status === "approved"
-                              ? "bg-green-100 text-green-800"
-                              : item.status === "rejected"
-                                ? "bg-red-100 text-red-800"
-                                : "bg-yellow-100 text-yellow-800"
-                          }`}
-                        >
-                          {item.status}
-                        </span>
-                      </div>
-                    </div>
-
-                    <div className="hidden md:block col-span-2">
-                      <div className="flex gap-2 justify-center">
-                        {item.status === "pending" && (
-                          <>
-                            {/* Approve Button (Check Icon) */}
-                            <button className="text-green-600 hover:text-green-800 transition p-2 rounded hover:bg-green-50">
-                              <CheckCircleIcon className="w-5 h-5" />
-                            </button>
-
-                            {/* Reject Button (X Icon) */}
-                            <button className="text-red-600 hover:text-red-800 transition p-2 rounded hover:bg-red-50">
-                              <XCircleIcon className="w-5 h-5" />
-                            </button>
-                          </>
-                        )}
-                        {(item.status === "approved" ||
-                          item.status === "rejected") && (
-                          /* Review Button (Eye Icon) */
-                          <button className="text-blue-600 hover:text-blue-800 transition p-2 rounded hover:bg-blue-50">
-                            <EyeIcon className="w-5 h-5" />
-                          </button>
+                      <div className="flex-1 min-w-0">
+                        <h4 className="text-sm font-medium text-gray-600 mb-1">
+                          Check-out Time
+                        </h4>
+                        <p className="text-lg font-bold text-gray-900 mb-2">
+                          {attendanceData.checkOutTime}
+                        </p>
+                        {attendanceData.isCheckedOut ? (
+                          <span className="inline-flex items-center justify-center min-w-[100px] px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                            Completed
+                          </span>
+                        ) : (
+                          <span className="inline-flex items-center justify-center min-w-[100px] px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">
+                            Not checked out yet
+                          </span>
                         )}
                       </div>
                     </div>
                   </div>
-                ))}
+
+                  {/* Location */}
+                  <div className="bg-white rounded-lg p-4 border border-gray-200">
+                    <div className="flex items-start gap-3">
+                      <div className="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
+                        <MapIcon className="w-5 h-5 text-blue-600" />
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <h4 className="text-sm font-medium text-gray-600 mb-1">
+                          Location
+                        </h4>
+                        <p className="text-sm font-bold text-gray-900 mb-2 leading-tight break-words">
+                          {attendanceData.location}
+                        </p>
+                        <span className="inline-flex items-center justify-center min-w-[100px] px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+                          {attendanceData.location !== "Not located yet"
+                            ? "Verified"
+                            : "Not verified"}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Attendance History Section */}
+            <div className="bg-white rounded-xl shadow-sm border border-gray-200">
+              <div className="p-4 border-b border-gray-200 bg-gray-50 rounded-t-xl">
+                <h3 className="font-semibold text-lg text-gray-800">
+                  Attendance History
+                </h3>
+              </div>
+
+              <div className="p-4 bg-white rounded-b-xl">
+                <div className="overflow-x-auto">
+                  <table className="w-full">
+                    <thead>
+                      <tr className="border-b border-gray-200">
+                        <th className="text-left py-3 px-4 font-medium text-gray-700">
+                          Date
+                        </th>
+                        <th className="text-left py-3 px-4 font-medium text-gray-700">
+                          Check In
+                        </th>
+                        <th className="text-left py-3 px-4 font-medium text-gray-700">
+                          Check Out
+                        </th>
+                        <th className="text-left py-3 px-4 font-medium text-gray-700">
+                          Location
+                        </th>
+                        <th className="text-left py-3 px-4 font-medium text-gray-700">
+                          Status
+                        </th>
+                        <th className="text-left py-3 px-4 font-medium text-gray-700">
+                          Action
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {attendanceHistory.map((record) => (
+                        <tr
+                          key={record.id}
+                          className="border-b border-gray-100 hover:bg-gray-50"
+                        >
+                          <td className="py-3 px-4 text-gray-900">
+                            {record.date}
+                          </td>
+                          <td className="py-3 px-4 text-gray-900">
+                            {record.checkIn}
+                          </td>
+                          <td className="py-3 px-4 text-gray-900">
+                            {record.checkOut}
+                          </td>
+                          <td className="py-3 px-4 text-gray-900 text-sm">
+                            {record.location}
+                          </td>
+                          <td className="py-3 px-4">
+                            <span
+                              className={`inline-flex items-center justify-center min-w-[100px] gap-1 px-2 py-1 rounded-full text-xs font-medium ${getApprovalStatusColor(
+                                record.approvalStatus
+                              )}`}
+                            >
+                              {record.approvalStatus === "pending" &&
+                                "⏳ pending"}
+                              {record.approvalStatus === "approved" &&
+                                "✓ approved"}
+                              {record.approvalStatus === "rejected" &&
+                                "✗ rejected"}
+                            </span>
+                          </td>
+                          <td className="py-3 px-4">
+                            <button
+                              onClick={() => openDetailModal(record)}
+                              className="flex items-center gap-1 text-blue-600 hover:text-blue-800 text-sm font-medium"
+                            >
+                              <EyeIcon className="w-4 h-4" />
+                              Detail
+                            </button>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+
+                {/* Empty State */}
+                {attendanceHistory.length === 0 && (
+                  <div className="text-center py-8">
+                    <p className="text-gray-500">
+                      No attendance records found.
+                    </p>
+                    <p className="text-gray-400 text-sm mt-1">
+                      Your attendance history will appear here.
+                    </p>
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* UNTUK MENU HELP DESK - TAMPILAN DALAM PENGEMBANGAN */}
+        {activeMenu === "help" && (
+          <div className="px-4 sm:px-6 lg:px-10 xl:px-16 py-6 max-w-screen-2xl mx-auto">
+            <div className="flex flex-col items-center justify-center min-h-[60vh] text-center">
+              <div className="bg-yellow-50 border border-yellow-200 rounded-2xl p-8 max-w-md w-full">
+                <div className="w-16 h-16 bg-yellow-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <CogIcon className="w-8 h-8 text-yellow-600" />
+                </div>
+                <h3 className="text-xl font-bold text-gray-900 mb-2">
+                  Dalam Pengembangan
+                </h3>
+                <p className="text-gray-600">
+                  Fitur {menuItems.find((m) => m.id === activeMenu)?.name}{" "}
+                  sedang dalam tahap pengembangan. Tim developer kami sedang
+                  bekerja untuk menyiapkan fitur ini.
+                </p>
               </div>
             </div>
           </div>
         )}
       </div>
+
+      {/* Modal Check-in */}
+      {isCheckInModalOpen && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-xl w-full max-w-md max-h-[90vh] overflow-y-auto">
+            <div className="p-6 border-b border-gray-200">
+              <h2 className="text-xl font-bold text-gray-900">Check In</h2>
+              <p className="text-gray-600 mt-1">
+                Complete both steps to check in
+              </p>
+            </div>
+
+            <div className="p-6 space-y-6">
+              {/* Step 1: Capture Location */}
+              <div>
+                <h3 className="font-medium text-gray-900 mb-3">
+                  1. Capture Location
+                </h3>
+                <button
+                  onClick={() => getCurrentLocation(false)}
+                  className={`w-full flex items-center gap-3 p-4 border rounded-lg ${
+                    locationCaptured
+                      ? "border-green-500 bg-green-50 text-green-700"
+                      : "border-gray-300 bg-white text-gray-700 hover:bg-gray-50"
+                  }`}
+                >
+                  <MapPinIcon className="w-5 h-5" />
+                  <div className="text-left flex-1">
+                    <span className="block">
+                      {locationCaptured
+                        ? "Location Captured"
+                        : "Get Current Location"}
+                    </span>
+                    <span className="block text-xs mt-1 text-gray-500">
+                      {currentLocation}
+                    </span>
+                  </div>
+                  {locationCaptured && (
+                    <CheckCircleIcon className="w-5 h-5 ml-auto" />
+                  )}
+                </button>
+              </div>
+
+              {/* Step 2: Upload Selfie */}
+              <div>
+                <h3 className="font-medium text-gray-900 mb-3">
+                  2. Upload Selfie
+                </h3>
+
+                {/* Camera Preview */}
+                {isCameraActive && (
+                  <div className="mb-4">
+                    <div className="relative bg-black rounded-lg overflow-hidden">
+                      <video
+                        ref={videoRef}
+                        autoPlay
+                        playsInline
+                        className="w-full h-64 object-cover"
+                      />
+                      <div className="absolute bottom-4 left-0 right-0 flex justify-center">
+                        <button
+                          onClick={() => capturePhoto(false)}
+                          className="bg-white rounded-full p-3 shadow-lg hover:bg-gray-100"
+                        >
+                          <CameraIcon className="w-6 h-6 text-gray-800" />
+                        </button>
+                      </div>
+                    </div>
+                    <button
+                      onClick={() => stopCamera(false)}
+                      className="mt-2 text-sm text-red-600 hover:text-red-800"
+                    >
+                      Close Camera
+                    </button>
+                  </div>
+                )}
+
+                {/* Selfie Options */}
+                {!isCameraActive && (
+                  <div className="grid grid-cols-2 gap-3 mb-4">
+                    <button
+                      onClick={() => startCamera(false)}
+                      className="flex flex-col items-center justify-center p-4 border-2 border-dashed border-gray-300 rounded-lg hover:border-blue-500 hover:bg-blue-50 transition-colors"
+                    >
+                      <CameraIcon className="w-8 h-8 text-gray-600 mb-2" />
+                      <span className="text-sm font-medium text-gray-400">
+                        Take Photo
+                      </span>
+                    </button>
+
+                    <button
+                      onClick={() => triggerFileInput(false)}
+                      className="flex flex-col items-center justify-center p-4 border-2 border-dashed border-gray-300 rounded-lg hover:border-green-500 hover:bg-green-50 transition-colors"
+                    >
+                      <PhotoIcon className="w-8 h-8 text-gray-600 mb-2" />
+                      <span className="text-s font-medium text-gray-400">
+                        Upload Photo
+                      </span>
+                    </button>
+                  </div>
+                )}
+
+                <input
+                  type="file"
+                  ref={fileInputRef}
+                  onChange={(e) => handleSelfieUpload(e, false)}
+                  accept="image/*"
+                  className="hidden"
+                />
+
+                {/* Selfie Preview */}
+                {selfiePreview && (
+                  <div className="mt-3">
+                    <p className="text-sm text-gray-600 mb-2">
+                      Selfie Preview:
+                    </p>
+                    <div className="flex items-center gap-3">
+                      <img
+                        src={selfiePreview}
+                        alt="Selfie preview"
+                        className="w-20 h-20 object-cover rounded-lg border border-gray-300"
+                      />
+                      <div className="flex-1">
+                        <p className="text-sm text-green-600 font-medium">
+                          ✓ Selfie captured
+                        </p>
+                        <p className="text-xs text-gray-500">
+                          Ready for check-in
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </div>
+            </div>
+
+            <div className="p-6 border-t border-gray-200 flex gap-3">
+              <button
+                onClick={() => {
+                  stopCamera(false);
+                  setIsCheckInModalOpen(false);
+                }}
+                className="flex-1 px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handleConfirmCheckIn}
+                disabled={!locationCaptured || !selfieUploaded}
+                className="flex-1 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:bg-gray-300 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+              >
+                <CheckCircleIcon className="w-5 h-5" />
+                Confirm Check-In
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Modal Check-out */}
+      {isCheckOutModalOpen && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-xl w-full max-w-md max-h-[90vh] overflow-y-auto">
+            <div className="p-6 border-b border-gray-200">
+              <h2 className="text-xl font-bold text-gray-900">Check Out</h2>
+              <p className="text-gray-600 mt-1">
+                Complete both steps to check out
+              </p>
+            </div>
+
+            <div className="p-6 space-y-6">
+              {/* Step 1: Capture Location */}
+              <div>
+                <h3 className="font-medium text-gray-900 mb-3">
+                  1. Capture Location
+                </h3>
+                <button
+                  onClick={() => getCurrentLocation(true)}
+                  className={`w-full flex items-center gap-3 p-4 border rounded-lg ${
+                    locationCapturedCheckOut
+                      ? "border-green-500 bg-green-50 text-green-700"
+                      : "border-gray-300 bg-white text-gray-700 hover:bg-gray-50"
+                  }`}
+                >
+                  <MapPinIcon className="w-5 h-5" />
+                  <div className="text-left flex-1">
+                    <span className="block">
+                      {locationCapturedCheckOut
+                        ? "Location Captured"
+                        : "Get Current Location"}
+                    </span>
+                    <span className="block text-xs mt-1 text-gray-500">
+                      {currentLocationCheckOut}
+                    </span>
+                  </div>
+                  {locationCapturedCheckOut && (
+                    <CheckCircleIcon className="w-5 h-5 ml-auto" />
+                  )}
+                </button>
+              </div>
+
+              {/* Step 2: Upload Selfie */}
+              <div>
+                <h3 className="font-medium text-gray-900 mb-3">
+                  2. Upload Selfie
+                </h3>
+
+                {/* Camera Preview */}
+                {isCameraActiveCheckOut && (
+                  <div className="mb-4">
+                    <div className="relative bg-black rounded-lg overflow-hidden">
+                      <video
+                        ref={videoRef}
+                        autoPlay
+                        playsInline
+                        className="w-full h-64 object-cover"
+                      />
+                      <div className="absolute bottom-4 left-0 right-0 flex justify-center">
+                        <button
+                          onClick={() => capturePhoto(true)}
+                          className="bg-white rounded-full p-3 shadow-lg hover:bg-gray-100"
+                        >
+                          <CameraIcon className="w-6 h-6 text-gray-800" />
+                        </button>
+                      </div>
+                    </div>
+                    <button
+                      onClick={() => stopCamera(true)}
+                      className="mt-2 text-sm text-red-600 hover:text-red-800"
+                    >
+                      Close Camera
+                    </button>
+                  </div>
+                )}
+
+                {/* Selfie Options */}
+                {!isCameraActiveCheckOut && (
+                  <div className="grid grid-cols-2 gap-3 mb-4">
+                    <button
+                      onClick={() => startCamera(true)}
+                      className="flex flex-col items-center justify-center p-4 border-2 border-dashed border-gray-300 rounded-lg hover:border-blue-500 hover:bg-blue-50 transition-colors"
+                    >
+                      <CameraIcon className="w-8 h-8 text-gray-600 mb-2" />
+                      <span className="text-sm font-medium text-gray-400">
+                        Take Photo
+                      </span>
+                    </button>
+
+                    <button
+                      onClick={() => triggerFileInput(true)}
+                      className="flex flex-col items-center justify-center p-4 border-2 border-dashed border-gray-300 rounded-lg hover:border-green-500 hover:bg-green-50 transition-colors"
+                    >
+                      <PhotoIcon className="w-8 h-8 text-gray-600 mb-2" />
+                      <span className="text-sm font-medium text-gray-400">
+                        Upload Photo
+                      </span>
+                    </button>
+                  </div>
+                )}
+
+                <input
+                  type="file"
+                  ref={fileInputRef}
+                  onChange={(e) => handleSelfieUpload(e, true)}
+                  accept="image/*"
+                  className="hidden"
+                />
+
+                {/* Selfie Preview */}
+                {selfiePreviewCheckOut && (
+                  <div className="mt-3">
+                    <p className="text-sm text-gray-600 mb-2">
+                      Selfie Preview:
+                    </p>
+                    <div className="flex items-center gap-3">
+                      <img
+                        src={selfiePreviewCheckOut}
+                        alt="Selfie preview"
+                        className="w-20 h-20 object-cover rounded-lg border border-gray-300"
+                      />
+                      <div className="flex-1">
+                        <p className="text-sm text-green-600 font-medium">
+                          ✓ Selfie captured
+                        </p>
+                        <p className="text-xs text-gray-500">
+                          Ready for check-out
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </div>
+            </div>
+
+            <div className="p-6 border-t border-gray-200 flex gap-3">
+              <button
+                onClick={() => {
+                  stopCamera(true);
+                  setIsCheckOutModalOpen(false);
+                }}
+                className="flex-1 px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handleConfirmCheckOut}
+                disabled={!locationCapturedCheckOut || !selfieUploadedCheckOut}
+                className="flex-1 px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 disabled:bg-gray-300 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+              >
+                <CheckCircleIcon className="w-5 h-5" />
+                Confirm Check-Out
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Modal Detail Attendance */}
+      {isDetailModalOpen && selectedAttendance && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-xl w-full max-w-4xl max-h-[90vh] overflow-y-auto">
+            <div className="p-6 border-b border-gray-200">
+              <div className="flex items-center justify-between">
+                <h2 className="text-xl font-bold text-gray-900">
+                  Attendance Details
+                </h2>
+                <button
+                  onClick={() => setIsDetailModalOpen(false)}
+                  className="text-gray-400 hover:text-gray-600"
+                >
+                  <XMarkIcon className="w-6 h-6" />
+                </button>
+              </div>
+              <p className="text-gray-600 mt-1">
+                Date: {selectedAttendance.date}
+              </p>
+            </div>
+
+            <div className="p-6 space-y-6">
+              {/* Approval Status */}
+              <div className="bg-gray-50 rounded-lg p-4">
+                <h3 className="font-semibold text-gray-800 mb-3">
+                  Approval Status
+                </h3>
+                <div className="flex items-center gap-2">
+                  <span
+                    className={`inline-flex items-center justify-center min-w-[100px] gap-1 px-3 py-1 rounded-full text-sm font-medium ${getApprovalStatusColor(
+                      selectedAttendance.approvalStatus
+                    )}`}
+                  >
+                    {selectedAttendance.approvalStatus === "pending" &&
+                      "⏳ Pending Approval"}
+                    {selectedAttendance.approvalStatus === "approved" &&
+                      "✓ Approved by Admin"}
+                    {selectedAttendance.approvalStatus === "rejected" &&
+                      "✗ Rejected by Admin"}
+                  </span>
+                  {selectedAttendance.approvalStatus === "pending" && (
+                    <span className="text-sm text-gray-600">
+                      Waiting for admin approval
+                    </span>
+                  )}
+                  {selectedAttendance.approvalStatus === "approved" &&
+                    selectedAttendance.approvedBy && (
+                      <span className="text-sm text-gray-600">
+                        Approved by {selectedAttendance.approvedBy} at{" "}
+                        {selectedAttendance.approvedAt}
+                      </span>
+                    )}
+                </div>
+              </div>
+
+              {/* Check-in Information */}
+              <div className="bg-gray-50 rounded-lg p-4">
+                <h3 className="font-semibold text-gray-800 mb-3 flex items-center gap-2">
+                  <CheckCircleIcon className="w-5 h-5 text-green-600" />
+                  Check-in Information
+                </h3>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <p className="text-sm text-gray-600">Time</p>
+                    <p className="font-medium text-gray-900">
+                      {selectedAttendance.checkIn}
+                    </p>
+                  </div>
+                  <div>
+                    <p className="text-sm text-gray-600">Status</p>
+                    <p
+                      className={`font-medium ${
+                        selectedAttendance.checkInStatus === "On Time"
+                          ? "text-green-600"
+                          : "text-red-600"
+                      }`}
+                    >
+                      {selectedAttendance.checkInStatus}
+                    </p>
+                  </div>
+                  <div className="md:col-span-2">
+                    <p className="text-sm text-gray-600">Location</p>
+                    <p className="font-medium text-gray-900 text-sm">
+                      {selectedAttendance.checkInLocation}
+                    </p>
+                  </div>
+                </div>
+
+                {/* Check-in Selfie */}
+                {selectedAttendance.selfieCheckIn && (
+                  <div className="mt-4">
+                    <p className="text-sm text-gray-600 mb-2">
+                      Check-in Selfie
+                    </p>
+                    <img
+                      src={selectedAttendance.selfieCheckIn}
+                      alt="Check-in selfie"
+                      className="w-48 h-48 object-cover rounded-lg border border-gray-300"
+                    />
+                  </div>
+                )}
+              </div>
+
+              {/* Check-out Information */}
+              <div className="bg-gray-50 rounded-lg p-4">
+                <h3 className="font-semibold text-gray-800 mb-3 flex items-center gap-2">
+                  <CheckCircleIcon className="w-5 h-5 text-blue-600" />
+                  Check-out Information
+                </h3>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <p className="text-sm text-gray-600">Time</p>
+                    <p className="font-medium text-gray-900">
+                      {selectedAttendance.checkOut}
+                    </p>
+                  </div>
+                  <div>
+                    <p className="text-sm text-gray-600">Status</p>
+                    <p className="font-medium text-gray-900">
+                      {selectedAttendance.checkOut === "--:--"
+                        ? "Not checked out"
+                        : "Completed"}
+                    </p>
+                  </div>
+                  <div className="md:col-span-2">
+                    <p className="text-sm text-gray-600">Location</p>
+                    <p className="font-medium text-gray-900 text-sm">
+                      {selectedAttendance.checkOutLocation}
+                    </p>
+                  </div>
+                </div>
+
+                {/* Check-out Selfie */}
+                {selectedAttendance.selfieCheckOut && (
+                  <div className="mt-4">
+                    <p className="text-sm text-gray-600 mb-2">
+                      Check-out Selfie
+                    </p>
+                    <img
+                      src={selectedAttendance.selfieCheckOut}
+                      alt="Check-out selfie"
+                      className="w-48 h-48 object-cover rounded-lg border border-gray-300"
+                    />
+                  </div>
+                )}
+              </div>
+
+              {/* Note for Operator */}
+              {userRole === "operator" &&
+                selectedAttendance.approvalStatus === "pending" && (
+                  <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
+                    <div className="flex items-start gap-3">
+                      <ExclamationTriangleIcon className="w-5 h-5 text-yellow-600 mt-0.5" />
+                      <div>
+                        <p className="font-medium text-yellow-800">
+                          Menunggu Approval Admin
+                        </p>
+                        <p className="text-yellow-700 text-sm mt-1">
+                          Attendance Anda sedang menunggu persetujuan dari
+                          admin. Anda akan mendapatkan notifikasi setelah
+                          disetujui.
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                )}
+            </div>
+
+            <div className="p-6 border-t border-gray-200">
+              <button
+                onClick={() => setIsDetailModalOpen(false)}
+                className="w-full px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+              >
+                Close
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Canvas untuk capture foto (hidden) */}
+      <canvas ref={canvasRef} className="hidden" />
     </div>
   );
 }
 
-// ==================================KODINGAN MERGE BEBERAPA MENU ROLE HRD :END=================================================================
-// ==================================KODINGAN MERGE BEBERAPA MENU ROLE HRD :END=================================================================
-// ==================================KODINGAN MERGE BEBERAPA MENU ROLE HRD :END=================================================================
-// ==================================KODINGAN MERGE BEBERAPA MENU ROLE HRD :END=================================================================
-// ==================================KODINGAN MERGE BEBERAPA MENU ROLE HRD :END=================================================================
+// ==================================MENU PRESENSI OPERATOR : END =================================================================
+// ==================================MENU PRESENSI OPERATOR : END =================================================================
+// ==================================MENU PRESENSI OPERATOR : END =================================================================
+// ==================================MENU PRESENSI OPERATOR : END =================================================================
+// ==================================MENU PRESENSI OPERATOR : END =================================================================

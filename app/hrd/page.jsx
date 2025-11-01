@@ -1462,7 +1462,7 @@ export default function HRD() {
           />
           <div>
             <h1 className="text-xl font-bold text-gray-800">SIOPTIMA</h1>
-            <p className="text-sm text-gray-600">HRD System</p>
+            <p className="text-sm text-gray-600">IPAL Monitoring</p>
           </div>
 
           <button

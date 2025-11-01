@@ -138,7 +138,7 @@
 //           />
 //           <div>
 //             <h1 className="text-xl font-bold text-gray-800">SIOPTIMA</h1>
-//             <p className="text-sm text-gray-600">IPAL Monitoring System</p>
+//             <p className="text-sm text-gray-600">IPAL Monitoring</p>
 //           </div>
 
 //           <button
@@ -153,7 +153,7 @@
 //         <div className="p-6 border-b flex items-center justify-between bg-white">
 //           <div>
 //             <h1 className="text-xl font-bold text-gray-800">SIOPTIMA</h1>
-//             <p className="text-sm text-gray-600 mt-1">IPAL Monitoring System</p>
+//             <p className="text-sm text-gray-600 mt-1">IPAL Monitoring</p>
 //           </div>
 //           <button
 //             onClick={() => setIsSidebarOpen(false)}
@@ -837,7 +837,7 @@
 //           </div>
 //           <div>
 //             <h1 className="text-xl font-bold text-gray-800">SIOPTIMA</h1>
-//             <p className="text-sm text-gray-600">IPAL Monitoring System</p>
+//             <p className="text-sm text-gray-600">IPAL Monitoring</p>
 //           </div>
 
 //           <button
@@ -1438,7 +1438,7 @@
 //           />
 //           <div>
 //             <h1 className="text-xl font-bold text-gray-800">SIOPTIMA</h1>
-//             <p className="text-sm text-gray-600">IPAL Monitoring System</p>
+//             <p className="text-sm text-gray-600">IPAL Monitoring</p>
 //           </div>
 
 //           <button
@@ -2127,7 +2127,7 @@
 //           />
 //           <div>
 //             <h1 className="text-xl font-bold text-gray-800">SIOPTIMA</h1>
-//             <p className="text-sm text-gray-600">IPAL Monitoring System</p>
+//             <p className="text-sm text-gray-600">IPAL Monitoring</p>
 //           </div>
 
 //           <button
@@ -3729,7 +3729,7 @@
 //           <img src="/hero/logosioptima.png" alt="logo" className="w-9 h-9 rounded" />
 //           <div>
 //             <h1 className="text-xl font-bold text-gray-800">SIOPTIMA</h1>
-//             <p className="text-sm text-gray-600">IPAL Monitoring System</p>
+//             <p className="text-sm text-gray-600">IPAL Monitoring</p>
 //           </div>
 //           <button onClick={() => setIsSidebarOpen(false)} className="lg:hidden ml-auto p-2 text-gray-600 hover:text-teal-600 transition">
 //             <XMarkIcon className="w-5 h-5" />
@@ -4022,7 +4022,7 @@
 //         <div className="p-6 border-b flex items-center justify-between bg-white">
 //           <div>
 //             <h1 className="text-xl font-bold text-gray-800">SIOPTIMA</h1>
-//             <p className="text-sm text-gray-600 mt-1">IPAL Monitoring System</p>
+//             <p className="text-sm text-gray-600 mt-1">IPAL Monitoring</p>
 //           </div>
 //           <button
 //             onClick={() => setIsSidebarOpen(false)}
@@ -4683,7 +4683,7 @@ export default function Admin() {
           />
           <div>
             <h1 className="text-xl font-bold text-gray-800">SIOPTIMA</h1>
-            <p className="text-sm text-gray-600">IPAL Monitoring System</p>
+            <p className="text-sm text-gray-600">IPAL Monitoring</p>
           </div>
 
           <button
@@ -4733,7 +4733,7 @@ export default function Admin() {
                 A
               </div>
               <div>
-                <p className="font-semibold text-gray-900">Admin SIOPTIMA</p>
+                <p className="font-semibold text-gray-900">Admin</p>
                 <p className="text-sm text-gray-600">Admin</p>
               </div>
             </div>
