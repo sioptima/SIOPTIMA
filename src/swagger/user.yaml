@@ -1,0 +1,129 @@
+paths:
+  /api/auth/current:
+    get:
+      summary: Get current user
+      tags:
+        - Users
+      responses:
+        '200':
+          description: Information about the current user
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: User retrieved
+                  result:
+                    type: object
+                    properties:
+                      userId:
+                        type: integer
+                        example: 5
+                      role:
+                        type: string
+                        example: ADMIN
+
+/api/auth/login:
+    post:
+      summary: Logs in a user
+      tags:
+        - Users
+
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                  example: admin
+                password:
+                  type: string
+                  example: 0XUdhBawnt4uUG1H
+
+      responses:
+        '200':
+          description: Information about the current user
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "User logged in successfully"
+                  result:
+                    type: object
+                    properties:
+                      userId:
+                        type: integer
+                        example: 5
+                      role:
+                        type: string
+                        example: ADMIN
+
+/api/auth/logout:
+    post:
+      summary: Logs out a user
+      tags:
+        - Users
+
+      responses:
+        '200':
+          description: Confirmation of user logout
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "User logged out"
+
+/api/auth/register:
+    post:
+      summary: Registers a user
+      tags:
+        - Users
+
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                  example: operator
+                password:
+                  type: string
+                  example: operator123
+                role:
+                  type: string
+                  example: OPERATOR
+
+      responses:
+        '200':
+          description: Information about the current user
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "User registered successfully"
+                  result:
+                    type: object
+                    properties:
+                      userId:
+                        type: integer
+                        example: 6
+                      role:
+                        type: string
+                        example: OPERATOR

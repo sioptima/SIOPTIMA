@@ -1,11 +1,11 @@
 import { defineConfig } from "prisma/config";
-import "./server/config/envConfig"
+import "./src/server/config/envConfig"
 
 export default defineConfig({
-  schema: "server/db/prisma/schema.prisma",
+  schema: "src/server/db/prisma/schema.prisma",
   migrations: {
-    path: "server/db/prisma/migrations",
-    seed: "node prisma/seed.js",
+    path: "src/server/db/prisma/migrations",
+    seed: "node src/server/db/prisma/seed.js",
   },
   engine: "classic",
   datasource: {

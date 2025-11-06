@@ -1,0 +1,70 @@
+import bcrypt from "bcrypt";
+import { createSession } from "@/src/server/utils/sessions.js";
+import { UserValidation } from "./user-validation.js";
+import { UserRepository } from "./user-repository.js";
+import { ResponseError } from "@/src/lib/response-error.js";
+import { hashPassword } from "@/src/server/utils/password.js";
+
+export class UserService {
+
+    static async register(request) {
+        // validate request
+        const registerRequest = UserValidation.REGISTER.parse(request);
+        if(!registerRequest){
+            throw new ResponseError(400, "Invalid request data");
+        }
+        
+        const role = await UserRepository.getRoleByName(registerRequest.role);
+        if (!role) {
+            throw new ResponseError (404, "Role not found")
+        }
+        
+        const checkUsername = await UserRepository.findByUsername(registerRequest.username);
+        if (checkUsername) {
+            throw new ResponseError(401,"Username already exists");
+        }
+        
+        const hashedPassword = await hashPassword(registerRequest.password);
+        
+        const newUser = await UserRepository.create({
+            username: registerRequest.username,
+            password: hashedPassword,
+            role: role.id,
+        });
+        if (!newUser) {
+            throw new ResponseError(500, "Failed to create user");
+        }
+
+        return {
+            id: newUser.id,
+            role: role.name
+        }
+    }
+
+    static async login(request) {
+        // validate request
+        const loginRequest = UserValidation.LOGIN.parse(request);
+        if (!loginRequest){
+            throw new ResponseError (400, "Bad request")
+        }
+
+        const user = await UserRepository.findByUsername(loginRequest.username);
+        if (!user) {
+            throw new ResponseError(401, "Invalid username or password");
+        }
+
+        const passwordIsValid = await bcrypt.compare(loginRequest.password, user.password);
+        if (!passwordIsValid) {
+            throw new ResponseError(401, "Invalid username or password");
+        }
+
+        const role =await UserRepository.getRoleById(user.roleId)
+
+        await createSession(user.id, role.name)
+    
+        return {
+            id: user.id,
+            role: role.name
+        }
+    }
+}
