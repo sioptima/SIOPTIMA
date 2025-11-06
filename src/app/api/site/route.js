@@ -1,4 +1,4 @@
-import { requireRole } from "@/server/utils/auth";
+import { requireRole } from "@/src/server/utils/auth";
 
 export async function POST(request) {
     try {
