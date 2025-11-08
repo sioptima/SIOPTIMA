@@ -1365,28 +1365,6 @@ export default function Hero() {
     }
   };
 
-  // Fungsi shortcut langsung redirect tanpa validasi
-  const handleQuickLogin = (role) => {
-    let redirectPath = "";
-    
-    switch (role) {
-      case "admin":
-        redirectPath = "/admin/";
-        break;
-      case "operator":
-        redirectPath = "/operator/";
-        break;
-      case "hrd":
-        redirectPath = "/hrd/";
-        break;
-      default:
-        return;
-    }
-
-    console.log(`Quick login as ${role}, redirecting to: ${redirectPath}`);
-    router.push(redirectPath);
-  };
-
   const usernameError = !username && (touched.username || submitted);
   const passwordError = !password && (touched.password || submitted);
 
@@ -1498,45 +1476,6 @@ export default function Hero() {
             Sign in to access your IPAL monitoring dashboard
           </p>
 
-          {/* Quick Login Buttons - LANGSUNG REDIRECT */}
-          <div className="mb-6">
-            <p className="text-sm font-medium text-gray-700 mb-3 text-center">
-              Quick Demo Access (No Login Required):
-            </p>
-            <div className="grid grid-cols-3 gap-2">
-              <button
-                onClick={() => handleQuickLogin("admin")}
-                className="bg-teal-600 text-white py-3 px-3 rounded-lg text-sm font-medium hover:bg-teal-700 transition shadow-md flex items-center justify-center gap-1"
-              >
-                <span>Admin</span>
-              </button>
-              <button
-                onClick={() => handleQuickLogin("operator")}
-                className="bg-cyan-600 text-white py-3 px-3 rounded-lg text-sm font-medium hover:bg-cyan-700 transition shadow-md flex items-center justify-center gap-1"
-              >
-                <span>Operator</span>
-              </button>
-              <button
-                onClick={() => handleQuickLogin("hrd")}
-                className="bg-emerald-600 text-white py-3 px-3 rounded-lg text-sm font-medium hover:bg-emerald-700 transition shadow-md flex items-center justify-center gap-1"
-              >
-                <span>HRD</span>
-              </button>
-            </div>
-            <p className="text-xs text-gray-500 text-center mt-2">
-              Click any role to enter directly
-            </p>
-          </div>
-
-          <div className="relative mb-6">
-            <div className="absolute inset-0 flex items-center">
-              <div className="w-full border-t border-gray-300"></div>
-            </div>
-            <div className="relative flex justify-center text-sm">
-              <span className="px-2 bg-white text-gray-500">Or sign in manually</span>
-            </div>
-          </div>
-
           {/* Tampilkan error message */}
           {error && (
             <div className="mb-4 p-3 bg-red-100 border border-red-400 text-red-700 rounded-lg text-sm">
@@ -1623,29 +1562,7 @@ export default function Hero() {
               )}
             </button>
           </form>
-
-          {/* Demo Info */}
-          <div className="mt-6 text-sm text-gray-700 text-center md:text-left">
-            <div className="bg-gray-50 border border-gray-200 rounded-lg p-4 shadow-sm">
-              <p className="font-semibold text-gray-800 mb-2">
-                Manual Login Credentials:
-              </p>
-              <div className="space-y-1 text-gray-600">
-                <p>
-                  <span className="font-semibold text-teal-700">Admin:</span>{" "}
-                  admin / admin123
-                </p>
-                <p>
-                  <span className="font-semibold text-teal-700">Operator:</span>{" "}
-                  operator / operator123
-                </p>
-                <p>
-                  <span className="font-semibold text-teal-700">HRD:</span> hrd123
-                  / hrd123
-                </p>
-              </div>
-            </div>
-          </div>
+          
         </div>
       </div>
     </section>

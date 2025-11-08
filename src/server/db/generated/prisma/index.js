@@ -115,6 +115,7 @@ exports.Prisma.SiteScalarFieldEnum = {
   id: 'id',
   name: 'name',
   image: 'image',
+  status: 'status',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
   deletedAt: 'deletedAt',
@@ -123,13 +124,21 @@ exports.Prisma.SiteScalarFieldEnum = {
 
 exports.Prisma.SiteAddressScalarFieldEnum = {
   id: 'id',
-  street: 'street',
-  subdistrict: 'subdistrict',
-  city: 'city',
-  province: 'province',
-  country: 'country',
-  postcode: 'postcode',
-  coordinate: 'coordinate'
+  address: 'address',
+  latitude: 'latitude',
+  longitude: 'longitude',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  deletedAt: 'deletedAt'
+};
+
+exports.Prisma.UserSiteScalarFieldEnum = {
+  id: 'id',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  deletedAt: 'deletedAt',
+  siteId: 'siteId',
+  userId: 'userId'
 };
 
 exports.Prisma.SortOrder = {
@@ -156,7 +165,8 @@ exports.Prisma.ModelName = {
   User: 'User',
   Role: 'Role',
   Site: 'Site',
-  SiteAddress: 'SiteAddress'
+  SiteAddress: 'SiteAddress',
+  UserSite: 'UserSite'
 };
 /**
  * Create the Client
@@ -206,8 +216,8 @@ const config = {
       }
     }
   },
-  "inlineSchema": "// This is your Prisma schema file,\n// learn more about it in the docs: https://pris.ly/d/prisma-schema\n\n// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?\n// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init\n\ngenerator client {\n  provider   = \"prisma-client-js\"\n  output     = \"../generated/prisma\"\n  engineType = \"client\"\n}\n\ndatasource db {\n  provider  = \"postgresql\"\n  url       = env(\"DATABASE_URL\")\n  directUrl = env(\"DIRECT_URL\")\n}\n\nmodel User {\n  id        Int       @id @default(autoincrement())\n  username  String    @unique\n  password  String\n  createdAt DateTime  @default(now())\n  updatedAt DateTime  @updatedAt\n  deletedAt DateTime?\n\n  role   Role @relation(fields: [roleId], references: [id])\n  roleId Int\n}\n\nenum RoleName {\n  ADMIN\n  OPERATOR\n  HRD\n}\n\nmodel Role {\n  id        Int       @id @default(autoincrement())\n  name      RoleName  @unique\n  createdAt DateTime  @default(now())\n  updatedAt DateTime  @updatedAt\n  deletedAt DateTime?\n\n  Users User[]\n}\n\nmodel Site {\n  id        Int       @id @default(autoincrement())\n  name      String    @unique\n  image     String?\n  createdAt DateTime  @default(now())\n  updatedAt DateTime  @updatedAt\n  deletedAt DateTime?\n\n  addressId Int @unique\n\n  address SiteAddress @relation(fields: [addressId], references: [id])\n}\n\nmodel SiteAddress {\n  id          Int    @id @default(autoincrement())\n  street      String\n  subdistrict String\n  city        String\n  province    String\n  country     String\n  postcode    String\n  coordinate  String\n\n  site Site?\n}\n",
-  "inlineSchemaHash": "1afa62ff659bc8581403c1945259787459e57bfc6613f1249324b5f333eae5b4",
+  "inlineSchema": "// This is your Prisma schema file,\n// learn more about it in the docs: https://pris.ly/d/prisma-schema\n\n// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?\n// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init\n\ngenerator client {\n  provider   = \"prisma-client-js\"\n  output     = \"../generated/prisma\"\n  engineType = \"client\"\n}\n\ndatasource db {\n  provider  = \"postgresql\"\n  url       = env(\"DATABASE_URL\")\n  directUrl = env(\"DIRECT_URL\")\n}\n\nmodel User {\n  id        Int       @id @default(autoincrement())\n  username  String    @unique\n  password  String\n  createdAt DateTime  @default(now())\n  updatedAt DateTime  @updatedAt\n  deletedAt DateTime?\n\n  role   Role @relation(fields: [roleId], references: [id])\n  roleId Int\n\n  sites UserSite[]\n}\n\nenum RoleName {\n  ADMIN\n  OPERATOR\n  HRD\n}\n\nmodel Role {\n  id        Int       @id @default(autoincrement())\n  name      RoleName  @unique\n  createdAt DateTime  @default(now())\n  updatedAt DateTime  @updatedAt\n  deletedAt DateTime?\n\n  users User[]\n}\n\nmodel Site {\n  id        Int       @id @default(autoincrement())\n  name      String    @unique\n  image     String?\n  status    Boolean   @default(true)\n  createdAt DateTime  @default(now())\n  updatedAt DateTime  @updatedAt\n  deletedAt DateTime?\n\n  address   SiteAddress @relation(fields: [addressId], references: [id])\n  addressId Int         @unique\n\n  users UserSite[]\n}\n\nmodel SiteAddress {\n  id        Int       @id @default(autoincrement())\n  address   String\n  latitude  Float\n  longitude Float\n  createdAt DateTime  @default(now())\n  updatedAt DateTime  @updatedAt\n  deletedAt DateTime?\n\n  site Site?\n}\n\nmodel UserSite {\n  id        Int       @id @default(autoincrement())\n  createdAt DateTime  @default(now())\n  updatedAt DateTime  @updatedAt\n  deletedAt DateTime?\n\n  site   Site @relation(fields: [siteId], references: [id])\n  siteId Int\n\n  user   User @relation(fields: [userId], references: [id])\n  userId Int\n\n  @@unique([siteId, userId])\n}\n",
+  "inlineSchemaHash": "140c75c5d0cc8aab91c81fb9656f6474e0300188eda1425e5452b48cd069b9d4",
   "copyEngine": true
 }
 
@@ -228,7 +238,7 @@ if (!fs.existsSync(path.join(__dirname, 'schema.prisma'))) {
   config.isBundled = true
 }
 
-config.runtimeDataModel = JSON.parse("{\"models\":{\"User\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"username\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"password\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updatedAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"deletedAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"role\",\"kind\":\"object\",\"type\":\"Role\",\"relationName\":\"RoleToUser\"},{\"name\":\"roleId\",\"kind\":\"scalar\",\"type\":\"Int\"}],\"dbName\":null},\"Role\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"name\",\"kind\":\"enum\",\"type\":\"RoleName\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updatedAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"deletedAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"Users\",\"kind\":\"object\",\"type\":\"User\",\"relationName\":\"RoleToUser\"}],\"dbName\":null},\"Site\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"name\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"image\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updatedAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"deletedAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"addressId\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"address\",\"kind\":\"object\",\"type\":\"SiteAddress\",\"relationName\":\"SiteToSiteAddress\"}],\"dbName\":null},\"SiteAddress\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"street\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"subdistrict\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"city\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"province\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"country\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"postcode\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"coordinate\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"site\",\"kind\":\"object\",\"type\":\"Site\",\"relationName\":\"SiteToSiteAddress\"}],\"dbName\":null}},\"enums\":{},\"types\":{}}")
+config.runtimeDataModel = JSON.parse("{\"models\":{\"User\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"username\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"password\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updatedAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"deletedAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"role\",\"kind\":\"object\",\"type\":\"Role\",\"relationName\":\"RoleToUser\"},{\"name\":\"roleId\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"sites\",\"kind\":\"object\",\"type\":\"UserSite\",\"relationName\":\"UserToUserSite\"}],\"dbName\":null},\"Role\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"name\",\"kind\":\"enum\",\"type\":\"RoleName\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updatedAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"deletedAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"users\",\"kind\":\"object\",\"type\":\"User\",\"relationName\":\"RoleToUser\"}],\"dbName\":null},\"Site\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"name\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"image\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"status\",\"kind\":\"scalar\",\"type\":\"Boolean\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updatedAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"deletedAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"address\",\"kind\":\"object\",\"type\":\"SiteAddress\",\"relationName\":\"SiteToSiteAddress\"},{\"name\":\"addressId\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"users\",\"kind\":\"object\",\"type\":\"UserSite\",\"relationName\":\"SiteToUserSite\"}],\"dbName\":null},\"SiteAddress\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"address\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"latitude\",\"kind\":\"scalar\",\"type\":\"Float\"},{\"name\":\"longitude\",\"kind\":\"scalar\",\"type\":\"Float\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updatedAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"deletedAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"site\",\"kind\":\"object\",\"type\":\"Site\",\"relationName\":\"SiteToSiteAddress\"}],\"dbName\":null},\"UserSite\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updatedAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"deletedAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"site\",\"kind\":\"object\",\"type\":\"Site\",\"relationName\":\"SiteToUserSite\"},{\"name\":\"siteId\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"user\",\"kind\":\"object\",\"type\":\"User\",\"relationName\":\"UserToUserSite\"},{\"name\":\"userId\",\"kind\":\"scalar\",\"type\":\"Int\"}],\"dbName\":null}},\"enums\":{},\"types\":{}}")
 defineDmmfProperty(exports.Prisma, config.runtimeDataModel)
 config.engineWasm = undefined
 config.compilerWasm = {

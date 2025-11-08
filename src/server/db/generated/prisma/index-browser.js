@@ -142,6 +142,7 @@ exports.Prisma.SiteScalarFieldEnum = {
   id: 'id',
   name: 'name',
   image: 'image',
+  status: 'status',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
   deletedAt: 'deletedAt',
@@ -150,13 +151,21 @@ exports.Prisma.SiteScalarFieldEnum = {
 
 exports.Prisma.SiteAddressScalarFieldEnum = {
   id: 'id',
-  street: 'street',
-  subdistrict: 'subdistrict',
-  city: 'city',
-  province: 'province',
-  country: 'country',
-  postcode: 'postcode',
-  coordinate: 'coordinate'
+  address: 'address',
+  latitude: 'latitude',
+  longitude: 'longitude',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  deletedAt: 'deletedAt'
+};
+
+exports.Prisma.UserSiteScalarFieldEnum = {
+  id: 'id',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  deletedAt: 'deletedAt',
+  siteId: 'siteId',
+  userId: 'userId'
 };
 
 exports.Prisma.SortOrder = {
@@ -183,7 +192,8 @@ exports.Prisma.ModelName = {
   User: 'User',
   Role: 'Role',
   Site: 'Site',
-  SiteAddress: 'SiteAddress'
+  SiteAddress: 'SiteAddress',
+  UserSite: 'UserSite'
 };
 
 /**

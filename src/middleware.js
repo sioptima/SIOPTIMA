@@ -73,7 +73,7 @@ async function middlewareAuth(request) {
 //ignore internal route when redirecting
 export const config = {
   matcher: [
-    '/((?!_next/static|_next/image|favicon.ico|api|hero|.well-known).*)',
+    '/((?!_next/static|_next/image|favicon|api|hero|.well-known|marker-icon-2x|marker-shadow).*)',
   ],
 };
 

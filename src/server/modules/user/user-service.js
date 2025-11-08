@@ -67,4 +67,71 @@ export class UserService {
             role: role.name
         }
     }
+
+    static async getAll(page, size, roleName) {
+        const queryData = { page, size, roleName }
+        const getRequest = UserValidation.GET.parse(queryData);
+        if(!getRequest){
+            throw new ResponseError(400, "Invalid request data");
+        }
+
+        if (!queryData.roleName){
+            const users = await UserRepository.findAll(queryData);
+            return {
+                data: users,
+                paging: {
+                    size: size,
+                    total_page: Math.ceil(users.count / size),
+                    current_page: page,
+                }
+            }
+        }
+
+        const users = await UserRepository.findByRole(queryData)
+        if (!users) {
+            throw new ResponseError (204, "No site found")
+        }
+        
+        return {
+            data: users,
+            paging: {
+                size: size,
+                total_page: Math.ceil(users.count / size),
+                current_page: page,
+            }
+        }
+    }
+
+    static async assignSite(request) {
+        const getRequest = UserValidation.ASSIGN.parse(request);
+        if(!getRequest){
+            throw new ResponseError(400, "Invalid request data");
+        }
+
+        if (!queryData.roleName){
+            const users = await UserRepository.findAll(queryData);
+            return {
+                data: users,
+                paging: {
+                    size: size,
+                    total_page: Math.ceil(users.count / size),
+                    current_page: page,
+                }
+            }
+        }
+
+        const users = await UserRepository.findByRole(queryData)
+        if (!users) {
+            throw new ResponseError (204, "No site found")
+        }
+        
+        return {
+            data: users,
+            paging: {
+                size: size,
+                total_page: Math.ceil(users.count / size),
+                current_page: page,
+            }
+        }
+    }
 }

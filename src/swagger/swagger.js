@@ -1,5 +1,7 @@
 import swaggerJsdoc from "swagger-jsdoc";
 
+const url = process.env.DOMAIN_URL || "http://localhost:3000"
+
 const options = {
   definition: {
     openapi: "3.0.0",
@@ -10,12 +12,13 @@ const options = {
     },
     servers: [
       {
-        url: "http://localhost:3000",
+        url: url,
       },
     ],
   },
 
   apis: [
+    `./src/swagger/auth.yaml`, 
     `./src/swagger/*.yaml`, 
   ],
 };

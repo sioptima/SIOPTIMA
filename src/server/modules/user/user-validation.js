@@ -1,5 +1,6 @@
 import { z } from "zod"
 
+
 export class UserValidation {
 
     static REGISTER = z.object({
@@ -11,6 +12,17 @@ export class UserValidation {
     static LOGIN = z.object({
         username: z.string().min(1, "Name is required"),
         password: z.string().min(1, "Password is required"),
+    })
+
+    static GET = z.object({
+        page: z.number("Invalid query"),
+        size: z.number("Invalid query"),
+        roleName: z.enum(["ADMIN", "OPERATOR", "HRD"], "Invalid query").optional(),
+    })
+
+    static ASSIGN = z.object({
+        user: z.number("Invalid request"),
+        site: z.number("Invalid request")
     })
 
 }

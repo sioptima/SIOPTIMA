@@ -1,0 +1,55 @@
+import { ResponseError } from "@/src/lib/response-error";
+import { SiteRepository } from "./site-repository";
+import { SiteValidation } from "./site-validation";
+
+export class SiteService {
+
+    static async create(request) {
+        // validate request
+        const createRequest = SiteValidation.CREATE.parse(request);
+        if(!createRequest){
+            throw new ResponseError(400, "Invalid request data");
+        }
+        
+        const site = await SiteRepository.findByName(createRequest.name);
+        if (site) {
+            throw new ResponseError (404, "Site by this name already exist")
+        }
+        
+        const newSite = await SiteRepository.create({
+            name: createRequest.name,
+            address: createRequest.address,
+            latitude: createRequest.latitude,
+            longitude: createRequest.longitude
+        });
+        if (!newSite) {
+            throw new ResponseError(500, "Failed to create site");
+        }
+
+        return {
+            name: newSite.name,
+        }
+    }
+
+    static async getAll(page, size) {
+        const queryData = { page, size }
+        const getRequest = SiteValidation.GET.parse(queryData);
+        if(!getRequest){
+            throw new ResponseError(400, "Invalid request data");
+        }
+
+        const sites = await SiteRepository.findAll(queryData);
+        if (!sites) {
+            throw new ResponseError (204, "No site found")
+        }
+
+        return {
+            data: sites,
+            paging: {
+                size: size,
+                total_page: Math.ceil(sites.count / size),
+                current_page: page,
+            }
+        }
+    }
+}

@@ -21,7 +21,7 @@ export async function GET() {
         );
     } catch (error) {
       return Response.json( 
-         {message: error.message || "Internal Server Error"},
+         {message: error.errors || error.message || "Internal Server Error"},
          {status: error.status || 500} 
       );
     }

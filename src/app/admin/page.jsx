@@ -4346,6 +4346,7 @@ import {
   EyeIcon,
   XCircleIcon,
 } from "@heroicons/react/24/outline";
+import AddSiteButton from "@/src/components/site/AddSiteButton";
 
 export default function Admin() {
   const [selectedRange, setSelectedRange] = useState("Month");
@@ -5218,10 +5219,7 @@ export default function Admin() {
                 </h1>
                 <p className="text-gray-600">Manage IPAL sites and locations</p>
               </div>
-              <button className="bg-teal-600 text-white px-6 py-3 rounded-lg hover:bg-teal-700 transition flex items-center gap-2 font-medium mt-4 sm:mt-0">
-                <PlusIcon className="w-5 h-5" />
-                Add New Site
-              </button>
+              <AddSiteButton/>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">

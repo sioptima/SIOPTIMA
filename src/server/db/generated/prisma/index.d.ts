@@ -33,6 +33,11 @@ export type Site = $Result.DefaultSelection<Prisma.$SitePayload>
  * 
  */
 export type SiteAddress = $Result.DefaultSelection<Prisma.$SiteAddressPayload>
+/**
+ * Model UserSite
+ * 
+ */
+export type UserSite = $Result.DefaultSelection<Prisma.$UserSitePayload>
 
 /**
  * Enums
@@ -209,6 +214,16 @@ export class PrismaClient<
     * ```
     */
   get siteAddress(): Prisma.SiteAddressDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.userSite`: Exposes CRUD operations for the **UserSite** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more UserSites
+    * const userSites = await prisma.userSite.findMany()
+    * ```
+    */
+  get userSite(): Prisma.UserSiteDelegate<ExtArgs, ClientOptions>;
 }
 
 export namespace Prisma {
@@ -653,7 +668,8 @@ export namespace Prisma {
     User: 'User',
     Role: 'Role',
     Site: 'Site',
-    SiteAddress: 'SiteAddress'
+    SiteAddress: 'SiteAddress',
+    UserSite: 'UserSite'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -672,7 +688,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "user" | "role" | "site" | "siteAddress"
+      modelProps: "user" | "role" | "site" | "siteAddress" | "userSite"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -972,6 +988,80 @@ export namespace Prisma {
           }
         }
       }
+      UserSite: {
+        payload: Prisma.$UserSitePayload<ExtArgs>
+        fields: Prisma.UserSiteFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.UserSiteFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UserSitePayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.UserSiteFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UserSitePayload>
+          }
+          findFirst: {
+            args: Prisma.UserSiteFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UserSitePayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.UserSiteFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UserSitePayload>
+          }
+          findMany: {
+            args: Prisma.UserSiteFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UserSitePayload>[]
+          }
+          create: {
+            args: Prisma.UserSiteCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UserSitePayload>
+          }
+          createMany: {
+            args: Prisma.UserSiteCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.UserSiteCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UserSitePayload>[]
+          }
+          delete: {
+            args: Prisma.UserSiteDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UserSitePayload>
+          }
+          update: {
+            args: Prisma.UserSiteUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UserSitePayload>
+          }
+          deleteMany: {
+            args: Prisma.UserSiteDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.UserSiteUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.UserSiteUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UserSitePayload>[]
+          }
+          upsert: {
+            args: Prisma.UserSiteUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UserSitePayload>
+          }
+          aggregate: {
+            args: Prisma.UserSiteAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateUserSite>
+          }
+          groupBy: {
+            args: Prisma.UserSiteGroupByArgs<ExtArgs>
+            result: $Utils.Optional<UserSiteGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.UserSiteCountArgs<ExtArgs>
+            result: $Utils.Optional<UserSiteCountAggregateOutputType> | number
+          }
+        }
+      }
     }
   } & {
     other: {
@@ -1072,6 +1162,7 @@ export namespace Prisma {
     role?: RoleOmit
     site?: SiteOmit
     siteAddress?: SiteAddressOmit
+    userSite?: UserSiteOmit
   }
 
   /* Types for Logging */
@@ -1148,15 +1239,46 @@ export namespace Prisma {
 
 
   /**
+   * Count Type UserCountOutputType
+   */
+
+  export type UserCountOutputType = {
+    sites: number
+  }
+
+  export type UserCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    sites?: boolean | UserCountOutputTypeCountSitesArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UserCountOutputType
+     */
+    select?: UserCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountSitesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: UserSiteWhereInput
+  }
+
+
+  /**
    * Count Type RoleCountOutputType
    */
 
   export type RoleCountOutputType = {
-    Users: number
+    users: number
   }
 
   export type RoleCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    Users?: boolean | RoleCountOutputTypeCountUsersArgs
+    users?: boolean | RoleCountOutputTypeCountUsersArgs
   }
 
   // Custom InputTypes
@@ -1175,6 +1297,37 @@ export namespace Prisma {
    */
   export type RoleCountOutputTypeCountUsersArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: UserWhereInput
+  }
+
+
+  /**
+   * Count Type SiteCountOutputType
+   */
+
+  export type SiteCountOutputType = {
+    users: number
+  }
+
+  export type SiteCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    users?: boolean | SiteCountOutputTypeCountUsersArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * SiteCountOutputType without action
+   */
+  export type SiteCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SiteCountOutputType
+     */
+    select?: SiteCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * SiteCountOutputType without action
+   */
+  export type SiteCountOutputTypeCountUsersArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: UserSiteWhereInput
   }
 
 
@@ -1401,6 +1554,8 @@ export namespace Prisma {
     deletedAt?: boolean
     roleId?: boolean
     role?: boolean | RoleDefaultArgs<ExtArgs>
+    sites?: boolean | User$sitesArgs<ExtArgs>
+    _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["user"]>
 
   export type UserSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -1438,6 +1593,8 @@ export namespace Prisma {
   export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "username" | "password" | "createdAt" | "updatedAt" | "deletedAt" | "roleId", ExtArgs["result"]["user"]>
   export type UserInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     role?: boolean | RoleDefaultArgs<ExtArgs>
+    sites?: boolean | User$sitesArgs<ExtArgs>
+    _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type UserIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     role?: boolean | RoleDefaultArgs<ExtArgs>
@@ -1450,6 +1607,7 @@ export namespace Prisma {
     name: "User"
     objects: {
       role: Prisma.$RolePayload<ExtArgs>
+      sites: Prisma.$UserSitePayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: number
@@ -1854,6 +2012,7 @@ export namespace Prisma {
   export interface Prisma__UserClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     role<T extends RoleDefaultArgs<ExtArgs> = {}>(args?: Subset<T, RoleDefaultArgs<ExtArgs>>): Prisma__RoleClient<$Result.GetResult<Prisma.$RolePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    sites<T extends User$sitesArgs<ExtArgs> = {}>(args?: Subset<T, User$sitesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UserSitePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -2286,6 +2445,30 @@ export namespace Prisma {
   }
 
   /**
+   * User.sites
+   */
+  export type User$sitesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UserSite
+     */
+    select?: UserSiteSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the UserSite
+     */
+    omit?: UserSiteOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserSiteInclude<ExtArgs> | null
+    where?: UserSiteWhereInput
+    orderBy?: UserSiteOrderByWithRelationInput | UserSiteOrderByWithRelationInput[]
+    cursor?: UserSiteWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: UserSiteScalarFieldEnum | UserSiteScalarFieldEnum[]
+  }
+
+  /**
    * User without action
    */
   export type UserDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -2502,7 +2685,7 @@ export namespace Prisma {
     createdAt?: boolean
     updatedAt?: boolean
     deletedAt?: boolean
-    Users?: boolean | Role$UsersArgs<ExtArgs>
+    users?: boolean | Role$usersArgs<ExtArgs>
     _count?: boolean | RoleCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["role"]>
 
@@ -2532,7 +2715,7 @@ export namespace Prisma {
 
   export type RoleOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "createdAt" | "updatedAt" | "deletedAt", ExtArgs["result"]["role"]>
   export type RoleInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    Users?: boolean | Role$UsersArgs<ExtArgs>
+    users?: boolean | Role$usersArgs<ExtArgs>
     _count?: boolean | RoleCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type RoleIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
@@ -2541,7 +2724,7 @@ export namespace Prisma {
   export type $RolePayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Role"
     objects: {
-      Users: Prisma.$UserPayload<ExtArgs>[]
+      users: Prisma.$UserPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: number
@@ -2943,7 +3126,7 @@ export namespace Prisma {
    */
   export interface Prisma__RoleClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    Users<T extends Role$UsersArgs<ExtArgs> = {}>(args?: Subset<T, Role$UsersArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    users<T extends Role$usersArgs<ExtArgs> = {}>(args?: Subset<T, Role$usersArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -3366,9 +3549,9 @@ export namespace Prisma {
   }
 
   /**
-   * Role.Users
+   * Role.users
    */
-  export type Role$UsersArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type Role$usersArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the User
      */
@@ -3434,6 +3617,7 @@ export namespace Prisma {
     id: number | null
     name: string | null
     image: string | null
+    status: boolean | null
     createdAt: Date | null
     updatedAt: Date | null
     deletedAt: Date | null
@@ -3444,6 +3628,7 @@ export namespace Prisma {
     id: number | null
     name: string | null
     image: string | null
+    status: boolean | null
     createdAt: Date | null
     updatedAt: Date | null
     deletedAt: Date | null
@@ -3454,6 +3639,7 @@ export namespace Prisma {
     id: number
     name: number
     image: number
+    status: number
     createdAt: number
     updatedAt: number
     deletedAt: number
@@ -3476,6 +3662,7 @@ export namespace Prisma {
     id?: true
     name?: true
     image?: true
+    status?: true
     createdAt?: true
     updatedAt?: true
     deletedAt?: true
@@ -3486,6 +3673,7 @@ export namespace Prisma {
     id?: true
     name?: true
     image?: true
+    status?: true
     createdAt?: true
     updatedAt?: true
     deletedAt?: true
@@ -3496,6 +3684,7 @@ export namespace Prisma {
     id?: true
     name?: true
     image?: true
+    status?: true
     createdAt?: true
     updatedAt?: true
     deletedAt?: true
@@ -3593,6 +3782,7 @@ export namespace Prisma {
     id: number
     name: string
     image: string | null
+    status: boolean
     createdAt: Date
     updatedAt: Date
     deletedAt: Date | null
@@ -3622,17 +3812,21 @@ export namespace Prisma {
     id?: boolean
     name?: boolean
     image?: boolean
+    status?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     deletedAt?: boolean
     addressId?: boolean
     address?: boolean | SiteAddressDefaultArgs<ExtArgs>
+    users?: boolean | Site$usersArgs<ExtArgs>
+    _count?: boolean | SiteCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["site"]>
 
   export type SiteSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     name?: boolean
     image?: boolean
+    status?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     deletedAt?: boolean
@@ -3644,6 +3838,7 @@ export namespace Prisma {
     id?: boolean
     name?: boolean
     image?: boolean
+    status?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     deletedAt?: boolean
@@ -3655,15 +3850,18 @@ export namespace Prisma {
     id?: boolean
     name?: boolean
     image?: boolean
+    status?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     deletedAt?: boolean
     addressId?: boolean
   }
 
-  export type SiteOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "image" | "createdAt" | "updatedAt" | "deletedAt" | "addressId", ExtArgs["result"]["site"]>
+  export type SiteOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "image" | "status" | "createdAt" | "updatedAt" | "deletedAt" | "addressId", ExtArgs["result"]["site"]>
   export type SiteInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     address?: boolean | SiteAddressDefaultArgs<ExtArgs>
+    users?: boolean | Site$usersArgs<ExtArgs>
+    _count?: boolean | SiteCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type SiteIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     address?: boolean | SiteAddressDefaultArgs<ExtArgs>
@@ -3676,11 +3874,13 @@ export namespace Prisma {
     name: "Site"
     objects: {
       address: Prisma.$SiteAddressPayload<ExtArgs>
+      users: Prisma.$UserSitePayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: number
       name: string
       image: string | null
+      status: boolean
       createdAt: Date
       updatedAt: Date
       deletedAt: Date | null
@@ -4080,6 +4280,7 @@ export namespace Prisma {
   export interface Prisma__SiteClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     address<T extends SiteAddressDefaultArgs<ExtArgs> = {}>(args?: Subset<T, SiteAddressDefaultArgs<ExtArgs>>): Prisma__SiteAddressClient<$Result.GetResult<Prisma.$SiteAddressPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    users<T extends Site$usersArgs<ExtArgs> = {}>(args?: Subset<T, Site$usersArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UserSitePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -4112,6 +4313,7 @@ export namespace Prisma {
     readonly id: FieldRef<"Site", 'Int'>
     readonly name: FieldRef<"Site", 'String'>
     readonly image: FieldRef<"Site", 'String'>
+    readonly status: FieldRef<"Site", 'Boolean'>
     readonly createdAt: FieldRef<"Site", 'DateTime'>
     readonly updatedAt: FieldRef<"Site", 'DateTime'>
     readonly deletedAt: FieldRef<"Site", 'DateTime'>
@@ -4512,6 +4714,30 @@ export namespace Prisma {
   }
 
   /**
+   * Site.users
+   */
+  export type Site$usersArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UserSite
+     */
+    select?: UserSiteSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the UserSite
+     */
+    omit?: UserSiteOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserSiteInclude<ExtArgs> | null
+    where?: UserSiteWhereInput
+    orderBy?: UserSiteOrderByWithRelationInput | UserSiteOrderByWithRelationInput[]
+    cursor?: UserSiteWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: UserSiteScalarFieldEnum | UserSiteScalarFieldEnum[]
+  }
+
+  /**
    * Site without action
    */
   export type SiteDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -4544,86 +4770,88 @@ export namespace Prisma {
 
   export type SiteAddressAvgAggregateOutputType = {
     id: number | null
+    latitude: number | null
+    longitude: number | null
   }
 
   export type SiteAddressSumAggregateOutputType = {
     id: number | null
+    latitude: number | null
+    longitude: number | null
   }
 
   export type SiteAddressMinAggregateOutputType = {
     id: number | null
-    street: string | null
-    subdistrict: string | null
-    city: string | null
-    province: string | null
-    country: string | null
-    postcode: string | null
-    coordinate: string | null
+    address: string | null
+    latitude: number | null
+    longitude: number | null
+    createdAt: Date | null
+    updatedAt: Date | null
+    deletedAt: Date | null
   }
 
   export type SiteAddressMaxAggregateOutputType = {
     id: number | null
-    street: string | null
-    subdistrict: string | null
-    city: string | null
-    province: string | null
-    country: string | null
-    postcode: string | null
-    coordinate: string | null
+    address: string | null
+    latitude: number | null
+    longitude: number | null
+    createdAt: Date | null
+    updatedAt: Date | null
+    deletedAt: Date | null
   }
 
   export type SiteAddressCountAggregateOutputType = {
     id: number
-    street: number
-    subdistrict: number
-    city: number
-    province: number
-    country: number
-    postcode: number
-    coordinate: number
+    address: number
+    latitude: number
+    longitude: number
+    createdAt: number
+    updatedAt: number
+    deletedAt: number
     _all: number
   }
 
 
   export type SiteAddressAvgAggregateInputType = {
     id?: true
+    latitude?: true
+    longitude?: true
   }
 
   export type SiteAddressSumAggregateInputType = {
     id?: true
+    latitude?: true
+    longitude?: true
   }
 
   export type SiteAddressMinAggregateInputType = {
     id?: true
-    street?: true
-    subdistrict?: true
-    city?: true
-    province?: true
-    country?: true
-    postcode?: true
-    coordinate?: true
+    address?: true
+    latitude?: true
+    longitude?: true
+    createdAt?: true
+    updatedAt?: true
+    deletedAt?: true
   }
 
   export type SiteAddressMaxAggregateInputType = {
     id?: true
-    street?: true
-    subdistrict?: true
-    city?: true
-    province?: true
-    country?: true
-    postcode?: true
-    coordinate?: true
+    address?: true
+    latitude?: true
+    longitude?: true
+    createdAt?: true
+    updatedAt?: true
+    deletedAt?: true
   }
 
   export type SiteAddressCountAggregateInputType = {
     id?: true
-    street?: true
-    subdistrict?: true
-    city?: true
-    province?: true
-    country?: true
-    postcode?: true
-    coordinate?: true
+    address?: true
+    latitude?: true
+    longitude?: true
+    createdAt?: true
+    updatedAt?: true
+    deletedAt?: true
     _all?: true
   }
 
@@ -4715,13 +4943,12 @@ export namespace Prisma {
 
   export type SiteAddressGroupByOutputType = {
     id: number
-    street: string
-    subdistrict: string
-    city: string
-    province: string
-    country: string
-    postcode: string
-    coordinate: string
+    address: string
+    latitude: number
+    longitude: number
+    createdAt: Date
+    updatedAt: Date
+    deletedAt: Date | null
     _count: SiteAddressCountAggregateOutputType | null
     _avg: SiteAddressAvgAggregateOutputType | null
     _sum: SiteAddressSumAggregateOutputType | null
@@ -4745,50 +4972,46 @@ export namespace Prisma {
 
   export type SiteAddressSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
-    street?: boolean
-    subdistrict?: boolean
-    city?: boolean
-    province?: boolean
-    country?: boolean
-    postcode?: boolean
-    coordinate?: boolean
+    address?: boolean
+    latitude?: boolean
+    longitude?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    deletedAt?: boolean
     site?: boolean | SiteAddress$siteArgs<ExtArgs>
   }, ExtArgs["result"]["siteAddress"]>
 
   export type SiteAddressSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
-    street?: boolean
-    subdistrict?: boolean
-    city?: boolean
-    province?: boolean
-    country?: boolean
-    postcode?: boolean
-    coordinate?: boolean
+    address?: boolean
+    latitude?: boolean
+    longitude?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    deletedAt?: boolean
   }, ExtArgs["result"]["siteAddress"]>
 
   export type SiteAddressSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
-    street?: boolean
-    subdistrict?: boolean
-    city?: boolean
-    province?: boolean
-    country?: boolean
-    postcode?: boolean
-    coordinate?: boolean
+    address?: boolean
+    latitude?: boolean
+    longitude?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    deletedAt?: boolean
   }, ExtArgs["result"]["siteAddress"]>
 
   export type SiteAddressSelectScalar = {
     id?: boolean
-    street?: boolean
-    subdistrict?: boolean
-    city?: boolean
-    province?: boolean
-    country?: boolean
-    postcode?: boolean
-    coordinate?: boolean
+    address?: boolean
+    latitude?: boolean
+    longitude?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    deletedAt?: boolean
   }
 
-  export type SiteAddressOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "street" | "subdistrict" | "city" | "province" | "country" | "postcode" | "coordinate", ExtArgs["result"]["siteAddress"]>
+  export type SiteAddressOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "address" | "latitude" | "longitude" | "createdAt" | "updatedAt" | "deletedAt", ExtArgs["result"]["siteAddress"]>
   export type SiteAddressInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     site?: boolean | SiteAddress$siteArgs<ExtArgs>
   }
@@ -4802,13 +5025,12 @@ export namespace Prisma {
     }
     scalars: $Extensions.GetPayloadResult<{
       id: number
-      street: string
-      subdistrict: string
-      city: string
-      province: string
-      country: string
-      postcode: string
-      coordinate: string
+      address: string
+      latitude: number
+      longitude: number
+      createdAt: Date
+      updatedAt: Date
+      deletedAt: Date | null
     }, ExtArgs["result"]["siteAddress"]>
     composites: {}
   }
@@ -5234,13 +5456,12 @@ export namespace Prisma {
    */
   interface SiteAddressFieldRefs {
     readonly id: FieldRef<"SiteAddress", 'Int'>
-    readonly street: FieldRef<"SiteAddress", 'String'>
-    readonly subdistrict: FieldRef<"SiteAddress", 'String'>
-    readonly city: FieldRef<"SiteAddress", 'String'>
-    readonly province: FieldRef<"SiteAddress", 'String'>
-    readonly country: FieldRef<"SiteAddress", 'String'>
-    readonly postcode: FieldRef<"SiteAddress", 'String'>
-    readonly coordinate: FieldRef<"SiteAddress", 'String'>
+    readonly address: FieldRef<"SiteAddress", 'String'>
+    readonly latitude: FieldRef<"SiteAddress", 'Float'>
+    readonly longitude: FieldRef<"SiteAddress", 'Float'>
+    readonly createdAt: FieldRef<"SiteAddress", 'DateTime'>
+    readonly updatedAt: FieldRef<"SiteAddress", 'DateTime'>
+    readonly deletedAt: FieldRef<"SiteAddress", 'DateTime'>
   }
     
 
@@ -5667,6 +5888,1127 @@ export namespace Prisma {
 
 
   /**
+   * Model UserSite
+   */
+
+  export type AggregateUserSite = {
+    _count: UserSiteCountAggregateOutputType | null
+    _avg: UserSiteAvgAggregateOutputType | null
+    _sum: UserSiteSumAggregateOutputType | null
+    _min: UserSiteMinAggregateOutputType | null
+    _max: UserSiteMaxAggregateOutputType | null
+  }
+
+  export type UserSiteAvgAggregateOutputType = {
+    id: number | null
+    siteId: number | null
+    userId: number | null
+  }
+
+  export type UserSiteSumAggregateOutputType = {
+    id: number | null
+    siteId: number | null
+    userId: number | null
+  }
+
+  export type UserSiteMinAggregateOutputType = {
+    id: number | null
+    createdAt: Date | null
+    updatedAt: Date | null
+    deletedAt: Date | null
+    siteId: number | null
+    userId: number | null
+  }
+
+  export type UserSiteMaxAggregateOutputType = {
+    id: number | null
+    createdAt: Date | null
+    updatedAt: Date | null
+    deletedAt: Date | null
+    siteId: number | null
+    userId: number | null
+  }
+
+  export type UserSiteCountAggregateOutputType = {
+    id: number
+    createdAt: number
+    updatedAt: number
+    deletedAt: number
+    siteId: number
+    userId: number
+    _all: number
+  }
+
+
+  export type UserSiteAvgAggregateInputType = {
+    id?: true
+    siteId?: true
+    userId?: true
+  }
+
+  export type UserSiteSumAggregateInputType = {
+    id?: true
+    siteId?: true
+    userId?: true
+  }
+
+  export type UserSiteMinAggregateInputType = {
+    id?: true
+    createdAt?: true
+    updatedAt?: true
+    deletedAt?: true
+    siteId?: true
+    userId?: true
+  }
+
+  export type UserSiteMaxAggregateInputType = {
+    id?: true
+    createdAt?: true
+    updatedAt?: true
+    deletedAt?: true
+    siteId?: true
+    userId?: true
+  }
+
+  export type UserSiteCountAggregateInputType = {
+    id?: true
+    createdAt?: true
+    updatedAt?: true
+    deletedAt?: true
+    siteId?: true
+    userId?: true
+    _all?: true
+  }
+
+  export type UserSiteAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which UserSite to aggregate.
+     */
+    where?: UserSiteWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of UserSites to fetch.
+     */
+    orderBy?: UserSiteOrderByWithRelationInput | UserSiteOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: UserSiteWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` UserSites from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` UserSites.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned UserSites
+    **/
+    _count?: true | UserSiteCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: UserSiteAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: UserSiteSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: UserSiteMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: UserSiteMaxAggregateInputType
+  }
+
+  export type GetUserSiteAggregateType<T extends UserSiteAggregateArgs> = {
+        [P in keyof T & keyof AggregateUserSite]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateUserSite[P]>
+      : GetScalarType<T[P], AggregateUserSite[P]>
+  }
+
+
+
+
+  export type UserSiteGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: UserSiteWhereInput
+    orderBy?: UserSiteOrderByWithAggregationInput | UserSiteOrderByWithAggregationInput[]
+    by: UserSiteScalarFieldEnum[] | UserSiteScalarFieldEnum
+    having?: UserSiteScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: UserSiteCountAggregateInputType | true
+    _avg?: UserSiteAvgAggregateInputType
+    _sum?: UserSiteSumAggregateInputType
+    _min?: UserSiteMinAggregateInputType
+    _max?: UserSiteMaxAggregateInputType
+  }
+
+  export type UserSiteGroupByOutputType = {
+    id: number
+    createdAt: Date
+    updatedAt: Date
+    deletedAt: Date | null
+    siteId: number
+    userId: number
+    _count: UserSiteCountAggregateOutputType | null
+    _avg: UserSiteAvgAggregateOutputType | null
+    _sum: UserSiteSumAggregateOutputType | null
+    _min: UserSiteMinAggregateOutputType | null
+    _max: UserSiteMaxAggregateOutputType | null
+  }
+
+  type GetUserSiteGroupByPayload<T extends UserSiteGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<UserSiteGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof UserSiteGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], UserSiteGroupByOutputType[P]>
+            : GetScalarType<T[P], UserSiteGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type UserSiteSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    deletedAt?: boolean
+    siteId?: boolean
+    userId?: boolean
+    site?: boolean | SiteDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["userSite"]>
+
+  export type UserSiteSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    deletedAt?: boolean
+    siteId?: boolean
+    userId?: boolean
+    site?: boolean | SiteDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["userSite"]>
+
+  export type UserSiteSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    deletedAt?: boolean
+    siteId?: boolean
+    userId?: boolean
+    site?: boolean | SiteDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["userSite"]>
+
+  export type UserSiteSelectScalar = {
+    id?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    deletedAt?: boolean
+    siteId?: boolean
+    userId?: boolean
+  }
+
+  export type UserSiteOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "createdAt" | "updatedAt" | "deletedAt" | "siteId" | "userId", ExtArgs["result"]["userSite"]>
+  export type UserSiteInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    site?: boolean | SiteDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type UserSiteIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    site?: boolean | SiteDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type UserSiteIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    site?: boolean | SiteDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+
+  export type $UserSitePayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "UserSite"
+    objects: {
+      site: Prisma.$SitePayload<ExtArgs>
+      user: Prisma.$UserPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: number
+      createdAt: Date
+      updatedAt: Date
+      deletedAt: Date | null
+      siteId: number
+      userId: number
+    }, ExtArgs["result"]["userSite"]>
+    composites: {}
+  }
+
+  type UserSiteGetPayload<S extends boolean | null | undefined | UserSiteDefaultArgs> = $Result.GetResult<Prisma.$UserSitePayload, S>
+
+  type UserSiteCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<UserSiteFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: UserSiteCountAggregateInputType | true
+    }
+
+  export interface UserSiteDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['UserSite'], meta: { name: 'UserSite' } }
+    /**
+     * Find zero or one UserSite that matches the filter.
+     * @param {UserSiteFindUniqueArgs} args - Arguments to find a UserSite
+     * @example
+     * // Get one UserSite
+     * const userSite = await prisma.userSite.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends UserSiteFindUniqueArgs>(args: SelectSubset<T, UserSiteFindUniqueArgs<ExtArgs>>): Prisma__UserSiteClient<$Result.GetResult<Prisma.$UserSitePayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one UserSite that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {UserSiteFindUniqueOrThrowArgs} args - Arguments to find a UserSite
+     * @example
+     * // Get one UserSite
+     * const userSite = await prisma.userSite.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends UserSiteFindUniqueOrThrowArgs>(args: SelectSubset<T, UserSiteFindUniqueOrThrowArgs<ExtArgs>>): Prisma__UserSiteClient<$Result.GetResult<Prisma.$UserSitePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first UserSite that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {UserSiteFindFirstArgs} args - Arguments to find a UserSite
+     * @example
+     * // Get one UserSite
+     * const userSite = await prisma.userSite.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends UserSiteFindFirstArgs>(args?: SelectSubset<T, UserSiteFindFirstArgs<ExtArgs>>): Prisma__UserSiteClient<$Result.GetResult<Prisma.$UserSitePayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first UserSite that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {UserSiteFindFirstOrThrowArgs} args - Arguments to find a UserSite
+     * @example
+     * // Get one UserSite
+     * const userSite = await prisma.userSite.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends UserSiteFindFirstOrThrowArgs>(args?: SelectSubset<T, UserSiteFindFirstOrThrowArgs<ExtArgs>>): Prisma__UserSiteClient<$Result.GetResult<Prisma.$UserSitePayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more UserSites that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {UserSiteFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all UserSites
+     * const userSites = await prisma.userSite.findMany()
+     * 
+     * // Get first 10 UserSites
+     * const userSites = await prisma.userSite.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const userSiteWithIdOnly = await prisma.userSite.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends UserSiteFindManyArgs>(args?: SelectSubset<T, UserSiteFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UserSitePayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a UserSite.
+     * @param {UserSiteCreateArgs} args - Arguments to create a UserSite.
+     * @example
+     * // Create one UserSite
+     * const UserSite = await prisma.userSite.create({
+     *   data: {
+     *     // ... data to create a UserSite
+     *   }
+     * })
+     * 
+     */
+    create<T extends UserSiteCreateArgs>(args: SelectSubset<T, UserSiteCreateArgs<ExtArgs>>): Prisma__UserSiteClient<$Result.GetResult<Prisma.$UserSitePayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many UserSites.
+     * @param {UserSiteCreateManyArgs} args - Arguments to create many UserSites.
+     * @example
+     * // Create many UserSites
+     * const userSite = await prisma.userSite.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends UserSiteCreateManyArgs>(args?: SelectSubset<T, UserSiteCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many UserSites and returns the data saved in the database.
+     * @param {UserSiteCreateManyAndReturnArgs} args - Arguments to create many UserSites.
+     * @example
+     * // Create many UserSites
+     * const userSite = await prisma.userSite.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many UserSites and only return the `id`
+     * const userSiteWithIdOnly = await prisma.userSite.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends UserSiteCreateManyAndReturnArgs>(args?: SelectSubset<T, UserSiteCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UserSitePayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a UserSite.
+     * @param {UserSiteDeleteArgs} args - Arguments to delete one UserSite.
+     * @example
+     * // Delete one UserSite
+     * const UserSite = await prisma.userSite.delete({
+     *   where: {
+     *     // ... filter to delete one UserSite
+     *   }
+     * })
+     * 
+     */
+    delete<T extends UserSiteDeleteArgs>(args: SelectSubset<T, UserSiteDeleteArgs<ExtArgs>>): Prisma__UserSiteClient<$Result.GetResult<Prisma.$UserSitePayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one UserSite.
+     * @param {UserSiteUpdateArgs} args - Arguments to update one UserSite.
+     * @example
+     * // Update one UserSite
+     * const userSite = await prisma.userSite.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends UserSiteUpdateArgs>(args: SelectSubset<T, UserSiteUpdateArgs<ExtArgs>>): Prisma__UserSiteClient<$Result.GetResult<Prisma.$UserSitePayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more UserSites.
+     * @param {UserSiteDeleteManyArgs} args - Arguments to filter UserSites to delete.
+     * @example
+     * // Delete a few UserSites
+     * const { count } = await prisma.userSite.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends UserSiteDeleteManyArgs>(args?: SelectSubset<T, UserSiteDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more UserSites.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {UserSiteUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many UserSites
+     * const userSite = await prisma.userSite.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends UserSiteUpdateManyArgs>(args: SelectSubset<T, UserSiteUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more UserSites and returns the data updated in the database.
+     * @param {UserSiteUpdateManyAndReturnArgs} args - Arguments to update many UserSites.
+     * @example
+     * // Update many UserSites
+     * const userSite = await prisma.userSite.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more UserSites and only return the `id`
+     * const userSiteWithIdOnly = await prisma.userSite.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends UserSiteUpdateManyAndReturnArgs>(args: SelectSubset<T, UserSiteUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UserSitePayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one UserSite.
+     * @param {UserSiteUpsertArgs} args - Arguments to update or create a UserSite.
+     * @example
+     * // Update or create a UserSite
+     * const userSite = await prisma.userSite.upsert({
+     *   create: {
+     *     // ... data to create a UserSite
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the UserSite we want to update
+     *   }
+     * })
+     */
+    upsert<T extends UserSiteUpsertArgs>(args: SelectSubset<T, UserSiteUpsertArgs<ExtArgs>>): Prisma__UserSiteClient<$Result.GetResult<Prisma.$UserSitePayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of UserSites.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {UserSiteCountArgs} args - Arguments to filter UserSites to count.
+     * @example
+     * // Count the number of UserSites
+     * const count = await prisma.userSite.count({
+     *   where: {
+     *     // ... the filter for the UserSites we want to count
+     *   }
+     * })
+    **/
+    count<T extends UserSiteCountArgs>(
+      args?: Subset<T, UserSiteCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], UserSiteCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a UserSite.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {UserSiteAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends UserSiteAggregateArgs>(args: Subset<T, UserSiteAggregateArgs>): Prisma.PrismaPromise<GetUserSiteAggregateType<T>>
+
+    /**
+     * Group by UserSite.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {UserSiteGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends UserSiteGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: UserSiteGroupByArgs['orderBy'] }
+        : { orderBy?: UserSiteGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, UserSiteGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetUserSiteGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the UserSite model
+   */
+  readonly fields: UserSiteFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for UserSite.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__UserSiteClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    site<T extends SiteDefaultArgs<ExtArgs> = {}>(args?: Subset<T, SiteDefaultArgs<ExtArgs>>): Prisma__SiteClient<$Result.GetResult<Prisma.$SitePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the UserSite model
+   */
+  interface UserSiteFieldRefs {
+    readonly id: FieldRef<"UserSite", 'Int'>
+    readonly createdAt: FieldRef<"UserSite", 'DateTime'>
+    readonly updatedAt: FieldRef<"UserSite", 'DateTime'>
+    readonly deletedAt: FieldRef<"UserSite", 'DateTime'>
+    readonly siteId: FieldRef<"UserSite", 'Int'>
+    readonly userId: FieldRef<"UserSite", 'Int'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * UserSite findUnique
+   */
+  export type UserSiteFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UserSite
+     */
+    select?: UserSiteSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the UserSite
+     */
+    omit?: UserSiteOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserSiteInclude<ExtArgs> | null
+    /**
+     * Filter, which UserSite to fetch.
+     */
+    where: UserSiteWhereUniqueInput
+  }
+
+  /**
+   * UserSite findUniqueOrThrow
+   */
+  export type UserSiteFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UserSite
+     */
+    select?: UserSiteSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the UserSite
+     */
+    omit?: UserSiteOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserSiteInclude<ExtArgs> | null
+    /**
+     * Filter, which UserSite to fetch.
+     */
+    where: UserSiteWhereUniqueInput
+  }
+
+  /**
+   * UserSite findFirst
+   */
+  export type UserSiteFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UserSite
+     */
+    select?: UserSiteSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the UserSite
+     */
+    omit?: UserSiteOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserSiteInclude<ExtArgs> | null
+    /**
+     * Filter, which UserSite to fetch.
+     */
+    where?: UserSiteWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of UserSites to fetch.
+     */
+    orderBy?: UserSiteOrderByWithRelationInput | UserSiteOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for UserSites.
+     */
+    cursor?: UserSiteWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` UserSites from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` UserSites.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of UserSites.
+     */
+    distinct?: UserSiteScalarFieldEnum | UserSiteScalarFieldEnum[]
+  }
+
+  /**
+   * UserSite findFirstOrThrow
+   */
+  export type UserSiteFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UserSite
+     */
+    select?: UserSiteSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the UserSite
+     */
+    omit?: UserSiteOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserSiteInclude<ExtArgs> | null
+    /**
+     * Filter, which UserSite to fetch.
+     */
+    where?: UserSiteWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of UserSites to fetch.
+     */
+    orderBy?: UserSiteOrderByWithRelationInput | UserSiteOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for UserSites.
+     */
+    cursor?: UserSiteWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` UserSites from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` UserSites.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of UserSites.
+     */
+    distinct?: UserSiteScalarFieldEnum | UserSiteScalarFieldEnum[]
+  }
+
+  /**
+   * UserSite findMany
+   */
+  export type UserSiteFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UserSite
+     */
+    select?: UserSiteSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the UserSite
+     */
+    omit?: UserSiteOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserSiteInclude<ExtArgs> | null
+    /**
+     * Filter, which UserSites to fetch.
+     */
+    where?: UserSiteWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of UserSites to fetch.
+     */
+    orderBy?: UserSiteOrderByWithRelationInput | UserSiteOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing UserSites.
+     */
+    cursor?: UserSiteWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` UserSites from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` UserSites.
+     */
+    skip?: number
+    distinct?: UserSiteScalarFieldEnum | UserSiteScalarFieldEnum[]
+  }
+
+  /**
+   * UserSite create
+   */
+  export type UserSiteCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UserSite
+     */
+    select?: UserSiteSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the UserSite
+     */
+    omit?: UserSiteOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserSiteInclude<ExtArgs> | null
+    /**
+     * The data needed to create a UserSite.
+     */
+    data: XOR<UserSiteCreateInput, UserSiteUncheckedCreateInput>
+  }
+
+  /**
+   * UserSite createMany
+   */
+  export type UserSiteCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many UserSites.
+     */
+    data: UserSiteCreateManyInput | UserSiteCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * UserSite createManyAndReturn
+   */
+  export type UserSiteCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UserSite
+     */
+    select?: UserSiteSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the UserSite
+     */
+    omit?: UserSiteOmit<ExtArgs> | null
+    /**
+     * The data used to create many UserSites.
+     */
+    data: UserSiteCreateManyInput | UserSiteCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserSiteIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * UserSite update
+   */
+  export type UserSiteUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UserSite
+     */
+    select?: UserSiteSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the UserSite
+     */
+    omit?: UserSiteOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserSiteInclude<ExtArgs> | null
+    /**
+     * The data needed to update a UserSite.
+     */
+    data: XOR<UserSiteUpdateInput, UserSiteUncheckedUpdateInput>
+    /**
+     * Choose, which UserSite to update.
+     */
+    where: UserSiteWhereUniqueInput
+  }
+
+  /**
+   * UserSite updateMany
+   */
+  export type UserSiteUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update UserSites.
+     */
+    data: XOR<UserSiteUpdateManyMutationInput, UserSiteUncheckedUpdateManyInput>
+    /**
+     * Filter which UserSites to update
+     */
+    where?: UserSiteWhereInput
+    /**
+     * Limit how many UserSites to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * UserSite updateManyAndReturn
+   */
+  export type UserSiteUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UserSite
+     */
+    select?: UserSiteSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the UserSite
+     */
+    omit?: UserSiteOmit<ExtArgs> | null
+    /**
+     * The data used to update UserSites.
+     */
+    data: XOR<UserSiteUpdateManyMutationInput, UserSiteUncheckedUpdateManyInput>
+    /**
+     * Filter which UserSites to update
+     */
+    where?: UserSiteWhereInput
+    /**
+     * Limit how many UserSites to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserSiteIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * UserSite upsert
+   */
+  export type UserSiteUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UserSite
+     */
+    select?: UserSiteSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the UserSite
+     */
+    omit?: UserSiteOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserSiteInclude<ExtArgs> | null
+    /**
+     * The filter to search for the UserSite to update in case it exists.
+     */
+    where: UserSiteWhereUniqueInput
+    /**
+     * In case the UserSite found by the `where` argument doesn't exist, create a new UserSite with this data.
+     */
+    create: XOR<UserSiteCreateInput, UserSiteUncheckedCreateInput>
+    /**
+     * In case the UserSite was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<UserSiteUpdateInput, UserSiteUncheckedUpdateInput>
+  }
+
+  /**
+   * UserSite delete
+   */
+  export type UserSiteDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UserSite
+     */
+    select?: UserSiteSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the UserSite
+     */
+    omit?: UserSiteOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserSiteInclude<ExtArgs> | null
+    /**
+     * Filter which UserSite to delete.
+     */
+    where: UserSiteWhereUniqueInput
+  }
+
+  /**
+   * UserSite deleteMany
+   */
+  export type UserSiteDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which UserSites to delete
+     */
+    where?: UserSiteWhereInput
+    /**
+     * Limit how many UserSites to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * UserSite without action
+   */
+  export type UserSiteDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UserSite
+     */
+    select?: UserSiteSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the UserSite
+     */
+    omit?: UserSiteOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserSiteInclude<ExtArgs> | null
+  }
+
+
+  /**
    * Enums
    */
 
@@ -5708,6 +7050,7 @@ export namespace Prisma {
     id: 'id',
     name: 'name',
     image: 'image',
+    status: 'status',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt',
     deletedAt: 'deletedAt',
@@ -5719,16 +7062,27 @@ export namespace Prisma {
 
   export const SiteAddressScalarFieldEnum: {
     id: 'id',
-    street: 'street',
-    subdistrict: 'subdistrict',
-    city: 'city',
-    province: 'province',
-    country: 'country',
-    postcode: 'postcode',
-    coordinate: 'coordinate'
+    address: 'address',
+    latitude: 'latitude',
+    longitude: 'longitude',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt',
+    deletedAt: 'deletedAt'
   };
 
   export type SiteAddressScalarFieldEnum = (typeof SiteAddressScalarFieldEnum)[keyof typeof SiteAddressScalarFieldEnum]
+
+
+  export const UserSiteScalarFieldEnum: {
+    id: 'id',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt',
+    deletedAt: 'deletedAt',
+    siteId: 'siteId',
+    userId: 'userId'
+  };
+
+  export type UserSiteScalarFieldEnum = (typeof UserSiteScalarFieldEnum)[keyof typeof UserSiteScalarFieldEnum]
 
 
   export const SortOrder: {
@@ -5817,6 +7171,13 @@ export namespace Prisma {
 
 
   /**
+   * Reference to a field of type 'Boolean'
+   */
+  export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Boolean'>
+    
+
+
+  /**
    * Reference to a field of type 'Float'
    */
   export type FloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float'>
@@ -5845,6 +7206,7 @@ export namespace Prisma {
     deletedAt?: DateTimeNullableFilter<"User"> | Date | string | null
     roleId?: IntFilter<"User"> | number
     role?: XOR<RoleScalarRelationFilter, RoleWhereInput>
+    sites?: UserSiteListRelationFilter
   }
 
   export type UserOrderByWithRelationInput = {
@@ -5856,6 +7218,7 @@ export namespace Prisma {
     deletedAt?: SortOrderInput | SortOrder
     roleId?: SortOrder
     role?: RoleOrderByWithRelationInput
+    sites?: UserSiteOrderByRelationAggregateInput
   }
 
   export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -5870,6 +7233,7 @@ export namespace Prisma {
     deletedAt?: DateTimeNullableFilter<"User"> | Date | string | null
     roleId?: IntFilter<"User"> | number
     role?: XOR<RoleScalarRelationFilter, RoleWhereInput>
+    sites?: UserSiteListRelationFilter
   }, "id" | "username">
 
   export type UserOrderByWithAggregationInput = {
@@ -5909,7 +7273,7 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"Role"> | Date | string
     updatedAt?: DateTimeFilter<"Role"> | Date | string
     deletedAt?: DateTimeNullableFilter<"Role"> | Date | string | null
-    Users?: UserListRelationFilter
+    users?: UserListRelationFilter
   }
 
   export type RoleOrderByWithRelationInput = {
@@ -5918,7 +7282,7 @@ export namespace Prisma {
     createdAt?: SortOrder
     updatedAt?: SortOrder
     deletedAt?: SortOrderInput | SortOrder
-    Users?: UserOrderByRelationAggregateInput
+    users?: UserOrderByRelationAggregateInput
   }
 
   export type RoleWhereUniqueInput = Prisma.AtLeast<{
@@ -5930,7 +7294,7 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"Role"> | Date | string
     updatedAt?: DateTimeFilter<"Role"> | Date | string
     deletedAt?: DateTimeNullableFilter<"Role"> | Date | string | null
-    Users?: UserListRelationFilter
+    users?: UserListRelationFilter
   }, "id" | "name">
 
   export type RoleOrderByWithAggregationInput = {
@@ -5964,22 +7328,26 @@ export namespace Prisma {
     id?: IntFilter<"Site"> | number
     name?: StringFilter<"Site"> | string
     image?: StringNullableFilter<"Site"> | string | null
+    status?: BoolFilter<"Site"> | boolean
     createdAt?: DateTimeFilter<"Site"> | Date | string
     updatedAt?: DateTimeFilter<"Site"> | Date | string
     deletedAt?: DateTimeNullableFilter<"Site"> | Date | string | null
     addressId?: IntFilter<"Site"> | number
     address?: XOR<SiteAddressScalarRelationFilter, SiteAddressWhereInput>
+    users?: UserSiteListRelationFilter
   }
 
   export type SiteOrderByWithRelationInput = {
     id?: SortOrder
     name?: SortOrder
     image?: SortOrderInput | SortOrder
+    status?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     deletedAt?: SortOrderInput | SortOrder
     addressId?: SortOrder
     address?: SiteAddressOrderByWithRelationInput
+    users?: UserSiteOrderByRelationAggregateInput
   }
 
   export type SiteWhereUniqueInput = Prisma.AtLeast<{
@@ -5990,16 +7358,19 @@ export namespace Prisma {
     OR?: SiteWhereInput[]
     NOT?: SiteWhereInput | SiteWhereInput[]
     image?: StringNullableFilter<"Site"> | string | null
+    status?: BoolFilter<"Site"> | boolean
     createdAt?: DateTimeFilter<"Site"> | Date | string
     updatedAt?: DateTimeFilter<"Site"> | Date | string
     deletedAt?: DateTimeNullableFilter<"Site"> | Date | string | null
     address?: XOR<SiteAddressScalarRelationFilter, SiteAddressWhereInput>
+    users?: UserSiteListRelationFilter
   }, "id" | "name" | "addressId">
 
   export type SiteOrderByWithAggregationInput = {
     id?: SortOrder
     name?: SortOrder
     image?: SortOrderInput | SortOrder
+    status?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     deletedAt?: SortOrderInput | SortOrder
@@ -6018,6 +7389,7 @@ export namespace Prisma {
     id?: IntWithAggregatesFilter<"Site"> | number
     name?: StringWithAggregatesFilter<"Site"> | string
     image?: StringNullableWithAggregatesFilter<"Site"> | string | null
+    status?: BoolWithAggregatesFilter<"Site"> | boolean
     createdAt?: DateTimeWithAggregatesFilter<"Site"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Site"> | Date | string
     deletedAt?: DateTimeNullableWithAggregatesFilter<"Site"> | Date | string | null
@@ -6029,25 +7401,23 @@ export namespace Prisma {
     OR?: SiteAddressWhereInput[]
     NOT?: SiteAddressWhereInput | SiteAddressWhereInput[]
     id?: IntFilter<"SiteAddress"> | number
-    street?: StringFilter<"SiteAddress"> | string
-    subdistrict?: StringFilter<"SiteAddress"> | string
-    city?: StringFilter<"SiteAddress"> | string
-    province?: StringFilter<"SiteAddress"> | string
-    country?: StringFilter<"SiteAddress"> | string
-    postcode?: StringFilter<"SiteAddress"> | string
-    coordinate?: StringFilter<"SiteAddress"> | string
+    address?: StringFilter<"SiteAddress"> | string
+    latitude?: FloatFilter<"SiteAddress"> | number
+    longitude?: FloatFilter<"SiteAddress"> | number
+    createdAt?: DateTimeFilter<"SiteAddress"> | Date | string
+    updatedAt?: DateTimeFilter<"SiteAddress"> | Date | string
+    deletedAt?: DateTimeNullableFilter<"SiteAddress"> | Date | string | null
     site?: XOR<SiteNullableScalarRelationFilter, SiteWhereInput> | null
   }
 
   export type SiteAddressOrderByWithRelationInput = {
     id?: SortOrder
-    street?: SortOrder
-    subdistrict?: SortOrder
-    city?: SortOrder
-    province?: SortOrder
-    country?: SortOrder
-    postcode?: SortOrder
-    coordinate?: SortOrder
+    address?: SortOrder
+    latitude?: SortOrder
+    longitude?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    deletedAt?: SortOrderInput | SortOrder
     site?: SiteOrderByWithRelationInput
   }
 
@@ -6056,25 +7426,23 @@ export namespace Prisma {
     AND?: SiteAddressWhereInput | SiteAddressWhereInput[]
     OR?: SiteAddressWhereInput[]
     NOT?: SiteAddressWhereInput | SiteAddressWhereInput[]
-    street?: StringFilter<"SiteAddress"> | string
-    subdistrict?: StringFilter<"SiteAddress"> | string
-    city?: StringFilter<"SiteAddress"> | string
-    province?: StringFilter<"SiteAddress"> | string
-    country?: StringFilter<"SiteAddress"> | string
-    postcode?: StringFilter<"SiteAddress"> | string
-    coordinate?: StringFilter<"SiteAddress"> | string
+    address?: StringFilter<"SiteAddress"> | string
+    latitude?: FloatFilter<"SiteAddress"> | number
+    longitude?: FloatFilter<"SiteAddress"> | number
+    createdAt?: DateTimeFilter<"SiteAddress"> | Date | string
+    updatedAt?: DateTimeFilter<"SiteAddress"> | Date | string
+    deletedAt?: DateTimeNullableFilter<"SiteAddress"> | Date | string | null
     site?: XOR<SiteNullableScalarRelationFilter, SiteWhereInput> | null
   }, "id">
 
   export type SiteAddressOrderByWithAggregationInput = {
     id?: SortOrder
-    street?: SortOrder
-    subdistrict?: SortOrder
-    city?: SortOrder
-    province?: SortOrder
-    country?: SortOrder
-    postcode?: SortOrder
-    coordinate?: SortOrder
+    address?: SortOrder
+    latitude?: SortOrder
+    longitude?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    deletedAt?: SortOrderInput | SortOrder
     _count?: SiteAddressCountOrderByAggregateInput
     _avg?: SiteAddressAvgOrderByAggregateInput
     _max?: SiteAddressMaxOrderByAggregateInput
@@ -6087,13 +7455,78 @@ export namespace Prisma {
     OR?: SiteAddressScalarWhereWithAggregatesInput[]
     NOT?: SiteAddressScalarWhereWithAggregatesInput | SiteAddressScalarWhereWithAggregatesInput[]
     id?: IntWithAggregatesFilter<"SiteAddress"> | number
-    street?: StringWithAggregatesFilter<"SiteAddress"> | string
-    subdistrict?: StringWithAggregatesFilter<"SiteAddress"> | string
-    city?: StringWithAggregatesFilter<"SiteAddress"> | string
-    province?: StringWithAggregatesFilter<"SiteAddress"> | string
-    country?: StringWithAggregatesFilter<"SiteAddress"> | string
-    postcode?: StringWithAggregatesFilter<"SiteAddress"> | string
-    coordinate?: StringWithAggregatesFilter<"SiteAddress"> | string
+    address?: StringWithAggregatesFilter<"SiteAddress"> | string
+    latitude?: FloatWithAggregatesFilter<"SiteAddress"> | number
+    longitude?: FloatWithAggregatesFilter<"SiteAddress"> | number
+    createdAt?: DateTimeWithAggregatesFilter<"SiteAddress"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"SiteAddress"> | Date | string
+    deletedAt?: DateTimeNullableWithAggregatesFilter<"SiteAddress"> | Date | string | null
+  }
+
+  export type UserSiteWhereInput = {
+    AND?: UserSiteWhereInput | UserSiteWhereInput[]
+    OR?: UserSiteWhereInput[]
+    NOT?: UserSiteWhereInput | UserSiteWhereInput[]
+    id?: IntFilter<"UserSite"> | number
+    createdAt?: DateTimeFilter<"UserSite"> | Date | string
+    updatedAt?: DateTimeFilter<"UserSite"> | Date | string
+    deletedAt?: DateTimeNullableFilter<"UserSite"> | Date | string | null
+    siteId?: IntFilter<"UserSite"> | number
+    userId?: IntFilter<"UserSite"> | number
+    site?: XOR<SiteScalarRelationFilter, SiteWhereInput>
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+  }
+
+  export type UserSiteOrderByWithRelationInput = {
+    id?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    deletedAt?: SortOrderInput | SortOrder
+    siteId?: SortOrder
+    userId?: SortOrder
+    site?: SiteOrderByWithRelationInput
+    user?: UserOrderByWithRelationInput
+  }
+
+  export type UserSiteWhereUniqueInput = Prisma.AtLeast<{
+    id?: number
+    siteId_userId?: UserSiteSiteIdUserIdCompoundUniqueInput
+    AND?: UserSiteWhereInput | UserSiteWhereInput[]
+    OR?: UserSiteWhereInput[]
+    NOT?: UserSiteWhereInput | UserSiteWhereInput[]
+    createdAt?: DateTimeFilter<"UserSite"> | Date | string
+    updatedAt?: DateTimeFilter<"UserSite"> | Date | string
+    deletedAt?: DateTimeNullableFilter<"UserSite"> | Date | string | null
+    siteId?: IntFilter<"UserSite"> | number
+    userId?: IntFilter<"UserSite"> | number
+    site?: XOR<SiteScalarRelationFilter, SiteWhereInput>
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+  }, "id" | "siteId_userId">
+
+  export type UserSiteOrderByWithAggregationInput = {
+    id?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    deletedAt?: SortOrderInput | SortOrder
+    siteId?: SortOrder
+    userId?: SortOrder
+    _count?: UserSiteCountOrderByAggregateInput
+    _avg?: UserSiteAvgOrderByAggregateInput
+    _max?: UserSiteMaxOrderByAggregateInput
+    _min?: UserSiteMinOrderByAggregateInput
+    _sum?: UserSiteSumOrderByAggregateInput
+  }
+
+  export type UserSiteScalarWhereWithAggregatesInput = {
+    AND?: UserSiteScalarWhereWithAggregatesInput | UserSiteScalarWhereWithAggregatesInput[]
+    OR?: UserSiteScalarWhereWithAggregatesInput[]
+    NOT?: UserSiteScalarWhereWithAggregatesInput | UserSiteScalarWhereWithAggregatesInput[]
+    id?: IntWithAggregatesFilter<"UserSite"> | number
+    createdAt?: DateTimeWithAggregatesFilter<"UserSite"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"UserSite"> | Date | string
+    deletedAt?: DateTimeNullableWithAggregatesFilter<"UserSite"> | Date | string | null
+    siteId?: IntWithAggregatesFilter<"UserSite"> | number
+    userId?: IntWithAggregatesFilter<"UserSite"> | number
   }
 
   export type UserCreateInput = {
@@ -6103,6 +7536,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     deletedAt?: Date | string | null
     role: RoleCreateNestedOneWithoutUsersInput
+    sites?: UserSiteCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateInput = {
@@ -6113,6 +7547,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     deletedAt?: Date | string | null
     roleId: number
+    sites?: UserSiteUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserUpdateInput = {
@@ -6122,6 +7557,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: RoleUpdateOneRequiredWithoutUsersNestedInput
+    sites?: UserSiteUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateInput = {
@@ -6132,6 +7568,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     roleId?: IntFieldUpdateOperationsInput | number
+    sites?: UserSiteUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateManyInput = {
@@ -6167,7 +7604,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
-    Users?: UserCreateNestedManyWithoutRoleInput
+    users?: UserCreateNestedManyWithoutRoleInput
   }
 
   export type RoleUncheckedCreateInput = {
@@ -6176,7 +7613,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
-    Users?: UserUncheckedCreateNestedManyWithoutRoleInput
+    users?: UserUncheckedCreateNestedManyWithoutRoleInput
   }
 
   export type RoleUpdateInput = {
@@ -6184,7 +7621,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    Users?: UserUpdateManyWithoutRoleNestedInput
+    users?: UserUpdateManyWithoutRoleNestedInput
   }
 
   export type RoleUncheckedUpdateInput = {
@@ -6193,7 +7630,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    Users?: UserUncheckedUpdateManyWithoutRoleNestedInput
+    users?: UserUncheckedUpdateManyWithoutRoleNestedInput
   }
 
   export type RoleCreateManyInput = {
@@ -6222,45 +7659,54 @@ export namespace Prisma {
   export type SiteCreateInput = {
     name: string
     image?: string | null
+    status?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
     address: SiteAddressCreateNestedOneWithoutSiteInput
+    users?: UserSiteCreateNestedManyWithoutSiteInput
   }
 
   export type SiteUncheckedCreateInput = {
     id?: number
     name: string
     image?: string | null
+    status?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
     addressId: number
+    users?: UserSiteUncheckedCreateNestedManyWithoutSiteInput
   }
 
   export type SiteUpdateInput = {
     name?: StringFieldUpdateOperationsInput | string
     image?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     address?: SiteAddressUpdateOneRequiredWithoutSiteNestedInput
+    users?: UserSiteUpdateManyWithoutSiteNestedInput
   }
 
   export type SiteUncheckedUpdateInput = {
     id?: IntFieldUpdateOperationsInput | number
     name?: StringFieldUpdateOperationsInput | string
     image?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     addressId?: IntFieldUpdateOperationsInput | number
+    users?: UserSiteUncheckedUpdateManyWithoutSiteNestedInput
   }
 
   export type SiteCreateManyInput = {
     id?: number
     name: string
     image?: string | null
+    status?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
@@ -6270,6 +7716,7 @@ export namespace Prisma {
   export type SiteUpdateManyMutationInput = {
     name?: StringFieldUpdateOperationsInput | string
     image?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -6279,6 +7726,7 @@ export namespace Prisma {
     id?: IntFieldUpdateOperationsInput | number
     name?: StringFieldUpdateOperationsInput | string
     image?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -6286,81 +7734,132 @@ export namespace Prisma {
   }
 
   export type SiteAddressCreateInput = {
-    street: string
-    subdistrict: string
-    city: string
-    province: string
-    country: string
-    postcode: string
-    coordinate: string
+    address: string
+    latitude: number
+    longitude: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
     site?: SiteCreateNestedOneWithoutAddressInput
   }
 
   export type SiteAddressUncheckedCreateInput = {
     id?: number
-    street: string
-    subdistrict: string
-    city: string
-    province: string
-    country: string
-    postcode: string
-    coordinate: string
+    address: string
+    latitude: number
+    longitude: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
     site?: SiteUncheckedCreateNestedOneWithoutAddressInput
   }
 
   export type SiteAddressUpdateInput = {
-    street?: StringFieldUpdateOperationsInput | string
-    subdistrict?: StringFieldUpdateOperationsInput | string
-    city?: StringFieldUpdateOperationsInput | string
-    province?: StringFieldUpdateOperationsInput | string
-    country?: StringFieldUpdateOperationsInput | string
-    postcode?: StringFieldUpdateOperationsInput | string
-    coordinate?: StringFieldUpdateOperationsInput | string
+    address?: StringFieldUpdateOperationsInput | string
+    latitude?: FloatFieldUpdateOperationsInput | number
+    longitude?: FloatFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     site?: SiteUpdateOneWithoutAddressNestedInput
   }
 
   export type SiteAddressUncheckedUpdateInput = {
     id?: IntFieldUpdateOperationsInput | number
-    street?: StringFieldUpdateOperationsInput | string
-    subdistrict?: StringFieldUpdateOperationsInput | string
-    city?: StringFieldUpdateOperationsInput | string
-    province?: StringFieldUpdateOperationsInput | string
-    country?: StringFieldUpdateOperationsInput | string
-    postcode?: StringFieldUpdateOperationsInput | string
-    coordinate?: StringFieldUpdateOperationsInput | string
+    address?: StringFieldUpdateOperationsInput | string
+    latitude?: FloatFieldUpdateOperationsInput | number
+    longitude?: FloatFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     site?: SiteUncheckedUpdateOneWithoutAddressNestedInput
   }
 
   export type SiteAddressCreateManyInput = {
     id?: number
-    street: string
-    subdistrict: string
-    city: string
-    province: string
-    country: string
-    postcode: string
-    coordinate: string
+    address: string
+    latitude: number
+    longitude: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
   }
 
   export type SiteAddressUpdateManyMutationInput = {
-    street?: StringFieldUpdateOperationsInput | string
-    subdistrict?: StringFieldUpdateOperationsInput | string
-    city?: StringFieldUpdateOperationsInput | string
-    province?: StringFieldUpdateOperationsInput | string
-    country?: StringFieldUpdateOperationsInput | string
-    postcode?: StringFieldUpdateOperationsInput | string
-    coordinate?: StringFieldUpdateOperationsInput | string
+    address?: StringFieldUpdateOperationsInput | string
+    latitude?: FloatFieldUpdateOperationsInput | number
+    longitude?: FloatFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
   export type SiteAddressUncheckedUpdateManyInput = {
     id?: IntFieldUpdateOperationsInput | number
-    street?: StringFieldUpdateOperationsInput | string
-    subdistrict?: StringFieldUpdateOperationsInput | string
-    city?: StringFieldUpdateOperationsInput | string
-    province?: StringFieldUpdateOperationsInput | string
-    country?: StringFieldUpdateOperationsInput | string
-    postcode?: StringFieldUpdateOperationsInput | string
-    coordinate?: StringFieldUpdateOperationsInput | string
+    address?: StringFieldUpdateOperationsInput | string
+    latitude?: FloatFieldUpdateOperationsInput | number
+    longitude?: FloatFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type UserSiteCreateInput = {
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+    site: SiteCreateNestedOneWithoutUsersInput
+    user: UserCreateNestedOneWithoutSitesInput
+  }
+
+  export type UserSiteUncheckedCreateInput = {
+    id?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+    siteId: number
+    userId: number
+  }
+
+  export type UserSiteUpdateInput = {
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    site?: SiteUpdateOneRequiredWithoutUsersNestedInput
+    user?: UserUpdateOneRequiredWithoutSitesNestedInput
+  }
+
+  export type UserSiteUncheckedUpdateInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    siteId?: IntFieldUpdateOperationsInput | number
+    userId?: IntFieldUpdateOperationsInput | number
+  }
+
+  export type UserSiteCreateManyInput = {
+    id?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+    siteId: number
+    userId: number
+  }
+
+  export type UserSiteUpdateManyMutationInput = {
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type UserSiteUncheckedUpdateManyInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    siteId?: IntFieldUpdateOperationsInput | number
+    userId?: IntFieldUpdateOperationsInput | number
   }
 
   export type IntFilter<$PrismaModel = never> = {
@@ -6416,9 +7915,19 @@ export namespace Prisma {
     isNot?: RoleWhereInput
   }
 
+  export type UserSiteListRelationFilter = {
+    every?: UserSiteWhereInput
+    some?: UserSiteWhereInput
+    none?: UserSiteWhereInput
+  }
+
   export type SortOrderInput = {
     sort: SortOrder
     nulls?: NullsOrder
+  }
+
+  export type UserSiteOrderByRelationAggregateInput = {
+    _count?: SortOrder
   }
 
   export type UserCountOrderByAggregateInput = {
@@ -6597,6 +8106,11 @@ export namespace Prisma {
     not?: NestedStringNullableFilter<$PrismaModel> | string | null
   }
 
+  export type BoolFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolFilter<$PrismaModel> | boolean
+  }
+
   export type SiteAddressScalarRelationFilter = {
     is?: SiteAddressWhereInput
     isNot?: SiteAddressWhereInput
@@ -6606,6 +8120,7 @@ export namespace Prisma {
     id?: SortOrder
     name?: SortOrder
     image?: SortOrder
+    status?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     deletedAt?: SortOrder
@@ -6621,6 +8136,7 @@ export namespace Prisma {
     id?: SortOrder
     name?: SortOrder
     image?: SortOrder
+    status?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     deletedAt?: SortOrder
@@ -6631,6 +8147,7 @@ export namespace Prisma {
     id?: SortOrder
     name?: SortOrder
     image?: SortOrder
+    status?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     deletedAt?: SortOrder
@@ -6660,6 +8177,25 @@ export namespace Prisma {
     _max?: NestedStringNullableFilter<$PrismaModel>
   }
 
+  export type BoolWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolWithAggregatesFilter<$PrismaModel> | boolean
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedBoolFilter<$PrismaModel>
+    _max?: NestedBoolFilter<$PrismaModel>
+  }
+
+  export type FloatFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel>
+    in?: number[] | ListFloatFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel>
+    lt?: number | FloatFieldRefInput<$PrismaModel>
+    lte?: number | FloatFieldRefInput<$PrismaModel>
+    gt?: number | FloatFieldRefInput<$PrismaModel>
+    gte?: number | FloatFieldRefInput<$PrismaModel>
+    not?: NestedFloatFilter<$PrismaModel> | number
+  }
+
   export type SiteNullableScalarRelationFilter = {
     is?: SiteWhereInput | null
     isNot?: SiteWhereInput | null
@@ -6667,49 +8203,134 @@ export namespace Prisma {
 
   export type SiteAddressCountOrderByAggregateInput = {
     id?: SortOrder
-    street?: SortOrder
-    subdistrict?: SortOrder
-    city?: SortOrder
-    province?: SortOrder
-    country?: SortOrder
-    postcode?: SortOrder
-    coordinate?: SortOrder
+    address?: SortOrder
+    latitude?: SortOrder
+    longitude?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    deletedAt?: SortOrder
   }
 
   export type SiteAddressAvgOrderByAggregateInput = {
     id?: SortOrder
+    latitude?: SortOrder
+    longitude?: SortOrder
   }
 
   export type SiteAddressMaxOrderByAggregateInput = {
     id?: SortOrder
-    street?: SortOrder
-    subdistrict?: SortOrder
-    city?: SortOrder
-    province?: SortOrder
-    country?: SortOrder
-    postcode?: SortOrder
-    coordinate?: SortOrder
+    address?: SortOrder
+    latitude?: SortOrder
+    longitude?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    deletedAt?: SortOrder
   }
 
   export type SiteAddressMinOrderByAggregateInput = {
     id?: SortOrder
-    street?: SortOrder
-    subdistrict?: SortOrder
-    city?: SortOrder
-    province?: SortOrder
-    country?: SortOrder
-    postcode?: SortOrder
-    coordinate?: SortOrder
+    address?: SortOrder
+    latitude?: SortOrder
+    longitude?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    deletedAt?: SortOrder
   }
 
   export type SiteAddressSumOrderByAggregateInput = {
     id?: SortOrder
+    latitude?: SortOrder
+    longitude?: SortOrder
+  }
+
+  export type FloatWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel>
+    in?: number[] | ListFloatFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel>
+    lt?: number | FloatFieldRefInput<$PrismaModel>
+    lte?: number | FloatFieldRefInput<$PrismaModel>
+    gt?: number | FloatFieldRefInput<$PrismaModel>
+    gte?: number | FloatFieldRefInput<$PrismaModel>
+    not?: NestedFloatWithAggregatesFilter<$PrismaModel> | number
+    _count?: NestedIntFilter<$PrismaModel>
+    _avg?: NestedFloatFilter<$PrismaModel>
+    _sum?: NestedFloatFilter<$PrismaModel>
+    _min?: NestedFloatFilter<$PrismaModel>
+    _max?: NestedFloatFilter<$PrismaModel>
+  }
+
+  export type SiteScalarRelationFilter = {
+    is?: SiteWhereInput
+    isNot?: SiteWhereInput
+  }
+
+  export type UserScalarRelationFilter = {
+    is?: UserWhereInput
+    isNot?: UserWhereInput
+  }
+
+  export type UserSiteSiteIdUserIdCompoundUniqueInput = {
+    siteId: number
+    userId: number
+  }
+
+  export type UserSiteCountOrderByAggregateInput = {
+    id?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    deletedAt?: SortOrder
+    siteId?: SortOrder
+    userId?: SortOrder
+  }
+
+  export type UserSiteAvgOrderByAggregateInput = {
+    id?: SortOrder
+    siteId?: SortOrder
+    userId?: SortOrder
+  }
+
+  export type UserSiteMaxOrderByAggregateInput = {
+    id?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    deletedAt?: SortOrder
+    siteId?: SortOrder
+    userId?: SortOrder
+  }
+
+  export type UserSiteMinOrderByAggregateInput = {
+    id?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    deletedAt?: SortOrder
+    siteId?: SortOrder
+    userId?: SortOrder
+  }
+
+  export type UserSiteSumOrderByAggregateInput = {
+    id?: SortOrder
+    siteId?: SortOrder
+    userId?: SortOrder
   }
 
   export type RoleCreateNestedOneWithoutUsersInput = {
     create?: XOR<RoleCreateWithoutUsersInput, RoleUncheckedCreateWithoutUsersInput>
     connectOrCreate?: RoleCreateOrConnectWithoutUsersInput
     connect?: RoleWhereUniqueInput
+  }
+
+  export type UserSiteCreateNestedManyWithoutUserInput = {
+    create?: XOR<UserSiteCreateWithoutUserInput, UserSiteUncheckedCreateWithoutUserInput> | UserSiteCreateWithoutUserInput[] | UserSiteUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: UserSiteCreateOrConnectWithoutUserInput | UserSiteCreateOrConnectWithoutUserInput[]
+    createMany?: UserSiteCreateManyUserInputEnvelope
+    connect?: UserSiteWhereUniqueInput | UserSiteWhereUniqueInput[]
+  }
+
+  export type UserSiteUncheckedCreateNestedManyWithoutUserInput = {
+    create?: XOR<UserSiteCreateWithoutUserInput, UserSiteUncheckedCreateWithoutUserInput> | UserSiteCreateWithoutUserInput[] | UserSiteUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: UserSiteCreateOrConnectWithoutUserInput | UserSiteCreateOrConnectWithoutUserInput[]
+    createMany?: UserSiteCreateManyUserInputEnvelope
+    connect?: UserSiteWhereUniqueInput | UserSiteWhereUniqueInput[]
   }
 
   export type StringFieldUpdateOperationsInput = {
@@ -6732,12 +8353,40 @@ export namespace Prisma {
     update?: XOR<XOR<RoleUpdateToOneWithWhereWithoutUsersInput, RoleUpdateWithoutUsersInput>, RoleUncheckedUpdateWithoutUsersInput>
   }
 
+  export type UserSiteUpdateManyWithoutUserNestedInput = {
+    create?: XOR<UserSiteCreateWithoutUserInput, UserSiteUncheckedCreateWithoutUserInput> | UserSiteCreateWithoutUserInput[] | UserSiteUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: UserSiteCreateOrConnectWithoutUserInput | UserSiteCreateOrConnectWithoutUserInput[]
+    upsert?: UserSiteUpsertWithWhereUniqueWithoutUserInput | UserSiteUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: UserSiteCreateManyUserInputEnvelope
+    set?: UserSiteWhereUniqueInput | UserSiteWhereUniqueInput[]
+    disconnect?: UserSiteWhereUniqueInput | UserSiteWhereUniqueInput[]
+    delete?: UserSiteWhereUniqueInput | UserSiteWhereUniqueInput[]
+    connect?: UserSiteWhereUniqueInput | UserSiteWhereUniqueInput[]
+    update?: UserSiteUpdateWithWhereUniqueWithoutUserInput | UserSiteUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: UserSiteUpdateManyWithWhereWithoutUserInput | UserSiteUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: UserSiteScalarWhereInput | UserSiteScalarWhereInput[]
+  }
+
   export type IntFieldUpdateOperationsInput = {
     set?: number
     increment?: number
     decrement?: number
     multiply?: number
     divide?: number
+  }
+
+  export type UserSiteUncheckedUpdateManyWithoutUserNestedInput = {
+    create?: XOR<UserSiteCreateWithoutUserInput, UserSiteUncheckedCreateWithoutUserInput> | UserSiteCreateWithoutUserInput[] | UserSiteUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: UserSiteCreateOrConnectWithoutUserInput | UserSiteCreateOrConnectWithoutUserInput[]
+    upsert?: UserSiteUpsertWithWhereUniqueWithoutUserInput | UserSiteUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: UserSiteCreateManyUserInputEnvelope
+    set?: UserSiteWhereUniqueInput | UserSiteWhereUniqueInput[]
+    disconnect?: UserSiteWhereUniqueInput | UserSiteWhereUniqueInput[]
+    delete?: UserSiteWhereUniqueInput | UserSiteWhereUniqueInput[]
+    connect?: UserSiteWhereUniqueInput | UserSiteWhereUniqueInput[]
+    update?: UserSiteUpdateWithWhereUniqueWithoutUserInput | UserSiteUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: UserSiteUpdateManyWithWhereWithoutUserInput | UserSiteUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: UserSiteScalarWhereInput | UserSiteScalarWhereInput[]
   }
 
   export type UserCreateNestedManyWithoutRoleInput = {
@@ -6792,8 +8441,26 @@ export namespace Prisma {
     connect?: SiteAddressWhereUniqueInput
   }
 
+  export type UserSiteCreateNestedManyWithoutSiteInput = {
+    create?: XOR<UserSiteCreateWithoutSiteInput, UserSiteUncheckedCreateWithoutSiteInput> | UserSiteCreateWithoutSiteInput[] | UserSiteUncheckedCreateWithoutSiteInput[]
+    connectOrCreate?: UserSiteCreateOrConnectWithoutSiteInput | UserSiteCreateOrConnectWithoutSiteInput[]
+    createMany?: UserSiteCreateManySiteInputEnvelope
+    connect?: UserSiteWhereUniqueInput | UserSiteWhereUniqueInput[]
+  }
+
+  export type UserSiteUncheckedCreateNestedManyWithoutSiteInput = {
+    create?: XOR<UserSiteCreateWithoutSiteInput, UserSiteUncheckedCreateWithoutSiteInput> | UserSiteCreateWithoutSiteInput[] | UserSiteUncheckedCreateWithoutSiteInput[]
+    connectOrCreate?: UserSiteCreateOrConnectWithoutSiteInput | UserSiteCreateOrConnectWithoutSiteInput[]
+    createMany?: UserSiteCreateManySiteInputEnvelope
+    connect?: UserSiteWhereUniqueInput | UserSiteWhereUniqueInput[]
+  }
+
   export type NullableStringFieldUpdateOperationsInput = {
     set?: string | null
+  }
+
+  export type BoolFieldUpdateOperationsInput = {
+    set?: boolean
   }
 
   export type SiteAddressUpdateOneRequiredWithoutSiteNestedInput = {
@@ -6802,6 +8469,34 @@ export namespace Prisma {
     upsert?: SiteAddressUpsertWithoutSiteInput
     connect?: SiteAddressWhereUniqueInput
     update?: XOR<XOR<SiteAddressUpdateToOneWithWhereWithoutSiteInput, SiteAddressUpdateWithoutSiteInput>, SiteAddressUncheckedUpdateWithoutSiteInput>
+  }
+
+  export type UserSiteUpdateManyWithoutSiteNestedInput = {
+    create?: XOR<UserSiteCreateWithoutSiteInput, UserSiteUncheckedCreateWithoutSiteInput> | UserSiteCreateWithoutSiteInput[] | UserSiteUncheckedCreateWithoutSiteInput[]
+    connectOrCreate?: UserSiteCreateOrConnectWithoutSiteInput | UserSiteCreateOrConnectWithoutSiteInput[]
+    upsert?: UserSiteUpsertWithWhereUniqueWithoutSiteInput | UserSiteUpsertWithWhereUniqueWithoutSiteInput[]
+    createMany?: UserSiteCreateManySiteInputEnvelope
+    set?: UserSiteWhereUniqueInput | UserSiteWhereUniqueInput[]
+    disconnect?: UserSiteWhereUniqueInput | UserSiteWhereUniqueInput[]
+    delete?: UserSiteWhereUniqueInput | UserSiteWhereUniqueInput[]
+    connect?: UserSiteWhereUniqueInput | UserSiteWhereUniqueInput[]
+    update?: UserSiteUpdateWithWhereUniqueWithoutSiteInput | UserSiteUpdateWithWhereUniqueWithoutSiteInput[]
+    updateMany?: UserSiteUpdateManyWithWhereWithoutSiteInput | UserSiteUpdateManyWithWhereWithoutSiteInput[]
+    deleteMany?: UserSiteScalarWhereInput | UserSiteScalarWhereInput[]
+  }
+
+  export type UserSiteUncheckedUpdateManyWithoutSiteNestedInput = {
+    create?: XOR<UserSiteCreateWithoutSiteInput, UserSiteUncheckedCreateWithoutSiteInput> | UserSiteCreateWithoutSiteInput[] | UserSiteUncheckedCreateWithoutSiteInput[]
+    connectOrCreate?: UserSiteCreateOrConnectWithoutSiteInput | UserSiteCreateOrConnectWithoutSiteInput[]
+    upsert?: UserSiteUpsertWithWhereUniqueWithoutSiteInput | UserSiteUpsertWithWhereUniqueWithoutSiteInput[]
+    createMany?: UserSiteCreateManySiteInputEnvelope
+    set?: UserSiteWhereUniqueInput | UserSiteWhereUniqueInput[]
+    disconnect?: UserSiteWhereUniqueInput | UserSiteWhereUniqueInput[]
+    delete?: UserSiteWhereUniqueInput | UserSiteWhereUniqueInput[]
+    connect?: UserSiteWhereUniqueInput | UserSiteWhereUniqueInput[]
+    update?: UserSiteUpdateWithWhereUniqueWithoutSiteInput | UserSiteUpdateWithWhereUniqueWithoutSiteInput[]
+    updateMany?: UserSiteUpdateManyWithWhereWithoutSiteInput | UserSiteUpdateManyWithWhereWithoutSiteInput[]
+    deleteMany?: UserSiteScalarWhereInput | UserSiteScalarWhereInput[]
   }
 
   export type SiteCreateNestedOneWithoutAddressInput = {
@@ -6814,6 +8509,14 @@ export namespace Prisma {
     create?: XOR<SiteCreateWithoutAddressInput, SiteUncheckedCreateWithoutAddressInput>
     connectOrCreate?: SiteCreateOrConnectWithoutAddressInput
     connect?: SiteWhereUniqueInput
+  }
+
+  export type FloatFieldUpdateOperationsInput = {
+    set?: number
+    increment?: number
+    decrement?: number
+    multiply?: number
+    divide?: number
   }
 
   export type SiteUpdateOneWithoutAddressNestedInput = {
@@ -6834,6 +8537,34 @@ export namespace Prisma {
     delete?: SiteWhereInput | boolean
     connect?: SiteWhereUniqueInput
     update?: XOR<XOR<SiteUpdateToOneWithWhereWithoutAddressInput, SiteUpdateWithoutAddressInput>, SiteUncheckedUpdateWithoutAddressInput>
+  }
+
+  export type SiteCreateNestedOneWithoutUsersInput = {
+    create?: XOR<SiteCreateWithoutUsersInput, SiteUncheckedCreateWithoutUsersInput>
+    connectOrCreate?: SiteCreateOrConnectWithoutUsersInput
+    connect?: SiteWhereUniqueInput
+  }
+
+  export type UserCreateNestedOneWithoutSitesInput = {
+    create?: XOR<UserCreateWithoutSitesInput, UserUncheckedCreateWithoutSitesInput>
+    connectOrCreate?: UserCreateOrConnectWithoutSitesInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type SiteUpdateOneRequiredWithoutUsersNestedInput = {
+    create?: XOR<SiteCreateWithoutUsersInput, SiteUncheckedCreateWithoutUsersInput>
+    connectOrCreate?: SiteCreateOrConnectWithoutUsersInput
+    upsert?: SiteUpsertWithoutUsersInput
+    connect?: SiteWhereUniqueInput
+    update?: XOR<XOR<SiteUpdateToOneWithWhereWithoutUsersInput, SiteUpdateWithoutUsersInput>, SiteUncheckedUpdateWithoutUsersInput>
+  }
+
+  export type UserUpdateOneRequiredWithoutSitesNestedInput = {
+    create?: XOR<UserCreateWithoutSitesInput, UserUncheckedCreateWithoutSitesInput>
+    connectOrCreate?: UserCreateOrConnectWithoutSitesInput
+    upsert?: UserUpsertWithoutSitesInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutSitesInput, UserUpdateWithoutSitesInput>, UserUncheckedUpdateWithoutSitesInput>
   }
 
   export type NestedIntFilter<$PrismaModel = never> = {
@@ -6997,6 +8728,11 @@ export namespace Prisma {
     not?: NestedStringNullableFilter<$PrismaModel> | string | null
   }
 
+  export type NestedBoolFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolFilter<$PrismaModel> | boolean
+  }
+
   export type NestedStringNullableWithAggregatesFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel> | null
     in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
@@ -7012,6 +8748,30 @@ export namespace Prisma {
     _count?: NestedIntNullableFilter<$PrismaModel>
     _min?: NestedStringNullableFilter<$PrismaModel>
     _max?: NestedStringNullableFilter<$PrismaModel>
+  }
+
+  export type NestedBoolWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolWithAggregatesFilter<$PrismaModel> | boolean
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedBoolFilter<$PrismaModel>
+    _max?: NestedBoolFilter<$PrismaModel>
+  }
+
+  export type NestedFloatWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel>
+    in?: number[] | ListFloatFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel>
+    lt?: number | FloatFieldRefInput<$PrismaModel>
+    lte?: number | FloatFieldRefInput<$PrismaModel>
+    gt?: number | FloatFieldRefInput<$PrismaModel>
+    gte?: number | FloatFieldRefInput<$PrismaModel>
+    not?: NestedFloatWithAggregatesFilter<$PrismaModel> | number
+    _count?: NestedIntFilter<$PrismaModel>
+    _avg?: NestedFloatFilter<$PrismaModel>
+    _sum?: NestedFloatFilter<$PrismaModel>
+    _min?: NestedFloatFilter<$PrismaModel>
+    _max?: NestedFloatFilter<$PrismaModel>
   }
 
   export type RoleCreateWithoutUsersInput = {
@@ -7032,6 +8792,31 @@ export namespace Prisma {
   export type RoleCreateOrConnectWithoutUsersInput = {
     where: RoleWhereUniqueInput
     create: XOR<RoleCreateWithoutUsersInput, RoleUncheckedCreateWithoutUsersInput>
+  }
+
+  export type UserSiteCreateWithoutUserInput = {
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+    site: SiteCreateNestedOneWithoutUsersInput
+  }
+
+  export type UserSiteUncheckedCreateWithoutUserInput = {
+    id?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+    siteId: number
+  }
+
+  export type UserSiteCreateOrConnectWithoutUserInput = {
+    where: UserSiteWhereUniqueInput
+    create: XOR<UserSiteCreateWithoutUserInput, UserSiteUncheckedCreateWithoutUserInput>
+  }
+
+  export type UserSiteCreateManyUserInputEnvelope = {
+    data: UserSiteCreateManyUserInput | UserSiteCreateManyUserInput[]
+    skipDuplicates?: boolean
   }
 
   export type RoleUpsertWithoutUsersInput = {
@@ -7060,12 +8845,41 @@ export namespace Prisma {
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
+  export type UserSiteUpsertWithWhereUniqueWithoutUserInput = {
+    where: UserSiteWhereUniqueInput
+    update: XOR<UserSiteUpdateWithoutUserInput, UserSiteUncheckedUpdateWithoutUserInput>
+    create: XOR<UserSiteCreateWithoutUserInput, UserSiteUncheckedCreateWithoutUserInput>
+  }
+
+  export type UserSiteUpdateWithWhereUniqueWithoutUserInput = {
+    where: UserSiteWhereUniqueInput
+    data: XOR<UserSiteUpdateWithoutUserInput, UserSiteUncheckedUpdateWithoutUserInput>
+  }
+
+  export type UserSiteUpdateManyWithWhereWithoutUserInput = {
+    where: UserSiteScalarWhereInput
+    data: XOR<UserSiteUpdateManyMutationInput, UserSiteUncheckedUpdateManyWithoutUserInput>
+  }
+
+  export type UserSiteScalarWhereInput = {
+    AND?: UserSiteScalarWhereInput | UserSiteScalarWhereInput[]
+    OR?: UserSiteScalarWhereInput[]
+    NOT?: UserSiteScalarWhereInput | UserSiteScalarWhereInput[]
+    id?: IntFilter<"UserSite"> | number
+    createdAt?: DateTimeFilter<"UserSite"> | Date | string
+    updatedAt?: DateTimeFilter<"UserSite"> | Date | string
+    deletedAt?: DateTimeNullableFilter<"UserSite"> | Date | string | null
+    siteId?: IntFilter<"UserSite"> | number
+    userId?: IntFilter<"UserSite"> | number
+  }
+
   export type UserCreateWithoutRoleInput = {
     username: string
     password: string
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
+    sites?: UserSiteCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutRoleInput = {
@@ -7075,6 +8889,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
+    sites?: UserSiteUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutRoleInput = {
@@ -7117,29 +8932,52 @@ export namespace Prisma {
   }
 
   export type SiteAddressCreateWithoutSiteInput = {
-    street: string
-    subdistrict: string
-    city: string
-    province: string
-    country: string
-    postcode: string
-    coordinate: string
+    address: string
+    latitude: number
+    longitude: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
   }
 
   export type SiteAddressUncheckedCreateWithoutSiteInput = {
     id?: number
-    street: string
-    subdistrict: string
-    city: string
-    province: string
-    country: string
-    postcode: string
-    coordinate: string
+    address: string
+    latitude: number
+    longitude: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
   }
 
   export type SiteAddressCreateOrConnectWithoutSiteInput = {
     where: SiteAddressWhereUniqueInput
     create: XOR<SiteAddressCreateWithoutSiteInput, SiteAddressUncheckedCreateWithoutSiteInput>
+  }
+
+  export type UserSiteCreateWithoutSiteInput = {
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+    user: UserCreateNestedOneWithoutSitesInput
+  }
+
+  export type UserSiteUncheckedCreateWithoutSiteInput = {
+    id?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+    userId: number
+  }
+
+  export type UserSiteCreateOrConnectWithoutSiteInput = {
+    where: UserSiteWhereUniqueInput
+    create: XOR<UserSiteCreateWithoutSiteInput, UserSiteUncheckedCreateWithoutSiteInput>
+  }
+
+  export type UserSiteCreateManySiteInputEnvelope = {
+    data: UserSiteCreateManySiteInput | UserSiteCreateManySiteInput[]
+    skipDuplicates?: boolean
   }
 
   export type SiteAddressUpsertWithoutSiteInput = {
@@ -7154,41 +8992,59 @@ export namespace Prisma {
   }
 
   export type SiteAddressUpdateWithoutSiteInput = {
-    street?: StringFieldUpdateOperationsInput | string
-    subdistrict?: StringFieldUpdateOperationsInput | string
-    city?: StringFieldUpdateOperationsInput | string
-    province?: StringFieldUpdateOperationsInput | string
-    country?: StringFieldUpdateOperationsInput | string
-    postcode?: StringFieldUpdateOperationsInput | string
-    coordinate?: StringFieldUpdateOperationsInput | string
+    address?: StringFieldUpdateOperationsInput | string
+    latitude?: FloatFieldUpdateOperationsInput | number
+    longitude?: FloatFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
   export type SiteAddressUncheckedUpdateWithoutSiteInput = {
     id?: IntFieldUpdateOperationsInput | number
-    street?: StringFieldUpdateOperationsInput | string
-    subdistrict?: StringFieldUpdateOperationsInput | string
-    city?: StringFieldUpdateOperationsInput | string
-    province?: StringFieldUpdateOperationsInput | string
-    country?: StringFieldUpdateOperationsInput | string
-    postcode?: StringFieldUpdateOperationsInput | string
-    coordinate?: StringFieldUpdateOperationsInput | string
+    address?: StringFieldUpdateOperationsInput | string
+    latitude?: FloatFieldUpdateOperationsInput | number
+    longitude?: FloatFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type UserSiteUpsertWithWhereUniqueWithoutSiteInput = {
+    where: UserSiteWhereUniqueInput
+    update: XOR<UserSiteUpdateWithoutSiteInput, UserSiteUncheckedUpdateWithoutSiteInput>
+    create: XOR<UserSiteCreateWithoutSiteInput, UserSiteUncheckedCreateWithoutSiteInput>
+  }
+
+  export type UserSiteUpdateWithWhereUniqueWithoutSiteInput = {
+    where: UserSiteWhereUniqueInput
+    data: XOR<UserSiteUpdateWithoutSiteInput, UserSiteUncheckedUpdateWithoutSiteInput>
+  }
+
+  export type UserSiteUpdateManyWithWhereWithoutSiteInput = {
+    where: UserSiteScalarWhereInput
+    data: XOR<UserSiteUpdateManyMutationInput, UserSiteUncheckedUpdateManyWithoutSiteInput>
   }
 
   export type SiteCreateWithoutAddressInput = {
     name: string
     image?: string | null
+    status?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
+    users?: UserSiteCreateNestedManyWithoutSiteInput
   }
 
   export type SiteUncheckedCreateWithoutAddressInput = {
     id?: number
     name: string
     image?: string | null
+    status?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
+    users?: UserSiteUncheckedCreateNestedManyWithoutSiteInput
   }
 
   export type SiteCreateOrConnectWithoutAddressInput = {
@@ -7210,18 +9066,165 @@ export namespace Prisma {
   export type SiteUpdateWithoutAddressInput = {
     name?: StringFieldUpdateOperationsInput | string
     image?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    users?: UserSiteUpdateManyWithoutSiteNestedInput
   }
 
   export type SiteUncheckedUpdateWithoutAddressInput = {
     id?: IntFieldUpdateOperationsInput | number
     name?: StringFieldUpdateOperationsInput | string
     image?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    users?: UserSiteUncheckedUpdateManyWithoutSiteNestedInput
+  }
+
+  export type SiteCreateWithoutUsersInput = {
+    name: string
+    image?: string | null
+    status?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+    address: SiteAddressCreateNestedOneWithoutSiteInput
+  }
+
+  export type SiteUncheckedCreateWithoutUsersInput = {
+    id?: number
+    name: string
+    image?: string | null
+    status?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+    addressId: number
+  }
+
+  export type SiteCreateOrConnectWithoutUsersInput = {
+    where: SiteWhereUniqueInput
+    create: XOR<SiteCreateWithoutUsersInput, SiteUncheckedCreateWithoutUsersInput>
+  }
+
+  export type UserCreateWithoutSitesInput = {
+    username: string
+    password: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+    role: RoleCreateNestedOneWithoutUsersInput
+  }
+
+  export type UserUncheckedCreateWithoutSitesInput = {
+    id?: number
+    username: string
+    password: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+    roleId: number
+  }
+
+  export type UserCreateOrConnectWithoutSitesInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutSitesInput, UserUncheckedCreateWithoutSitesInput>
+  }
+
+  export type SiteUpsertWithoutUsersInput = {
+    update: XOR<SiteUpdateWithoutUsersInput, SiteUncheckedUpdateWithoutUsersInput>
+    create: XOR<SiteCreateWithoutUsersInput, SiteUncheckedCreateWithoutUsersInput>
+    where?: SiteWhereInput
+  }
+
+  export type SiteUpdateToOneWithWhereWithoutUsersInput = {
+    where?: SiteWhereInput
+    data: XOR<SiteUpdateWithoutUsersInput, SiteUncheckedUpdateWithoutUsersInput>
+  }
+
+  export type SiteUpdateWithoutUsersInput = {
+    name?: StringFieldUpdateOperationsInput | string
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    address?: SiteAddressUpdateOneRequiredWithoutSiteNestedInput
+  }
+
+  export type SiteUncheckedUpdateWithoutUsersInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    name?: StringFieldUpdateOperationsInput | string
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    addressId?: IntFieldUpdateOperationsInput | number
+  }
+
+  export type UserUpsertWithoutSitesInput = {
+    update: XOR<UserUpdateWithoutSitesInput, UserUncheckedUpdateWithoutSitesInput>
+    create: XOR<UserCreateWithoutSitesInput, UserUncheckedCreateWithoutSitesInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutSitesInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutSitesInput, UserUncheckedUpdateWithoutSitesInput>
+  }
+
+  export type UserUpdateWithoutSitesInput = {
+    username?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    role?: RoleUpdateOneRequiredWithoutUsersNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutSitesInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    username?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    roleId?: IntFieldUpdateOperationsInput | number
+  }
+
+  export type UserSiteCreateManyUserInput = {
+    id?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+    siteId: number
+  }
+
+  export type UserSiteUpdateWithoutUserInput = {
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    site?: SiteUpdateOneRequiredWithoutUsersNestedInput
+  }
+
+  export type UserSiteUncheckedUpdateWithoutUserInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    siteId?: IntFieldUpdateOperationsInput | number
+  }
+
+  export type UserSiteUncheckedUpdateManyWithoutUserInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    siteId?: IntFieldUpdateOperationsInput | number
   }
 
   export type UserCreateManyRoleInput = {
@@ -7239,6 +9242,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    sites?: UserSiteUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutRoleInput = {
@@ -7248,6 +9252,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    sites?: UserSiteUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateManyWithoutRoleInput = {
@@ -7257,6 +9262,37 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type UserSiteCreateManySiteInput = {
+    id?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+    userId: number
+  }
+
+  export type UserSiteUpdateWithoutSiteInput = {
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    user?: UserUpdateOneRequiredWithoutSitesNestedInput
+  }
+
+  export type UserSiteUncheckedUpdateWithoutSiteInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    userId?: IntFieldUpdateOperationsInput | number
+  }
+
+  export type UserSiteUncheckedUpdateManyWithoutSiteInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    userId?: IntFieldUpdateOperationsInput | number
   }
 
 
