@@ -10,7 +10,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "postinstall": "npx prisma generate"
+    "postinstall": "npx prisma generate && npx prisma db seed"
   },
   "dependencies": {
     "@heroicons/react": "^2.2.0",

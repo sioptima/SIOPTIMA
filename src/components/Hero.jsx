@@ -1350,7 +1350,7 @@ export default function Hero() {
       const data = await res.json();
 
       if (!res.ok) {
-        setError(data.error || "Login failed");
+        setError(data.message || "Login failed");
         return;
       }
 
