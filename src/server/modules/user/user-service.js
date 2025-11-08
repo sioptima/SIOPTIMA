@@ -1,4 +1,4 @@
-import bcrypt from "bcrypt";
+import bcrypt from "bcryptjs";
 import { createSession } from "@/src/server/utils/sessions.js";
 import { UserValidation } from "./user-validation.js";
 import { UserRepository } from "./user-repository.js";
