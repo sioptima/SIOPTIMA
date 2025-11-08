@@ -3,12 +3,9 @@ const nextConfig = {
     experimental: {
         outputFileTracingIncludes: {
             // Ensure Prisma engines and wasm are bundled into server output
-            "/src/server/db": [
-              "./generated/prisma/libquery_engine*",
-              "./generated/prisma/query_engine*",
-              "./generated/prisma/schema.prisma",
-              "./generated/prisma/*.node",
-              "./generated/prisma/*.wasm",
+            "/api/*": [
+              "src/server/db/generated/prisma/query_compiler_bg.wasm",
+              "src/server/db/generated/prisma/*.wasm",
             ],
           },    
     }
