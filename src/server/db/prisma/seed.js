@@ -1,8 +1,8 @@
 import { hashPassword } from "../../utils/password.js";
 import prisma from "../db.js";
-import { user } from "./data.js";
+import { role, user } from "./data.js";
 
-async function main(userData) {
+async function main(userData, roleData) {
   //check if init admin already exist
   const adminUsername = process.env.INIT_ADMIN_USERNAME
   const admin = await prisma.user.findUnique({
@@ -11,8 +11,32 @@ async function main(userData) {
     }
   })
 
+  const roles = await prisma.role.findMany({
+    where: {
+      name: {
+        in: roleData
+      } 
+    },
+    select: {
+      name: true
+    }
+  })
+
+  const existingNames = roles.map(r => r.name); //map existing roles
+  const missingRoles = roleData.filter(r => !r.includes(existingNames)); //filter which roles is missing
+
+  if (missingRoles){
+    console.log("missing roles:", missingRoles);
+    console.log("creating roles");
+    await prisma.role.createMany({
+      data: missingRoles.map(r => ({name: r}))
+    })
+  }
+
   // if no admin exist then proceed to seed accounts
   if (!admin) {
+    console.log("no admin found");
+    console.log("creating admin");
     for (const u of userData) {
       const hashedPassword = await hashPassword(u.password)
       await prisma.user.create({
@@ -35,7 +59,7 @@ async function main(userData) {
   }
 }
 
-main(user)
+main(user, role)
   .then(async () => {
     await prisma.$disconnect()
   })

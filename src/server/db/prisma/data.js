@@ -1,3 +1,9 @@
+const role = [
+    "ADMIN",
+    "OPERATOR",
+    "HRD"
+]
+
 const user = [
     {
         username: process.env.INIT_ADMIN_USERNAME || "admin",
@@ -8,4 +14,5 @@ const user = [
 
 export {
     user,
+    role
 }
