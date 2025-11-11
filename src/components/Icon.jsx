@@ -12,7 +12,6 @@ import Marquee from "react-fast-marquee";
 
 
 import MyComponent from "./MyComponent";
-import Marquee from "react-fast-marquee";
 
 
 const App = () => (

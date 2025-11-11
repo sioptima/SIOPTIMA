@@ -23,7 +23,7 @@ const hrdRoutes = [
   "/hrd"
 ];
 
-export default async function middleware(request) {
+export default async function proxy(request) {
   const response = (await middlewareAuth(request)) ?? NextResponse.next();
   await updateSessionExpiration(response, request)
   return response;
