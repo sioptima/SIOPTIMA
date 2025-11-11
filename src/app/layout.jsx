@@ -40,12 +40,7 @@
 // app/layout.jsx
 import { Inter } from "next/font/google";
 import "./globals.css";
-<<<<<<< HEAD:src/app/layout.jsx
-import { ThemeProvider } from "@/src/components/ThemeProvider";
-import LayoutWrapper from "@/src/components/LayoutWrapper"; // komponen baru
-=======
 import { ThemeProvider } from "next-themes";
->>>>>>> 34811ee789590848b250d8acca1b13f0f3ed23c6:app/layout.jsx
 
 const inter = Inter({ subsets: ["latin"] });
 

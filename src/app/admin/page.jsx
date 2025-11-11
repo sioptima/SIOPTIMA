@@ -5105,9 +5105,6 @@ export default function Admin() {
                 </h1>
                 <p className="text-gray-600">Manage IPAL sites and locations</p>
               </div>
-<<<<<<< HEAD:src/app/admin/page.jsx
-              <AddSiteButton/>
-=======
               <button
                 onClick={() => setIsAddSiteModalOpen(true)}
                 className="bg-teal-600 text-white px-6 py-3 rounded-lg hover:bg-teal-700 transition flex items-center gap-2 font-medium mt-4 sm:mt-0"
