@@ -89,7 +89,7 @@
 // MIDDLEWARE SEDERHANA UNTUK SEMENTARA - ini nanti bisa di comment out aja
 import { NextResponse } from "next/server";
 
-export function middleware(request) {
+export function proxy(request) {
   // Biarkan semua request lepas tanpa pengecekan
   return NextResponse.next();
 }

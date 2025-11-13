@@ -1631,15 +1631,47 @@ export default function HRD() {
 
   // ==================== DATA VISUALISASI ====================
 
-  const weeklyAttendanceData = [
-    { day: "Mon", present: 115, late: 5, absent: 7 },
-    { day: "Tue", present: 118, late: 4, absent: 5 },
-    { day: "Wed", present: 120, late: 3, absent: 4 },
-    { day: "Thu", present: 116, late: 6, absent: 5 },
-    { day: "Fri", present: 119, late: 4, absent: 4 },
-    { day: "Sat", present: 110, late: 8, absent: 9 },
-    { day: "Sun", present: 105, late: 7, absent: 15 },
-  ];
+  // Fungsi untuk menghitung data weekly attendance dari data real
+  const calculateWeeklyAttendanceData = () => {
+    // Data dummy untuk contoh, nanti bisa diganti dengan data real dari API
+    const today = new Date();
+    const days = [];
+
+    // Generate 7 hari terakhir
+    for (let i = 6; i >= 0; i--) {
+      const date = new Date(today);
+      date.setDate(today.getDate() - i);
+      const dayNames = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+      const dayName = dayNames[date.getDay()];
+
+      // Hitung statistik dari data attendance yang sesuai dengan tanggal
+      const dayData = attendanceData.filter((item) => {
+        const itemDate = new Date(item.date);
+        return itemDate.toDateString() === date.toDateString();
+      });
+
+      const approved = dayData.filter((item) => item.status === "approved");
+      const pending = dayData.filter((item) => item.status === "pending");
+      const rejected = dayData.filter((item) => item.status === "rejected");
+
+      const present = approved.filter((item) => item.lateMinutes === 0).length;
+      const late = approved.filter((item) => item.lateMinutes > 0).length;
+      const absent =
+        rejected.length +
+        (dashboardData.totalOperators - approved.length - pending.length);
+
+      days.push({
+        day: dayName,
+        present: Math.max(0, present),
+        late: Math.max(0, late),
+        absent: Math.max(0, absent),
+      });
+    }
+
+    return days;
+  };
+
+  const weeklyAttendanceData = calculateWeeklyAttendanceData();
 
   const todayStatusData = [
     { status: "Present", value: 85, color: "#10B981" },
@@ -1891,7 +1923,7 @@ export default function HRD() {
         </div>
       )}
 
-      {/* Sidebar - BADGE DI SIDEBAR DISESUAIKAN */}
+      {/* Sidebar - BADGE DI SIDEBAR DIREVISI MENJADI LEBIH ESTETIK */}
       <div
         className={`fixed top-0 left-0 w-64 h-screen bg-white shadow-lg flex flex-col
         z-40 transform transition-transform duration-200 ease-in-out
@@ -1919,7 +1951,7 @@ export default function HRD() {
         </div>
 
         {/* Sidebar menu */}
-        <nav className="p-4 flex-1">
+        <nav className="p-4 flex-1 overflow-y-auto">
           <ul className="space-y-2">
             {menuItems.map((item) => {
               const Icon = item.icon;
@@ -1933,12 +1965,12 @@ export default function HRD() {
                     className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg text-left transition
                       ${
                         activeMenu === item.id
-                          ? "bg-green-800 text-teal-100 border-r-2 border-teal-900"
+                          ? "bg-teal-50 text-teal-800 border-r-2 border-teal-600"
                           : "text-gray-800 hover:bg-gray-100"
                       }`}
                   >
                     <Icon className="w-5 h-5 text-gray-800" />
-                    {item.name}
+                    <span className="whitespace-nowrap">{item.name}</span>
                   </button>
                 </li>
               );
@@ -1946,28 +1978,47 @@ export default function HRD() {
           </ul>
         </nav>
 
-        {/* HRD badge - DIUBAH MENJADI SAMA DENGAN YANG DI HEADER */}
-        <div className="p-4 border-t border-gray-200 bg-white mt-auto">
-          <div className="flex items-center gap-3">
-            <div
-              className="w-10 h-10 bg-gradient-to-r from-emerald-800 to-green-800 rounded-full
-              flex items-center justify-center text-white font-bold text-lg"
-            >
-              {hrdUser.initial}
+        {/* HRD badge - REVISI: BACKGROUND ABU-ABU DENGAN KOTAK ROUNDED YANG ESTETIK */}
+        <div className="p-4 mt-auto">
+          <div className="bg-gray-50 rounded-xl p-4 border border-gray-200 shadow-sm hover:shadow-md transition-shadow duration-200">
+            <div className="flex items-center gap-3">
+              <div
+                className="w-12 h-12 bg-gradient-to-r from-blue-500 to-cyan-600 rounded-full
+                flex items-center justify-center text-white font-bold text-lg shadow-md"
+              >
+                {hrdUser.initial}
+              </div>
+              <div className="flex-1 min-w-0">
+                <p className="font-semibold text-gray-900 truncate text-sm">
+                  {hrdUser.name}
+                </p>
+                <p className="text-gray-600 truncate text-xs mt-0.5">
+                  {hrdUser.email}
+                </p>
+                <div className="flex items-center gap-1 mt-1">
+                  <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+                  <p className="text-gray-500 text-xs truncate">
+                    {hrdUser.role}
+                  </p>
+                </div>
+              </div>
             </div>
-            <div className="flex-1 min-w-0">
-              <p className="font-semibold text-gray-900 truncate">
-                {hrdUser.name}
-              </p>
-              <p className="text-sm text-gray-600 truncate">{hrdUser.email}</p>
-              <p className="text-xs text-gray-500 truncate">{hrdUser.site}</p>
+            
+            {/* Divider */}
+            <div className="border-t border-gray-200 mt-3 pt-3">
+              <div className="flex items-center justify-between text-xs text-gray-600">
+                <span>{hrdUser.site}</span>
+                <span className="px-2 py-1 bg-blue-100 text-blue-700 rounded-full font-medium">
+                  Active
+                </span>
+              </div>
             </div>
           </div>
         </div>
       </div>
 
       {/* Main Area */}
-      <div className="flex-1 lg:ml-64">
+      <div className="flex-1 lg:ml-64 min-w-0">
         <header className="bg-white shadow-sm border-b border-gray-200 sticky top-0 z-30">
           <div className="flex justify-between items-center px-4 lg:px-6 py-4">
             {/* Hamburger */}
@@ -1979,7 +2030,7 @@ export default function HRD() {
                 <Bars3Icon className="w-6 h-6 text-gray-800" />
               </button>
 
-              <h1 className="text-xl lg:text-2xl font-bold text-gray-900">
+              <h1 className="text-xl lg:text-2xl font-bold text-gray-900 truncate">
                 {menuItems.find((m) => m.id === activeMenu)?.name}
               </h1>
             </div>
@@ -2088,7 +2139,7 @@ export default function HRD() {
                   className="flex items-center gap-2 cursor-pointer"
                 >
                   <div
-                    className="w-10 h-10 bg-gradient-to-r from-emerald-800 to-green-800
+                    className="w-10 h-10 bg-gradient-to-r from-blue-500 to-cyan-600
       rounded-full flex items-center justify-center text-white font-bold"
                   >
                     {hrdUser.initial}
@@ -2120,7 +2171,7 @@ export default function HRD() {
                     <div className="px-4 py-3 border-b border-gray-200">
                       <div className="flex items-center gap-3">
                         <div
-                          className="w-10 h-10 bg-gradient-to-r from-emerald-800 to-green-800
+                          className="w-10 h-10 bg-gradient-to-r from-blue-500 to-cyan-600
             rounded-full flex items-center justify-center text-white font-bold"
                         >
                           {hrdUser.initial}
@@ -2159,23 +2210,21 @@ export default function HRD() {
           </div>
         </header>
 
-        {/* DASHBOARD CONTENT */}
+        {/* DASHBOARD CONTENT - PERBAIKAN RESPONSIVITAS MOBILE */}
         {activeMenu === "dashboard" && (
-          <div className="px-4 sm:px-6 lg:px-10 xl:px-16 py-6 max-w-screen-2xl mx-auto bg-gradient-to-br from-gray-50 to-blue-50 min-h-screen">
-            {/* Headline */}
-            <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center mb-10">
-              <div>
-                <h2 className="text-2xl lg:text-3xl font-bold text-gray-900">
-                  HRD Dashboard
-                </h2>
-                <p className="text-gray-600 text-sm mt-1">
-                  Monitor operator attendance and performance
-                </p>
-              </div>
+          <div className="px-3 sm:px-4 lg:px-6 py-4 max-w-screen-2xl mx-auto bg-gradient-to-br from-gray-50 to-blue-50 min-h-screen">
+            {/* Headline - PERBAIKAN MARGIN MOBILE */}
+            <div className="mb-4 sm:mb-6">
+              <h1 className="text-lg sm:text-xl lg:text-2xl xl:text-3xl font-bold text-gray-900 mb-1 sm:mb-2">
+                HRD Dashboard
+              </h1>
+              <p className="text-xs sm:text-sm text-gray-600">
+                Monitor operator attendance and performance
+              </p>
             </div>
 
-            {/* TOP KPIs - DATA REAL-TIME DARI SINKRONISASI */}
-            <div className="mb-8 grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
+            {/* TOP KPIs - PERBAIKAN LAYOUT MOBILE */}
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-2 sm:gap-3 lg:gap-4 mb-4 sm:mb-6">
               {[
                 {
                   label: "Total Operators",
@@ -2209,17 +2258,17 @@ export default function HRD() {
                 return (
                   <div
                     key={i}
-                    className="bg-white p-4 rounded-xl shadow-sm border border-gray-200 hover:shadow-md transition-shadow"
+                    className="bg-white p-2 sm:p-3 lg:p-4 rounded-lg sm:rounded-xl shadow-sm border border-gray-200 hover:shadow-md transition-shadow"
                   >
-                    <div className="flex justify-between items-start mb-3">
-                      <p className="text-gray-600 text-sm font-medium">
+                    <div className="flex justify-between items-start mb-2 sm:mb-3 lg:mb-4">
+                      <p className="text-gray-700 font-medium text-xs sm:text-sm">
                         {item.label}
                       </p>
-                      <div className="p-2 rounded-lg bg-blue-50">
-                        <Icon className="w-4 h-4 text-blue-600" />
+                      <div className="p-1 sm:p-2 rounded-lg bg-blue-50">
+                        <Icon className="w-3 h-3 sm:w-4 sm:h-4 lg:w-5 lg:h-5 text-blue-600" />
                       </div>
                     </div>
-                    <p className="text-2xl font-bold text-gray-900">
+                    <p className="text-lg sm:text-xl lg:text-2xl xl:text-3xl font-bold text-gray-900">
                       {item.value}
                     </p>
                     <p
@@ -2241,16 +2290,18 @@ export default function HRD() {
               })}
             </div>
 
-            {/* SECOND ROW - Charts */}
-            <div className="mb-9 grid grid-cols-1 xl:grid-cols-2 gap-6">
-              {/* Weekly Attendance Trends */}
-              <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-200">
-                <h3 className="font-semibold text-lg text-gray-800 mb-5">
+            {/* SECOND ROW - Charts - PERBAIKAN LAYOUT MOBILE */}
+            <div className="grid grid-cols-1 xl:grid-cols-2 gap-3 sm:gap-4 lg:gap-6 mb-4 sm:mb-6">
+              {/* Weekly Attendance Trends - PERBAIKAN UNTUK MOBILE */}
+              <div className="bg-white p-3 sm:p-4 lg:p-6 rounded-lg sm:rounded-xl lg:rounded-2xl border border-gray-200 shadow-sm sm:shadow-md">
+                <h3 className="font-semibold text-base sm:text-lg text-gray-800 mb-3 sm:mb-4 lg:mb-5">
                   Weekly Attendance Trends
                 </h3>
+
                 <div className="relative">
                   {/* Y-axis labels */}
-                  <div className="absolute left-0 top-0 bottom-0 w-8 flex flex-col justify-between text-xs text-gray-500 py-4">
+                  <div className="absolute left-0 top-0 bottom-0 w-6 sm:w-8 flex flex-col justify-between text-xs text-gray-500 py-1 sm:py-2">
+                    <span>150</span>
                     <span>120</span>
                     <span>90</span>
                     <span>60</span>
@@ -2258,109 +2309,129 @@ export default function HRD() {
                     <span>0</span>
                   </div>
 
-                  {/* Chart area */}
-                  <div className="ml-8">
-                    <div className="w-full h-48 flex items-end justify-between gap-1 px-2 border-b border-l border-gray-200">
-                      {weeklyAttendanceData.map((data, index) => (
-                        <div
-                          key={index}
-                          className="flex flex-col items-center flex-1 relative"
-                        >
-                          {/* Grouped bars - 3 batang terpisah untuk setiap hari */}
-                          <div className="flex items-end justify-center gap-1 w-full">
-                            {/* Present bar - hijau */}
-                            <div
-                              className="w-3 bg-green-500 rounded-t transition-all duration-300 hover:bg-green-600 cursor-pointer relative group"
-                              style={{
-                                height: `${(data.present / 120) * 120}px`,
-                              }}
-                              onMouseEnter={() =>
-                                setHoveredBar(`${index}-present`)
-                              }
-                              onMouseLeave={() => setHoveredBar(null)}
-                            >
-                              {hoveredBar === `${index}-present` && (
-                                <div className="absolute -top-8 left-1/2 transform -translate-x-1/2 bg-gray-800 text-white px-2 py-1 rounded text-xs whitespace-nowrap z-10">
+                  {/* chart container */}
+                  <div className="ml-6 sm:ml-8">
+                    <div className="w-full h-32 sm:h-40 lg:h-48 flex items-end justify-between gap-1 sm:gap-2 px-1 sm:px-2 border-b border-l border-gray-200 overflow-visible">
+                      {[
+                        { day: "Mon", present: 115, late: 5, absent: 7 },
+                        { day: "Tue", present: 118, late: 4, absent: 5 },
+                        { day: "Wed", present: 120, late: 3, absent: 4 },
+                        { day: "Thu", present: 116, late: 6, absent: 5 },
+                        { day: "Fri", present: 119, late: 4, absent: 4 },
+                        { day: "Sat", present: 110, late: 8, absent: 9 },
+                        { day: "Sun", present: 105, late: 7, absent: 15 },
+                      ].map((data, index) => {
+                        const maxValue = 150;
+                        const chartHeight = 120; // Reduced for mobile
+
+                        return (
+                          <div
+                            key={index}
+                            className="flex flex-col items-center flex-1 relative overflow-visible"
+                          >
+                            {/* Group bar */}
+                            <div className="flex items-end justify-center gap-0.5 sm:gap-1.5 w-full overflow-visible">
+                              {/* Present */}
+                              <div
+                                className="w-1.5 sm:w-2 lg:w-2.5 bg-green-500 rounded-t transition-all duration-300 hover:bg-green-600 cursor-pointer relative group"
+                                style={{
+                                  height: `${
+                                    (data.present / maxValue) * chartHeight
+                                  }px`,
+                                }}
+                              >
+                                <div className="absolute -top-6 sm:-top-7 left-1/2 transform -translate-x-1/2 opacity-0 group-hover:opacity-100 transition bg-gray-800 text-white px-1 sm:px-2 py-0.5 sm:py-1 rounded text-xs whitespace-nowrap z-50 pointer-events-none">
                                   Present: {data.present}
                                 </div>
-                              )}
-                            </div>
+                              </div>
 
-                            {/* Late bar - kuning */}
-                            <div
-                              className="w-3 bg-yellow-500 rounded-t transition-all duration-300 hover:bg-yellow-600 cursor-pointer relative group"
-                              style={{ height: `${(data.late / 120) * 120}px` }}
-                              onMouseEnter={() =>
-                                setHoveredBar(`${index}-late`)
-                              }
-                              onMouseLeave={() => setHoveredBar(null)}
-                            >
-                              {hoveredBar === `${index}-late` && (
-                                <div className="absolute -top-8 left-1/2 transform -translate-x-1/2 bg-gray-800 text-white px-2 py-1 rounded text-xs whitespace-nowrap z-10">
+                              {/* Late */}
+                              <div
+                                className="w-1.5 sm:w-2 lg:w-2.5 bg-yellow-400 rounded-t transition-all duration-300 hover:bg-yellow-500 cursor-pointer relative group"
+                                style={{
+                                  height: `${
+                                    (data.late / maxValue) * chartHeight
+                                  }px`,
+                                }}
+                              >
+                                <div className="absolute -top-6 sm:-top-7 left-1/2 transform -translate-x-1/2 opacity-0 group-hover:opacity-100 transition bg-gray-800 text-white px-1 sm:px-2 py-0.5 sm:py-1 rounded text-xs whitespace-nowrap z-50 pointer-events-none">
                                   Late: {data.late}
                                 </div>
-                              )}
-                            </div>
+                              </div>
 
-                            {/* Absent bar - merah */}
-                            <div
-                              className="w-3 bg-red-500 rounded-t transition-all duration-300 hover:bg-red-600 cursor-pointer relative group"
-                              style={{
-                                height: `${(data.absent / 120) * 120}px`,
-                              }}
-                              onMouseEnter={() =>
-                                setHoveredBar(`${index}-absent`)
-                              }
-                              onMouseLeave={() => setHoveredBar(null)}
-                            >
-                              {hoveredBar === `${index}-absent` && (
-                                <div className="absolute -top-8 left-1/2 transform -translate-x-1/2 bg-gray-800 text-white px-2 py-1 rounded text-xs whitespace-nowrap z-10">
+                              {/* Absent */}
+                              <div
+                                className="w-1.5 sm:w-2 lg:w-2.5 bg-red-500 rounded-t transition-all duration-300 hover:bg-red-600 cursor-pointer relative group"
+                                style={{
+                                  height: `${
+                                    (data.absent / maxValue) * chartHeight
+                                  }px`,
+                                }}
+                              >
+                                <div className="absolute -top-6 sm:-top-7 left-1/2 transform -translate-x-1/2 opacity-0 group-hover:opacity-100 transition bg-gray-800 text-white px-1 sm:px-2 py-0.5 sm:py-1 rounded text-xs whitespace-nowrap z-50 pointer-events-none">
                                   Absent: {data.absent}
                                 </div>
-                              )}
+                              </div>
                             </div>
-                          </div>
 
-                          {/* Day label */}
-                          <span className="text-xs text-gray-600 mt-2">
-                            {data.day}
-                          </span>
-                        </div>
-                      ))}
+                            {/* Label hari */}
+                            <span className="text-xs text-gray-600 mt-1 sm:mt-2 font-medium">
+                              {data.day}
+                            </span>
+                          </div>
+                        );
+                      })}
                     </div>
 
-                    {/* Legend di bawah */}
-                    <div className="flex justify-center gap-4 mt-4 text-xs">
-                      <div className="flex items-center gap-1">
-                        <div className="w-3 h-3 bg-red-500 rounded"></div>
-                        <span className="text-gray-600">absent</span>
+                    {/* Legend */}
+                    <div className="flex justify-center gap-2 sm:gap-3 lg:gap-4 mt-2 sm:mt-3 text-xs">
+                      <div className="flex items-center gap-1 sm:gap-1.5">
+                        <div className="w-2 h-2 sm:w-3 sm:h-3 bg-green-500 rounded"></div>
+                        <span className="text-gray-700 text-xs sm:text-sm">Present</span>
                       </div>
-                      <div className="flex items-center gap-1">
-                        <div className="w-3 h-3 bg-yellow-500 rounded"></div>
-                        <span className="text-gray-600">late</span>
+                      <div className="flex items-center gap-1 sm:gap-1.5">
+                        <div className="w-2 h-2 sm:w-3 sm:h-3 bg-yellow-400 rounded"></div>
+                        <span className="text-gray-700 text-xs sm:text-sm">Late</span>
                       </div>
-                      <div className="flex items-center gap-1">
-                        <div className="w-3 h-3 bg-green-500 rounded"></div>
-                        <span className="text-gray-600">present</span>
+                      <div className="flex items-center gap-1 sm:gap-1.5">
+                        <div className="w-2 h-2 sm:w-3 sm:h-3 bg-red-500 rounded"></div>
+                        <span className="text-gray-700 text-xs sm:text-sm">Absent</span>
                       </div>
                     </div>
                   </div>
                 </div>
               </div>
 
-              {/* Today's Status - PIE CHART */}
-              <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-200">
-                <h3 className="font-semibold text-lg text-gray-800 mb-5">
-                  Today's Status
-                </h3>
-                <div className="flex flex-col lg:flex-row items-center gap-8">
+              {/* Today's Status - PIE CHART - PERBAIKAN UNTUK MOBILE */}
+              <div className="bg-white p-3 sm:p-4 lg:p-6 rounded-lg sm:rounded-xl lg:rounded-2xl border border-gray-200 shadow-sm sm:shadow-md">
+                <div className="flex justify-between items-center mb-3 sm:mb-4 lg:mb-5">
+                  <h3 className="font-semibold text-base sm:text-lg text-gray-800">
+                    Today's Status
+                  </h3>
+                  <div className="text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded hidden sm:block">
+                    {new Date().toLocaleDateString('en-US', { 
+                      weekday: 'long', 
+                      year: 'numeric', 
+                      month: 'long', 
+                      day: 'numeric' 
+                    })}
+                  </div>
+                  <div className="text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded sm:hidden">
+                    {new Date().toLocaleDateString('en-US', { 
+                      month: 'short', 
+                      day: 'numeric' 
+                    })}
+                  </div>
+                </div>
+                
+                <div className="flex flex-col lg:flex-row items-center gap-4 sm:gap-6 lg:gap-8">
                   {/* Pie Chart dengan interaksi */}
                   <div className="relative flex flex-col items-center">
                     <svg
-                      width="160"
-                      height="160"
+                      width="120"
+                      height="120"
                       viewBox="0 0 100 100"
-                      className="cursor-pointer"
+                      className="cursor-pointer sm:w-32 sm:h-32 lg:w-36 lg:h-36"
                     >
                       {pieChartData.map((item, index) => (
                         <path
@@ -2381,8 +2452,8 @@ export default function HRD() {
                     </svg>
 
                     {/* Text di bawah pie chart */}
-                    <div className="text-center mt-4">
-                      <div className="text-2xl font-bold text-gray-800">
+                    <div className="text-center mt-2 sm:mt-3">
+                      <div className="text-lg sm:text-xl lg:text-2xl font-bold text-gray-800">
                         85%
                       </div>
                       <div className="text-sm text-gray-600">Present</div>
@@ -2390,10 +2461,10 @@ export default function HRD() {
 
                     {/* Tooltip untuk pie chart */}
                     {hoveredPie !== null && (
-                      <div className="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-full bg-gray-800 text-white px-3 py-2 rounded-lg text-sm z-10 shadow-lg">
-                        <div className="flex items-center gap-2">
+                      <div className="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-full bg-gray-800 text-white px-2 sm:px-3 py-1 sm:py-2 rounded text-xs sm:text-sm z-10 shadow-lg">
+                        <div className="flex items-center gap-1 sm:gap-2">
                           <div
-                            className="w-3 h-3 rounded"
+                            className="w-2 h-2 sm:w-3 sm:h-3 rounded"
                             style={{
                               backgroundColor: pieChartData[hoveredPie].color,
                             }}
@@ -2408,11 +2479,11 @@ export default function HRD() {
                   </div>
 
                   {/* Legend dengan interaksi hover */}
-                  <div className="space-y-4 flex-1">
+                  <div className="space-y-2 sm:space-y-3 lg:space-y-4 flex-1 w-full">
                     {todayStatusData.map((item, index) => (
                       <div
                         key={item.status}
-                        className={`flex items-center justify-between p-2 rounded-lg transition-all duration-200 cursor-pointer ${
+                        className={`flex items-center justify-between p-2 sm:p-3 rounded-lg transition-all duration-200 cursor-pointer ${
                           hoveredPie === index
                             ? "bg-gray-50 transform scale-105"
                             : ""
@@ -2420,16 +2491,16 @@ export default function HRD() {
                         onMouseEnter={() => setHoveredPie(index)}
                         onMouseLeave={() => setHoveredPie(null)}
                       >
-                        <div className="flex items-center gap-3">
+                        <div className="flex items-center gap-2 sm:gap-3">
                           <div
-                            className="w-4 h-4 rounded transition-transform duration-200"
+                            className="w-3 h-3 rounded transition-transform duration-200"
                             style={{ backgroundColor: item.color }}
                           ></div>
                           <span className="text-sm text-gray-700 font-medium">
                             {item.status}
                           </span>
                         </div>
-                        <span className="text-lg font-bold text-gray-900">
+                        <span className="text-base sm:text-lg font-bold text-gray-900">
                           {item.value}%
                         </span>
                       </div>
@@ -2439,37 +2510,37 @@ export default function HRD() {
               </div>
             </div>
 
-            {/* LAST ROW - Top Performers dan Recent Attendance */}
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            {/* LAST ROW - Top Performers dan Recent Attendance - PERBAIKAN UNTUK MOBILE */}
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-3 sm:gap-4 lg:gap-6">
               {/* Top Performers */}
-              <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-200">
-                <h3 className="font-semibold text-lg text-gray-800 mb-5">
+              <div className="bg-white p-3 sm:p-4 lg:p-6 rounded-lg sm:rounded-xl border border-gray-200 shadow-sm sm:shadow-md">
+                <h3 className="font-semibold text-base sm:text-lg text-gray-800 mb-3 sm:mb-4 lg:mb-5">
                   Top Performers (This Month)
                 </h3>
-                <div className="space-y-4">
+                <div className="space-y-2 sm:space-y-3 lg:space-y-4">
                   {topPerformersData.map((performer, index) => (
                     <div
                       key={index}
-                      className="flex items-center justify-between p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors"
+                      className="flex items-center justify-between p-2 sm:p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors"
                     >
-                      <div className="flex items-center gap-3">
-                        <div className="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center text-white font-bold text-sm">
+                      <div className="flex items-center gap-2 sm:gap-3">
+                        <div className="w-6 h-6 sm:w-8 sm:h-8 bg-blue-500 rounded-full flex items-center justify-center text-white font-bold text-xs sm:text-sm">
                           {index + 1}
                         </div>
-                        <div>
-                          <p className="font-semibold text-gray-900">
+                        <div className="min-w-0 flex-1">
+                          <p className="font-semibold text-gray-900 truncate text-sm sm:text-base">
                             {performer.name}
                           </p>
-                          <p className="text-sm text-gray-600">
+                          <p className="text-gray-600 truncate text-xs sm:text-sm">
                             {performer.location}
                           </p>
                         </div>
                       </div>
-                      <div className="text-right">
-                        <p className="font-bold text-gray-900">
+                      <div className="text-right flex-shrink-0 ml-2">
+                        <p className="font-bold text-gray-900 text-sm sm:text-base">
                           {performer.performance}
                         </p>
-                        <p className="text-xs text-blue-600 font-medium">
+                        <p className="text-blue-600 font-medium text-xs">
                           excellent
                         </p>
                       </div>
@@ -2479,40 +2550,40 @@ export default function HRD() {
               </div>
 
               {/* Recent Attendance */}
-              <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-200">
-                <div className="flex justify-between items-center mb-5">
-                  <h3 className="font-semibold text-lg text-gray-800">
+              <div className="bg-white p-3 sm:p-4 lg:p-6 rounded-lg sm:rounded-xl border border-gray-200 shadow-sm sm:shadow-md">
+                <div className="flex justify-between items-center mb-3 sm:mb-4 lg:mb-5">
+                  <h3 className="font-semibold text-base sm:text-lg text-gray-800">
                     Recent Attendance
                   </h3>
                   <button
                     onClick={handleViewAllAttendance}
-                    className="text-blue-600 text-sm font-medium hover:underline"
+                    className="text-blue-600 text-xs sm:text-sm font-medium hover:underline"
                   >
                     View All
                   </button>
                 </div>
-                <div className="space-y-4">
+                <div className="space-y-2 sm:space-y-3 lg:space-y-4">
                   {recentAttendanceData.map((attendance, index) => (
                     <div
                       key={index}
-                      className="flex items-center justify-between p-3 border-b border-gray-100 last:border-0 hover:bg-gray-50 transition-colors"
+                      className="flex items-center justify-between p-2 sm:p-3 border-b border-gray-100 last:border-0 hover:bg-gray-50 transition-colors"
                     >
-                      <div>
-                        <p className="font-semibold text-gray-900">
+                      <div className="min-w-0 flex-1">
+                        <p className="font-semibold text-gray-900 truncate text-sm sm:text-base">
                           {attendance.name}
                         </p>
-                        <p className="text-sm text-gray-600">
+                        <p className="text-gray-600 truncate text-xs sm:text-sm">
                           {attendance.location} • {attendance.time}
                         </p>
                       </div>
-                      <div className="flex items-center gap-2">
+                      <div className="flex items-center gap-1 sm:gap-2 flex-shrink-0 ml-2">
                         {attendance.status === "approved" ? (
-                          <CheckCircleIcon className="w-5 h-5 text-green-500" />
+                          <CheckCircleIcon className="w-4 h-4 text-green-500" />
                         ) : (
-                          <ExclamationTriangleIcon className="w-5 h-5 text-yellow-500" />
+                          <ExclamationTriangleIcon className="w-4 h-4 text-yellow-500" />
                         )}
                         <span
-                          className={`px-3 py-1 rounded-full text-xs font-medium ${
+                          className={`px-2 py-1 rounded-full text-xs font-medium ${
                             attendance.status === "approved"
                               ? "bg-green-100 text-green-800"
                               : "bg-yellow-100 text-yellow-800"
@@ -2529,103 +2600,111 @@ export default function HRD() {
           </div>
         )}
 
-        {/* ATTENDANCE VALIDATION CONTENT */}
+        {/* ATTENDANCE VALIDATION CONTENT - TETAP SAMA */}
         {activeMenu === "validation" && (
-          <div className="px-4 sm:px-6 lg:px-10 xl:px-16 py-6 max-w-screen-2xl mx-auto bg-gradient-to-br from-gray-50 to-blue-50 min-h-screen">
+          <div className="px-3 sm:px-4 lg:px-6 py-4 max-w-screen-2xl mx-auto bg-gradient-to-br from-gray-50 to-blue-50 min-h-screen">
             {/* Header Section */}
-            <div className="mb-8">
-              <h1 className="text-2xl lg:text-3xl font-bold text-gray-900 mb-2">
+            <div className="mb-6">
+              <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-900 mb-2">
                 Attendance Validation
               </h1>
-              <p className="text-gray-600">
+              <p className="text-gray-600 text-sm sm:text-base">
                 Review and validate operator attendance records from Admin and
                 Operator
               </p>
-              <div className="text-sm text-blue-600 mt-2">
-                🔄 Data tersinkronisasi dengan role Admin
+              <div className="text-xs sm:text-sm text-blue-600 mt-2">
+                 Data tersinkronisasi dengan Admin & Operator
               </div>
             </div>
 
             {/* Stats Cards - DATA REAL-TIME DARI SINKRONISASI */}
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
-              <div className="bg-white p-4 rounded-xl shadow-sm border border-gray-200">
-                <div className="flex items-center justify-between mb-4">
-                  <h3 className="text-gray-700 font-medium">Total Today</h3>
-                  <div className="p-2 bg-gray-100 rounded-lg">
-                    <DocumentChartBarIcon className="w-5 h-5 text-gray-600" />
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 mb-6">
+              <div className="bg-white p-3 sm:p-4 rounded-xl shadow-sm border border-gray-200">
+                <div className="flex items-center justify-between mb-3 sm:mb-4">
+                  <h3 className="text-gray-700 font-medium text-xs sm:text-sm">
+                    Total Today
+                  </h3>
+                  <div className="p-1 sm:p-2 bg-gray-100 rounded-lg">
+                    <DocumentChartBarIcon className="w-4 h-4 sm:w-5 sm:h-5 text-gray-600" />
                   </div>
                 </div>
-                <p className="text-3xl font-bold text-gray-900">
+                <p className="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-900">
                   {stats.total}
                 </p>
-                <p className="text-sm text-gray-500 mt-1">
+                <p className="text-xs text-gray-500 mt-1">
                   Pending: {stats.pending}
                 </p>
               </div>
 
-              <div className="bg-white p-4 rounded-xl shadow-sm border border-gray-200">
-                <div className="flex items-center justify-between mb-4">
-                  <h3 className="text-gray-700 font-medium">Approved</h3>
-                  <div className="p-2 bg-green-100 rounded-lg">
-                    <CheckCircleIcon className="w-5 h-5 text-green-600" />
+              <div className="bg-white p-3 sm:p-4 rounded-xl shadow-sm border border-gray-200">
+                <div className="flex items-center justify-between mb-3 sm:mb-4">
+                  <h3 className="text-gray-700 font-medium text-xs sm:text-sm">
+                    Approved
+                  </h3>
+                  <div className="p-1 sm:p-2 bg-green-100 rounded-lg">
+                    <CheckCircleIcon className="w-4 h-4 sm:w-5 sm:h-5 text-green-600" />
                   </div>
                 </div>
-                <p className="text-3xl font-bold text-gray-900">
+                <p className="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-900">
                   {stats.approved}
                 </p>
-                <p className="text-sm text-gray-500 mt-1">Validated records</p>
+                <p className="text-xs text-gray-500 mt-1">Validated records</p>
               </div>
 
-              <div className="bg-white p-4 rounded-xl shadow-sm border border-gray-200">
-                <div className="flex items-center justify-between mb-4">
-                  <h3 className="text-gray-700 font-medium">Rejected</h3>
-                  <div className="p-2 bg-red-100 rounded-lg">
-                    <XCircleIcon className="w-5 h-5 text-red-600" />
+              <div className="bg-white p-3 sm:p-4 rounded-xl shadow-sm border border-gray-200">
+                <div className="flex items-center justify-between mb-3 sm:mb-4">
+                  <h3 className="text-gray-700 font-medium text-xs sm:text-sm">
+                    Rejected
+                  </h3>
+                  <div className="p-1 sm:p-2 bg-red-100 rounded-lg">
+                    <XCircleIcon className="w-4 h-4 sm:w-5 sm:h-5 text-red-600" />
                   </div>
                 </div>
-                <p className="text-3xl font-bold text-gray-900">
+                <p className="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-900">
                   {stats.rejected}
                 </p>
-                <p className="text-sm text-gray-500 mt-1">Invalid records</p>
+                <p className="text-xs text-gray-500 mt-1">Invalid records</p>
               </div>
 
-              <div className="bg-white p-4 rounded-xl shadow-sm border border-gray-200">
-                <div className="flex items-center justify-between mb-4">
-                  <h3 className="text-gray-700 font-medium">Pending Review</h3>
-                  <div className="p-2 bg-yellow-100 rounded-lg">
-                    <ClockIcon className="w-5 h-5 text-yellow-600" />
+              <div className="bg-white p-3 sm:p-4 rounded-xl shadow-sm border border-gray-200">
+                <div className="flex items-center justify-between mb-3 sm:mb-4">
+                  <h3 className="text-gray-700 font-medium text-xs sm:text-sm">
+                    Pending Review
+                  </h3>
+                  <div className="p-1 sm:p-2 bg-yellow-100 rounded-lg">
+                    <ClockIcon className="w-4 h-4 sm:w-5 sm:h-5 text-yellow-600" />
                   </div>
                 </div>
-                <p className="text-3xl font-bold text-gray-900">
+                <p className="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-900">
                   {stats.pending}
                 </p>
-                <p className="text-sm text-gray-500 mt-1">
+                <p className="text-xs text-gray-500 mt-1">
                   Awaiting validation
                 </p>
               </div>
             </div>
 
             {/* Filter Section */}
-            <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-200 mb-6">
+            <div className="bg-white p-4 sm:p-6 rounded-xl shadow-sm border border-gray-200 mb-4 sm:mb-6">
               <div className="flex flex-col sm:flex-row gap-4 justify-between items-start sm:items-center">
-                <div className="relative flex-1 max-w-lg">
-                  <MagnifyingGlassIcon className="w-5 h-5 text-gray-400 absolute left-3 top-1/2 transform -translate-y-1/2" />
+                <div className="relative w-full sm:flex-1 sm:max-w-lg">
+                  <MagnifyingGlassIcon className="w-4 h-4 sm:w-5 sm:h-5 text-gray-400 absolute left-3 top-1/2 transform -translate-y-1/2" />
                   <input
                     type="text"
                     placeholder="Search by operator or site..."
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
-                    className="w-full pl-10 pr-4 py-2 bg-gray-100 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-900 placeholder-gray-500"
+                    className="w-full pl-10 pr-4 py-2 bg-gray-100 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-900 placeholder-gray-500 text-sm sm:text-base"
                   />
                 </div>
 
                 {/* Status Filter Buttons */}
-                <div className="flex gap-2 bg-gray-100 rounded-lg p-1">
+                <div className="flex flex-wrap gap-2 bg-gray-100 rounded-lg p-1 w-full sm:w-auto">
                   {["All", "Pending", "Approved", "Rejected"].map((filter) => (
                     <button
                       key={filter}
                       onClick={() => setSelectedFilter(filter)}
-                      className={`px-4 py-2 rounded-md text-sm font-medium transition ${
+                      className={`px-3 py-2 rounded-md text-xs sm:text-sm font-medium transition flex-1 sm:flex-none min-w-[70px] text-center ${
                         selectedFilter === filter
                           ? "bg-blue-600 text-white shadow-sm"
                           : "text-gray-700 hover:bg-gray-200"
@@ -2641,80 +2720,175 @@ export default function HRD() {
             {/* Attendance Table */}
             <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
               {/* Desktop Table Header */}
-              <div className="hidden md:grid grid-cols-12 gap-4 px-6 py-4 bg-gray-50 border-b border-gray-200 text-sm font-semibold text-gray-700">
+              <div className="hidden lg:grid grid-cols-12 gap-4 px-4 sm:px-6 py-3 bg-gray-50 border-b border-gray-200 text-sm font-semibold text-gray-700">
                 <div className="col-span-3">Operator</div>
                 <div className="col-span-2">Site</div>
-                <div className="col-span-1">Date</div>
+                <div className="col-span-2">Date</div>
                 <div className="col-span-1">Check-In</div>
                 <div className="col-span-1">Check-Out</div>
                 <div className="col-span-2 text-center">Status</div>
-                <div className="col-span-2 text-center">Actions</div>
+                <div className="col-span-1 text-center">Actions</div>
               </div>
 
               {/* Table Body */}
               <div className="divide-y divide-gray-200">
-                {filteredData.map((item) => (
-                  <div
-                    key={item.id}
-                    className="md:grid md:grid-cols-12 md:gap-4 px-4 md:px-6 py-4 hover:bg-gray-50 transition items-center"
-                  >
-                    {/* Mobile View - Card Layout */}
-                    <div className="md:hidden space-y-3">
-                      <div className="flex justify-between items-start">
-                        <div>
-                          <p className="font-medium text-gray-900">
-                            {item.operator}
-                          </p>
-                          <p className="text-sm text-gray-500 mt-1">
-                            {item.site}
-                          </p>
-                          <p className="text-xs text-gray-400 mt-1">
-                            Submitted by: {item.submittedBy}
-                          </p>
+                {filteredData.length === 0 ? (
+                  <div className="text-center py-8 text-gray-500">
+                    No attendance records found
+                  </div>
+                ) : (
+                  filteredData.map((item) => (
+                    <div
+                      key={item.id}
+                      className="lg:grid lg:grid-cols-12 lg:gap-4 px-3 sm:px-4 lg:px-6 py-4 hover:bg-gray-50 transition items-center"
+                    >
+                      {/* Mobile View - Card Layout */}
+                      <div className="lg:hidden space-y-3">
+                        <div className="flex justify-between items-start">
+                          <div className="flex-1 min-w-0">
+                            <p className="font-medium text-gray-900 truncate">
+                              {item.operator}
+                            </p>
+                            <p className="text-sm text-gray-500 mt-1 truncate">
+                              {item.site}
+                            </p>
+                            <p className="text-xs text-gray-400 mt-1">
+                              Submitted by: {item.submittedBy}
+                            </p>
+                          </div>
+                          <span
+                            className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-medium ml-2 flex-shrink-0 ${
+                              item.status === "approved"
+                                ? "bg-green-100 text-green-800"
+                                : item.status === "rejected"
+                                ? "bg-red-100 text-red-800"
+                                : "bg-yellow-100 text-yellow-800"
+                            }`}
+                          >
+                            {item.status}
+                          </span>
                         </div>
-                        <span
-                          className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-medium ${
-                            item.status === "approved"
-                              ? "bg-green-100 text-green-800"
-                              : item.status === "rejected"
-                              ? "bg-red-100 text-red-800"
-                              : "bg-yellow-100 text-yellow-800"
-                          }`}
-                        >
-                          {item.status}
-                        </span>
-                      </div>
 
-                      <div className="grid grid-cols-2 gap-4 text-sm">
-                        <div>
-                          <p className="text-gray-600">Date</p>
-                          <p className="text-gray-900 font-medium">
-                            {item.date}
-                          </p>
-                        </div>
-                        <div>
-                          <p className="text-gray-600">Check-In/Out</p>
-                          <div className="flex items-center gap-3 text-gray-900 font-medium">
-                            <div className="flex items-center gap-1">
-                              <ClockIcon className="w-4 h-4 text-green-600" />
-                              <span className="text-sm">{item.checkIn}</span>
-                            </div>
-                            <span className="text-gray-400">/</span>
-                            <div className="flex items-center gap-1">
-                              <ClockIcon className="w-4 h-4 text-red-600" />
-                              <span className="text-sm">{item.checkOut}</span>
+                        <div className="grid grid-cols-2 gap-3 text-sm">
+                          <div>
+                            <p className="text-gray-600 text-xs">Date</p>
+                            <p className="text-gray-900 font-medium text-sm">
+                              {item.date}
+                            </p>
+                          </div>
+                          <div>
+                            <p className="text-gray-600 text-xs">
+                              Check-In/Out
+                            </p>
+                            <div className="flex items-center gap-2 text-gray-900 font-medium">
+                              <div className="flex items-center gap-1">
+                                <ClockIcon className="w-3 h-3 sm:w-4 sm:h-4 text-green-600 flex-shrink-0" />
+                                <span className="text-xs sm:text-sm">
+                                  {item.checkIn}
+                                </span>
+                              </div>
+                              <span className="text-gray-400">/</span>
+                              <div className="flex items-center gap-1">
+                                <ClockIcon className="w-3 h-3 sm:w-4 sm:h-4 text-red-600 flex-shrink-0" />
+                                <span className="text-xs sm:text-sm">
+                                  {item.checkOut}
+                                </span>
+                              </div>
                             </div>
                           </div>
                         </div>
+
+                        <div className="flex justify-between items-center pt-2 border-t border-gray-200">
+                          <button
+                            onClick={() => openDetailModal(item)}
+                            className="text-blue-600 hover:text-blue-800 transition p-2 rounded hover:bg-blue-50 text-xs flex items-center gap-1"
+                          >
+                            <EyeIcon className="w-4 h-4" />
+                            <span>Details</span>
+                          </button>
+
+                          {item.status === "pending" && (
+                            <div className="flex gap-2">
+                              <button
+                                onClick={() => handleApprove(item.id)}
+                                className="text-green-600 hover:text-green-800 transition p-2 rounded hover:bg-green-50 text-xs flex items-center gap-1"
+                              >
+                                <CheckCircleIcon className="w-4 h-4" />
+                                <span>Approve</span>
+                              </button>
+
+                              <button
+                                onClick={() => handleReject(item.id)}
+                                className="text-red-600 hover:text-red-800 transition p-2 rounded hover:bg-red-50 text-xs flex items-center gap-1"
+                              >
+                                <XCircleIcon className="w-4 h-4" />
+                                <span>Reject</span>
+                              </button>
+                            </div>
+                          )}
+                        </div>
                       </div>
 
-                      <div className="flex justify-between items-center pt-2 border-t border-gray-200">
-                        <div className="flex gap-2">
+                      {/* Desktop View - Grid Layout */}
+                      <div className="hidden lg:block col-span-3">
+                        <p className="font-medium text-gray-900">
+                          {item.operator}
+                        </p>
+                        <p className="text-xs text-gray-500 mt-1">
+                          Submitted by: {item.submittedBy}
+                        </p>
+                      </div>
+
+                      <div className="hidden lg:block col-span-2">
+                        <p className="text-gray-700 truncate">{item.site}</p>
+                      </div>
+
+                      <div className="hidden lg:block col-span-2">
+                        <p className="text-gray-700 text-sm">{item.date}</p>
+                      </div>
+
+                      <div className="hidden lg:block col-span-1">
+                        <div className="flex items-center gap-2 text-gray-700">
+                          <ClockIcon className="w-4 h-4 text-green-600 flex-shrink-0" />
+                          <span className="text-sm font-medium">
+                            {item.checkIn}
+                          </span>
+                        </div>
+                      </div>
+
+                      <div className="hidden lg:block col-span-1">
+                        <div className="flex items-center gap-2 text-gray-700">
+                          <ClockIcon className="w-4 h-4 text-red-600 flex-shrink-0" />
+                          <span className="text-sm font-medium">
+                            {item.checkOut}
+                          </span>
+                        </div>
+                      </div>
+
+                      <div className="hidden lg:block col-span-2">
+                        <div className="flex justify-center">
+                          <span
+                            className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-medium capitalize ${
+                              item.status === "approved"
+                                ? "bg-green-100 text-green-800"
+                                : item.status === "rejected"
+                                ? "bg-red-100 text-red-800"
+                                : "bg-yellow-100 text-yellow-800"
+                            }`}
+                          >
+                            {item.status}
+                          </span>
+                        </div>
+                      </div>
+
+                      <div className="hidden lg:block col-span-1">
+                        <div className="flex gap-2 justify-center">
                           <button
                             onClick={() => openDetailModal(item)}
                             className="text-blue-600 hover:text-blue-800 transition p-2 rounded hover:bg-blue-50"
+                            title="View Details"
                           >
-                            <EyeIcon className="w-5 h-5" />
+                            <EyeIcon className="w-4 h-4" />
                           </button>
 
                           {item.status === "pending" && (
@@ -2722,104 +2896,25 @@ export default function HRD() {
                               <button
                                 onClick={() => handleApprove(item.id)}
                                 className="text-green-600 hover:text-green-800 transition p-2 rounded hover:bg-green-50"
+                                title="Approve"
                               >
-                                <CheckCircleIcon className="w-5 h-5" />
+                                <CheckCircleIcon className="w-4 h-4" />
                               </button>
 
                               <button
                                 onClick={() => handleReject(item.id)}
                                 className="text-red-600 hover:text-red-800 transition p-2 rounded hover:bg-red-50"
+                                title="Reject"
                               >
-                                <XCircleIcon className="w-5 h-5" />
+                                <XCircleIcon className="w-4 h-4" />
                               </button>
                             </>
                           )}
                         </div>
                       </div>
                     </div>
-
-                    {/* Desktop View - Grid Layout */}
-                    <div className="hidden md:block col-span-3">
-                      <p className="font-medium text-gray-900">
-                        {item.operator}
-                      </p>
-                      <p className="text-xs text-gray-500 mt-1">
-                        Submitted by: {item.submittedBy}
-                      </p>
-                    </div>
-
-                    <div className="hidden md:block col-span-2">
-                      <p className="text-gray-700">{item.site}</p>
-                    </div>
-
-                    <div className="hidden md:block col-span-1">
-                      <p className="text-gray-700 text-sm">{item.date}</p>
-                    </div>
-
-                    <div className="hidden md:block col-span-1">
-                      <div className="flex items-center gap-2 text-gray-700">
-                        <ClockIcon className="w-4 h-4 text-green-600 flex-shrink-0" />
-                        <span className="text-sm font-medium">
-                          {item.checkIn}
-                        </span>
-                      </div>
-                    </div>
-
-                    <div className="hidden md:block col-span-1">
-                      <div className="flex items-center gap-2 text-gray-700">
-                        <ClockIcon className="w-4 h-4 text-red-600 flex-shrink-0" />
-                        <span className="text-sm font-medium">
-                          {item.checkOut}
-                        </span>
-                      </div>
-                    </div>
-
-                    <div className="hidden md:block col-span-2">
-                      <div className="flex justify-center">
-                        <span
-                          className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-medium capitalize ${
-                            item.status === "approved"
-                              ? "bg-green-100 text-green-800"
-                              : item.status === "rejected"
-                              ? "bg-red-100 text-red-800"
-                              : "bg-yellow-100 text-yellow-800"
-                          }`}
-                        >
-                          {item.status}
-                        </span>
-                      </div>
-                    </div>
-
-                    <div className="hidden md:block col-span-2">
-                      <div className="flex gap-2 justify-center">
-                        <button
-                          onClick={() => openDetailModal(item)}
-                          className="text-blue-600 hover:text-blue-800 transition p-2 rounded hover:bg-blue-50"
-                        >
-                          <EyeIcon className="w-5 h-5" />
-                        </button>
-
-                        {item.status === "pending" && (
-                          <>
-                            <button
-                              onClick={() => handleApprove(item.id)}
-                              className="text-green-600 hover:text-green-800 transition p-2 rounded hover:bg-green-50"
-                            >
-                              <CheckCircleIcon className="w-5 h-5" />
-                            </button>
-
-                            <button
-                              onClick={() => handleReject(item.id)}
-                              className="text-red-600 hover:text-red-800 transition p-2 rounded hover:bg-red-50"
-                            >
-                              <XCircleIcon className="w-5 h-5" />
-                            </button>
-                          </>
-                        )}
-                      </div>
-                    </div>
-                  </div>
-                ))}
+                  ))
+                )}
               </div>
             </div>
           </div>
