@@ -1243,7 +1243,7 @@
 // ==================================KODINGAN MERGE BEBERAPA MENU ROLE HRD :START=================================================================
 
 "use client";
-import dynamic from "next/dynamic"; //ini tambahan jangan dihapus
+import dynamic from "next/dynamic";
 import React, { useState, useRef, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import {
@@ -1965,7 +1965,7 @@ export default function HRD() {
                     className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg text-left transition
                       ${
                         activeMenu === item.id
-                          ? "bg-teal-50 text-teal-800 border-r-2 border-teal-600"
+                          ? "bg-green-800 text-teal-100 border-r-2 border-teal-900"
                           : "text-gray-800 hover:bg-gray-100"
                       }`}
                   >
@@ -1983,7 +1983,7 @@ export default function HRD() {
           <div className="bg-gray-50 rounded-xl p-4 border border-gray-200 shadow-sm hover:shadow-md transition-shadow duration-200">
             <div className="flex items-center gap-3">
               <div
-                className="w-12 h-12 bg-gradient-to-r from-blue-500 to-cyan-600 rounded-full
+                className="w-12 h-12 bg-gradient-to-r from-emerald-800 to-green-800 rounded-full
                 flex items-center justify-center text-white font-bold text-lg shadow-md"
               >
                 {hrdUser.initial}
@@ -2003,7 +2003,7 @@ export default function HRD() {
                 </div>
               </div>
             </div>
-            
+
             {/* Divider */}
             <div className="border-t border-gray-200 mt-3 pt-3">
               <div className="flex items-center justify-between text-xs text-gray-600">
@@ -2139,7 +2139,7 @@ export default function HRD() {
                   className="flex items-center gap-2 cursor-pointer"
                 >
                   <div
-                    className="w-10 h-10 bg-gradient-to-r from-blue-500 to-cyan-600
+                    className="w-10 h-10 bg-gradient-to-r from-emerald-800 to-green-800
       rounded-full flex items-center justify-center text-white font-bold"
                   >
                     {hrdUser.initial}
@@ -2171,7 +2171,7 @@ export default function HRD() {
                     <div className="px-4 py-3 border-b border-gray-200">
                       <div className="flex items-center gap-3">
                         <div
-                          className="w-10 h-10 bg-gradient-to-r from-blue-500 to-cyan-600
+                          className="w-10 h-10 bg-gradient-to-r from-emerald-800 to-green-800
             rounded-full flex items-center justify-center text-white font-bold"
                         >
                           {hrdUser.initial}
@@ -2387,15 +2387,21 @@ export default function HRD() {
                     <div className="flex justify-center gap-2 sm:gap-3 lg:gap-4 mt-2 sm:mt-3 text-xs">
                       <div className="flex items-center gap-1 sm:gap-1.5">
                         <div className="w-2 h-2 sm:w-3 sm:h-3 bg-green-500 rounded"></div>
-                        <span className="text-gray-700 text-xs sm:text-sm">Present</span>
+                        <span className="text-gray-700 text-xs sm:text-sm">
+                          Present
+                        </span>
                       </div>
                       <div className="flex items-center gap-1 sm:gap-1.5">
                         <div className="w-2 h-2 sm:w-3 sm:h-3 bg-yellow-400 rounded"></div>
-                        <span className="text-gray-700 text-xs sm:text-sm">Late</span>
+                        <span className="text-gray-700 text-xs sm:text-sm">
+                          Late
+                        </span>
                       </div>
                       <div className="flex items-center gap-1 sm:gap-1.5">
                         <div className="w-2 h-2 sm:w-3 sm:h-3 bg-red-500 rounded"></div>
-                        <span className="text-gray-700 text-xs sm:text-sm">Absent</span>
+                        <span className="text-gray-700 text-xs sm:text-sm">
+                          Absent
+                        </span>
                       </div>
                     </div>
                   </div>
@@ -2409,21 +2415,21 @@ export default function HRD() {
                     Today's Status
                   </h3>
                   <div className="text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded hidden sm:block">
-                    {new Date().toLocaleDateString('en-US', { 
-                      weekday: 'long', 
-                      year: 'numeric', 
-                      month: 'long', 
-                      day: 'numeric' 
+                    {new Date().toLocaleDateString("en-US", {
+                      weekday: "long",
+                      year: "numeric",
+                      month: "long",
+                      day: "numeric",
                     })}
                   </div>
                   <div className="text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded sm:hidden">
-                    {new Date().toLocaleDateString('en-US', { 
-                      month: 'short', 
-                      day: 'numeric' 
+                    {new Date().toLocaleDateString("en-US", {
+                      month: "short",
+                      day: "numeric",
                     })}
                   </div>
                 </div>
-                
+
                 <div className="flex flex-col lg:flex-row items-center gap-4 sm:gap-6 lg:gap-8">
                   {/* Pie Chart dengan interaksi */}
                   <div className="relative flex flex-col items-center">
@@ -2600,7 +2606,7 @@ export default function HRD() {
           </div>
         )}
 
-        {/* ATTENDANCE VALIDATION CONTENT - TETAP SAMA */}
+        {/* ATTENDANCE VALIDATION CONTENT - FIXED RESPONSIVENESS */}
         {activeMenu === "validation" && (
           <div className="px-3 sm:px-4 lg:px-6 py-4 max-w-screen-2xl mx-auto bg-gradient-to-br from-gray-50 to-blue-50 min-h-screen">
             {/* Header Section */}
@@ -2609,102 +2615,96 @@ export default function HRD() {
                 Attendance Validation
               </h1>
               <p className="text-gray-600 text-sm sm:text-base">
-                Review and validate operator attendance records from Admin and
-                Operator
+                Review and validate operator attendance records
               </p>
-              <div className="text-xs sm:text-sm text-blue-600 mt-2">
-                 Data tersinkronisasi dengan Admin & Operator
+              <div className="text-sm text-blue-600 mt-1">
+                Data tersinkronisasi dengan Admin & Operator
               </div>
             </div>
 
-            {/* Stats Cards - DATA REAL-TIME DARI SINKRONISASI */}
+            {/* Stats Cards - IMPROVED FOR MOBILE */}
             <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 mb-6">
-              <div className="bg-white p-3 sm:p-4 rounded-xl shadow-sm border border-gray-200">
-                <div className="flex items-center justify-between mb-3 sm:mb-4">
-                  <h3 className="text-gray-700 font-medium text-xs sm:text-sm">
-                    Total Today
-                  </h3>
-                  <div className="p-1 sm:p-2 bg-gray-100 rounded-lg">
-                    <DocumentChartBarIcon className="w-4 h-4 sm:w-5 sm:h-5 text-gray-600" />
+              {[
+                {
+                  label: "Total Today",
+                  value: stats.total,
+                  icon: DocumentChartBarIcon,
+                  bgColor: "bg-gray-100",
+                  iconColor: "text-gray-600",
+                },
+                {
+                  label: "Approved",
+                  value: stats.approved,
+                  icon: CheckCircleIcon,
+                  bgColor: "bg-green-100",
+                  iconColor: "text-green-600",
+                },
+                {
+                  label: "Rejected",
+                  value: stats.rejected,
+                  icon: XCircleIcon,
+                  bgColor: "bg-red-100",
+                  iconColor: "text-red-600",
+                },
+                {
+                  label: "Pending Review",
+                  value: stats.pending,
+                  icon: ClockIcon,
+                  bgColor: "bg-yellow-100",
+                  iconColor: "text-yellow-600",
+                },
+              ].map((item, i) => {
+                const Icon = item.icon;
+                return (
+                  <div
+                    key={i}
+                    className="bg-white p-4 sm:p-5 rounded-xl shadow-sm border border-gray-200 hover:shadow-md transition-shadow"
+                  >
+                    <div className="flex items-center justify-between mb-3">
+                      <p className="text-gray-700 font-medium text-sm sm:text-base">
+                        {item.label}
+                      </p>
+                      <div className={`p-2 rounded-lg ${item.bgColor}`}>
+                        <Icon className={`w-5 h-5 ${item.iconColor}`} />
+                      </div>
+                    </div>
+                    <p className="text-2xl sm:text-3xl font-bold text-gray-900 mb-1">
+                      {item.value}
+                    </p>
+                    <p className="text-xs sm:text-sm text-gray-500">
+                      {item.label === "Total Today"
+                        ? `Pending: ${stats.pending}`
+                        : item.label === "Pending Review"
+                        ? "Awaiting validation"
+                        : "Validated records"}
+                    </p>
                   </div>
-                </div>
-                <p className="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-900">
-                  {stats.total}
-                </p>
-                <p className="text-xs text-gray-500 mt-1">
-                  Pending: {stats.pending}
-                </p>
-              </div>
-
-              <div className="bg-white p-3 sm:p-4 rounded-xl shadow-sm border border-gray-200">
-                <div className="flex items-center justify-between mb-3 sm:mb-4">
-                  <h3 className="text-gray-700 font-medium text-xs sm:text-sm">
-                    Approved
-                  </h3>
-                  <div className="p-1 sm:p-2 bg-green-100 rounded-lg">
-                    <CheckCircleIcon className="w-4 h-4 sm:w-5 sm:h-5 text-green-600" />
-                  </div>
-                </div>
-                <p className="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-900">
-                  {stats.approved}
-                </p>
-                <p className="text-xs text-gray-500 mt-1">Validated records</p>
-              </div>
-
-              <div className="bg-white p-3 sm:p-4 rounded-xl shadow-sm border border-gray-200">
-                <div className="flex items-center justify-between mb-3 sm:mb-4">
-                  <h3 className="text-gray-700 font-medium text-xs sm:text-sm">
-                    Rejected
-                  </h3>
-                  <div className="p-1 sm:p-2 bg-red-100 rounded-lg">
-                    <XCircleIcon className="w-4 h-4 sm:w-5 sm:h-5 text-red-600" />
-                  </div>
-                </div>
-                <p className="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-900">
-                  {stats.rejected}
-                </p>
-                <p className="text-xs text-gray-500 mt-1">Invalid records</p>
-              </div>
-
-              <div className="bg-white p-3 sm:p-4 rounded-xl shadow-sm border border-gray-200">
-                <div className="flex items-center justify-between mb-3 sm:mb-4">
-                  <h3 className="text-gray-700 font-medium text-xs sm:text-sm">
-                    Pending Review
-                  </h3>
-                  <div className="p-1 sm:p-2 bg-yellow-100 rounded-lg">
-                    <ClockIcon className="w-4 h-4 sm:w-5 sm:h-5 text-yellow-600" />
-                  </div>
-                </div>
-                <p className="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-900">
-                  {stats.pending}
-                </p>
-                <p className="text-xs text-gray-500 mt-1">
-                  Awaiting validation
-                </p>
-              </div>
+                );
+              })}
             </div>
 
-            {/* Filter Section */}
-            <div className="bg-white p-4 sm:p-6 rounded-xl shadow-sm border border-gray-200 mb-4 sm:mb-6">
-              <div className="flex flex-col sm:flex-row gap-4 justify-between items-start sm:items-center">
-                <div className="relative w-full sm:flex-1 sm:max-w-lg">
-                  <MagnifyingGlassIcon className="w-4 h-4 sm:w-5 sm:h-5 text-gray-400 absolute left-3 top-1/2 transform -translate-y-1/2" />
+            {/* Filter Section - IMPROVED MOBILE LAYOUT */}
+            <div className="bg-white p-4 sm:p-6 rounded-xl shadow-sm border border-gray-200 mb-6">
+              <div className="flex flex-col sm:flex-row gap-4 justify-between items-stretch sm:items-center">
+                {/* Search Input */}
+                <div className="relative flex-1">
+                  <MagnifyingGlassIcon className="w-4 h-4 text-gray-400 absolute left-3 top-1/2 transform -translate-y-1/2" />
                   <input
                     type="text"
-                    placeholder="Search by operator or site..."
+                    placeholder="Search operator or site..."
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
-                    className="w-full pl-10 pr-4 py-2 bg-gray-100 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-900 placeholder-gray-500 text-sm sm:text-base"
+                    className="w-full pl-10 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-900 placeholder-gray-500 text-sm transition"
                   />
                 </div>
 
-                {/* Status Filter Buttons */}
-                <div className="flex flex-wrap gap-2 bg-gray-100 rounded-lg p-1 w-full sm:w-auto">
+                {/* Status Filter */}
+                <div className="flex gap-2 bg-gray-100 rounded-lg p-1">
                   {["All", "Pending", "Approved", "Rejected"].map((filter) => (
                     <button
                       key={filter}
                       onClick={() => setSelectedFilter(filter)}
-                      className={`px-3 py-2 rounded-md text-xs sm:text-sm font-medium transition flex-1 sm:flex-none min-w-[70px] text-center ${
+                      className={`px-3 sm:px-4 py-2 rounded-md text-xs sm:text-sm font-medium transition flex-1 text-center min-w-[60px] sm:min-w-[80px] ${
                         selectedFilter === filter
                           ? "bg-blue-600 text-white shadow-sm"
                           : "text-gray-700 hover:bg-gray-200"
@@ -2717,10 +2717,10 @@ export default function HRD() {
               </div>
             </div>
 
-            {/* Attendance Table */}
+            {/* Attendance Table - COMPLETELY REDESIGNED FOR MOBILE */}
             <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
               {/* Desktop Table Header */}
-              <div className="hidden lg:grid grid-cols-12 gap-4 px-4 sm:px-6 py-3 bg-gray-50 border-b border-gray-200 text-sm font-semibold text-gray-700">
+              <div className="hidden lg:grid grid-cols-12 gap-4 px-6 py-4 bg-gray-50 border-b border-gray-200 text-sm font-semibold text-gray-700">
                 <div className="col-span-3">Operator</div>
                 <div className="col-span-2">Site</div>
                 <div className="col-span-2">Date</div>
@@ -2730,34 +2730,38 @@ export default function HRD() {
                 <div className="col-span-1 text-center">Actions</div>
               </div>
 
-              {/* Table Body */}
+              {/* Table Body - MOBILE FRIENDLY DESIGN */}
               <div className="divide-y divide-gray-200">
                 {filteredData.length === 0 ? (
-                  <div className="text-center py-8 text-gray-500">
-                    No attendance records found
+                  <div className="text-center py-12 text-gray-500">
+                    <DocumentTextIcon className="w-12 h-12 text-gray-300 mx-auto mb-4" />
+                    <p className="text-lg font-medium text-gray-900 mb-2">
+                      No attendance records found
+                    </p>
+                    <p className="text-gray-600">
+                      Try adjusting your search or filter criteria
+                    </p>
                   </div>
                 ) : (
                   filteredData.map((item) => (
                     <div
                       key={item.id}
-                      className="lg:grid lg:grid-cols-12 lg:gap-4 px-3 sm:px-4 lg:px-6 py-4 hover:bg-gray-50 transition items-center"
+                      className="block lg:grid lg:grid-cols-12 lg:gap-4 px-4 sm:px-6 py-4 hover:bg-gray-50 transition-colors"
                     >
-                      {/* Mobile View - Card Layout */}
-                      <div className="lg:hidden space-y-3">
+                      {/* MOBILE VIEW - CARD STYLE */}
+                      <div className="lg:hidden space-y-4">
+                        {/* Header Row */}
                         <div className="flex justify-between items-start">
                           <div className="flex-1 min-w-0">
-                            <p className="font-medium text-gray-900 truncate">
+                            <h3 className="font-semibold text-gray-900 text-base sm:text-lg truncate">
                               {item.operator}
-                            </p>
-                            <p className="text-sm text-gray-500 mt-1 truncate">
+                            </h3>
+                            <p className="text-gray-500 text-sm mt-1 truncate">
                               {item.site}
-                            </p>
-                            <p className="text-xs text-gray-400 mt-1">
-                              Submitted by: {item.submittedBy}
                             </p>
                           </div>
                           <span
-                            className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-medium ml-2 flex-shrink-0 ${
+                            className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-medium ml-3 flex-shrink-0 ${
                               item.status === "approved"
                                 ? "bg-green-100 text-green-800"
                                 : item.status === "rejected"
@@ -2769,106 +2773,121 @@ export default function HRD() {
                           </span>
                         </div>
 
-                        <div className="grid grid-cols-2 gap-3 text-sm">
+                        {/* Details Grid */}
+                        <div className="grid grid-cols-2 gap-4">
                           <div>
-                            <p className="text-gray-600 text-xs">Date</p>
-                            <p className="text-gray-900 font-medium text-sm">
+                            <p className="text-gray-500 text-xs uppercase font-medium mb-1">
+                              Date
+                            </p>
+                            <p className="text-gray-900 text-sm font-medium">
                               {item.date}
                             </p>
                           </div>
                           <div>
-                            <p className="text-gray-600 text-xs">
-                              Check-In/Out
+                            <p className="text-gray-500 text-xs uppercase font-medium mb-1">
+                              Submitted By
                             </p>
-                            <div className="flex items-center gap-2 text-gray-900 font-medium">
-                              <div className="flex items-center gap-1">
-                                <ClockIcon className="w-3 h-3 sm:w-4 sm:h-4 text-green-600 flex-shrink-0" />
-                                <span className="text-xs sm:text-sm">
+                            <p className="text-gray-900 text-sm font-medium capitalize">
+                              {item.submittedBy}
+                            </p>
+                          </div>
+                        </div>
+
+                        {/* Time Section */}
+                        <div className="flex items-center justify-between bg-gray-50 rounded-lg p-3">
+                          <div className="flex items-center gap-3">
+                            <div className="flex items-center gap-2">
+                              <ClockIcon className="w-4 h-4 text-green-600 flex-shrink-0" />
+                              <div>
+                                <p className="text-gray-500 text-xs">Check-In</p>
+                                <p className="text-gray-900 text-sm font-medium">
                                   {item.checkIn}
-                                </span>
+                                </p>
                               </div>
-                              <span className="text-gray-400">/</span>
-                              <div className="flex items-center gap-1">
-                                <ClockIcon className="w-3 h-3 sm:w-4 sm:h-4 text-red-600 flex-shrink-0" />
-                                <span className="text-xs sm:text-sm">
+                            </div>
+                          </div>
+                          <div className="flex items-center gap-3">
+                            <div className="flex items-center gap-2">
+                              <ClockIcon className="w-4 h-4 text-red-600 flex-shrink-0" />
+                              <div>
+                                <p className="text-gray-500 text-xs">Check-Out</p>
+                                <p className="text-gray-900 text-sm font-medium">
                                   {item.checkOut}
-                                </span>
+                                </p>
                               </div>
                             </div>
                           </div>
                         </div>
 
-                        <div className="flex justify-between items-center pt-2 border-t border-gray-200">
+                        {/* Action Buttons */}
+                        <div className="flex justify-between items-center pt-3 border-t border-gray-200">
                           <button
                             onClick={() => openDetailModal(item)}
-                            className="text-blue-600 hover:text-blue-800 transition p-2 rounded hover:bg-blue-50 text-xs flex items-center gap-1"
+                            className="flex items-center gap-2 text-blue-600 hover:text-blue-800 transition px-3 py-2 rounded-lg hover:bg-blue-50 text-sm font-medium"
                           >
                             <EyeIcon className="w-4 h-4" />
-                            <span>Details</span>
+                            View Details
                           </button>
 
                           {item.status === "pending" && (
                             <div className="flex gap-2">
                               <button
                                 onClick={() => handleApprove(item.id)}
-                                className="text-green-600 hover:text-green-800 transition p-2 rounded hover:bg-green-50 text-xs flex items-center gap-1"
+                                className="flex items-center gap-2 text-green-600 hover:text-green-800 transition px-3 py-2 rounded-lg hover:bg-green-50 text-sm font-medium"
                               >
                                 <CheckCircleIcon className="w-4 h-4" />
-                                <span>Approve</span>
+                                Approve
                               </button>
-
                               <button
                                 onClick={() => handleReject(item.id)}
-                                className="text-red-600 hover:text-red-800 transition p-2 rounded hover:bg-red-50 text-xs flex items-center gap-1"
+                                className="flex items-center gap-2 text-red-600 hover:text-red-800 transition px-3 py-2 rounded-lg hover:bg-red-50 text-sm font-medium"
                               >
                                 <XCircleIcon className="w-4 h-4" />
-                                <span>Reject</span>
+                                Reject
                               </button>
                             </div>
                           )}
                         </div>
                       </div>
 
-                      {/* Desktop View - Grid Layout */}
-                      <div className="hidden lg:block col-span-3">
-                        <p className="font-medium text-gray-900">
-                          {item.operator}
-                        </p>
-                        <p className="text-xs text-gray-500 mt-1">
-                          Submitted by: {item.submittedBy}
-                        </p>
-                      </div>
-
-                      <div className="hidden lg:block col-span-2">
-                        <p className="text-gray-700 truncate">{item.site}</p>
-                      </div>
-
-                      <div className="hidden lg:block col-span-2">
-                        <p className="text-gray-700 text-sm">{item.date}</p>
-                      </div>
-
-                      <div className="hidden lg:block col-span-1">
-                        <div className="flex items-center gap-2 text-gray-700">
-                          <ClockIcon className="w-4 h-4 text-green-600 flex-shrink-0" />
-                          <span className="text-sm font-medium">
-                            {item.checkIn}
-                          </span>
+                      {/* DESKTOP VIEW */}
+                      <div className="hidden lg:contents">
+                        <div className="col-span-3 flex items-center">
+                          <div>
+                            <p className="font-medium text-gray-900">
+                              {item.operator}
+                            </p>
+                            <p className="text-sm text-gray-500 mt-0.5">
+                              Submitted by: {item.submittedBy}
+                            </p>
+                          </div>
                         </div>
-                      </div>
 
-                      <div className="hidden lg:block col-span-1">
-                        <div className="flex items-center gap-2 text-gray-700">
-                          <ClockIcon className="w-4 h-4 text-red-600 flex-shrink-0" />
-                          <span className="text-sm font-medium">
-                            {item.checkOut}
-                          </span>
+                        <div className="col-span-2 flex items-center">
+                          <p className="text-gray-700 truncate">{item.site}</p>
                         </div>
-                      </div>
 
-                      <div className="hidden lg:block col-span-2">
-                        <div className="flex justify-center">
+                        <div className="col-span-2 flex items-center">
+                          <p className="text-gray-700">{item.date}</p>
+                        </div>
+
+                        <div className="col-span-1 flex items-center">
+                          <div className="flex items-center gap-2 text-gray-700">
+                            <ClockIcon className="w-4 h-4 text-green-600" />
+                            <span className="font-medium">{item.checkIn}</span>
+                          </div>
+                        </div>
+
+                        <div className="col-span-1 flex items-center">
+                          <div className="flex items-center gap-2 text-gray-700">
+                            <ClockIcon className="w-4 h-4 text-red-600" />
+                            <span className="font-medium">{item.checkOut}</span>
+                          </div>
+                        </div>
+
+                        <div className="col-span-2 flex items-center justify-center">
                           <span
-                            className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-medium capitalize ${
+                            className={`inline-flex items-center px-3 py-1 rounded-full text-sm font-medium ${
                               item.status === "approved"
                                 ? "bg-green-100 text-green-800"
                                 : item.status === "rejected"
@@ -2879,37 +2898,36 @@ export default function HRD() {
                             {item.status}
                           </span>
                         </div>
-                      </div>
 
-                      <div className="hidden lg:block col-span-1">
-                        <div className="flex gap-2 justify-center">
-                          <button
-                            onClick={() => openDetailModal(item)}
-                            className="text-blue-600 hover:text-blue-800 transition p-2 rounded hover:bg-blue-50"
-                            title="View Details"
-                          >
-                            <EyeIcon className="w-4 h-4" />
-                          </button>
+                        <div className="col-span-1 flex items-center justify-center">
+                          <div className="flex gap-2">
+                            <button
+                              onClick={() => openDetailModal(item)}
+                              className="text-blue-600 hover:text-blue-800 transition p-2 rounded-lg hover:bg-blue-50"
+                              title="View Details"
+                            >
+                              <EyeIcon className="w-5 h-5" />
+                            </button>
 
-                          {item.status === "pending" && (
-                            <>
-                              <button
-                                onClick={() => handleApprove(item.id)}
-                                className="text-green-600 hover:text-green-800 transition p-2 rounded hover:bg-green-50"
-                                title="Approve"
-                              >
-                                <CheckCircleIcon className="w-4 h-4" />
-                              </button>
-
-                              <button
-                                onClick={() => handleReject(item.id)}
-                                className="text-red-600 hover:text-red-800 transition p-2 rounded hover:bg-red-50"
-                                title="Reject"
-                              >
-                                <XCircleIcon className="w-4 h-4" />
-                              </button>
-                            </>
-                          )}
+                            {item.status === "pending" && (
+                              <>
+                                <button
+                                  onClick={() => handleApprove(item.id)}
+                                  className="text-green-600 hover:text-green-800 transition p-2 rounded-lg hover:bg-green-50"
+                                  title="Approve"
+                                >
+                                  <CheckCircleIcon className="w-5 h-5" />
+                                </button>
+                                <button
+                                  onClick={() => handleReject(item.id)}
+                                  className="text-red-600 hover:text-red-800 transition p-2 rounded-lg hover:bg-red-50"
+                                  title="Reject"
+                                >
+                                  <XCircleIcon className="w-5 h-5" />
+                                </button>
+                              </>
+                            )}
+                          </div>
                         </div>
                       </div>
                     </div>
@@ -2917,6 +2935,32 @@ export default function HRD() {
                 )}
               </div>
             </div>
+
+            {/* Empty State Illustration */}
+            {filteredData.length === 0 && (
+              <div className="text-center py-12">
+                <div className="max-w-md mx-auto">
+                  <div className="w-24 h-24 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                    <DocumentTextIcon className="w-12 h-12 text-gray-400" />
+                  </div>
+                  <h3 className="text-lg font-medium text-gray-900 mb-2">
+                    No matching records
+                  </h3>
+                  <p className="text-gray-600 mb-6">
+                    Try adjusting your search terms or filters to find what you're looking for.
+                  </p>
+                  <button
+                    onClick={() => {
+                      setSearchQuery("");
+                      setSelectedFilter("All");
+                    }}
+                    className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition font-medium"
+                  >
+                    Clear Filters
+                  </button>
+                </div>
+              </div>
+            )}
           </div>
         )}
       </div>

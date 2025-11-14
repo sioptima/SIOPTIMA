@@ -3864,43 +3864,50 @@ export default function Admin() {
         </nav>
 
         {/* Admin badge */}
-      {/* Admin badge - REVISI: BACKGROUND ABU-ABU DENGAN KOTAK ROUNDED YANG ESTETIK */}
-<div className="p-4 mt-auto">
-  <div className="bg-gray-50 rounded-xl p-4 border border-gray-200 shadow-sm hover:shadow-md transition-shadow duration-200">
-    <div className="flex items-center gap-3">
-      <div
-        className="w-12 h-12 bg-gradient-to-r from-blue-500 to-cyan-600 rounded-full
+        {/* Admin badge - REVISI: BACKGROUND ABU-ABU DENGAN KOTAK ROUNDED YANG ESTETIK */}
+        <div className="p-4 mt-auto">
+          <div className="bg-gray-50 rounded-xl p-4 border border-gray-200 shadow-sm hover:shadow-md transition-shadow duration-200">
+            <div className="flex items-center gap-3">
+              <div
+                className="w-12 h-12 bg-gradient-to-r from-blue-500 to-cyan-600 rounded-full
         flex items-center justify-center text-white font-bold text-lg shadow-md"
-      >
-        {usersData.find((user) => user.role === "admin")?.initial || "A"}
-      </div>
-      <div className="flex-1 min-w-0">
-        <p className="font-semibold text-gray-900 truncate text-sm">
-          {usersData.find((user) => user.role === "admin")?.name || "Admin User"}
-        </p>
-        <p className="text-gray-600 truncate text-xs mt-0.5">
-          {usersData.find((user) => user.role === "admin")?.email || "admin@sioptima.com"}
-        </p>
-        <div className="flex items-center gap-1 mt-1">
-          <div className="w-2 h-2 bg-green-500 rounded-full"></div>
-          <p className="text-gray-500 text-xs truncate">
-            {usersData.find((user) => user.role === "admin")?.role || "Admin"}
-          </p>
+              >
+                {usersData.find((user) => user.role === "admin")?.initial ||
+                  "A"}
+              </div>
+              <div className="flex-1 min-w-0">
+                <p className="font-semibold text-gray-900 truncate text-sm">
+                  {usersData.find((user) => user.role === "admin")?.name ||
+                    "Admin User"}
+                </p>
+                <p className="text-gray-600 truncate text-xs mt-0.5">
+                  {usersData.find((user) => user.role === "admin")?.email ||
+                    "admin@sioptima.com"}
+                </p>
+                <div className="flex items-center gap-1 mt-1">
+                  <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+                  <p className="text-gray-500 text-xs truncate">
+                    {usersData.find((user) => user.role === "admin")?.role ||
+                      "Admin"}
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            {/* Divider */}
+            <div className="border-t border-gray-200 mt-3 pt-3">
+              <div className="flex items-center justify-between text-xs text-gray-600">
+                <span>
+                  {usersData.find((user) => user.role === "admin")?.site ||
+                    "Head Office"}
+                </span>
+                <span className="px-2 py-1 bg-blue-100 text-blue-700 rounded-full font-medium">
+                  Active
+                </span>
+              </div>
+            </div>
+          </div>
         </div>
-      </div>
-    </div>
-    
-    {/* Divider */}
-    <div className="border-t border-gray-200 mt-3 pt-3">
-      <div className="flex items-center justify-between text-xs text-gray-600">
-        <span>{usersData.find((user) => user.role === "admin")?.site || "Head Office"}</span>
-        <span className="px-2 py-1 bg-blue-100 text-blue-700 rounded-full font-medium">
-          Active
-        </span>
-      </div>
-    </div>
-  </div>
-</div>
       </div>
 
       {/* Main Area */}
@@ -4697,7 +4704,8 @@ export default function Admin() {
                 </p>
               </div>
 
-              <div className="flex gap-1 sm:gap-2 bg-gray-100 rounded-full p-1 w-full lg:w-auto justify-center">
+              {/* tombol ini tidak perlu, dinonaktifkan saja */}
+              {/* <div className="flex gap-1 sm:gap-2 bg-gray-100 rounded-full p-1 w-full lg:w-auto justify-center">
                 {["Week", "Month", "Year"].map((range) => (
                   <button
                     key={range}
@@ -4713,7 +4721,8 @@ export default function Admin() {
                     {range}
                   </button>
                 ))}
-              </div>
+              </div> */}
+              {/* tombol ini tidak perlu, dinonaktifkan saja */}
             </div>
 
             {/* TOP KPIs - PERBAIKAN: Grid responsive untuk semua ukuran layar */}
