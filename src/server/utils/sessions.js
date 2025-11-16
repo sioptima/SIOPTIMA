@@ -9,7 +9,7 @@ export async function createSession(userId, role) {
   const expiresAt = new Date(Date.now() + 1 * 24 * 60 * 60 * 1000);
   const session = await encrypt({ userId, role, expiresAt }); // save userId and role in cookie
 
-  cookies().set("session", session, {
+  (await cookies()).set("session", session, {
     httpOnly: true,
     secure: true,
     expires: expiresAt,

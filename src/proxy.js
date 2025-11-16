@@ -38,7 +38,7 @@ async function middlewareAuth(request) {
   const isAdminRoute = adminRoutes.includes(path);
   const isOperatorRoute = operatorRoutes.includes(path);
   const isHrdRoute = hrdRoutes.includes(path)
-  const cookie = cookies().get('session')?.value;
+  const cookie = (await cookies()).get('session')?.value;
 
   // redirect to login if no cookie on protected route
   if(!cookie && isProtectedRoute){
