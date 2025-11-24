@@ -6620,7 +6620,6 @@
 // ==================================GABUNGAN MENU (MERGED) OPERATOR : END =================================================================
 // ==================================GABUNGAN MENU (MERGED) OPERATOR : END =================================================================
 
-
 "use client";
 import React, { useState, useRef, useEffect } from "react";
 import { useRouter } from "next/navigation";
@@ -6669,7 +6668,7 @@ export default function Operator() {
     email: "budi.santoso@email.com",
     role: "Operator",
     site: "Jakarta Utara - Site A",
-    initial: "B"
+    initial: "B",
   });
 
   // Refs untuk berbagai keperluan
@@ -6691,7 +6690,7 @@ export default function Operator() {
       message: "Laporan harian 10 Nov 2024 telah disetujui oleh Admin",
       time: "2 jam yang lalu",
       type: "success",
-      read: false
+      read: false,
     },
     {
       id: 2,
@@ -6699,7 +6698,7 @@ export default function Operator() {
       message: "Absensi tanggal 9 Nov 2024 menunggu approval",
       time: "1 hari yang lalu",
       type: "warning",
-      read: false
+      read: false,
     },
     {
       id: 3,
@@ -6707,7 +6706,7 @@ export default function Operator() {
       message: "Tiket #001 telah direspons oleh technical support",
       time: "3 hari yang lalu",
       type: "info",
-      read: true
+      read: true,
     },
     {
       id: 4,
@@ -6715,8 +6714,8 @@ export default function Operator() {
       message: "Jadwal pemeliharaan minggu depan telah ditetapkan",
       time: "5 hari yang lalu",
       type: "info",
-      read: false
-    }
+      read: false,
+    },
   ]);
 
   // State untuk Dashboard - DIPERBAIKI dengan data yang sinkron
@@ -6726,7 +6725,7 @@ export default function Operator() {
     pHLevel: "0.0",
     flowRate: "0 L/h",
     tds: "0 ppm",
-    ec: "0 μS/cm"
+    ec: "0 μS/cm",
   });
 
   const [pHData, setPHData] = useState([]);
@@ -6784,7 +6783,7 @@ export default function Operator() {
       selfieCheckOut: null,
       approvedBy: "Admin",
       approvedAt: "2025-01-27 08:30 AM",
-    }
+    },
   ]);
 
   // State untuk modal check-in/check-out
@@ -6796,14 +6795,20 @@ export default function Operator() {
   const [locationCaptured, setLocationCaptured] = useState(false);
   const [selfieUploaded, setSelfieUploaded] = useState(false);
   const [selfiePreview, setSelfiePreview] = useState(null);
-  const [currentLocation, setCurrentLocation] = useState("Click to get location");
+  const [currentLocation, setCurrentLocation] = useState(
+    "Click to get location"
+  );
   const [isCameraActive, setIsCameraActive] = useState(false);
   const [stream, setStream] = useState(null);
 
-  const [locationCapturedCheckOut, setLocationCapturedCheckOut] = useState(false);
+  const [locationCapturedCheckOut, setLocationCapturedCheckOut] = useState(
+    false
+  );
   const [selfieUploadedCheckOut, setSelfieUploadedCheckOut] = useState(false);
   const [selfiePreviewCheckOut, setSelfiePreviewCheckOut] = useState(null);
-  const [currentLocationCheckOut, setCurrentLocationCheckOut] = useState("Click to get location");
+  const [currentLocationCheckOut, setCurrentLocationCheckOut] = useState(
+    "Click to get location"
+  );
   const [isCameraActiveCheckOut, setIsCameraActiveCheckOut] = useState(false);
   const [streamCheckOut, setStreamCheckOut] = useState(null);
 
@@ -6820,7 +6825,7 @@ export default function Operator() {
       createdAt: "2024-01-15",
       category: "Technical",
       resolvedAt: null,
-    }
+    },
   ]);
 
   const [newTicket, setNewTicket] = useState({
@@ -6849,18 +6854,20 @@ export default function Operator() {
 
   // ==================== FUNGSI NOTIFIKASI - DIPERBAIKI ====================
   const markNotificationAsRead = (id) => {
-    setNotifications(notifications.map(notif =>
-      notif.id === id ? { ...notif, read: true } : notif
-    ));
+    setNotifications(
+      notifications.map((notif) =>
+        notif.id === id ? { ...notif, read: true } : notif
+      )
+    );
   };
 
   const markAllNotificationsAsRead = () => {
-    setNotifications(notifications.map(notif => ({ ...notif, read: true })));
+    setNotifications(notifications.map((notif) => ({ ...notif, read: true })));
     setIsNotificationOpen(false);
   };
 
   const getUnreadNotificationsCount = () => {
-    return notifications.filter(notif => !notif.read).length;
+    return notifications.filter((notif) => !notif.read).length;
   };
 
   const handleViewAllNotifications = () => {
@@ -6873,18 +6880,18 @@ export default function Operator() {
     markNotificationAsRead(notification.id);
 
     // Navigasi berdasarkan jenis notifikasi
-    switch(notification.type) {
-      case 'success':
-        setActiveMenu('reports');
+    switch (notification.type) {
+      case "success":
+        setActiveMenu("reports");
         break;
-      case 'warning':
-        setActiveMenu('presensi');
+      case "warning":
+        setActiveMenu("presensi");
         break;
-      case 'info':
-        setActiveMenu('help');
+      case "info":
+        setActiveMenu("help");
         break;
       default:
-        setActiveMenu('dashboard');
+        setActiveMenu("dashboard");
     }
 
     setIsNotificationOpen(false);
@@ -6892,17 +6899,23 @@ export default function Operator() {
 
   // ==================== FUNGSI SINKRONISASI DATA - DIPERBAIKI ====================
   const updateDashboardData = () => {
-    const submittedReports = reports.filter(report => report.status === "Submitted");
+    const submittedReports = reports.filter(
+      (report) => report.status === "Submitted"
+    );
     const latestReport = submittedReports[0];
 
-    setDashboardData(prev => ({
+    setDashboardData((prev) => ({
       ...prev,
       reportsSubmitted: submittedReports.length,
       pHLevel: latestReport ? latestReport.pHLevel || "0.0" : "0.0",
       flowRate: latestReport ? `${latestReport.flowRate || "0"} L/h` : "0 L/h",
       tds: latestReport ? `${latestReport.tds || "0"} ppm` : "0 ppm",
       ec: latestReport ? `${latestReport.ec || "0"} μS/cm` : "0 μS/cm",
-      attendanceRate: attendanceHistory.filter(att => att.approvalStatus === "approved").length > 0 ? "98%" : "0%"
+      attendanceRate:
+        attendanceHistory.filter((att) => att.approvalStatus === "approved")
+          .length > 0
+          ? "98%"
+          : "0%",
     }));
 
     // Update chart data dengan data yang sesuai dari reports
@@ -6912,23 +6925,23 @@ export default function Operator() {
       // PERBAIKAN: Gunakan hari yang sesuai dengan tanggal laporan
       const newPHData = latestReports.map((report, index) => {
         const reportDate = new Date(report.date);
-        const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+        const days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
         const dayName = days[reportDate.getDay()];
 
         return {
           day: dayName,
-          value: parseFloat(report.pHLevel) || 0
+          value: parseFloat(report.pHLevel) || 0,
         };
       });
 
       const newFlowRateData = latestReports.map((report, index) => {
         const reportDate = new Date(report.date);
-        const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+        const days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
         const dayName = days[reportDate.getDay()];
 
         return {
           day: dayName,
-          value: parseInt(report.flowRate) || 0
+          value: parseInt(report.flowRate) || 0,
         };
       });
 
@@ -6946,13 +6959,22 @@ export default function Operator() {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
         setDropdownOpen(false);
       }
-      if (notificationRef.current && !notificationRef.current.contains(event.target)) {
+      if (
+        notificationRef.current &&
+        !notificationRef.current.contains(event.target)
+      ) {
         setIsNotificationOpen(false);
       }
-      if (statusDropdownRef.current && !statusDropdownRef.current.contains(event.target)) {
+      if (
+        statusDropdownRef.current &&
+        !statusDropdownRef.current.contains(event.target)
+      ) {
         setIsStatusDropdownOpen(false);
       }
-      if (priorityDropdownRef.current && !priorityDropdownRef.current.contains(event.target)) {
+      if (
+        priorityDropdownRef.current &&
+        !priorityDropdownRef.current.contains(event.target)
+      ) {
         setIsPriorityDropdownOpen(false);
       }
     }
@@ -6977,28 +6999,30 @@ export default function Operator() {
 
   // ==================== DASHBOARD FUNCTIONS ====================
   const handleQuickAction = (action) => {
-    switch(action) {
+    switch (action) {
       case "submitReport":
         setActiveMenu("reports");
         break;
       case "recordReadings":
         const now = new Date();
-        const today = now.toISOString().split('T')[0];
+        const today = now.toISOString().split("T")[0];
         const time = now.toTimeString().slice(0, 5);
 
-        setFormData(prev => ({
+        setFormData((prev) => ({
           ...prev,
           date: today,
           time: time,
-          pHLevel: dashboardData.pHLevel.replace(' L/h', ''),
-          flowRate: dashboardData.flowRate.replace(' L/h', ''),
-          tds: dashboardData.tds.replace(' ppm', ''),
-          ec: dashboardData.ec.replace(' μS/cm', '')
+          pHLevel: dashboardData.pHLevel.replace(" L/h", ""),
+          flowRate: dashboardData.flowRate.replace(" L/h", ""),
+          tds: dashboardData.tds.replace(" ppm", ""),
+          ec: dashboardData.ec.replace(" μS/cm", ""),
         }));
         setActiveMenu("reports");
 
         setTimeout(() => {
-          document.getElementById('date')?.scrollIntoView({ behavior: 'smooth' });
+          document
+            .getElementById("date")
+            ?.scrollIntoView({ behavior: "smooth" });
         }, 100);
         break;
       case "checkIn":
@@ -7042,7 +7066,8 @@ export default function Operator() {
     if (!formData.ampere.trim()) newErrors.ampere = "Ampere harus diisi";
     if (!formData.tds.trim()) newErrors.tds = "TDS harus diisi";
     if (!formData.ec.trim()) newErrors.ec = "EC harus diisi";
-    if (!formData.additionalNotes.trim()) newErrors.additionalNotes = "Catatan tambahan harus diisi";
+    if (!formData.additionalNotes.trim())
+      newErrors.additionalNotes = "Catatan tambahan harus diisi";
 
     if (formData.pHLevel && isNaN(parseFloat(formData.pHLevel))) {
       newErrors.pHLevel = "pH Level harus berupa angka";
@@ -7118,14 +7143,17 @@ export default function Operator() {
       updateDashboardData();
 
       // Tambahkan notifikasi sukses
-      setNotifications(prev => [{
-        id: Date.now(),
-        title: "Laporan Berhasil Disubmit",
-        message: `Laporan harian ${formData.date} telah berhasil disubmit`,
-        time: "Baru saja",
-        type: "success",
-        read: false
-      }, ...prev]);
+      setNotifications((prev) => [
+        {
+          id: Date.now(),
+          title: "Laporan Berhasil Disubmit",
+          message: `Laporan harian ${formData.date} telah berhasil disubmit`,
+          time: "Baru saja",
+          type: "success",
+          read: false,
+        },
+        ...prev,
+      ]);
 
       alert("Laporan berhasil disubmit!");
     }, 1000);
@@ -7191,8 +7219,19 @@ export default function Operator() {
       return;
     }
 
-    const headers = ["Tanggal", "Waktu", "pH Level", "Flow Rate", "Volt", "Ampere", "TDS", "EC", "Status", "Lokasi"];
-    const csvData = reports.map(report => [
+    const headers = [
+      "Tanggal",
+      "Waktu",
+      "pH Level",
+      "Flow Rate",
+      "Volt",
+      "Ampere",
+      "TDS",
+      "EC",
+      "Status",
+      "Lokasi",
+    ];
+    const csvData = reports.map((report) => [
       report.date,
       report.time,
       report.pHLevel,
@@ -7202,15 +7241,17 @@ export default function Operator() {
       report.tds,
       report.ec,
       report.status,
-      report.location
+      report.location,
     ]);
 
-    const csvContent = [headers, ...csvData].map(row => row.join(",")).join("\n");
+    const csvContent = [headers, ...csvData]
+      .map((row) => row.join(","))
+      .join("\n");
     const blob = new Blob([csvContent], { type: "text/csv" });
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
     a.href = url;
-    a.download = `laporan-ipal-${new Date().toISOString().split('T')[0]}.csv`;
+    a.download = `laporan-ipal-${new Date().toISOString().split("T")[0]}.csv`;
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
@@ -7231,7 +7272,9 @@ export default function Operator() {
 
   const filteredReports = reports.filter(
     (report) =>
-      report.additionalNotes.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      report.additionalNotes
+        .toLowerCase()
+        .includes(searchQuery.toLowerCase()) ||
       report.location.toLowerCase().includes(searchQuery.toLowerCase()) ||
       report.operator.toLowerCase().includes(searchQuery.toLowerCase()) ||
       report.status.toLowerCase().includes(searchQuery.toLowerCase())
@@ -7263,8 +7306,11 @@ export default function Operator() {
           "Jakarta Utara - Site B",
           "Jakarta Utara - Site C",
         ];
-        const randomLocation = locations[Math.floor(Math.random() * locations.length)];
-        const locationString = `${randomLocation} (Lat: ${latitude.toFixed(6)}, Long: ${longitude.toFixed(6)})`;
+        const randomLocation =
+          locations[Math.floor(Math.random() * locations.length)];
+        const locationString = `${randomLocation} (Lat: ${latitude.toFixed(
+          6
+        )}, Long: ${longitude.toFixed(6)})`;
 
         if (isCheckOut) {
           setCurrentLocationCheckOut(locationString);
@@ -7391,9 +7437,9 @@ export default function Operator() {
   };
 
   const triggerFileInput = (isCheckOut = false) => {
-    const input = document.createElement('input');
-    input.type = 'file';
-    input.accept = 'image/*';
+    const input = document.createElement("input");
+    input.type = "file";
+    input.accept = "image/*";
     input.onchange = (e) => handleSelfieUpload(e, isCheckOut);
     input.click();
   };
@@ -7421,7 +7467,9 @@ export default function Operator() {
     const hours = now.getHours().toString().padStart(2, "0");
     const minutes = now.getMinutes().toString().padStart(2, "0");
     const ampm = now.getHours() >= 12 ? "PM" : "AM";
-    const formattedHours = (now.getHours() % 12 || 12).toString().padStart(2, "0");
+    const formattedHours = (now.getHours() % 12 || 12)
+      .toString()
+      .padStart(2, "0");
     const checkInTime = `${formattedHours}:${minutes} ${ampm}`;
 
     let checkInStatus = "On Time";
@@ -7461,7 +7509,9 @@ export default function Operator() {
 
     updateDashboardData();
 
-    alert(`Check-in berhasil! Waktu: ${checkInTime} - Status: ${checkInStatus}. Menunggu approval admin.`);
+    alert(
+      `Check-in berhasil! Waktu: ${checkInTime} - Status: ${checkInStatus}. Menunggu approval admin.`
+    );
   };
 
   const handleConfirmCheckOut = () => {
@@ -7469,7 +7519,9 @@ export default function Operator() {
     const hours = now.getHours().toString().padStart(2, "0");
     const minutes = now.getMinutes().toString().padStart(2, "0");
     const ampm = now.getHours() >= 12 ? "PM" : "AM";
-    const formattedHours = (now.getHours() % 12 || 12).toString().padStart(2, "0");
+    const formattedHours = (now.getHours() % 12 || 12)
+      .toString()
+      .padStart(2, "0");
     const checkOutTime = `${formattedHours}:${minutes} ${ampm}`;
 
     setAttendanceData((prev) => ({
@@ -7519,7 +7571,8 @@ export default function Operator() {
   const handleCreateTicket = () => {
     const errors = {};
     if (!newTicket.title.trim()) errors.title = "Judul masalah harus diisi";
-    if (!newTicket.description.trim()) errors.description = "Deskripsi masalah harus diisi";
+    if (!newTicket.description.trim())
+      errors.description = "Deskripsi masalah harus diisi";
 
     if (Object.keys(errors).length > 0) {
       setFormErrors(errors);
@@ -7565,27 +7618,39 @@ export default function Operator() {
     const matchesSearch =
       ticket.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
       ticket.description.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesStatus = statusFilter === "Semua Status" || ticket.status === statusFilter;
-    const matchesPriority = priorityFilter === "Semua Prioritas" || ticket.priority === priorityFilter;
+    const matchesStatus =
+      statusFilter === "Semua Status" || ticket.status === statusFilter;
+    const matchesPriority =
+      priorityFilter === "Semua Prioritas" ||
+      ticket.priority === priorityFilter;
     return matchesSearch && matchesStatus && matchesPriority;
   });
 
   const getPriorityColor = (priority) => {
     switch (priority) {
-      case "High": return "bg-red-100 text-red-800";
-      case "Medium": return "bg-yellow-100 text-yellow-800";
-      case "Low": return "bg-green-100 text-green-800";
-      default: return "bg-gray-100 text-gray-800";
+      case "High":
+        return "bg-red-100 text-red-800";
+      case "Medium":
+        return "bg-yellow-100 text-yellow-800";
+      case "Low":
+        return "bg-green-100 text-green-800";
+      default:
+        return "bg-gray-100 text-gray-800";
     }
   };
 
   const getTicketStatusColor = (status) => {
     switch (status) {
-      case "Open": return "bg-blue-100 text-blue-800";
-      case "In Progress": return "bg-yellow-100 text-yellow-800";
-      case "Resolved": return "bg-green-100 text-green-800";
-      case "Closed": return "bg-gray-100 text-gray-800";
-      default: return "bg-gray-100 text-gray-800";
+      case "Open":
+        return "bg-blue-100 text-blue-800";
+      case "In Progress":
+        return "bg-yellow-100 text-yellow-800";
+      case "Resolved":
+        return "bg-green-100 text-green-800";
+      case "Closed":
+        return "bg-gray-100 text-gray-800";
+      default:
+        return "bg-gray-100 text-gray-800";
     }
   };
 
@@ -7595,38 +7660,79 @@ export default function Operator() {
   // ==================== RENDER FUNCTIONS - DIAGRAM BATANG DIPERBAIKI ====================
   const renderDashboard = () => {
     // Hitung nilai maksimum untuk scaling yang dinamis
-    const maxPHValue = pHData.length > 0 ? Math.max(...pHData.map(d => d.value), 7.5) : 7.5;
-    const maxFlowRateValue = flowRateData.length > 0 ? Math.max(...flowRateData.map(d => d.value), 600) : 600;
+    const maxPHValue =
+      pHData.length > 0 ? Math.max(...pHData.map((d) => d.value), 7.5) : 7.5;
+    const maxFlowRateValue =
+      flowRateData.length > 0
+        ? Math.max(...flowRateData.map((d) => d.value), 600)
+        : 600;
 
     return (
-      <div className="px-4 sm:px-6 lg:px-10 xl:px-16 py-6 max-w-screen-2xl mx-auto bg-gradient-to-br from-gray-50 to-blue-50 min-h-screen">
+      <div className="px-4 sm:px-6 lg:px-6 py-6 max-w-screen-2xl mx-auto bg-gradient-to-br from-gray-50 to-blue-50 min-h-screen">
         <div className="mb-6">
-          <h2 className="text-2xl lg:text-3xl font-bold text-gray-900">Operator Dashboard</h2>
-          <p className="text-gray-600 mt-1">Welcome back, {user.name}! Monitor your daily activities and IPAL status</p>
+          <h2 className="text-2xl lg:text-3xl font-bold text-gray-900">
+            Operator Dashboard
+          </h2>
+          <p className="text-gray-600 mt-1">
+            Welcome back, {user.name}! Monitor your daily activities and IPAL
+            status
+          </p>
         </div>
 
-        <div className="mb-8 grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
+        <div className="mb-6 grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
           {[
-            { label: "Reports Submitted", value: dashboardData.reportsSubmitted, percent: "+12%", icon: DocumentChartBarIcon },
-            { label: "Attendance Rate", value: dashboardData.attendanceRate, percent: "+2%", icon: ChartBarIcon },
-            { label: "Next Shift", value: "Tomorrow", subValue: "08:00", icon: ClockIcon },
+            {
+              label: "Reports Submitted",
+              value: dashboardData.reportsSubmitted,
+              percent: "+12%",
+              icon: DocumentChartBarIcon,
+            },
+            {
+              label: "Attendance Rate",
+              value: dashboardData.attendanceRate,
+              percent: "+2%",
+              icon: ChartBarIcon,
+            },
+            {
+              label: "Next Shift",
+              value: "Tomorrow",
+              subValue: "08:00",
+              icon: ClockIcon,
+            },
             { label: "Current Site", value: user.site, icon: MapPinIcon },
           ].map((item, i) => {
             const Icon = item.icon;
             return (
-              <div key={i} className="bg-white p-4 rounded-xl shadow-sm border border-gray-200 hover:shadow-md transition-shadow">
+              <div
+                key={i}
+                className="bg-white p-4 rounded-xl shadow-sm border border-gray-200 hover:shadow-md transition-shadow"
+              >
                 <div className="flex justify-between items-start mb-3">
-                  <p className="text-gray-600 text-sm font-medium">{item.label}</p>
+                  <p className="text-gray-600 text-sm font-medium">
+                    {item.label}
+                  </p>
                   <div className="p-2 rounded-lg bg-blue-50">
                     <Icon className="w-4 h-4 text-blue-600" />
                   </div>
                 </div>
                 <div>
-                  <p className="text-2xl font-bold text-gray-900">{item.value}</p>
-                  {item.subValue && <p className="text-sm text-gray-600 mt-1">{item.subValue}</p>}
+                  <p className="text-2xl font-bold text-gray-900">
+                    {item.value}
+                  </p>
+                  {item.subValue && (
+                    <p className="text-sm text-gray-600 mt-1">
+                      {item.subValue}
+                    </p>
+                  )}
                 </div>
                 {item.percent && (
-                  <p className={`text-xs font-medium mt-1 ${item.percent.startsWith("+") ? "text-green-600" : "text-red-600"}`}>
+                  <p
+                    className={`text-xs font-medium mt-1 ${
+                      item.percent.startsWith("+")
+                        ? "text-green-600"
+                        : "text-red-600"
+                    }`}
+                  >
                     {item.percent} vs last month
                   </p>
                 )}
@@ -7635,31 +7741,67 @@ export default function Operator() {
           })}
         </div>
 
-        <div className="mb-8">
-          <h3 className="text-lg font-bold text-gray-900 mb-4">Today's Latest Readings</h3>
+        <div className="mb-6">
+          <h3 className="text-lg font-bold text-gray-900 mb-4">
+            Today's Latest Readings
+          </h3>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
             {[
-              { label: "pH Level", value: dashboardData.pHLevel, status: dashboardData.pHLevel === "0.0" ? "no data" : "normal" },
-              { label: "Flow Rate", value: dashboardData.flowRate, status: dashboardData.flowRate === "0 L/h" ? "no data" : "normal" },
-              { label: "TDS", value: dashboardData.tds, status: dashboardData.tds === "0 ppm" ? "no data" : "normal" },
-              { label: "EC", value: dashboardData.ec, status: dashboardData.ec === "0 μS/cm" ? "no data" : "normal" },
+              {
+                label: "pH Level",
+                value: dashboardData.pHLevel,
+                status: dashboardData.pHLevel === "0.0" ? "no data" : "normal",
+              },
+              {
+                label: "Flow Rate",
+                value: dashboardData.flowRate,
+                status:
+                  dashboardData.flowRate === "0 L/h" ? "no data" : "normal",
+              },
+              {
+                label: "TDS",
+                value: dashboardData.tds,
+                status: dashboardData.tds === "0 ppm" ? "no data" : "normal",
+              },
+              {
+                label: "EC",
+                value: dashboardData.ec,
+                status: dashboardData.ec === "0 μS/cm" ? "no data" : "normal",
+              },
             ].map((item, index) => (
-              <div key={index} className="bg-white p-4 rounded-xl shadow-sm border border-gray-200 hover:shadow-md transition-shadow">
+              <div
+                key={index}
+                className="bg-white p-4 rounded-xl shadow-sm border border-gray-200 hover:shadow-md transition-shadow"
+              >
                 <div className="flex justify-between items-start mb-3">
                   <div>
-                    <p className="text-gray-600 text-sm font-medium">{item.label}</p>
-                    <p className="text-xl font-bold text-gray-900 mt-1">{item.value}</p>
+                    <p className="text-gray-600 text-sm font-medium">
+                      {item.label}
+                    </p>
+                    <p className="text-xl font-bold text-gray-900 mt-1">
+                      {item.value}
+                    </p>
                   </div>
                 </div>
                 <div className="flex items-center gap-2">
-                  <div className={`w-2 h-2 rounded-full ${
-                    item.status === "normal" ? "bg-green-500" :
-                    item.status === "no data" ? "bg-gray-400" : "bg-red-500"
-                  }`}></div>
-                  <span className={`text-xs font-medium ${
-                    item.status === "normal" ? "text-green-600" :
-                    item.status === "no data" ? "text-gray-600" : "text-red-600"
-                  }`}>
+                  <div
+                    className={`w-2 h-2 rounded-full ${
+                      item.status === "normal"
+                        ? "bg-green-500"
+                        : item.status === "no data"
+                        ? "bg-gray-400"
+                        : "bg-red-500"
+                    }`}
+                  ></div>
+                  <span
+                    className={`text-xs font-medium ${
+                      item.status === "normal"
+                        ? "text-green-600"
+                        : item.status === "no data"
+                        ? "text-gray-600"
+                        : "text-red-600"
+                    }`}
+                  >
                     {item.status}
                   </span>
                 </div>
@@ -7669,10 +7811,12 @@ export default function Operator() {
         </div>
 
         {/* DIAGRAM BATANG - DIPERBAIKI DENGAN SCALING DINAMIS */}
-        <div className="mb-8 grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <div className="mb-6 grid grid-cols-1 lg:grid-cols-2 gap-6">
           {/* pH Level Chart */}
           <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-200">
-            <h3 className="font-semibold text-lg text-gray-800 mb-6">pH Level Trends</h3>
+            <h3 className="font-semibold text-lg text-gray-800 mb-6">
+              pH Level Trends
+            </h3>
             <div className="relative">
               <div className="absolute left-0 top-0 bottom-0 w-8 flex flex-col justify-between text-xs text-gray-500 py-4">
                 <span>{maxPHValue.toFixed(1)}</span>
@@ -7684,15 +7828,27 @@ export default function Operator() {
               <div className="ml-8">
                 {pHData.length === 0 ? (
                   <div className="w-full h-48 flex items-center justify-center border-b border-l border-gray-200">
-                    <p className="text-gray-500 text-center">No data available<br/><span className="text-sm">Submit daily reports to see trends</span></p>
+                    <p className="text-gray-500 text-center">
+                      No data available
+                      <br />
+                      <span className="text-sm">
+                        Submit daily reports to see trends
+                      </span>
+                    </p>
                   </div>
                 ) : (
                   <div className="w-full h-48 flex items-end justify-between gap-2 px-2 border-b border-l border-gray-200 overflow-hidden">
                     {pHData.map((data, index) => {
                       // Scaling dinamis berdasarkan nilai maksimum
-                      const normalizedHeight = Math.min((data.value / maxPHValue) * 120, 120);
+                      const normalizedHeight = Math.min(
+                        (data.value / maxPHValue) * 120,
+                        120
+                      );
                       return (
-                        <div key={index} className="flex flex-col items-center flex-1 relative">
+                        <div
+                          key={index}
+                          className="flex flex-col items-center flex-1 relative"
+                        >
                           <div
                             className="w-6 bg-gradient-to-t from-blue-400 to-blue-600 rounded-t transition-all duration-300 hover:from-blue-500 hover:to-blue-700 cursor-pointer relative group"
                             style={{ height: `${normalizedHeight}px` }}
@@ -7705,7 +7861,9 @@ export default function Operator() {
                               </div>
                             )}
                           </div>
-                          <span className="text-xs text-gray-600 mt-2">{data.day}</span>
+                          <span className="text-xs text-gray-600 mt-2">
+                            {data.day}
+                          </span>
                         </div>
                       );
                     })}
@@ -7717,7 +7875,9 @@ export default function Operator() {
 
           {/* Flow Rate Chart */}
           <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-200">
-            <h3 className="font-semibold text-lg text-gray-800 mb-6">Flow Rate Trends</h3>
+            <h3 className="font-semibold text-lg text-gray-800 mb-6">
+              Flow Rate Trends
+            </h3>
             <div className="relative">
               <div className="absolute left-0 top-0 bottom-0 w-8 flex flex-col justify-between text-xs text-gray-500 py-4">
                 <span>{maxFlowRateValue}</span>
@@ -7729,15 +7889,27 @@ export default function Operator() {
               <div className="ml-8">
                 {flowRateData.length === 0 ? (
                   <div className="w-full h-48 flex items-center justify-center border-b border-l border-gray-200">
-                    <p className="text-gray-500 text-center">No data available<br/><span className="text-sm">Submit daily reports to see trends</span></p>
+                    <p className="text-gray-500 text-center">
+                      No data available
+                      <br />
+                      <span className="text-sm">
+                        Submit daily reports to see trends
+                      </span>
+                    </p>
                   </div>
                 ) : (
                   <div className="w-full h-48 flex items-end justify-between gap-2 px-2 border-b border-l border-gray-200 overflow-hidden">
                     {flowRateData.map((data, index) => {
                       // Scaling dinamis berdasarkan nilai maksimum
-                      const normalizedHeight = Math.min((data.value / maxFlowRateValue) * 120, 120);
+                      const normalizedHeight = Math.min(
+                        (data.value / maxFlowRateValue) * 120,
+                        120
+                      );
                       return (
-                        <div key={index} className="flex flex-col items-center flex-1 relative">
+                        <div
+                          key={index}
+                          className="flex flex-col items-center flex-1 relative"
+                        >
                           <div
                             className="w-6 bg-gradient-to-t from-green-400 to-green-600 rounded-t transition-all duration-300 hover:from-green-500 hover:to-green-700 cursor-pointer relative group"
                             style={{ height: `${normalizedHeight}px` }}
@@ -7750,7 +7922,9 @@ export default function Operator() {
                               </div>
                             )}
                           </div>
-                          <span className="text-xs text-gray-600 mt-2">{data.day}</span>
+                          <span className="text-xs text-gray-600 mt-2">
+                            {data.day}
+                          </span>
                         </div>
                       );
                     })}
@@ -7763,53 +7937,94 @@ export default function Operator() {
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           <div className="bg-white p-5 rounded-xl shadow-sm border border-gray-200">
-            <h3 className="font-semibold text-lg text-gray-800 mb-3">Quick Actions</h3>
+            <h3 className="font-semibold text-lg text-gray-800 mb-3">
+              Quick Actions
+            </h3>
             <div className="space-y-3">
               <button
                 onClick={() => handleQuickAction("submitReport")}
                 className="w-full flex items-center gap-3 p-4 bg-blue-50 hover:bg-blue-100 rounded-lg transition-colors border border-blue-200 hover:border-blue-300"
               >
                 <DocumentTextIcon className="w-5 h-5 text-blue-600" />
-                <span className="font-medium text-blue-700">Submit Daily Report</span>
+                <span className="font-medium text-blue-700">
+                  Submit Daily Report
+                </span>
               </button>
               <button
                 onClick={() => handleQuickAction("recordReadings")}
                 className="w-full flex text-left gap-3 p-4 bg-green-50 hover:bg-green-100 rounded-lg transition-colors border border-green-200 hover:border-green-300"
               >
                 <ChartBarIcon className="w-5 h-5 text-green-600" />
-                <span className="font-medium text-green-700">Record today's readings</span>
+                <span className="font-medium text-green-700">
+                  Record today's readings
+                </span>
               </button>
               <button
                 onClick={() => handleQuickAction("checkIn")}
                 disabled={attendanceData.isCheckedIn}
-                className={`w-full flex text-left gap-3 p-4 rounded-lg transition-colors border ${attendanceData.isCheckedIn ? 'bg-gray-100 border-gray-300 cursor-not-allowed' : 'bg-orange-50 hover:bg-orange-100 border-orange-200 hover:border-orange-300'}`}
+                className={`w-full flex text-left gap-3 p-4 rounded-lg transition-colors border ${
+                  attendanceData.isCheckedIn
+                    ? "bg-gray-100 border-gray-300 cursor-not-allowed"
+                    : "bg-orange-50 hover:bg-orange-100 border-orange-200 hover:border-orange-300"
+                }`}
               >
                 <MapPinIcon className="w-5 h-5 text-orange-600" />
-                <span className={`font-medium ${attendanceData.isCheckedIn ? 'text-gray-500' : 'text-orange-700'}`}>
-                  {attendanceData.isCheckedIn ? 'Already Checked In' : 'Check In Now'}
+                <span
+                  className={`font-medium ${
+                    attendanceData.isCheckedIn
+                      ? "text-gray-500"
+                      : "text-orange-700"
+                  }`}
+                >
+                  {attendanceData.isCheckedIn
+                    ? "Already Checked In"
+                    : "Check In Now"}
                 </span>
               </button>
               <button
                 onClick={() => handleQuickAction("checkOut")}
-                disabled={!attendanceData.isCheckedIn || attendanceData.isCheckedOut}
-                className={`w-full flex text-left gap-3 p-4 rounded-lg transition-colors border ${!attendanceData.isCheckedIn || attendanceData.isCheckedOut ? 'bg-gray-100 border-gray-300 cursor-not-allowed' : 'bg-red-50 hover:bg-red-100 border-red-200 hover:border-red-300'}`}
+                disabled={
+                  !attendanceData.isCheckedIn || attendanceData.isCheckedOut
+                }
+                className={`w-full flex text-left gap-3 p-4 rounded-lg transition-colors border ${
+                  !attendanceData.isCheckedIn || attendanceData.isCheckedOut
+                    ? "bg-gray-100 border-gray-300 cursor-not-allowed"
+                    : "bg-red-50 hover:bg-red-100 border-red-200 hover:border-red-300"
+                }`}
               >
                 <MapPinIcon className="w-5 h-5 text-red-600" />
-                <span className={`font-medium ${!attendanceData.isCheckedIn || attendanceData.isCheckedOut ? 'text-gray-500' : 'text-red-700'}`}>
-                  {attendanceData.isCheckedOut ? 'Already Checked Out' : 'Check Out Now'}
+                <span
+                  className={`font-medium ${
+                    !attendanceData.isCheckedIn || attendanceData.isCheckedOut
+                      ? "text-gray-500"
+                      : "text-red-700"
+                  }`}
+                >
+                  {attendanceData.isCheckedOut
+                    ? "Already Checked Out"
+                    : "Check Out Now"}
                 </span>
               </button>
             </div>
           </div>
 
           <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-200 lg:col-span-2">
-            <h3 className="font-semibold text-lg text-gray-800 mb-4">Recent Activity</h3>
+            <h3 className="font-semibold text-lg text-gray-800 mb-4">
+              Recent Activity
+            </h3>
             <div className="space-y-4">
               {reports.slice(0, 3).map((report, index) => (
-                <div key={report.id} className="flex items-center justify-between p-3 border-b border-gray-100 last:border-0 hover:bg-gray-50 transition-colors">
+                <div
+                  key={report.id}
+                  className="flex items-center justify-between p-3 border-b border-gray-100 last:border-0 hover:bg-gray-50 transition-colors"
+                >
                   <div className="flex-1">
-                    <p className="font-medium text-gray-900">Daily report submitted</p>
-                    <p className="text-sm text-gray-600">{new Date(report.timestamp).toLocaleTimeString()}</p>
+                    <p className="font-medium text-gray-900">
+                      Daily report submitted
+                    </p>
+                    <p className="text-sm text-gray-600">
+                      {new Date(report.timestamp).toLocaleTimeString()}
+                    </p>
                   </div>
                   <div className="flex items-center gap-2">
                     <CheckCircleIcon className="w-4 h-4 text-green-500" />
@@ -7832,42 +8047,62 @@ export default function Operator() {
   };
 
   const renderDailyReport = () => (
-    <div className="px-4 sm:px-6 lg:px-10 xl:px-16 py-6 max-w-screen-2xl mx-auto bg-gradient-to-br from-gray-50 to-blue-50 min-h-screen">
-      <div className="mb-8">
-        <h2 className="text-2xl lg:text-3xl font-bold text-gray-900">Daily Report</h2>
-        <p className="text-gray-600 mt-1">Submit your daily IPAL operational report</p>
+    <div className="px-4 sm:px-6 lg:px-6 py-6 max-w-screen-2xl mx-auto bg-gradient-to-br from-gray-50 to-blue-50 min-h-screen">
+      <div className="mb-6">
+        <h2 className="text-2xl lg:text-3xl font-bold text-gray-900">
+          Daily Report
+        </h2>
+        <p className="text-gray-600 mt-1">
+          Submit your daily IPAL operational report
+        </p>
       </div>
 
-      <div className="bg-blue-50 p-6 rounded-xl shadow-sm border border-blue-200 mb-8">
+      <div className="bg-blue-50 p-6 rounded-xl shadow-sm border border-blue-200 mb-6">
         <div className="flex items-start gap-3">
           <div className="w-6 h-6 rounded-full bg-blue-100 flex items-center justify-center mt-0.5">
             <ExclamationTriangleIcon className="w-4 h-4 text-blue-700" />
           </div>
           <div>
-            <h3 className="font-bold text-blue-700 mb-2">Daily Report Guidelines</h3>
+            <h3 className="font-bold text-blue-700 mb-2">
+              Daily Report Guidelines
+            </h3>
             <p className="text-blue-800 text-sm">
-              Please ensure all measurements are accurate. Take photos of equipment and upload them with your report. Reports must be submitted before end of shift.
-              <strong className="block mt-2">Semua field harus diisi sebelum submit!</strong>
+              Please ensure all measurements are accurate. Take photos of
+              equipment and upload them with your report. Reports must be
+              submitted before end of shift.
+              <strong className="block mt-2">
+                Semua field harus diisi sebelum submit!
+              </strong>
             </p>
           </div>
         </div>
       </div>
 
-      <div className="bg-white rounded-xl shadow-sm border border-gray-200 mb-8">
+      <div className="bg-white rounded-xl shadow-sm border border-gray-200 mb-6">
         <div className="p-6 border-b border-gray-200">
-          <h3 className="font-semibold text-lg text-gray-800 mb-4">Report Information</h3>
+          <h3 className="font-semibold text-lg text-gray-800 mb-4">
+            Report Information
+          </h3>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div id="date">
-              <label className="block text-sm font-medium text-gray-700 mb-2">Date <span className="text-red-500">*</span></label>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Date <span className="text-red-500">*</span>
+              </label>
               <div className="relative">
                 <input
                   ref={dateInputRef}
                   type="date"
                   value={formData.date}
                   onChange={(e) => handleInputChange("date", e.target.value)}
-                  className={`w-full p-3 border ${errors.date ? "border-red-500" : "border-gray-200"} bg-white rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition placeholder-gray-400 text-gray-900`}
+                  className={`w-full p-3 border ${
+                    errors.date ? "border-red-500" : "border-gray-200"
+                  } bg-white rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition placeholder-gray-400 text-gray-900`}
                 />
-                <button type="button" onClick={handleDateIconClick} className="absolute right-3 top-1/2 transform -translate-y-1/2 p-1 hover:bg-gray-200 rounded transition-colors">
+                <button
+                  type="button"
+                  onClick={handleDateIconClick}
+                  className="absolute right-3 top-1/2 transform -translate-y-1/2 p-1 hover:bg-gray-200 rounded transition-colors"
+                >
                   <CalendarDaysIcon className="w-5 h-5 text-gray-600" />
                 </button>
               </div>
@@ -7880,16 +8115,24 @@ export default function Operator() {
             </div>
 
             <div id="time">
-              <label className="block text-sm font-medium text-gray-700 mb-2">Time <span className="text-red-500">*</span></label>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Time <span className="text-red-500">*</span>
+              </label>
               <div className="relative">
                 <input
                   ref={timeInputRef}
                   type="time"
                   value={formData.time}
                   onChange={(e) => handleInputChange("time", e.target.value)}
-                  className={`w-full p-3 border ${errors.time ? "border-red-500" : "border-gray-200"} bg-white rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition placeholder-gray-400 text-gray-900`}
+                  className={`w-full p-3 border ${
+                    errors.time ? "border-red-500" : "border-gray-200"
+                  } bg-white rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition placeholder-gray-400 text-gray-900`}
                 />
-                <button type="button" onClick={handleTimeIconClick} className="absolute right-3 top-1/2 transform -translate-y-1/2 p-1 hover:bg-gray-200 rounded transition-colors">
+                <button
+                  type="button"
+                  onClick={handleTimeIconClick}
+                  className="absolute right-3 top-1/2 transform -translate-y-1/2 p-1 hover:bg-gray-200 rounded transition-colors"
+                >
                   <ClockIcon className="w-5 h-5 text-gray-600" />
                 </button>
               </div>
@@ -7904,17 +8147,23 @@ export default function Operator() {
         </div>
 
         <div className="p-6 border-b border-gray-200">
-          <h3 className="font-semibold text-lg text-gray-800 mb-4">Water Parameters <span className="text-red-500">*</span></h3>
+          <h3 className="font-semibold text-lg text-gray-800 mb-4">
+            Water Parameters <span className="text-red-500">*</span>
+          </h3>
           <div className="space-y-6">
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               <div id="pHLevel">
-                <label className="block text-sm font-medium text-gray-700 mb-2">pH Level <span className="text-red-500">*</span></label>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  pH Level <span className="text-red-500">*</span>
+                </label>
                 <input
                   type="text"
                   placeholder="e.g., 7.2"
                   value={formData.pHLevel}
                   onChange={(e) => handleInputChange("pHLevel", e.target.value)}
-                  className={`w-full p-3 border ${errors.pHLevel ? "border-red-500" : "border-gray-200"} bg-white rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 placeholder-gray-400 text-gray-900`}
+                  className={`w-full p-3 border ${
+                    errors.pHLevel ? "border-red-500" : "border-gray-200"
+                  } bg-white rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 placeholder-gray-400 text-gray-900`}
                 />
                 {errors.pHLevel && (
                   <p className="text-red-500 text-sm mt-1 flex items-center gap-1">
@@ -7924,13 +8173,19 @@ export default function Operator() {
                 )}
               </div>
               <div id="flowRate">
-                <label className="block text-sm font-medium text-gray-700 mb-2">Flow Rate (L/h) <span className="text-red-500">*</span></label>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Flow Rate (L/h) <span className="text-red-500">*</span>
+                </label>
                 <input
                   type="text"
                   placeholder="e.g., 450"
                   value={formData.flowRate}
-                  onChange={(e) => handleInputChange("flowRate", e.target.value)}
-                  className={`w-full p-3 border ${errors.flowRate ? "border-red-500" : "border-gray-200"} bg-white rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 placeholder-gray-400 text-gray-900`}
+                  onChange={(e) =>
+                    handleInputChange("flowRate", e.target.value)
+                  }
+                  className={`w-full p-3 border ${
+                    errors.flowRate ? "border-red-500" : "border-gray-200"
+                  } bg-white rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 placeholder-gray-400 text-gray-900`}
                 />
                 {errors.flowRate && (
                   <p className="text-red-500 text-sm mt-1 flex items-center gap-1">
@@ -7940,13 +8195,17 @@ export default function Operator() {
                 )}
               </div>
               <div id="volt">
-                <label className="block text-sm font-medium text-gray-700 mb-2">Volt (V) <span className="text-red-500">*</span></label>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Volt (V) <span className="text-red-500">*</span>
+                </label>
                 <input
                   type="text"
                   placeholder="e.g., 220"
                   value={formData.volt}
                   onChange={(e) => handleInputChange("volt", e.target.value)}
-                  className={`w-full p-3 border ${errors.volt ? "border-red-500" : "border-gray-200"} bg-white rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 placeholder-gray-400 text-gray-900`}
+                  className={`w-full p-3 border ${
+                    errors.volt ? "border-red-500" : "border-gray-200"
+                  } bg-white rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 placeholder-gray-400 text-gray-900`}
                 />
                 {errors.volt && (
                   <p className="text-red-500 text-sm mt-1 flex items-center gap-1">
@@ -7959,13 +8218,17 @@ export default function Operator() {
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               <div id="ampere">
-                <label className="block text-sm font-medium text-gray-700 mb-2">Ampere (A) <span className="text-red-500">*</span></label>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Ampere (A) <span className="text-red-500">*</span>
+                </label>
                 <input
                   type="text"
                   placeholder="e.g., 15"
                   value={formData.ampere}
                   onChange={(e) => handleInputChange("ampere", e.target.value)}
-                  className={`w-full p-3 border ${errors.ampere ? "border-red-500" : "border-gray-200"} bg-white rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 placeholder-gray-400 text-gray-900`}
+                  className={`w-full p-3 border ${
+                    errors.ampere ? "border-red-500" : "border-gray-200"
+                  } bg-white rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 placeholder-gray-400 text-gray-900`}
                 />
                 {errors.ampere && (
                   <p className="text-red-500 text-sm mt-1 flex items-center gap-1">
@@ -7975,13 +8238,17 @@ export default function Operator() {
                 )}
               </div>
               <div id="tds">
-                <label className="block text-sm font-medium text-gray-700 mb-2">TDS (ppm) <span className="text-red-500">*</span></label>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  TDS (ppm) <span className="text-red-500">*</span>
+                </label>
                 <input
                   type="text"
                   placeholder="e.g., 480"
                   value={formData.tds}
                   onChange={(e) => handleInputChange("tds", e.target.value)}
-                  className={`w-full p-3 border ${errors.tds ? "border-red-500" : "border-gray-200"} bg-white rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 placeholder-gray-400 text-gray-900`}
+                  className={`w-full p-3 border ${
+                    errors.tds ? "border-red-500" : "border-gray-200"
+                  } bg-white rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 placeholder-gray-400 text-gray-900`}
                 />
                 {errors.tds && (
                   <p className="text-red-500 text-sm mt-1 flex items-center gap-1">
@@ -7991,13 +8258,17 @@ export default function Operator() {
                 )}
               </div>
               <div id="ec">
-                <label className="block text-sm font-medium text-gray-700 mb-2">EC (μS/cm) <span className="text-red-500">*</span></label>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  EC (μS/cm) <span className="text-red-500">*</span>
+                </label>
                 <input
                   type="text"
                   placeholder="e.g., 720"
                   value={formData.ec}
                   onChange={(e) => handleInputChange("ec", e.target.value)}
-                  className={`w-full p-3 border ${errors.ec ? "border-red-500" : "border-gray-200"} bg-white rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 placeholder-gray-400 text-gray-900`}
+                  className={`w-full p-3 border ${
+                    errors.ec ? "border-red-500" : "border-gray-200"
+                  } bg-white rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 placeholder-gray-400 text-gray-900`}
                 />
                 {errors.ec && (
                   <p className="text-red-500 text-sm mt-1 flex items-center gap-1">
@@ -8011,13 +8282,19 @@ export default function Operator() {
         </div>
 
         <div className="p-6 border-b border-gray-200">
-          <h3 className="font-semibold text-lg text-gray-800 mb-4">Equipment Status</h3>
+          <h3 className="font-semibold text-lg text-gray-800 mb-4">
+            Equipment Status
+          </h3>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Agitator</label>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Agitator
+              </label>
               <select
                 value={formData.agitatorStatus}
-                onChange={(e) => handleInputChange("agitatorStatus", e.target.value)}
+                onChange={(e) =>
+                  handleInputChange("agitatorStatus", e.target.value)
+                }
                 className="w-full p-3 border border-gray-200 bg-white rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-900"
               >
                 <option value="Normal">Normal</option>
@@ -8026,10 +8303,14 @@ export default function Operator() {
               </select>
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Settle</label>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Settle
+              </label>
               <select
                 value={formData.settleStatus}
-                onChange={(e) => handleInputChange("settleStatus", e.target.value)}
+                onChange={(e) =>
+                  handleInputChange("settleStatus", e.target.value)
+                }
                 className="w-full p-3 border border-gray-200 bg-white rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-900"
               >
                 <option value="Normal">Normal</option>
@@ -8038,10 +8319,14 @@ export default function Operator() {
               </select>
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Out Filter</label>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Out Filter
+              </label>
               <select
                 value={formData.outFilterStatus}
-                onChange={(e) => handleInputChange("outFilterStatus", e.target.value)}
+                onChange={(e) =>
+                  handleInputChange("outFilterStatus", e.target.value)
+                }
                 className="w-full p-3 border border-gray-200 bg-white rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-900"
               >
                 <option value="Normal">Normal</option>
@@ -8053,22 +8338,47 @@ export default function Operator() {
         </div>
 
         <div className="p-6 border-b border-gray-200">
-          <h3 className="font-semibold text-lg text-gray-800 mb-4">Supporting Photos <span className="text-red-500">*</span></h3>
-          <input type="file" ref={fileInputRef} onChange={handleFileUpload} className="hidden" multiple accept="image/*" />
+          <h3 className="font-semibold text-lg text-gray-800 mb-4">
+            Supporting Photos <span className="text-red-500">*</span>
+          </h3>
+          <input
+            type="file"
+            ref={fileInputRef}
+            onChange={handleFileUpload}
+            className="hidden"
+            multiple
+            accept="image/*"
+          />
           <div
             onClick={handleContainerClick}
-            className={`border-2 border-dashed ${errors.files ? "border-red-500" : "border-gray-300"} rounded-lg p-8 text-center cursor-pointer hover:bg-gray-50 transition-colors`}
+            className={`border-2 border-dashed ${
+              errors.files ? "border-red-500" : "border-gray-300"
+            } rounded-lg p-8 text-center cursor-pointer hover:bg-gray-50 transition-colors`}
           >
-            <CameraIcon className={`w-12 h-12 ${errors.files ? "text-red-500" : "text-gray-600"} mx-auto mb-3`} />
-            <p className={`text-sm mb-3 ${errors.files ? "text-red-500" : "text-gray-500"}`}>
-              {errors.files ? errors.files : "Click anywhere in this area to upload photos of equipment and readings"}
+            <CameraIcon
+              className={`w-12 h-12 ${
+                errors.files ? "text-red-500" : "text-gray-600"
+              } mx-auto mb-3`}
+            />
+            <p
+              className={`text-sm mb-3 ${
+                errors.files ? "text-red-500" : "text-gray-500"
+              }`}
+            >
+              {errors.files
+                ? errors.files
+                : "Click anywhere in this area to upload photos of equipment and readings"}
             </p>
             {uploadedFiles.length > 0 && (
               <div className="mt-4">
-                <p className="text-sm font-medium text-gray-700 mb-2">Uploaded files:</p>
+                <p className="text-sm font-medium text-gray-700 mb-2">
+                  Uploaded files:
+                </p>
                 <ul className="text-sm text-gray-600">
                   {uploadedFiles.map((file, index) => (
-                    <li key={index} className="truncate">{file.name}</li>
+                    <li key={index} className="truncate">
+                      {file.name}
+                    </li>
                   ))}
                 </ul>
               </div>
@@ -8077,14 +8387,22 @@ export default function Operator() {
         </div>
 
         <div className="p-6 border-b border-gray-200">
-          <h3 className="font-semibold text-lg text-gray-800 mb-4">Additional Notes <span className="text-red-500">*</span></h3>
+          <h3 className="font-semibold text-lg text-gray-800 mb-4">
+            Additional Notes <span className="text-red-500">*</span>
+          </h3>
           <div id="additionalNotes">
-            <label className="block text-sm font-medium text-gray-700 mb-2">Add any additional observations, issues, or inventory needs...</label>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Add any additional observations, issues, or inventory needs...
+            </label>
             <textarea
               value={formData.additionalNotes}
-              onChange={(e) => handleInputChange("additionalNotes", e.target.value)}
+              onChange={(e) =>
+                handleInputChange("additionalNotes", e.target.value)
+              }
               rows={4}
-              className={`w-full p-3 border ${errors.additionalNotes ? "border-red-500" : "border-gray-200"} bg-white rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition placeholder-gray-400 text-gray-900`}
+              className={`w-full p-3 border ${
+                errors.additionalNotes ? "border-red-500" : "border-gray-200"
+              } bg-white rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition placeholder-gray-400 text-gray-900`}
               placeholder="Enter any additional information, observations, or requirements..."
             />
             {errors.additionalNotes && (
@@ -8107,7 +8425,11 @@ export default function Operator() {
             <button
               onClick={handleSubmitReport}
               disabled={isSubmitting}
-              className={`w-full sm:w-auto px-8 py-3 ${isSubmitting ? "bg-gray-400 cursor-not-allowed" : "bg-green-600 hover:bg-green-700"} text-white rounded-lg transition-colors font-medium flex items-center justify-center gap-2`}
+              className={`w-full sm:w-auto px-8 py-3 ${
+                isSubmitting
+                  ? "bg-gray-400 cursor-not-allowed"
+                  : "bg-green-600 hover:bg-green-700"
+              } text-white rounded-lg transition-colors font-medium flex items-center justify-center gap-2`}
             >
               {isSubmitting ? (
                 <>
@@ -8161,23 +8483,38 @@ export default function Operator() {
           {filteredReports.length === 0 ? (
             <div className="text-center py-8">
               <p className="text-gray-500">Belum ada laporan yang disubmit.</p>
-              <p className="text-gray-400 text-sm mt-1">Submit laporan pertama Anda di atas.</p>
+              <p className="text-gray-400 text-sm mt-1">
+                Submit laporan pertama Anda di atas.
+              </p>
             </div>
           ) : (
             <div className="space-y-6">
               {filteredReports.map((report) => (
-                <div key={report.id} className="border border-gray-200 rounded-lg p-6 hover:shadow-md transition-shadow">
+                <div
+                  key={report.id}
+                  className="border border-gray-200 rounded-lg p-6 hover:shadow-md transition-shadow"
+                >
                   <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-4">
                     <div className="flex-1">
                       <div className="flex items-center gap-2 mb-2">
-                        <h3 className="font-semibold text-gray-900">{report.location}</h3>
+                        <h3 className="font-semibold text-gray-900">
+                          {report.location}
+                        </h3>
                         <span className="text-gray-400">•</span>
                         <span className="text-gray-600">{report.operator}</span>
-                        <span className={`px-2 py-1 rounded-full text-xs font-medium ${report.status === "Submitted" ? "bg-green-100 text-green-800" : "bg-yellow-100 text-yellow-800"}`}>
+                        <span
+                          className={`px-2 py-1 rounded-full text-xs font-medium ${
+                            report.status === "Submitted"
+                              ? "bg-green-100 text-green-800"
+                              : "bg-yellow-100 text-yellow-800"
+                          }`}
+                        >
                           {report.status}
                         </span>
                       </div>
-                      <p className="text-gray-500 text-sm mb-4">{report.date} {report.time}</p>
+                      <p className="text-gray-500 text-sm mb-4">
+                        {report.date} {report.time}
+                      </p>
                       <div className="flex flex-wrap gap-2 mb-4">
                         {report.flowRate && (
                           <span className="inline-flex items-center gap-1 px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm">
@@ -8204,11 +8541,30 @@ export default function Operator() {
                           </span>
                         )}
                       </div>
-                      {report.additionalNotes && <p className="text-gray-700 mb-4">{report.additionalNotes}</p>}
+                      {report.additionalNotes && (
+                        <p className="text-gray-700 mb-4">
+                          {report.additionalNotes}
+                        </p>
+                      )}
                       <div className="flex flex-wrap gap-4 text-sm text-gray-600">
-                        <span>Agitator: <span className="font-medium">{report.agitatorStatus}</span></span>
-                        <span>Settle: <span className="font-medium">{report.settleStatus}</span></span>
-                        <span>Out Filter: <span className="font-medium">{report.outFilterStatus}</span></span>
+                        <span>
+                          Agitator:{" "}
+                          <span className="font-medium">
+                            {report.agitatorStatus}
+                          </span>
+                        </span>
+                        <span>
+                          Settle:{" "}
+                          <span className="font-medium">
+                            {report.settleStatus}
+                          </span>
+                        </span>
+                        <span>
+                          Out Filter:{" "}
+                          <span className="font-medium">
+                            {report.outFilterStatus}
+                          </span>
+                        </span>
                       </div>
                     </div>
                     <button
@@ -8229,44 +8585,67 @@ export default function Operator() {
   );
 
   const renderPresence = () => (
-    <div className="px-4 sm:px-6 lg:px-10 xl:px-16 py-6 max-w-screen-2xl mx-auto bg-gradient-to-br from-gray-50 to-blue-50 min-h-screen">
-      <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between mb-8 gap-4">
+    <div className="px-4 sm:px-6 lg:px-6 py-6 max-w-screen-2xl mx-auto bg-gradient-to-br from-gray-50 to-blue-50 min-h-screen">
+      <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between mb-6 gap-4">
         <div className="flex-1">
-          <h2 className="text-2xl lg:text-3xl font-bold text-gray-900">Attendance System</h2>
-          <p className="text-gray-600 mt-1">Mark your attendance with location and selfie verification</p>
+          <h2 className="text-2xl lg:text-3xl font-bold text-gray-900">
+            Attendance System
+          </h2>
+          <p className="text-gray-600 mt-1">
+            Mark your attendance with location and selfie verification
+          </p>
         </div>
         <div className="flex-shrink-0">
           {!attendanceData.isCheckedIn ? (
-            <button onClick={openCheckInModal} className="w-full lg:w-auto px-8 py-3 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 transition-colors flex items-center justify-center gap-2">
+            <button
+              onClick={openCheckInModal}
+              className="w-full lg:w-auto px-6 py-3 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 transition-colors flex items-center justify-center gap-2 text-sm lg:text-base"
+            >
               <CheckCircleIcon className="w-5 h-5" />
               Check In Now
             </button>
           ) : !attendanceData.isCheckedOut ? (
-            <button onClick={openCheckOutModal} className="w-full lg:w-auto px-8 py-3 bg-green-600 text-white rounded-lg font-medium hover:bg-green-700 transition-colors flex items-center justify-center gap-2">
+            <button
+              onClick={openCheckOutModal}
+              className="w-full lg:w-auto px-6 py-3 bg-green-600 text-white rounded-lg font-medium hover:bg-green-700 transition-colors flex items-center justify-center gap-2 text-sm lg:text-base"
+            >
               <CheckCircleIcon className="w-5 h-5" />
               Check Out Now
             </button>
           ) : (
-            <div className="text-center px-4 py-2 bg-gray-100 text-gray-600 rounded-lg">Attendance completed for today</div>
+            <div className="text-center px-4 py-3 bg-gray-100 text-gray-600 rounded-lg text-sm lg:text-base">
+              Attendance completed for today
+            </div>
           )}
         </div>
       </div>
 
-      <div className="bg-white rounded-xl shadow-sm border border-gray-200 mb-8">
+      {/* Today's Attendance Card - Responsive */}
+      <div className="bg-white rounded-xl shadow-sm border border-gray-200 mb-6">
         <div className="p-4 border-b border-gray-200 bg-gray-50 rounded-t-xl">
-          <h3 className="font-semibold text-lg text-gray-800">Today's Attendance</h3>
+          <h3 className="font-semibold text-lg text-gray-800">
+            Today's Attendance
+          </h3>
         </div>
         <div className="p-4 bg-white rounded-b-xl">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
             <div className="bg-white rounded-lg p-4 border border-gray-200">
               <div className="flex items-start gap-3">
                 <div className="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
                   <ClockIcon className="w-5 h-5 text-blue-600" />
                 </div>
                 <div className="flex-1 min-w-0">
-                  <h4 className="text-sm font-medium text-gray-600 mb-1">Check-in Time</h4>
-                  <p className="text-lg font-bold text-gray-900 mb-2">{attendanceData.checkInTime}</p>
-                  <span className={`inline-flex items-center justify-center min-w-[100px] px-2.5 py-0.5 rounded-full text-xs font-medium ${getStatusColor(attendanceData.status)}`}>
+                  <h4 className="text-sm font-medium text-gray-600 mb-1">
+                    Check-in Time
+                  </h4>
+                  <p className="text-lg font-bold text-gray-900 mb-2 truncate">
+                    {attendanceData.checkInTime}
+                  </p>
+                  <span
+                    className={`inline-flex items-center justify-center min-w-[100px] px-2.5 py-0.5 rounded-full text-xs font-medium ${getStatusColor(
+                      attendanceData.status
+                    )}`}
+                  >
                     {attendanceData.status}
                   </span>
                 </div>
@@ -8279,15 +8658,19 @@ export default function Operator() {
                   <ClockIcon className="w-5 h-5 text-red-600" />
                 </div>
                 <div className="flex-1 min-w-0">
-                  <h4 className="text-sm font-medium text-gray-600 mb-1">Check-out Time</h4>
-                  <p className="text-lg font-bold text-gray-900 mb-2">{attendanceData.checkOutTime}</p>
+                  <h4 className="text-sm font-medium text-gray-600 mb-1">
+                    Check-out Time
+                  </h4>
+                  <p className="text-lg font-bold text-gray-900 mb-2 truncate">
+                    {attendanceData.checkOutTime}
+                  </p>
                   {attendanceData.isCheckedOut ? (
                     <span className="inline-flex items-center justify-center min-w-[100px] px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
                       Completed
                     </span>
                   ) : (
                     <span className="inline-flex items-center justify-center min-w-[100px] px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">
-                      Not checked out yet
+                      Not checked out
                     </span>
                   )}
                 </div>
@@ -8300,10 +8683,16 @@ export default function Operator() {
                   <MapIcon className="w-5 h-5 text-blue-600" />
                 </div>
                 <div className="flex-1 min-w-0">
-                  <h4 className="text-sm font-medium text-gray-600 mb-1">Location</h4>
-                  <p className="text-sm font-bold text-gray-900 mb-2 leading-tight break-words">{attendanceData.location}</p>
+                  <h4 className="text-sm font-medium text-gray-600 mb-1">
+                    Location
+                  </h4>
+                  <p className="text-sm font-bold text-gray-900 mb-2 leading-tight break-words line-clamp-2">
+                    {attendanceData.location}
+                  </p>
                   <span className="inline-flex items-center justify-center min-w-[100px] px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
-                    {attendanceData.location !== "Not located yet" ? "Verified" : "Not verified"}
+                    {attendanceData.location !== "Not located yet"
+                      ? "Verified"
+                      : "Not verified"}
                   </span>
                 </div>
               </div>
@@ -8312,39 +8701,143 @@ export default function Operator() {
         </div>
       </div>
 
+      {/* Attendance History - Responsive Table */}
       <div className="bg-white rounded-xl shadow-sm border border-gray-200">
         <div className="p-4 border-b border-gray-200 bg-gray-50 rounded-t-xl">
-          <h3 className="font-semibold text-lg text-gray-800">Attendance History</h3>
+          <h3 className="font-semibold text-lg text-gray-800">
+            Attendance History
+          </h3>
         </div>
         <div className="p-4 bg-white rounded-b-xl">
-          <div className="overflow-x-auto">
-            <table className="w-full">
+          {/* Mobile View - Card Layout */}
+          <div className="block lg:hidden space-y-4">
+            {attendanceHistory.map((record) => (
+              <div
+                key={record.id}
+                className="border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow"
+              >
+                <div className="flex justify-between items-start mb-3">
+                  <div>
+                    <p className="font-semibold text-gray-900">{record.date}</p>
+                    <p className="text-sm text-gray-600">{record.location}</p>
+                  </div>
+                  <span
+                    className={`inline-flex items-center justify-center min-w-[100px] gap-1 px-2 py-1 rounded-full text-xs font-medium ${getApprovalStatusColor(
+                      record.approvalStatus
+                    )}`}
+                  >
+                    {record.approvalStatus === "pending" && "⏳ pending"}
+                    {record.approvalStatus === "approved" && "✓ approved"}
+                    {record.approvalStatus === "rejected" && "✗ rejected"}
+                  </span>
+                </div>
+
+                <div className="grid grid-cols-2 gap-4 mb-3">
+                  <div>
+                    <p className="text-xs text-gray-500">Check In</p>
+                    <p className="text-sm font-medium text-gray-900">
+                      {record.checkIn}
+                    </p>
+                    <span
+                      className={`inline-block mt-1 px-2 py-0.5 rounded-full text-xs font-medium ${getStatusColor(
+                        record.checkInStatus
+                      )}`}
+                    >
+                      {record.checkInStatus}
+                    </span>
+                  </div>
+                  <div>
+                    <p className="text-xs text-gray-500">Check Out</p>
+                    <p className="text-sm font-medium text-gray-900">
+                      {record.checkOut}
+                    </p>
+                  </div>
+                </div>
+
+                <button
+                  onClick={() => openDetailModal(record)}
+                  className="w-full flex items-center justify-center gap-1 text-blue-600 hover:text-blue-800 text-sm font-medium py-2 border border-gray-200 rounded-lg hover:bg-blue-50 transition-colors"
+                >
+                  <EyeIcon className="w-4 h-4" />
+                  View Details
+                </button>
+              </div>
+            ))}
+          </div>
+
+          {/* Desktop View - Table Layout */}
+          <div className="hidden lg:block overflow-x-auto">
+            <table className="w-full min-w-[600px]">
               <thead>
                 <tr className="border-b border-gray-200">
-                  <th className="text-left py-3 px-4 font-medium text-gray-700">Date</th>
-                  <th className="text-left py-3 px-4 font-medium text-gray-700">Check In</th>
-                  <th className="text-left py-3 px-4 font-medium text-gray-700">Check Out</th>
-                  <th className="text-left py-3 px-4 font-medium text-gray-700">Location</th>
-                  <th className="text-left py-3 px-4 font-medium text-gray-700">Status</th>
-                  <th className="text-left py-3 px-4 font-medium text-gray-700">Action</th>
+                  <th className="text-left py-3 px-4 font-medium text-gray-700 whitespace-nowrap">
+                    Date
+                  </th>
+                  <th className="text-left py-3 px-4 font-medium text-gray-700 whitespace-nowrap">
+                    Check In
+                  </th>
+                  <th className="text-left py-3 px-4 font-medium text-gray-700 whitespace-nowrap">
+                    Check Out
+                  </th>
+                  <th className="text-left py-3 px-4 font-medium text-gray-700 whitespace-nowrap">
+                    Location
+                  </th>
+                  <th className="text-left py-3 px-4 font-medium text-gray-700 whitespace-nowrap">
+                    Status
+                  </th>
+                  <th className="text-left py-3 px-4 font-medium text-gray-700 whitespace-nowrap">
+                    Action
+                  </th>
                 </tr>
               </thead>
               <tbody>
                 {attendanceHistory.map((record) => (
-                  <tr key={record.id} className="border-b border-gray-100 hover:bg-gray-50">
-                    <td className="py-3 px-4 text-gray-900">{record.date}</td>
-                    <td className="py-3 px-4 text-gray-900">{record.checkIn}</td>
-                    <td className="py-3 px-4 text-gray-900">{record.checkOut}</td>
-                    <td className="py-3 px-4 text-gray-900 text-sm">{record.location}</td>
+                  <tr
+                    key={record.id}
+                    className="border-b border-gray-100 hover:bg-gray-50"
+                  >
+                    <td className="py-3 px-4 text-gray-900 whitespace-nowrap">
+                      {record.date}
+                    </td>
+                    <td className="py-3 px-4 text-gray-900 whitespace-nowrap">
+                      <div>
+                        <span>{record.checkIn}</span>
+                        <span
+                          className={`block text-xs mt-1 ${
+                            record.checkInStatus === "On Time"
+                              ? "text-green-600"
+                              : "text-red-600"
+                          }`}
+                        >
+                          {record.checkInStatus}
+                        </span>
+                      </div>
+                    </td>
+                    <td className="py-3 px-4 text-gray-900 whitespace-nowrap">
+                      {record.checkOut}
+                    </td>
+                    <td
+                      className="py-3 px-4 text-gray-900 text-sm max-w-[200px] truncate"
+                      title={record.location}
+                    >
+                      {record.location}
+                    </td>
                     <td className="py-3 px-4">
-                      <span className={`inline-flex items-center justify-center min-w-[100px] gap-1 px-2 py-1 rounded-full text-xs font-medium ${getApprovalStatusColor(record.approvalStatus)}`}>
+                      <span
+                        className={`inline-flex items-center justify-center min-w-[100px] gap-1 px-2 py-1 rounded-full text-xs font-medium ${getApprovalStatusColor(
+                          record.approvalStatus
+                        )}`}
+                      >
                         {record.approvalStatus === "pending" && "⏳ pending"}
                         {record.approvalStatus === "approved" && "✓ approved"}
                         {record.approvalStatus === "rejected" && "✗ rejected"}
                       </span>
                     </td>
                     <td className="py-3 px-4">
-                      <button onClick={() => openDetailModal(record)} className="flex items-center gap-1 text-blue-600 hover:text-blue-800 text-sm font-medium">
+                      <button
+                        onClick={() => openDetailModal(record)}
+                        className="flex items-center gap-1 text-blue-600 hover:text-blue-800 text-sm font-medium whitespace-nowrap"
+                      >
                         <EyeIcon className="w-4 h-4" />
                         Detail
                       </button>
@@ -8354,10 +8847,16 @@ export default function Operator() {
               </tbody>
             </table>
           </div>
+
           {attendanceHistory.length === 0 && (
             <div className="text-center py-8">
+              <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                <CalendarDaysIcon className="w-8 h-8 text-gray-400" />
+              </div>
               <p className="text-gray-500">No attendance records found.</p>
-              <p className="text-gray-400 text-sm mt-1">Your attendance history will appear here.</p>
+              <p className="text-gray-400 text-sm mt-1">
+                Your attendance history will appear here.
+              </p>
             </div>
           )}
         </div>
@@ -8366,21 +8865,28 @@ export default function Operator() {
   );
 
   const renderHelpDesk = () => (
-    <div className="px-4 sm:px-6 lg:px-10 xl:px-16 py-6 max-w-screen-2xl mx-auto bg-gradient-to-br from-gray-50 to-blue-50 min-h-screen">
-      <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between mb-8 gap-4">
+    <div className="px-4 sm:px-6 lg:px-6 py-6 max-w-screen-2xl mx-auto bg-gradient-to-br from-gray-50 to-blue-50 min-h-screen">
+      <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between mb-6 gap-4">
         <div className="flex-1">
-          <h2 className="text-2xl lg:text-3xl font-bold text-gray-900">Help Desk</h2>
-          <p className="text-gray-600 mt-1">Ajukan bantuan atau laporkan masalah</p>
+          <h2 className="text-2xl lg:text-3xl font-bold text-gray-900">
+            Help Desk
+          </h2>
+          <p className="text-gray-600 mt-1">
+            Ajukan bantuan atau laporkan masalah
+          </p>
         </div>
         <div className="flex-shrink-0">
-          <button onClick={() => setIsCreateModalOpen(true)} className="w-full lg:w-auto px-6 py-3 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 transition-colors flex items-center justify-center gap-2">
+          <button
+            onClick={() => setIsCreateModalOpen(true)}
+            className="w-full lg:w-auto px-6 py-3 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 transition-colors flex items-center justify-center gap-2"
+          >
             <PlusIcon className="w-5 h-5" />
             Buat Tiket
           </button>
         </div>
       </div>
 
-      <div className="flex flex-col lg:flex-row gap-8">
+      <div className="flex flex-col lg:flex-row gap-6">
         <div className="flex-1">
           <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-4 mb-6">
             <div className="flex flex-col sm:flex-row gap-3 items-center">
@@ -8399,12 +8905,24 @@ export default function Operator() {
               <div className="flex gap-2 w-full sm:w-auto">
                 <div className="relative" ref={statusDropdownRef}>
                   <button
-                    onClick={() => setIsStatusDropdownOpen(!isStatusDropdownOpen)}
+                    onClick={() =>
+                      setIsStatusDropdownOpen(!isStatusDropdownOpen)
+                    }
                     className="flex items-center gap-2 px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 w-40 justify-between text-gray-900 bg-white"
                   >
                     <span className="truncate">{statusFilter}</span>
-                    <svg className="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                    <svg
+                      className="w-4 h-4 flex-shrink-0"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M19 9l-7 7-7-7"
+                      />
                     </svg>
                   </button>
                   {isStatusDropdownOpen && (
@@ -8416,7 +8934,11 @@ export default function Operator() {
                             setStatusFilter(option);
                             setIsStatusDropdownOpen(false);
                           }}
-                          className={`w-full text-left px-4 py-2 hover:bg-gray-50 text-gray-900 text-sm ${option === statusFilter ? "bg-blue-50 text-blue-700" : ""}`}
+                          className={`w-full text-left px-4 py-2 hover:bg-gray-50 text-gray-900 text-sm ${
+                            option === statusFilter
+                              ? "bg-blue-50 text-blue-700"
+                              : ""
+                          }`}
                         >
                           {option}
                         </button>
@@ -8427,12 +8949,24 @@ export default function Operator() {
 
                 <div className="relative" ref={priorityDropdownRef}>
                   <button
-                    onClick={() => setIsPriorityDropdownOpen(!isPriorityDropdownOpen)}
+                    onClick={() =>
+                      setIsPriorityDropdownOpen(!isPriorityDropdownOpen)
+                    }
                     className="flex items-center gap-2 px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 w-40 justify-between text-gray-900 bg-white"
                   >
                     <span className="truncate">{priorityFilter}</span>
-                    <svg className="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                    <svg
+                      className="w-4 h-4 flex-shrink-0"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M19 9l-7 7-7-7"
+                      />
                     </svg>
                   </button>
                   {isPriorityDropdownOpen && (
@@ -8444,7 +8978,11 @@ export default function Operator() {
                             setPriorityFilter(option);
                             setIsPriorityDropdownOpen(false);
                           }}
-                          className={`w-full text-left px-4 py-2 hover:bg-gray-50 text-gray-900 text-sm ${option === priorityFilter ? "bg-blue-50 text-blue-700" : ""}`}
+                          className={`w-full text-left px-4 py-2 hover:bg-gray-50 text-gray-900 text-sm ${
+                            option === priorityFilter
+                              ? "bg-blue-50 text-blue-700"
+                              : ""
+                          }`}
                         >
                           {option}
                         </button>
@@ -8458,7 +8996,9 @@ export default function Operator() {
 
           <div className="bg-white rounded-xl shadow-sm border border-gray-200">
             <div className="p-4 border-b border-gray-200 bg-gray-50 rounded-t-xl">
-              <h3 className="font-semibold text-lg text-gray-800">Daftar Tiket</h3>
+              <h3 className="font-semibold text-lg text-gray-800">
+                Daftar Tiket
+              </h3>
             </div>
             <div className="p-4">
               {filteredTickets.map((ticket, index) => (
@@ -8466,12 +9006,20 @@ export default function Operator() {
                   <div className="py-4">
                     <div className="flex items-start gap-3 mb-3">
                       <div className="flex-shrink-0 w-6 h-6 bg-blue-600 rounded-full flex items-center justify-center">
-                        <span className="text-white text-xs font-bold">{index + 1}</span>
+                        <span className="text-white text-xs font-bold">
+                          {index + 1}
+                        </span>
                       </div>
                       <div className="flex-1">
                         <div className="flex justify-between items-start">
-                          <h4 className="text-lg font-semibold text-gray-900">{ticket.title}</h4>
-                          <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${getPriorityColor(ticket.priority)}`}>
+                          <h4 className="text-lg font-semibold text-gray-900">
+                            {ticket.title}
+                          </h4>
+                          <span
+                            className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${getPriorityColor(
+                              ticket.priority
+                            )}`}
+                          >
                             {ticket.priority}
                           </span>
                         </div>
@@ -8488,19 +9036,31 @@ export default function Operator() {
                       </div>
                     </div>
                     <div className="ml-9">
-                      <p className="text-sm text-gray-600 mb-3">{ticket.description}</p>
+                      <p className="text-sm text-gray-600 mb-3">
+                        {ticket.description}
+                      </p>
                       <div className="flex justify-between items-center">
-                        <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${getTicketStatusColor(ticket.status)}`}>
+                        <span
+                          className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${getTicketStatusColor(
+                            ticket.status
+                          )}`}
+                        >
                           {ticket.status}
                         </span>
                         <div className="text-xs text-gray-500">
                           <span>Created: {ticket.createdAt}</span>
-                          {ticket.resolvedAt && <span className="ml-2">Resolved: {ticket.resolvedAt}</span>}
+                          {ticket.resolvedAt && (
+                            <span className="ml-2">
+                              Resolved: {ticket.resolvedAt}
+                            </span>
+                          )}
                         </div>
                       </div>
                     </div>
                   </div>
-                  {index < filteredTickets.length - 1 && <hr className="border-gray-200 my-2" />}
+                  {index < filteredTickets.length - 1 && (
+                    <hr className="border-gray-200 my-2" />
+                  )}
                 </div>
               ))}
               {filteredTickets.length === 0 && (
@@ -8509,7 +9069,9 @@ export default function Operator() {
                     <DocumentChartBarIcon className="w-8 h-8 text-gray-400" />
                   </div>
                   <p className="text-gray-500">Belum ada tiket bantuan</p>
-                  <p className="text-gray-400 text-sm mt-1">Tiket bantuan yang Anda buat akan muncul di sini</p>
+                  <p className="text-gray-400 text-sm mt-1">
+                    Tiket bantuan yang Anda buat akan muncul di sini
+                  </p>
                 </div>
               )}
             </div>
@@ -8529,17 +9091,31 @@ export default function Operator() {
         </div>
         <div className="p-6 space-y-6">
           <div>
-            <h3 className="font-medium text-gray-900 mb-3">1. Capture Location</h3>
+            <h3 className="font-medium text-gray-900 mb-3">
+              1. Capture Location
+            </h3>
             <button
               onClick={() => getCurrentLocation(false)}
-              className={`w-full flex items-center gap-3 p-4 border rounded-lg ${locationCaptured ? "border-green-500 bg-green-50 text-green-700" : "border-gray-300 bg-white text-gray-700 hover:bg-gray-50"}`}
+              className={`w-full flex items-center gap-3 p-4 border rounded-lg ${
+                locationCaptured
+                  ? "border-green-500 bg-green-50 text-green-700"
+                  : "border-gray-300 bg-white text-gray-700 hover:bg-gray-50"
+              }`}
             >
               <MapPinIcon className="w-5 h-5" />
               <div className="text-left flex-1">
-                <span className="block">{locationCaptured ? "Location Captured" : "Get Current Location"}</span>
-                <span className="block text-xs mt-1 text-gray-500">{currentLocation}</span>
+                <span className="block">
+                  {locationCaptured
+                    ? "Location Captured"
+                    : "Get Current Location"}
+                </span>
+                <span className="block text-xs mt-1 text-gray-500">
+                  {currentLocation}
+                </span>
               </div>
-              {locationCaptured && <CheckCircleIcon className="w-5 h-5 ml-auto" />}
+              {locationCaptured && (
+                <CheckCircleIcon className="w-5 h-5 ml-auto" />
+              )}
             </button>
           </div>
 
@@ -8548,14 +9124,27 @@ export default function Operator() {
             {isCameraActive && (
               <div className="mb-4">
                 <div className="relative bg-black rounded-lg overflow-hidden">
-                  <video ref={videoRef} autoPlay playsInline className="w-full h-64 object-cover" />
+                  <video
+                    ref={videoRef}
+                    autoPlay
+                    playsInline
+                    className="w-full h-64 object-cover"
+                  />
                   <div className="absolute bottom-4 left-0 right-0 flex justify-center">
-                    <button onClick={() => capturePhoto(false)} className="bg-white rounded-full p-3 shadow-lg hover:bg-gray-100">
+                    <button
+                      onClick={() => capturePhoto(false)}
+                      className="bg-white rounded-full p-3 shadow-lg hover:bg-gray-100"
+                    >
                       <CameraIcon className="w-6 h-6 text-gray-800" />
                     </button>
                   </div>
                 </div>
-                <button onClick={() => stopCamera(false)} className="mt-2 text-sm text-red-600 hover:text-red-800">Close Camera</button>
+                <button
+                  onClick={() => stopCamera(false)}
+                  className="mt-2 text-sm text-red-600 hover:text-red-800"
+                >
+                  Close Camera
+                </button>
               </div>
             )}
             {!isCameraActive && (
@@ -8565,14 +9154,18 @@ export default function Operator() {
                   className="flex flex-col items-center justify-center p-4 border-2 border-dashed border-gray-300 rounded-lg hover:border-blue-500 hover:bg-blue-50 transition-colors"
                 >
                   <CameraIcon className="w-8 h-8 text-gray-600 mb-2" />
-                  <span className="text-sm font-medium text-gray-400">Take Photo</span>
+                  <span className="text-sm font-medium text-gray-400">
+                    Take Photo
+                  </span>
                 </button>
                 <button
                   onClick={() => triggerFileInput(false)}
                   className="flex flex-col items-center justify-center p-4 border-2 border-dashed border-gray-300 rounded-lg hover:border-green-500 hover:bg-green-50 transition-colors"
                 >
                   <PhotoIcon className="w-8 h-8 text-gray-600 mb-2" />
-                  <span className="text-sm font-medium text-gray-400">Upload Photo</span>
+                  <span className="text-sm font-medium text-gray-400">
+                    Upload Photo
+                  </span>
                 </button>
               </div>
             )}
@@ -8580,9 +9173,15 @@ export default function Operator() {
               <div className="mt-3">
                 <p className="text-sm text-gray-600 mb-2">Selfie Preview:</p>
                 <div className="flex items-center gap-3">
-                  <img src={selfiePreview} alt="Selfie preview" className="w-20 h-20 object-cover rounded-lg border border-gray-300" />
+                  <img
+                    src={selfiePreview}
+                    alt="Selfie preview"
+                    className="w-20 h-20 object-cover rounded-lg border border-gray-300"
+                  />
                   <div className="flex-1">
-                    <p className="text-sm text-green-600 font-medium">✓ Selfie captured</p>
+                    <p className="text-sm text-green-600 font-medium">
+                      ✓ Selfie captured
+                    </p>
                     <p className="text-xs text-gray-500">Ready for check-in</p>
                   </div>
                 </div>
@@ -8592,7 +9191,10 @@ export default function Operator() {
         </div>
         <div className="p-6 border-t border-gray-200 flex gap-3">
           <button
-            onClick={() => { stopCamera(false); setIsCheckInModalOpen(false); }}
+            onClick={() => {
+              stopCamera(false);
+              setIsCheckInModalOpen(false);
+            }}
             className="flex-1 px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50"
           >
             Cancel
@@ -8619,17 +9221,31 @@ export default function Operator() {
         </div>
         <div className="p-6 space-y-6">
           <div>
-            <h3 className="font-medium text-gray-900 mb-3">1. Capture Location</h3>
+            <h3 className="font-medium text-gray-900 mb-3">
+              1. Capture Location
+            </h3>
             <button
               onClick={() => getCurrentLocation(true)}
-              className={`w-full flex items-center gap-3 p-4 border rounded-lg ${locationCapturedCheckOut ? "border-green-500 bg-green-50 text-green-700" : "border-gray-300 bg-white text-gray-700 hover:bg-gray-50"}`}
+              className={`w-full flex items-center gap-3 p-4 border rounded-lg ${
+                locationCapturedCheckOut
+                  ? "border-green-500 bg-green-50 text-green-700"
+                  : "border-gray-300 bg-white text-gray-700 hover:bg-gray-50"
+              }`}
             >
               <MapPinIcon className="w-5 h-5" />
               <div className="text-left flex-1">
-                <span className="block">{locationCapturedCheckOut ? "Location Captured" : "Get Current Location"}</span>
-                <span className="block text-xs mt-1 text-gray-500">{currentLocationCheckOut}</span>
+                <span className="block">
+                  {locationCapturedCheckOut
+                    ? "Location Captured"
+                    : "Get Current Location"}
+                </span>
+                <span className="block text-xs mt-1 text-gray-500">
+                  {currentLocationCheckOut}
+                </span>
               </div>
-              {locationCapturedCheckOut && <CheckCircleIcon className="w-5 h-5 ml-auto" />}
+              {locationCapturedCheckOut && (
+                <CheckCircleIcon className="w-5 h-5 ml-auto" />
+              )}
             </button>
           </div>
 
@@ -8638,14 +9254,27 @@ export default function Operator() {
             {isCameraActiveCheckOut && (
               <div className="mb-4">
                 <div className="relative bg-black rounded-lg overflow-hidden">
-                  <video ref={videoRef} autoPlay playsInline className="w-full h-64 object-cover" />
+                  <video
+                    ref={videoRef}
+                    autoPlay
+                    playsInline
+                    className="w-full h-64 object-cover"
+                  />
                   <div className="absolute bottom-4 left-0 right-0 flex justify-center">
-                    <button onClick={() => capturePhoto(true)} className="bg-white rounded-full p-3 shadow-lg hover:bg-gray-100">
+                    <button
+                      onClick={() => capturePhoto(true)}
+                      className="bg-white rounded-full p-3 shadow-lg hover:bg-gray-100"
+                    >
                       <CameraIcon className="w-6 h-6 text-gray-800" />
                     </button>
                   </div>
                 </div>
-                <button onClick={() => stopCamera(true)} className="mt-2 text-sm text-red-600 hover:text-red-800">Close Camera</button>
+                <button
+                  onClick={() => stopCamera(true)}
+                  className="mt-2 text-sm text-red-600 hover:text-red-800"
+                >
+                  Close Camera
+                </button>
               </div>
             )}
             {!isCameraActiveCheckOut && (
@@ -8655,14 +9284,18 @@ export default function Operator() {
                   className="flex flex-col items-center justify-center p-4 border-2 border-dashed border-gray-300 rounded-lg hover:border-blue-500 hover:bg-blue-50 transition-colors"
                 >
                   <CameraIcon className="w-8 h-8 text-gray-600 mb-2" />
-                  <span className="text-sm font-medium text-gray-400">Take Photo</span>
+                  <span className="text-sm font-medium text-gray-400">
+                    Take Photo
+                  </span>
                 </button>
                 <button
                   onClick={() => triggerFileInput(true)}
                   className="flex flex-col items-center justify-center p-4 border-2 border-dashed border-gray-300 rounded-lg hover:border-green-500 hover:bg-green-50 transition-colors"
                 >
                   <PhotoIcon className="w-8 h-8 text-gray-600 mb-2" />
-                  <span className="text-sm font-medium text-gray-400">Upload Photo</span>
+                  <span className="text-sm font-medium text-gray-400">
+                    Upload Photo
+                  </span>
                 </button>
               </div>
             )}
@@ -8670,9 +9303,15 @@ export default function Operator() {
               <div className="mt-3">
                 <p className="text-sm text-gray-600 mb-2">Selfie Preview:</p>
                 <div className="flex items-center gap-3">
-                  <img src={selfiePreviewCheckOut} alt="Selfie preview" className="w-20 h-20 object-cover rounded-lg border border-gray-300" />
+                  <img
+                    src={selfiePreviewCheckOut}
+                    alt="Selfie preview"
+                    className="w-20 h-20 object-cover rounded-lg border border-gray-300"
+                  />
                   <div className="flex-1">
-                    <p className="text-sm text-green-600 font-medium">✓ Selfie captured</p>
+                    <p className="text-sm text-green-600 font-medium">
+                      ✓ Selfie captured
+                    </p>
                     <p className="text-xs text-gray-500">Ready for check-out</p>
                   </div>
                 </div>
@@ -8682,7 +9321,10 @@ export default function Operator() {
         </div>
         <div className="p-6 border-t border-gray-200 flex gap-3">
           <button
-            onClick={() => { stopCamera(true); setIsCheckOutModalOpen(false); }}
+            onClick={() => {
+              stopCamera(true);
+              setIsCheckOutModalOpen(false);
+            }}
             className="flex-1 px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50"
           >
             Cancel
@@ -8705,8 +9347,13 @@ export default function Operator() {
       <div className="bg-white rounded-xl w-full max-w-4xl max-h-[90vh] overflow-y-auto">
         <div className="p-6 border-b border-gray-200">
           <div className="flex items-center justify-between">
-            <h2 className="text-xl font-bold text-gray-900">Attendance Details</h2>
-            <button onClick={() => setIsDetailModalOpen(false)} className="text-gray-400 hover:text-gray-600">
+            <h2 className="text-xl font-bold text-gray-900">
+              Attendance Details
+            </h2>
+            <button
+              onClick={() => setIsDetailModalOpen(false)}
+              className="text-gray-400 hover:text-gray-600"
+            >
               <XMarkIcon className="w-6 h-6" />
             </button>
           </div>
@@ -8714,19 +9361,34 @@ export default function Operator() {
         </div>
         <div className="p-6 space-y-6">
           <div className="bg-gray-50 rounded-lg p-4">
-            <h3 className="font-semibold text-gray-800 mb-3">Approval Status</h3>
+            <h3 className="font-semibold text-gray-800 mb-3">
+              Approval Status
+            </h3>
             <div className="flex items-center gap-2">
-              <span className={`inline-flex items-center justify-center min-w-[100px] gap-1 px-3 py-1 rounded-full text-sm font-medium ${getApprovalStatusColor(selectedAttendance?.approvalStatus)}`}>
-                {selectedAttendance?.approvalStatus === "pending" && "⏳ Pending Approval"}
-                {selectedAttendance?.approvalStatus === "approved" && "✓ Approved by Admin"}
-                {selectedAttendance?.approvalStatus === "rejected" && "✗ Rejected by Admin"}
+              <span
+                className={`inline-flex items-center justify-center min-w-[100px] gap-1 px-3 py-1 rounded-full text-sm font-medium ${getApprovalStatusColor(
+                  selectedAttendance?.approvalStatus
+                )}`}
+              >
+                {selectedAttendance?.approvalStatus === "pending" &&
+                  "⏳ Pending Approval"}
+                {selectedAttendance?.approvalStatus === "approved" &&
+                  "✓ Approved by Admin"}
+                {selectedAttendance?.approvalStatus === "rejected" &&
+                  "✗ Rejected by Admin"}
               </span>
               {selectedAttendance?.approvalStatus === "pending" && (
-                <span className="text-sm text-gray-600">Waiting for admin approval</span>
+                <span className="text-sm text-gray-600">
+                  Waiting for admin approval
+                </span>
               )}
-              {selectedAttendance?.approvalStatus === "approved" && selectedAttendance?.approvedBy && (
-                <span className="text-sm text-gray-600">Approved by {selectedAttendance.approvedBy} at {selectedAttendance.approvedAt}</span>
-              )}
+              {selectedAttendance?.approvalStatus === "approved" &&
+                selectedAttendance?.approvedBy && (
+                  <span className="text-sm text-gray-600">
+                    Approved by {selectedAttendance.approvedBy} at{" "}
+                    {selectedAttendance.approvedAt}
+                  </span>
+                )}
             </div>
           </div>
 
@@ -8736,14 +9398,39 @@ export default function Operator() {
               Check-in Information
             </h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div><p className="text-sm text-gray-600">Time</p><p className="font-medium text-gray-900">{selectedAttendance?.checkIn}</p></div>
-              <div><p className="text-sm text-gray-600">Status</p><p className={`font-medium ${selectedAttendance?.checkInStatus === "On Time" ? "text-green-600" : "text-red-600"}`}>{selectedAttendance?.checkInStatus}</p></div>
-              <div className="md:col-span-2"><p className="text-sm text-gray-600">Location</p><p className="font-medium text-gray-900 text-sm">{selectedAttendance?.checkInLocation}</p></div>
+              <div>
+                <p className="text-sm text-gray-600">Time</p>
+                <p className="font-medium text-gray-900">
+                  {selectedAttendance?.checkIn}
+                </p>
+              </div>
+              <div>
+                <p className="text-sm text-gray-600">Status</p>
+                <p
+                  className={`font-medium ${
+                    selectedAttendance?.checkInStatus === "On Time"
+                      ? "text-green-600"
+                      : "text-red-600"
+                  }`}
+                >
+                  {selectedAttendance?.checkInStatus}
+                </p>
+              </div>
+              <div className="md:col-span-2">
+                <p className="text-sm text-gray-600">Location</p>
+                <p className="font-medium text-gray-900 text-sm">
+                  {selectedAttendance?.checkInLocation}
+                </p>
+              </div>
             </div>
             {selectedAttendance?.selfieCheckIn && (
               <div className="mt-4">
                 <p className="text-sm text-gray-600 mb-2">Check-in Selfie</p>
-                <img src={selectedAttendance.selfieCheckIn} alt="Check-in selfie" className="w-48 h-48 object-cover rounded-lg border border-gray-300" />
+                <img
+                  src={selectedAttendance.selfieCheckIn}
+                  alt="Check-in selfie"
+                  className="w-48 h-48 object-cover rounded-lg border border-gray-300"
+                />
               </div>
             )}
           </div>
@@ -8754,14 +9441,35 @@ export default function Operator() {
               Check-out Information
             </h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div><p className="text-sm text-gray-600">Time</p><p className="font-medium text-gray-900">{selectedAttendance?.checkOut}</p></div>
-              <div><p className="text-sm text-gray-600">Status</p><p className="font-medium text-gray-900">{selectedAttendance?.checkOut === "--:--" ? "Not checked out" : "Completed"}</p></div>
-              <div className="md:col-span-2"><p className="text-sm text-gray-600">Location</p><p className="font-medium text-gray-900 text-sm">{selectedAttendance?.checkOutLocation}</p></div>
+              <div>
+                <p className="text-sm text-gray-600">Time</p>
+                <p className="font-medium text-gray-900">
+                  {selectedAttendance?.checkOut}
+                </p>
+              </div>
+              <div>
+                <p className="text-sm text-gray-600">Status</p>
+                <p className="font-medium text-gray-900">
+                  {selectedAttendance?.checkOut === "--:--"
+                    ? "Not checked out"
+                    : "Completed"}
+                </p>
+              </div>
+              <div className="md:col-span-2">
+                <p className="text-sm text-gray-600">Location</p>
+                <p className="font-medium text-gray-900 text-sm">
+                  {selectedAttendance?.checkOutLocation}
+                </p>
+              </div>
             </div>
             {selectedAttendance?.selfieCheckOut && (
               <div className="mt-4">
                 <p className="text-sm text-gray-600 mb-2">Check-out Selfie</p>
-                <img src={selectedAttendance.selfieCheckOut} alt="Check-out selfie" className="w-48 h-48 object-cover rounded-lg border border-gray-300" />
+                <img
+                  src={selectedAttendance.selfieCheckOut}
+                  alt="Check-out selfie"
+                  className="w-48 h-48 object-cover rounded-lg border border-gray-300"
+                />
               </div>
             )}
           </div>
@@ -8770,16 +9478,22 @@ export default function Operator() {
             <div className="flex items-start gap-3">
               <ExclamationTriangleIcon className="w-5 h-5 text-yellow-600 mt-0.5" />
               <div>
-                <p className="font-medium text-yellow-800">Menunggu Approval Admin</p>
+                <p className="font-medium text-yellow-800">
+                  Menunggu Approval Admin
+                </p>
                 <p className="text-yellow-700 text-sm mt-1">
-                  Attendance Anda sedang menunggu persetujuan dari admin. Anda akan mendapatkan notifikasi setelah disetujui.
+                  Attendance Anda sedang menunggu persetujuan dari admin. Anda
+                  akan mendapatkan notifikasi setelah disetujui.
                 </p>
               </div>
             </div>
           </div>
         </div>
         <div className="p-6 border-t border-gray-200">
-          <button onClick={() => setIsDetailModalOpen(false)} className="w-full px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
+          <button
+            onClick={() => setIsDetailModalOpen(false)}
+            className="w-full px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+          >
             Close
           </button>
         </div>
@@ -8792,19 +9506,33 @@ export default function Operator() {
       <div className="bg-white rounded-xl w-full max-w-2xl max-h-[90vh] overflow-y-auto">
         <div className="p-6 border-b border-gray-200">
           <div className="flex items-center justify-between">
-            <h2 className="text-xl font-bold text-gray-900">Buat Tiket Bantuan Baru</h2>
-            <button onClick={() => { setIsCreateModalOpen(false); setFormErrors({}); }} className="text-gray-400 hover:text-gray-600">
+            <h2 className="text-xl font-bold text-gray-900">
+              Buat Tiket Bantuan Baru
+            </h2>
+            <button
+              onClick={() => {
+                setIsCreateModalOpen(false);
+                setFormErrors({});
+              }}
+              className="text-gray-400 hover:text-gray-600"
+            >
               <XMarkIcon className="w-6 h-6" />
             </button>
           </div>
-          <p className="text-gray-600 mt-1">Isi form berikut untuk mengajukan tiket bantuan</p>
+          <p className="text-gray-600 mt-1">
+            Isi form berikut untuk mengajukan tiket bantuan
+          </p>
         </div>
         <div className="p-6 space-y-4">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">Site</label>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Site
+            </label>
             <select
               value={newTicket.site}
-              onChange={(e) => setNewTicket({ ...newTicket, site: e.target.value })}
+              onChange={(e) =>
+                setNewTicket({ ...newTicket, site: e.target.value })
+              }
               className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-900 bg-white"
             >
               <option>IPAL Jakarta Pusat</option>
@@ -8815,10 +9543,14 @@ export default function Operator() {
             </select>
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">Kategori</label>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Kategori
+            </label>
             <select
               value={newTicket.category}
-              onChange={(e) => setNewTicket({ ...newTicket, category: e.target.value })}
+              onChange={(e) =>
+                setNewTicket({ ...newTicket, category: e.target.value })
+              }
               className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-900 bg-white"
             >
               <option>Technical</option>
@@ -8828,56 +9560,99 @@ export default function Operator() {
             </select>
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">Judul Masalah <span className="text-red-500">*</span></label>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Judul Masalah <span className="text-red-500">*</span>
+            </label>
             <input
               type="text"
               placeholder="Masalah pompa filter tidak berfungsi"
               value={newTicket.title}
               onChange={(e) => {
                 setNewTicket({ ...newTicket, title: e.target.value });
-                if (formErrors.title) setFormErrors({ ...formErrors, title: "" });
+                if (formErrors.title)
+                  setFormErrors({ ...formErrors, title: "" });
               }}
-              className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-900 bg-white ${formErrors.title ? "border-red-500" : "border-gray-300"}`}
+              className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-900 bg-white ${
+                formErrors.title ? "border-red-500" : "border-gray-300"
+              }`}
             />
-            {formErrors.title && <p className="text-red-500 text-sm mt-1">{formErrors.title}</p>}
+            {formErrors.title && (
+              <p className="text-red-500 text-sm mt-1">{formErrors.title}</p>
+            )}
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">Deskripsi Masalah <span className="text-red-500">*</span></label>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Deskripsi Masalah <span className="text-red-500">*</span>
+            </label>
             <textarea
               rows={4}
               placeholder="Jelaskan detail masalah yang Anda alami..."
               value={newTicket.description}
               onChange={(e) => {
                 setNewTicket({ ...newTicket, description: e.target.value });
-                if (formErrors.description) setFormErrors({ ...formErrors, description: "" });
+                if (formErrors.description)
+                  setFormErrors({ ...formErrors, description: "" });
               }}
-              className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 resize-none text-gray-900 bg-white ${formErrors.description ? "border-red-500" : "border-gray-300"}`}
+              className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 resize-none text-gray-900 bg-white ${
+                formErrors.description ? "border-red-500" : "border-gray-300"
+              }`}
             />
-            {formErrors.description && <p className="text-red-500 text-sm mt-1">{formErrors.description}</p>}
+            {formErrors.description && (
+              <p className="text-red-500 text-sm mt-1">
+                {formErrors.description}
+              </p>
+            )}
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">Prioritas</label>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Prioritas
+            </label>
             <div className="grid grid-cols-3 gap-2">
               <button
                 onClick={() => setNewTicket({ ...newTicket, priority: "Low" })}
-                className={`px-3 py-2 border rounded-lg text-sm hover:bg-gray-50 ${newTicket.priority === "Low" ? "border-green-500 bg-green-50 text-green-700" : "border-gray-300 text-gray-900 bg-white"}`}
-              >Low</button>
+                className={`px-3 py-2 border rounded-lg text-sm hover:bg-gray-50 ${
+                  newTicket.priority === "Low"
+                    ? "border-green-500 bg-green-50 text-green-700"
+                    : "border-gray-300 text-gray-900 bg-white"
+                }`}
+              >
+                Low
+              </button>
               <button
-                onClick={() => setNewTicket({ ...newTicket, priority: "Medium" })}
-                className={`px-3 py-2 border rounded-lg text-sm hover:bg-gray-50 ${newTicket.priority === "Medium" ? "border-blue-500 bg-blue-50 text-blue-700" : "border-gray-300 text-gray-900 bg-white"}`}
-              >Medium</button>
+                onClick={() =>
+                  setNewTicket({ ...newTicket, priority: "Medium" })
+                }
+                className={`px-3 py-2 border rounded-lg text-sm hover:bg-gray-50 ${
+                  newTicket.priority === "Medium"
+                    ? "border-blue-500 bg-blue-50 text-blue-700"
+                    : "border-gray-300 text-gray-900 bg-white"
+                }`}
+              >
+                Medium
+              </button>
               <button
                 onClick={() => setNewTicket({ ...newTicket, priority: "High" })}
-                className={`px-3 py-2 border rounded-lg text-sm hover:bg-gray-50 ${newTicket.priority === "High" ? "border-red-500 bg-red-50 text-red-700" : "border-gray-300 text-gray-900 bg-white"}`}
-              >High</button>
+                className={`px-3 py-2 border rounded-lg text-sm hover:bg-gray-50 ${
+                  newTicket.priority === "High"
+                    ? "border-red-500 bg-red-50 text-red-700"
+                    : "border-gray-300 text-gray-900 bg-white"
+                }`}
+              >
+                High
+              </button>
             </div>
           </div>
         </div>
         <div className="p-6 border-t border-gray-200 flex gap-3">
           <button
-            onClick={() => { setIsCreateModalOpen(false); setFormErrors({}); }}
+            onClick={() => {
+              setIsCreateModalOpen(false);
+              setFormErrors({});
+            }}
             className="flex-1 px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 bg-white"
-          >Batal</button>
+          >
+            Batal
+          </button>
           <button
             onClick={handleCreateTicket}
             className="flex-1 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 flex items-center justify-center gap-2"
@@ -8896,28 +9671,45 @@ export default function Operator() {
         <div className="p-6 border-b border-gray-200">
           <div className="flex items-center justify-between">
             <h2 className="text-xl font-bold text-gray-900">Detail Laporan</h2>
-            <button onClick={() => setIsReportDetailModalOpen(false)} className="text-gray-400 hover:text-gray-600">
+            <button
+              onClick={() => setIsReportDetailModalOpen(false)}
+              className="text-gray-400 hover:text-gray-600"
+            >
               <XMarkIcon className="w-6 h-6" />
             </button>
           </div>
-          <p className="text-gray-600 mt-1">Tanggal: {selectedReport?.date} {selectedReport?.time}</p>
+          <p className="text-gray-600 mt-1">
+            Tanggal: {selectedReport?.date} {selectedReport?.time}
+          </p>
         </div>
         <div className="p-6 space-y-6">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
-              <h3 className="font-semibold text-lg text-gray-800 mb-3">Informasi Umum</h3>
+              <h3 className="font-semibold text-lg text-gray-800 mb-3">
+                Informasi Umum
+              </h3>
               <div className="space-y-3 bg-gray-50 p-4 rounded-lg">
                 <div className="flex justify-between items-center">
                   <span className="text-gray-700 font-medium">Lokasi:</span>
-                  <span className="text-gray-900 font-semibold">{selectedReport?.location}</span>
+                  <span className="text-gray-900 font-semibold">
+                    {selectedReport?.location}
+                  </span>
                 </div>
                 <div className="flex justify-between items-center">
                   <span className="text-gray-700 font-medium">Operator:</span>
-                  <span className="text-gray-900 font-semibold">{selectedReport?.operator}</span>
+                  <span className="text-gray-900 font-semibold">
+                    {selectedReport?.operator}
+                  </span>
                 </div>
                 <div className="flex justify-between items-center">
                   <span className="text-gray-700 font-medium">Status:</span>
-                  <span className={`font-semibold ${selectedReport?.status === "Submitted" ? "text-green-600" : "text-yellow-600"}`}>
+                  <span
+                    className={`font-semibold ${
+                      selectedReport?.status === "Submitted"
+                        ? "text-green-600"
+                        : "text-yellow-600"
+                    }`}
+                  >
                     {selectedReport?.status}
                   </span>
                 </div>
@@ -8925,88 +9717,118 @@ export default function Operator() {
             </div>
 
             <div>
-              <h3 className="font-semibold text-lg text-gray-800 mb-3">Parameter Air</h3>
+              <h3 className="font-semibold text-lg text-gray-800 mb-3">
+                Parameter Air
+              </h3>
               <div className="space-y-3 bg-gray-50 p-4 rounded-lg">
                 <div className="flex justify-between items-center">
                   <span className="text-gray-700 font-medium">pH Level:</span>
-                  <span className="text-gray-900 font-semibold">{selectedReport?.pHLevel}</span>
+                  <span className="text-gray-900 font-semibold">
+                    {selectedReport?.pHLevel}
+                  </span>
                 </div>
                 <div className="flex justify-between items-center">
                   <span className="text-gray-700 font-medium">Flow Rate:</span>
-                  <span className="text-gray-900 font-semibold">{selectedReport?.flowRate} L/h</span>
+                  <span className="text-gray-900 font-semibold">
+                    {selectedReport?.flowRate} L/h
+                  </span>
                 </div>
                 <div className="flex justify-between items-center">
                   <span className="text-gray-700 font-medium">TDS:</span>
-                  <span className="text-gray-900 font-semibold">{selectedReport?.tds} ppm</span>
+                  <span className="text-gray-900 font-semibold">
+                    {selectedReport?.tds} ppm
+                  </span>
                 </div>
                 <div className="flex justify-between items-center">
                   <span className="text-gray-700 font-medium">EC:</span>
-                  <span className="text-gray-900 font-semibold">{selectedReport?.ec} μS/cm</span>
+                  <span className="text-gray-900 font-semibold">
+                    {selectedReport?.ec} μS/cm
+                  </span>
                 </div>
               </div>
             </div>
           </div>
 
           <div>
-            <h3 className="font-semibold text-lg text-gray-800 mb-3">Status Peralatan</h3>
+            <h3 className="font-semibold text-lg text-gray-800 mb-3">
+              Status Peralatan
+            </h3>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               <div className="bg-gray-50 p-4 rounded-lg text-center">
                 <span className="text-gray-700 font-medium">Agitator:</span>
-                <span className="text-gray-900 font-semibold ml-2">{selectedReport?.agitatorStatus}</span>
+                <span className="text-gray-900 font-semibold ml-2">
+                  {selectedReport?.agitatorStatus}
+                </span>
               </div>
               <div className="bg-gray-50 p-4 rounded-lg text-center">
                 <span className="text-gray-700 font-medium">Settle:</span>
-                <span className="text-gray-900 font-semibold ml-2">{selectedReport?.settleStatus}</span>
+                <span className="text-gray-900 font-semibold ml-2">
+                  {selectedReport?.settleStatus}
+                </span>
               </div>
               <div className="bg-gray-50 p-4 rounded-lg text-center">
                 <span className="text-gray-700 font-medium">Out Filter:</span>
-                <span className="text-gray-900 font-semibold ml-2">{selectedReport?.outFilterStatus}</span>
+                <span className="text-gray-900 font-semibold ml-2">
+                  {selectedReport?.outFilterStatus}
+                </span>
               </div>
             </div>
           </div>
 
           <div>
-            <h3 className="font-semibold text-lg text-gray-800 mb-3">Catatan Tambahan</h3>
+            <h3 className="font-semibold text-lg text-gray-800 mb-3">
+              Catatan Tambahan
+            </h3>
             <div className="bg-gray-50 p-4 rounded-lg">
               <p className="text-gray-700">{selectedReport?.additionalNotes}</p>
             </div>
           </div>
 
-          {selectedReport?.uploadedFiles && selectedReport.uploadedFiles.length > 0 && (
-            <div>
-              <h3 className="font-semibold text-lg text-gray-800 mb-3">Foto Pendukung</h3>
-              <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-                {selectedReport.uploadedFiles.map((file, index) => (
-                  <div key={index} className="relative group">
-                    {file.type?.startsWith('image/') ? (
-                      <div
-                        className="cursor-pointer transform transition-transform hover:scale-105"
-                        onClick={() => openImageModal(file)}
-                      >
-                        <img
-                          src={URL.createObjectURL(file)}
-                          alt={`Preview ${index + 1}`}
-                          className="w-full h-32 object-cover rounded-lg border border-gray-300 shadow-sm"
-                        />
-                        <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-20 transition-all rounded-lg flex items-center justify-center">
-                          <EyeIcon className="w-8 h-8 text-white opacity-0 group-hover:opacity-100 transition-opacity" />
+          {selectedReport?.uploadedFiles &&
+            selectedReport.uploadedFiles.length > 0 && (
+              <div>
+                <h3 className="font-semibold text-lg text-gray-800 mb-3">
+                  Foto Pendukung
+                </h3>
+                <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+                  {selectedReport.uploadedFiles.map((file, index) => (
+                    <div key={index} className="relative group">
+                      {file.type?.startsWith("image/") ? (
+                        <div
+                          className="cursor-pointer transform transition-transform hover:scale-105"
+                          onClick={() => openImageModal(file)}
+                        >
+                          <img
+                            src={URL.createObjectURL(file)}
+                            alt={`Preview ${index + 1}`}
+                            className="w-full h-32 object-cover rounded-lg border border-gray-300 shadow-sm"
+                          />
+                          <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-20 transition-all rounded-lg flex items-center justify-center">
+                            <EyeIcon className="w-8 h-8 text-white opacity-0 group-hover:opacity-100 transition-opacity" />
+                          </div>
                         </div>
-                      </div>
-                    ) : (
-                      <div className="bg-gray-50 p-3 rounded-lg text-center border border-gray-300">
-                        <DocumentTextIcon className="w-8 h-8 text-gray-400 mx-auto mb-2" />
-                        <p className="text-sm text-gray-600 truncate">{file.name}</p>
-                      </div>
-                    )}
-                    <p className="text-xs text-gray-500 mt-1 truncate">{file.name}</p>
-                  </div>
-                ))}
+                      ) : (
+                        <div className="bg-gray-50 p-3 rounded-lg text-center border border-gray-300">
+                          <DocumentTextIcon className="w-8 h-8 text-gray-400 mx-auto mb-2" />
+                          <p className="text-sm text-gray-600 truncate">
+                            {file.name}
+                          </p>
+                        </div>
+                      )}
+                      <p className="text-xs text-gray-500 mt-1 truncate">
+                        {file.name}
+                      </p>
+                    </div>
+                  ))}
+                </div>
               </div>
-            </div>
-          )}
+            )}
         </div>
         <div className="p-6 border-t border-gray-200">
-          <button onClick={() => setIsReportDetailModalOpen(false)} className="w-full px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
+          <button
+            onClick={() => setIsReportDetailModalOpen(false)}
+            className="w-full px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+          >
             Tutup
           </button>
         </div>
@@ -9023,7 +9845,7 @@ export default function Operator() {
         >
           <XMarkIcon className="w-8 h-8" />
         </button>
-        {selectedImage && selectedImage.type?.startsWith('image/') && (
+        {selectedImage && selectedImage.type?.startsWith("image/") && (
           <img
             src={URL.createObjectURL(selectedImage)}
             alt="Preview"
@@ -9056,34 +9878,52 @@ export default function Operator() {
             <p className="text-gray-500">Tidak ada notifikasi</p>
           </div>
         ) : (
-          notifications.map(notification => (
+          notifications.map((notification) => (
             <div
               key={notification.id}
               className={`px-4 py-3 border-b border-gray-100 hover:bg-gray-50 cursor-pointer transition-colors ${
-                !notification.read ? 'bg-blue-50' : ''
+                !notification.read ? "bg-blue-50" : ""
               }`}
               onClick={() => handleNotificationClick(notification)}
             >
               <div className="flex justify-between items-start mb-1">
-                <p className={`font-medium ${notification.read ? 'text-gray-600' : 'text-gray-900'}`}>
+                <p
+                  className={`font-medium ${
+                    notification.read ? "text-gray-600" : "text-gray-900"
+                  }`}
+                >
                   {notification.title}
                 </p>
-                <span className="text-xs text-gray-500 whitespace-nowrap ml-2">{notification.time}</span>
+                <span className="text-xs text-gray-500 whitespace-nowrap ml-2">
+                  {notification.time}
+                </span>
               </div>
-              <p className="text-sm text-gray-600 mb-2">{notification.message}</p>
+              <p className="text-sm text-gray-600 mb-2">
+                {notification.message}
+              </p>
               <div className="flex items-center justify-between">
                 <div className="flex items-center">
-                  <div className={`w-2 h-2 rounded-full mr-2 ${
-                    notification.type === 'success' ? 'bg-green-500' :
-                    notification.type === 'warning' ? 'bg-yellow-500' : 'bg-blue-500'
-                  }`}></div>
+                  <div
+                    className={`w-2 h-2 rounded-full mr-2 ${
+                      notification.type === "success"
+                        ? "bg-green-500"
+                        : notification.type === "warning"
+                        ? "bg-yellow-500"
+                        : "bg-blue-500"
+                    }`}
+                  ></div>
                   <span className="text-xs text-gray-500">
-                    {notification.type === 'success' ? 'Disetujui' :
-                     notification.type === 'warning' ? 'Perhatian' : 'Informasi'}
+                    {notification.type === "success"
+                      ? "Disetujui"
+                      : notification.type === "warning"
+                      ? "Perhatian"
+                      : "Informasi"}
                   </span>
                 </div>
                 {!notification.read && (
-                  <span className="text-xs text-blue-600 font-medium">Baru</span>
+                  <span className="text-xs text-blue-600 font-medium">
+                    Baru
+                  </span>
                 )}
               </div>
             </div>
@@ -9106,18 +9946,32 @@ export default function Operator() {
     <div className="flex min-h-screen bg-gray-50">
       {/* Overlay mobile */}
       {isSidebarOpen && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 z-40 lg:hidden" onClick={() => setIsSidebarOpen(false)} />
+        <div
+          className="fixed inset-0 bg-black bg-opacity-50 z-40 lg:hidden"
+          onClick={() => setIsSidebarOpen(false)}
+        />
       )}
 
       {/* Sidebar */}
-      <div className={`fixed top-0 left-0 w-64 h-screen bg-white shadow-lg flex flex-col z-50 transform transition-transform duration-200 ease-in-out ${isSidebarOpen ? "translate-x-0" : "-translate-x-full"} lg:translate-x-0`}>
+      <div
+        className={`fixed top-0 left-0 w-64 h-screen bg-white shadow-lg flex flex-col z-50 transform transition-transform duration-200 ease-in-out ${
+          isSidebarOpen ? "translate-x-0" : "-translate-x-full"
+        } lg:translate-x-0`}
+      >
         <div className="p-6 border-b border-gray-200 flex items-center gap-3 bg-white">
-          <img src="/hero/logosioptima.png" alt="logo" className="w-9 h-9 rounded" />
+          <img
+            src="/hero/logosioptima.png"
+            alt="logo"
+            className="w-9 h-9 rounded"
+          />
           <div>
             <h1 className="text-xl font-bold text-gray-800">SIOPTIMA</h1>
             <p className="text-sm text-gray-600">IPAL Monitoring</p>
           </div>
-          <button onClick={() => setIsSidebarOpen(false)} className="lg:hidden ml-auto p-2 text-gray-800 hover:text-teal-600 transition">
+          <button
+            onClick={() => setIsSidebarOpen(false)}
+            className="lg:hidden ml-auto p-2 text-gray-800 hover:text-teal-600 transition"
+          >
             <XMarkIcon className="w-5 h-5 text-gray-800" />
           </button>
         </div>
@@ -9129,8 +9983,15 @@ export default function Operator() {
               return (
                 <li key={item.id}>
                   <button
-                    onClick={() => { setActiveMenu(item.id); setIsSidebarOpen(false); }}
-                    className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg text-left transition ${activeMenu === item.id ? "bg-cyan-500 text-cyan-100 border-r-2 border-cyan-900" : "text-gray-800 hover:bg-cyan-100"}`}
+                    onClick={() => {
+                      setActiveMenu(item.id);
+                      setIsSidebarOpen(false);
+                    }}
+                    className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg text-left transition ${
+                      activeMenu === item.id
+                        ? "bg-cyan-500 text-cyan-100 border-r-2 border-cyan-900"
+                        : "text-gray-800 hover:bg-cyan-100"
+                    }`}
                   >
                     <Icon className="w-5 h-5 text-gray-800" />
                     {item.name}
@@ -9142,16 +10003,37 @@ export default function Operator() {
         </nav>
 
         {/* BADGE USER - DIPERBAIKI DENGAN DATA USER */}
-        <div className="p-4 border border-gray-200 shadow-md bg-white mt-auto">
-          <div className="bg-white rounded-lg p-3 border border-gray-200">
+        {/* BADGE USER - REVISI: BACKGROUND ABU-ABU DENGAN KOTAK ROUNDED YANG ESTETIK */}
+        <div className="p-4 mt-auto">
+          <div className="bg-gray-50 rounded-xl p-4 border border-gray-200 shadow-sm hover:shadow-md transition-shadow duration-200">
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 bg-gradient-to-r from-blue-500 to-cyan-600 rounded-full flex items-center justify-center text-white font-bold text-lg">
+              <div
+                className="w-12 h-12 bg-gradient-to-r from-blue-500 to-cyan-600 rounded-full
+        flex items-center justify-center text-white font-bold text-lg shadow-md"
+              >
                 {user.initial}
               </div>
               <div className="flex-1 min-w-0">
-                <p className="font-semibold text-gray-900 truncate">{user.name}</p>
-                <p className="text-sm text-gray-600 truncate">{user.email}</p>
-                <p className="text-xs text-gray-500 truncate">{user.role}</p>
+                <p className="font-semibold text-gray-900 truncate text-sm">
+                  {user.name}
+                </p>
+                <p className="text-gray-600 truncate text-xs mt-0.5">
+                  {user.email}
+                </p>
+                <div className="flex items-center gap-1 mt-1">
+                  <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+                  <p className="text-gray-500 text-xs truncate">{user.role}</p>
+                </div>
+              </div>
+            </div>
+
+            {/* Divider */}
+            <div className="border-t border-gray-200 mt-3 pt-3">
+              <div className="flex items-center justify-between text-xs text-gray-600">
+                <span>{user.site}</span>
+                <span className="px-2 py-1 bg-blue-100 text-blue-700 rounded-full font-medium">
+                  Active
+                </span>
               </div>
             </div>
           </div>
@@ -9163,10 +10045,15 @@ export default function Operator() {
         <header className="bg-white shadow-sm border-b border-gray-200 sticky top-0 z-30">
           <div className="flex justify-between items-center px-4 lg:px-6 py-4">
             <div className="flex items-center gap-3">
-              <button onClick={() => setIsSidebarOpen(true)} className="lg:hidden p-2 text-gray-800 hover:text-teal-600">
+              <button
+                onClick={() => setIsSidebarOpen(true)}
+                className="lg:hidden p-2 text-gray-800 hover:text-teal-600"
+              >
                 <Bars3Icon className="w-6 h-6 text-gray-800" />
               </button>
-              <h1 className="text-xl lg:text-2xl font-bold text-gray-900">{menuItems.find((m) => m.id === activeMenu)?.name}</h1>
+              <h1 className="text-xl lg:text-2xl font-bold text-gray-900">
+                {menuItems.find((m) => m.id === activeMenu)?.name}
+              </h1>
             </div>
             <div className="flex items-center gap-4">
               {/* NOTIFIKASI - DIPERBAIKI DENGAN BADGE ANGKA */}
@@ -9178,7 +10065,9 @@ export default function Operator() {
                   <BellIcon className="w-6 h-6 text-gray-800" />
                   {getUnreadNotificationsCount() > 0 && (
                     <span className="absolute -top-1 -right-1 min-w-[20px] h-5 bg-red-500 text-white text-xs rounded-full flex items-center justify-center px-1 border-2 border-white font-medium">
-                      {getUnreadNotificationsCount() > 99 ? '99+' : getUnreadNotificationsCount()}
+                      {getUnreadNotificationsCount() > 99
+                        ? "99+"
+                        : getUnreadNotificationsCount()}
                     </span>
                   )}
                 </button>
@@ -9186,9 +10075,15 @@ export default function Operator() {
               </div>
 
               {/* PROFILE DROPDOWN - DIPERBAIKI DENGAN DATA USER */}
-              <div ref={dropdownRef} className="relative flex flex-col items-end gap-2">
+              <div
+                ref={dropdownRef}
+                className="relative flex flex-col items-end gap-2"
+              >
                 <button
-                  onClick={(e) => { e.stopPropagation(); setDropdownOpen((prev) => !prev); }}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setDropdownOpen((prev) => !prev);
+                  }}
                   className="flex items-center gap-2 cursor-pointer"
                 >
                   <div className="w-10 h-10 bg-gradient-to-r from-blue-500 to-cyan-600 rounded-full flex items-center justify-center text-white font-bold">
@@ -9200,9 +10095,15 @@ export default function Operator() {
                     viewBox="0 0 24 24"
                     strokeWidth={2}
                     stroke="currentColor"
-                    className={`w-4 h-4 text-gray-800 transition-transform duration-200 ${dropdownOpen ? "rotate-180" : "rotate-0"}`}
+                    className={`w-4 h-4 text-gray-800 transition-transform duration-200 ${
+                      dropdownOpen ? "rotate-180" : "rotate-0"
+                    }`}
                   >
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M19 9l-7 7-7-7"
+                    />
                   </svg>
                 </button>
                 {dropdownOpen && (
@@ -9214,13 +10115,19 @@ export default function Operator() {
                           {user.initial}
                         </div>
                         <div className="flex-1 min-w-0">
-                          <p className="font-semibold text-gray-900 truncate">{user.name}</p>
-                          <p className="text-sm text-gray-600 truncate">{user.email}</p>
-                          <p className="text-xs text-gray-500 mt-1">{user.role} • {user.site}</p>
+                          <p className="font-semibold text-gray-900 truncate">
+                            {user.name}
+                          </p>
+                          <p className="text-sm text-gray-600 truncate">
+                            {user.email}
+                          </p>
+                          <p className="text-xs text-gray-500 mt-1">
+                            {user.role} • {user.site}
+                          </p>
                         </div>
                       </div>
                     </div>
-                    
+
                     <button
                       onClick={async () => {
                         setDropdownOpen(false);
