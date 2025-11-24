@@ -27,7 +27,23 @@ model User {
   role              Role            @relation(fields: [roleId], references: [id])
   roleId            Int
 
-  sites              UserSite[]
+  profile           Profile?
+
+  sites             Site[]
+
+  shift             JadwalShift[]
+
+  presensi          Presensi[]
+
+  laporan           Laporan[]
+
+  ijin              Ijin[]
+
+  libur             Libur[]
+
+  help              Help[]
+
+  ticket            Ticket[]
 }
 
 enum RoleName {
@@ -46,11 +62,31 @@ model Role {
   users             User[]
 }
 
+model JadwalShift {
+  id                Int             @id @default(autoincrement())
+  shiftDate         DateTime
+  createdAt         DateTime        @default(now())
+  updatedAt         DateTime        @updatedAt
+  deletedAt         DateTime?
+
+  user              User            @relation(fields: [userId], references: [id])
+  userId            Int
+
+  site              Site            @relation(fields: [siteId], references: [id])
+  siteId            Int
+}
+
+enum siteStatus {
+  ACTIVE
+  MAINTENANCE
+  INACTIVE
+}
+
 model Site {
   id                Int             @id @default(autoincrement())
   name              String          @unique
   image             String?
-  status            Boolean         @default(true)
+  status            siteStatus      @default(ACTIVE)
   createdAt         DateTime        @default(now())
   updatedAt         DateTime        @updatedAt
   deletedAt         DateTime?
@@ -58,12 +94,16 @@ model Site {
   address           SiteAddress     @relation(fields: [addressId], references: [id])
   addressId         Int             @unique
 
-  users              UserSite[]
+  users             User[]
+
+  shift             JadwalShift[]
 }
 
 model SiteAddress {
   id                Int             @id @default(autoincrement())
   address           String
+  city              String
+  province          String
   latitude          Float
   longitude         Float
   createdAt         DateTime        @default(now())
@@ -73,17 +113,135 @@ model SiteAddress {
   site              Site?
 }
 
-model UserSite {
+model Profile {
   id                Int             @id @default(autoincrement())
+  birthDate         DateTime
+  image             String?
   createdAt         DateTime        @default(now())
   updatedAt         DateTime        @updatedAt
   deletedAt         DateTime?
 
-  site              Site            @relation(fields: [siteId], references: [id])
-  siteId            Int
+  user              User            @relation(fields: [userId], references: [id])
+  userId            Int             @unique
+
+  address           UserAddress?
+}
+
+model UserAddress {
+  id                Int             @id @default(autoincrement())
+  address           String
+  city              String
+  province          String
+  createdAt         DateTime        @default(now())
+  updatedAt         DateTime        @updatedAt
+  deletedAt         DateTime?
+
+  profile           Profile         @relation(fields: [profileId], references: [id])
+  profileId         Int             @unique
+}
+
+enum StatusApproval { //multiple table depends on this
+  APPROVED
+  PENDING
+  REJECTED
+}
+
+enum StatusPresensi {
+  ONTIME
+  LATE
+}
+
+model Presensi {
+  id                Int             @id @default(autoincrement())
+  presensiDate      DateTime
+  latitude          Int
+  longitude         Int
+  fotoDiri          String?
+  statusPresensi    StatusPresensi
+  statusApproval    StatusApproval  @default(PENDING)      
+  createdAt         DateTime        @default(now())
+  updatedAt         DateTime        @updatedAt
+  deletedAt         DateTime?
 
   user              User            @relation(fields: [userId], references: [id])
   userId            Int
+}
 
-  @@unique([siteId, userId])
+enum EquipmentStatus {
+  NORMAL
+  MAINTENANCE
+  BROKEN
+}
+
+model Laporan {
+  id                Int             @id @default(autoincrement())
+  fotoSampel        String?
+  laporanStatus     Boolean         @default(false)
+  flowRate          Float
+  volt              Float
+  pH                Float
+  ampere            Float
+  TDS               Float
+  EC                Float
+  agitatorStatus    EquipmentStatus @default(NORMAL)
+  settleStatus      EquipmentStatus @default(NORMAL)
+  outFilterStatus   EquipmentStatus @default(NORMAL)
+  notes             String          @db.Text
+  laporanDate       DateTime        @default(now())  
+  createdAt         DateTime        @default(now())
+  updatedAt         DateTime        @updatedAt
+  deletedAt         DateTime?
+
+  user              User            @relation(fields: [userId], references: [id])
+  userId            Int
+}
+
+model Ijin {
+  id                Int             @id @default(autoincrement())
+  ijinDate          DateTime        @default(now())
+  ijinStatus        StatusApproval  @default(PENDING)
+  createdAt         DateTime        @default(now())
+  updatedAt         DateTime        @updatedAt
+  deletedAt         DateTime?
+
+  user              User            @relation(fields: [userId], references: [id])
+  userId            Int
+}
+
+model Libur {
+  id                Int             @id @default(autoincrement())
+  liburDate         DateTime        
+  liburStatus       StatusApproval  @default(PENDING)
+  createdAt         DateTime        @default(now())
+  updatedAt         DateTime        @updatedAt
+  deletedAt         DateTime?
+
+  user              User            @relation(fields: [userId], references: [id])
+  userId            Int
+}
+
+model Help {
+  id                Int             @id @default(autoincrement())
+  deskripsi         String          @db.Text       
+  gambar            String?
+  helpDate          DateTime        @default(now())
+  createdAt         DateTime        @default(now())
+  updatedAt         DateTime        @updatedAt
+  deletedAt         DateTime?
+
+  user              User            @relation(fields: [userId], references: [id])
+  userId            Int
+}
+
+model Ticket {
+  id                Int             @id @default(autoincrement())
+  deskripsi         String          @db.Text
+  gambar            String?
+  ticketDate        DateTime
+  createdAt         DateTime        @default(now())
+  updatedAt         DateTime        @updatedAt
+  deletedAt         DateTime?
+
+  user              User            @relation(fields: [userId], references: [id])
+  userId            Int
 }

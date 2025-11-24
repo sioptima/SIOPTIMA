@@ -85,7 +85,8 @@ export async function POST(request) {
   try {
     const data = await request.json();
     const user = await UserService.login(data);
-    return Response.json({ 
+    return Response.json({
+       success: true, 
        message: "User logged in successfully" ,
        result: user
       },
@@ -93,7 +94,9 @@ export async function POST(request) {
     );
   } catch (error) {
     return Response.json(
-      { message: error.errors || error.message || "Internal Server Error" },
+      { 
+        success: error.success,
+        message: error.errors || error.message || "Internal Server Error" },
       { status: error.status || 500 }
     );
   }

@@ -15,7 +15,8 @@ export async function GET(request) {
 
         const users = await UserService.getAll(parseInt(page), parseInt(size), role?.toUpperCase());
         return Response.json(
-          { 
+          {
+           success: true, 
            message: "Users retrieved" ,
            result: {
             users
@@ -26,7 +27,9 @@ export async function GET(request) {
     } catch (error) {
 
       return Response.json( 
-         {message: error.errors || error.message || "Internal Server Error"},
+         {
+          success: error.success,
+          message: error.errors || error.message || "Internal Server Error"},
          {status: error.status || 500} 
       );
     }

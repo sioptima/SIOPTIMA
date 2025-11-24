@@ -2,7 +2,7 @@ import { cookies } from "next/headers";
 import { decrypt } from "@/src/server/utils/sessions";
 
 export async function requireRole(role) {
-    const cookie = cookies().get('session')?.value;
+    const cookie = (await cookies()).get('session')?.value;
     if(!cookie){
       return false;
     }

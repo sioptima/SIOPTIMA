@@ -2,6 +2,7 @@ import { hashPassword } from "../../utils/password.js";
 import prisma from "../db.js";
 import { role, user } from "./data.js";
 
+//seed system with one admin and predefined roles
 async function main(userData, roleData) {
   //check if init admin already exist
   const adminUsername = process.env.INIT_ADMIN_USERNAME
@@ -11,29 +12,7 @@ async function main(userData, roleData) {
     }
   })
 
-  const roles = await prisma.role.findMany({
-    where: {
-      name: {
-        in: roleData
-      } 
-    },
-    select: {
-      name: true
-    }
-  })
-
-  const existingNames = roles.map(r => r.name); //map existing roles
-  const missingRoles = roleData.filter(r => !r.includes(existingNames)); //filter which roles is missing
-
-  if (missingRoles){
-    console.log("missing roles:", missingRoles);
-    console.log("creating roles");
-    await prisma.role.createMany({
-      data: missingRoles.map(r => ({name: r}))
-    })
-  }
-
-  // if no admin exist then proceed to seed accounts
+  // if no admin exist then proceed to seed account
   if (!admin) {
     console.log("no admin found");
     console.log("creating admin");
@@ -56,7 +35,34 @@ async function main(userData, roleData) {
         }
       })
     }
+  } else {
+    console.log("admin found")
   }
+
+  const roles = await prisma.role.findMany({
+    where: {
+      name: {
+        in: roleData
+      } 
+    },
+    select: {
+      name: true
+    }
+  })
+
+  const existingNames = roles.map(r => r.name); //map existing roles
+  const missingRoles = roleData.filter(r => !existingNames.includes(r)); //filter which roles is missing
+
+  if (missingRoles.length != 0){
+    console.log("missing roles:", missingRoles);
+    console.log("creating roles");
+    await prisma.role.createMany({
+      data: missingRoles.map(r => ({name: r}))
+    })
+  } else {
+    console.log("roles found")
+  }
+
 }
 
 main(user, role)

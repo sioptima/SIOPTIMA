@@ -10,7 +10,8 @@ export async function GET() {
             throw new ResponseError(401, "Unauthorized")
         }
         return Response.json(
-          { 
+          {
+           success: true, 
            message: "User retrieved" ,
            result: {
             userId: session?.userId,
@@ -21,7 +22,10 @@ export async function GET() {
         );
     } catch (error) {
       return Response.json( 
-         {message: error.errors || error.message || "Internal Server Error"},
+         {
+          success: error.success,
+          message: error.errors || error.message || "Internal Server Error"
+         },
          {status: error.status || 500} 
       );
     }

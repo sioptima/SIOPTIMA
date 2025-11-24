@@ -10,7 +10,8 @@ export async function POST(request) {
         }
         const data = await request.json();
         const user = await UserService.register(data);
-        return Response.json({ 
+        return Response.json({
+           success: true, 
            message: "User registered successfully" ,
            result: user
           },
@@ -18,7 +19,9 @@ export async function POST(request) {
         );
     } catch (error) {
       return Response.json( 
-         {message: error.errors || error.message || "Internal Server Error"},
+         {
+          success: error.success,
+          message: error.errors || error.message || "Internal Server Error"},
          {status: error.status || 500} 
       );
     }

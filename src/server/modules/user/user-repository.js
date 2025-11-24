@@ -100,4 +100,52 @@ export class UserRepository {
         })
         return {total, users};
     }
+
+    static async assignUser(data){
+        const user = await PrismaClient.user.update({
+            where: {
+                username: data.username
+            },
+            data: {
+                sites: {
+                    connect: {
+                        name: data.siteName   
+                    }
+                }
+            },
+            select: {
+                username: true,
+                sites: {
+                    select: {
+                        name: true,
+                    }
+                }
+            }
+        })
+        return user
+    }
+
+    static async unassignUser(data){
+        const user = await PrismaClient.user.update({
+            where: {
+                username: data.username
+            },
+            data: {
+                sites: {
+                    disconnect: {
+                        name: data.siteName   
+                    }
+                }
+            },
+            select: {
+                username: true,
+                sites: {
+                    select: {
+                        name: true,
+                    }
+                }
+            }
+        })
+        return user
+    }
 }

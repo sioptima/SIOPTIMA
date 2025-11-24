@@ -9,7 +9,8 @@ export async function POST(request) {
       };
       const data = await request.json();
       const sites = await SiteService.create(data);
-      return Response.json({ 
+      return Response.json({
+         success: true, 
          message: "Site created" ,
          result: sites
         },
@@ -17,7 +18,9 @@ export async function POST(request) {
       );
     } catch (error) {
       return Response.json(
-        { message: error.message || "Internal Server Error" },
+        { 
+          success: error.success,
+          message: error.message || "Internal Server Error" },
         { status: error.status || 500 }
       );
     }
@@ -35,7 +38,8 @@ export async function GET(request) {
       const size = searchParams.get("size") || 5;
 
       const sites = await SiteService.getAll(parseInt(page), parseInt(size));
-      return Response.json({ 
+      return Response.json({
+         success: true, 
          message: "Sites retrieved" ,
          result: sites
         },
@@ -43,7 +47,9 @@ export async function GET(request) {
       );
     } catch (error) {
       return Response.json(
-        { message: error.errors || error.message || "Internal Server Error" },
+        { 
+          success: error.success,
+          message: error.errors || error.message || "Internal Server Error" },
         { status: error.status || 500 }
       );
     }

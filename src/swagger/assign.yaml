@@ -1,0 +1,81 @@
+paths:
+  /api/user/assign:
+    patch:
+      summary: Assign a user to a site
+      tags:
+        - Assign
+
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                  example: admin
+                siteName:
+                  type: string
+                  example: Surabaya - Site A
+                  
+      responses:
+        '200':
+          description: Request confirmation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: User assigned
+                  result:
+                    type: object
+                    properties:
+                      username:
+                        type: string
+                        example: admin
+                      site:
+                        type: string
+                        example: Surabaya - Site A
+
+    delete:
+      summary: Unassign a user from a site
+      tags:
+        - Assign
+
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                  example: admin
+                siteName:
+                  type: string
+                  example: Surabaya - Site A
+                  
+      responses:
+        '204':
+          description: Request confirmation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: User unassigned
+                  result:
+                    type: object
+                    properties:
+                      username:
+                        type: string
+                        example: admin
+                      site:
+                        type: string
+                        example: []

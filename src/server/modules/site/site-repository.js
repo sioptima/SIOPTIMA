@@ -10,6 +10,14 @@ export class SiteRepository {
         });
     }
 
+    static async findById(name){
+        return await PrismaClient.site.findUnique({
+            where: { 
+                name
+            }
+        });
+    }
+
     static async findAll(data){
         const skip = (data.page - 1) * data.size;
         const sites = await PrismaClient.site.findMany({

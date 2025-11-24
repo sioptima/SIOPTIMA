@@ -14,7 +14,6 @@ const publicRoutes = [
 ];
 const adminRoutes = [
   "/admin",
-  //"/docs"
 ];
 const operatorRoutes = [
   "/operator"

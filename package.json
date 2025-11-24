@@ -11,9 +11,6 @@
     "start": "next start",
     "lint": "next lint"
   },
-  "prisma": {
-    "seed": "node server/prisma/seed.js"
-  },
   "dependencies": {
     "@heroicons/react": "^2.2.0",
     "@hookform/resolvers": "^3.9.0",
@@ -35,6 +32,7 @@
     "leaflet": "^1.9.4",
     "lucide-react": "^0.436.0",
     "next": "^16.0.1",
+    "next-cloudinary": "^6.17.5",
     "next-themes": "^0.3.0",
     "react": "^18.3.1",
     "react-countup": "^6.5.3",

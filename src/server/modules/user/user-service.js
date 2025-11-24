@@ -4,6 +4,7 @@ import { UserValidation } from "./user-validation.js";
 import { UserRepository } from "./user-repository.js";
 import { ResponseError } from "@/src/lib/response-error.js";
 import { hashPassword } from "@/src/server/utils/password.js";
+import { SiteRepository } from "../site/site-repository.js";
 
 export class UserService {
 
@@ -16,7 +17,7 @@ export class UserService {
         
         const role = await UserRepository.getRoleByName(registerRequest.role);
         if (!role) {
-            throw new ResponseError (404, "Role not found")
+            throw new ResponseError (200, "Role not found")
         }
         
         const checkUsername = await UserRepository.findByUsername(registerRequest.username);
@@ -89,7 +90,7 @@ export class UserService {
 
         const users = await UserRepository.findByRole(queryData)
         if (!users) {
-            throw new ResponseError (204, "No site found")
+            throw new ResponseError (200, "No site found")
         }
         
         return {
@@ -102,36 +103,51 @@ export class UserService {
         }
     }
 
-    static async assignSite(request) {
-        const getRequest = UserValidation.ASSIGN.parse(request);
-        if(!getRequest){
+    static async assignUserToSite(request) {
+        const assignRequest = UserValidation.ASSIGN.parse(request);
+        if(!assignRequest){
             throw new ResponseError(400, "Invalid request data");
         }
 
-        if (!queryData.roleName){
-            const users = await UserRepository.findAll(queryData);
-            return {
-                data: users,
-                paging: {
-                    size: size,
-                    total_page: Math.ceil(users.count / size),
-                    current_page: page,
-                }
-            }
+        const user = await UserRepository.findByUsername(assignRequest.username)
+        if (!user){
+            throw new ResponseError(200, "User not found")
         }
 
-        const users = await UserRepository.findByRole(queryData)
-        if (!users) {
-            throw new ResponseError (204, "No site found")
+        const site = await SiteRepository.findByName(assignRequest.siteName)
+        if (!site){
+            throw new ResponseError (200, "Site not found")
         }
+
+        const response = await UserRepository.assignUser(assignRequest)
         
         return {
-            data: users,
-            paging: {
-                size: size,
-                total_page: Math.ceil(users.count / size),
-                current_page: page,
-            }
+            username: response.username,
+            site: response.sites
+        }
+    }
+
+    static async unassignUserFromSite(request) {
+        const unassignRequest = UserValidation.ASSIGN.parse(request);
+        if(!unassignRequest){
+            throw new ResponseError(400, "Invalid request data");
+        }
+
+        const user = await UserRepository.findByUsername(unassignRequest.username)
+        if (!user){
+            throw new ResponseError(200, "User not found")
+        }
+
+        const site = await SiteRepository.findByName(unassignRequest.siteName)
+        if (!site){
+            throw new ResponseError (200, "Site not found")
+        }
+
+        const response = await UserRepository.unassignUser(unassignRequest)
+        
+        return {
+            username: response.username,
+            site: response.sites
         }
     }
 }
