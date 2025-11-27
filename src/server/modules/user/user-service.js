@@ -94,7 +94,7 @@ export class UserService {
         }
         
         return {
-            data: users,
+            query: users,
             paging: {
                 size: size,
                 total_page: Math.ceil(users.count / size),

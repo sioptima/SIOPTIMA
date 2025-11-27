@@ -3,16 +3,13 @@ import { requireRole } from "@/src/server/utils/auth";
 
 export async function POST(request) {
     try {
-      const checkRole = await requireRole("ADMIN");
-      if (!checkRole){
-        throw new ResponseError(403, "Unauthorized")
-      };
+      await requireRole("ADMIN");
       const data = await request.json();
-      const sites = await SiteService.create(data);
+      const result = await SiteService.create(data);
       return Response.json({
          success: true, 
          message: "Site created" ,
-         result: sites
+         data: result
         },
         { status: 200 }
       );
@@ -28,20 +25,21 @@ export async function POST(request) {
 
 export async function GET(request) {
     try {
-      const checkRole = await requireRole("ADMIN");
-      if (!checkRole){
-        throw new ResponseError(403, "Unauthorized")
-      };
-
+      await requireRole("ADMIN");
       const searchParams = request.nextUrl.searchParams;
-      const page = searchParams.get("page") || 1;
-      const size = searchParams.get("size") || 5;
+      const parameter = {
+        page: searchParams.get("page") || 1,
+        size: searchParams.get("size") || 5,
+      }
 
-      const sites = await SiteService.getAll(parseInt(page), parseInt(size));
+      const result = await SiteService.getAll(parameter);
       return Response.json({
          success: true, 
          message: "Sites retrieved" ,
-         result: sites
+         data: {
+          result: result.data,
+          paging: result.paging
+         }
         },
         { status: 200 }
       );
@@ -49,8 +47,9 @@ export async function GET(request) {
       return Response.json(
         { 
           success: error.success,
-          message: error.errors || error.message || "Internal Server Error" },
+          code: error.status || 500,
+          message: error.issues || error.message || "Internal Server Error" },
         { status: error.status || 500 }
-      );
+        );
     }
   }

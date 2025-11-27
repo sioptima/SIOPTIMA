@@ -7110,7 +7110,7 @@ export default function Operator() {
 
     setIsSubmitting(true);
 
-    setTimeout(() => {
+    setTimeout(async () => {
       const newReport = {
         id: Date.now(),
         ...formData,
@@ -7142,6 +7142,9 @@ export default function Operator() {
 
       updateDashboardData();
 
+      await createReport(newReport);
+
+      
       // Tambahkan notifikasi sukses
       setNotifications((prev) => [
         {
@@ -7154,9 +7157,35 @@ export default function Operator() {
         },
         ...prev,
       ]);
-
+      
       alert("Laporan berhasil disubmit!");
     }, 1000);
+  };
+
+  const createReport = async (request) => {
+    const formData  = new FormData();
+
+    for(const name in request) {
+      formData.append(name, request[name]);
+    }
+
+
+    try {
+      const res = await fetch("/api/operator/report", {
+        method: "POST",
+        headers: { "Content-Type": "multipart/form-data" },
+        body: formData,
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        console.log(data.error || "Failed to create site");
+        return;
+      }
+    } catch (err) {
+      console.log(`${err.message}`);
+    }
   };
 
   const handleSaveDraft = () => {
@@ -7204,6 +7233,7 @@ export default function Operator() {
   const handleFileUpload = (event) => {
     const files = Array.from(event.target.files);
     setUploadedFiles(files);
+    console.log(files)
 
     if (files.length > 0 && errors.files) {
       setErrors((prev) => ({

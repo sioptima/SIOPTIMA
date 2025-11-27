@@ -1,5 +1,5 @@
 paths:
-  /api/user/assign:
+  /api/admin/assign:
     patch:
       summary: Assign a user to a site
       tags:
@@ -27,10 +27,13 @@ paths:
               schema:
                 type: object
                 properties:
+                  success:
+                    type: boolean
+                    example: true
                   message:
                     type: string
                     example: User assigned
-                  result:
+                  data:
                     type: object
                     properties:
                       username:
@@ -60,17 +63,20 @@ paths:
                   example: Surabaya - Site A
                   
       responses:
-        '204':
+        '200':
           description: Request confirmation
           content:
             application/json:
               schema:
                 type: object
                 properties:
+                  success:
+                    type: boolean
+                    example: true
                   message:
                     type: string
                     example: User unassigned
-                  result:
+                  data:
                     type: object
                     properties:
                       username:

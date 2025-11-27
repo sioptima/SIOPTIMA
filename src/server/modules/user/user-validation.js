@@ -6,7 +6,8 @@ export class UserValidation {
     static REGISTER = z.object({
         username: z.string().min(3, "Username should have 3-25 characters").max(25, "Username should have 5-25 characters"),
         password: z.string().min(6, "Password should have at least 6 characters").max(20, "Password should have 6-20 characters"),
-        role: z.string().optional(),
+        role: z.string().toUpperCase()
+                .pipe(z.enum(["ADMIN", "OPERATOR", "HRD"], "Invalid query"))
     })
 
     static LOGIN = z.object({
@@ -17,7 +18,7 @@ export class UserValidation {
     static GET = z.object({
         page: z.number("Invalid query"),
         size: z.number("Invalid query"),
-        roleName: z.enum(["ADMIN", "OPERATOR", "HRD"], "Invalid query").optional(),
+        roleName: z.enum(["ADMIN", "OPERATOR", "HRD"], "Invalid query"),
     })
 
     static ASSIGN = z.object({

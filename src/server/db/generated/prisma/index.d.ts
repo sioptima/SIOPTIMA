@@ -91,11 +91,62 @@ export namespace $Enums {
 
 export type RoleName = (typeof RoleName)[keyof typeof RoleName]
 
+
+export const siteStatus: {
+  ACTIVE: 'ACTIVE',
+  MAINTENANCE: 'MAINTENANCE',
+  INACTIVE: 'INACTIVE'
+};
+
+export type siteStatus = (typeof siteStatus)[keyof typeof siteStatus]
+
+
+export const StatusApproval: {
+  APPROVED: 'APPROVED',
+  PENDING: 'PENDING',
+  REJECTED: 'REJECTED'
+};
+
+export type StatusApproval = (typeof StatusApproval)[keyof typeof StatusApproval]
+
+
+export const StatusPresensi: {
+  ONTIME: 'ONTIME',
+  LATE: 'LATE'
+};
+
+export type StatusPresensi = (typeof StatusPresensi)[keyof typeof StatusPresensi]
+
+
+export const EquipmentStatus: {
+  NORMAL: 'NORMAL',
+  MAINTENANCE: 'MAINTENANCE',
+  BROKEN: 'BROKEN'
+};
+
+export type EquipmentStatus = (typeof EquipmentStatus)[keyof typeof EquipmentStatus]
+
 }
 
 export type RoleName = $Enums.RoleName
 
 export const RoleName: typeof $Enums.RoleName
+
+export type siteStatus = $Enums.siteStatus
+
+export const siteStatus: typeof $Enums.siteStatus
+
+export type StatusApproval = $Enums.StatusApproval
+
+export const StatusApproval: typeof $Enums.StatusApproval
+
+export type StatusPresensi = $Enums.StatusPresensi
+
+export const StatusPresensi: typeof $Enums.StatusPresensi
+
+export type EquipmentStatus = $Enums.EquipmentStatus
+
+export const EquipmentStatus: typeof $Enums.EquipmentStatus
 
 /**
  * ##  Prisma Client ʲˢ
@@ -2097,11 +2148,13 @@ export namespace Prisma {
 
   export type SiteCountOutputType = {
     users: number
+    report: number
     shift: number
   }
 
   export type SiteCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     users?: boolean | SiteCountOutputTypeCountUsersArgs
+    report?: boolean | SiteCountOutputTypeCountReportArgs
     shift?: boolean | SiteCountOutputTypeCountShiftArgs
   }
 
@@ -2121,6 +2174,13 @@ export namespace Prisma {
    */
   export type SiteCountOutputTypeCountUsersArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: UserWhereInput
+  }
+
+  /**
+   * SiteCountOutputType without action
+   */
+  export type SiteCountOutputTypeCountReportArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: LaporanWhereInput
   }
 
   /**
@@ -5770,7 +5830,7 @@ export namespace Prisma {
     id: number | null
     name: string | null
     image: string | null
-    status: boolean | null
+    status: $Enums.siteStatus | null
     createdAt: Date | null
     updatedAt: Date | null
     deletedAt: Date | null
@@ -5781,7 +5841,7 @@ export namespace Prisma {
     id: number | null
     name: string | null
     image: string | null
-    status: boolean | null
+    status: $Enums.siteStatus | null
     createdAt: Date | null
     updatedAt: Date | null
     deletedAt: Date | null
@@ -5935,7 +5995,7 @@ export namespace Prisma {
     id: number
     name: string
     image: string | null
-    status: boolean
+    status: $Enums.siteStatus
     createdAt: Date
     updatedAt: Date
     deletedAt: Date | null
@@ -5972,6 +6032,7 @@ export namespace Prisma {
     addressId?: boolean
     address?: boolean | SiteAddressDefaultArgs<ExtArgs>
     users?: boolean | Site$usersArgs<ExtArgs>
+    report?: boolean | Site$reportArgs<ExtArgs>
     shift?: boolean | Site$shiftArgs<ExtArgs>
     _count?: boolean | SiteCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["site"]>
@@ -6015,6 +6076,7 @@ export namespace Prisma {
   export type SiteInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     address?: boolean | SiteAddressDefaultArgs<ExtArgs>
     users?: boolean | Site$usersArgs<ExtArgs>
+    report?: boolean | Site$reportArgs<ExtArgs>
     shift?: boolean | Site$shiftArgs<ExtArgs>
     _count?: boolean | SiteCountOutputTypeDefaultArgs<ExtArgs>
   }
@@ -6030,13 +6092,14 @@ export namespace Prisma {
     objects: {
       address: Prisma.$SiteAddressPayload<ExtArgs>
       users: Prisma.$UserPayload<ExtArgs>[]
+      report: Prisma.$LaporanPayload<ExtArgs>[]
       shift: Prisma.$JadwalShiftPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: number
       name: string
       image: string | null
-      status: boolean
+      status: $Enums.siteStatus
       createdAt: Date
       updatedAt: Date
       deletedAt: Date | null
@@ -6437,6 +6500,7 @@ export namespace Prisma {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     address<T extends SiteAddressDefaultArgs<ExtArgs> = {}>(args?: Subset<T, SiteAddressDefaultArgs<ExtArgs>>): Prisma__SiteAddressClient<$Result.GetResult<Prisma.$SiteAddressPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     users<T extends Site$usersArgs<ExtArgs> = {}>(args?: Subset<T, Site$usersArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    report<T extends Site$reportArgs<ExtArgs> = {}>(args?: Subset<T, Site$reportArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$LaporanPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     shift<T extends Site$shiftArgs<ExtArgs> = {}>(args?: Subset<T, Site$shiftArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$JadwalShiftPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -6470,7 +6534,7 @@ export namespace Prisma {
     readonly id: FieldRef<"Site", 'Int'>
     readonly name: FieldRef<"Site", 'String'>
     readonly image: FieldRef<"Site", 'String'>
-    readonly status: FieldRef<"Site", 'Boolean'>
+    readonly status: FieldRef<"Site", 'siteStatus'>
     readonly createdAt: FieldRef<"Site", 'DateTime'>
     readonly updatedAt: FieldRef<"Site", 'DateTime'>
     readonly deletedAt: FieldRef<"Site", 'DateTime'>
@@ -6892,6 +6956,30 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: UserScalarFieldEnum | UserScalarFieldEnum[]
+  }
+
+  /**
+   * Site.report
+   */
+  export type Site$reportArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Laporan
+     */
+    select?: LaporanSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Laporan
+     */
+    omit?: LaporanOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LaporanInclude<ExtArgs> | null
+    where?: LaporanWhereInput
+    orderBy?: LaporanOrderByWithRelationInput | LaporanOrderByWithRelationInput[]
+    cursor?: LaporanWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: LaporanScalarFieldEnum | LaporanScalarFieldEnum[]
   }
 
   /**
@@ -10406,8 +10494,8 @@ export namespace Prisma {
     latitude: number | null
     longitude: number | null
     fotoDiri: string | null
-    jenisPresensi: string | null
-    statusPresensi: boolean | null
+    statusPresensi: $Enums.StatusPresensi | null
+    statusApproval: $Enums.StatusApproval | null
     createdAt: Date | null
     updatedAt: Date | null
     deletedAt: Date | null
@@ -10420,8 +10508,8 @@ export namespace Prisma {
     latitude: number | null
     longitude: number | null
     fotoDiri: string | null
-    jenisPresensi: string | null
-    statusPresensi: boolean | null
+    statusPresensi: $Enums.StatusPresensi | null
+    statusApproval: $Enums.StatusApproval | null
     createdAt: Date | null
     updatedAt: Date | null
     deletedAt: Date | null
@@ -10434,8 +10522,8 @@ export namespace Prisma {
     latitude: number
     longitude: number
     fotoDiri: number
-    jenisPresensi: number
     statusPresensi: number
+    statusApproval: number
     createdAt: number
     updatedAt: number
     deletedAt: number
@@ -10464,8 +10552,8 @@ export namespace Prisma {
     latitude?: true
     longitude?: true
     fotoDiri?: true
-    jenisPresensi?: true
     statusPresensi?: true
+    statusApproval?: true
     createdAt?: true
     updatedAt?: true
     deletedAt?: true
@@ -10478,8 +10566,8 @@ export namespace Prisma {
     latitude?: true
     longitude?: true
     fotoDiri?: true
-    jenisPresensi?: true
     statusPresensi?: true
+    statusApproval?: true
     createdAt?: true
     updatedAt?: true
     deletedAt?: true
@@ -10492,8 +10580,8 @@ export namespace Prisma {
     latitude?: true
     longitude?: true
     fotoDiri?: true
-    jenisPresensi?: true
     statusPresensi?: true
+    statusApproval?: true
     createdAt?: true
     updatedAt?: true
     deletedAt?: true
@@ -10593,8 +10681,8 @@ export namespace Prisma {
     latitude: number
     longitude: number
     fotoDiri: string | null
-    jenisPresensi: string
-    statusPresensi: boolean
+    statusPresensi: $Enums.StatusPresensi
+    statusApproval: $Enums.StatusApproval
     createdAt: Date
     updatedAt: Date
     deletedAt: Date | null
@@ -10626,8 +10714,8 @@ export namespace Prisma {
     latitude?: boolean
     longitude?: boolean
     fotoDiri?: boolean
-    jenisPresensi?: boolean
     statusPresensi?: boolean
+    statusApproval?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     deletedAt?: boolean
@@ -10641,8 +10729,8 @@ export namespace Prisma {
     latitude?: boolean
     longitude?: boolean
     fotoDiri?: boolean
-    jenisPresensi?: boolean
     statusPresensi?: boolean
+    statusApproval?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     deletedAt?: boolean
@@ -10656,8 +10744,8 @@ export namespace Prisma {
     latitude?: boolean
     longitude?: boolean
     fotoDiri?: boolean
-    jenisPresensi?: boolean
     statusPresensi?: boolean
+    statusApproval?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     deletedAt?: boolean
@@ -10671,15 +10759,15 @@ export namespace Prisma {
     latitude?: boolean
     longitude?: boolean
     fotoDiri?: boolean
-    jenisPresensi?: boolean
     statusPresensi?: boolean
+    statusApproval?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     deletedAt?: boolean
     userId?: boolean
   }
 
-  export type PresensiOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "presensiDate" | "latitude" | "longitude" | "fotoDiri" | "jenisPresensi" | "statusPresensi" | "createdAt" | "updatedAt" | "deletedAt" | "userId", ExtArgs["result"]["presensi"]>
+  export type PresensiOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "presensiDate" | "latitude" | "longitude" | "fotoDiri" | "statusPresensi" | "statusApproval" | "createdAt" | "updatedAt" | "deletedAt" | "userId", ExtArgs["result"]["presensi"]>
   export type PresensiInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | UserDefaultArgs<ExtArgs>
   }
@@ -10701,8 +10789,8 @@ export namespace Prisma {
       latitude: number
       longitude: number
       fotoDiri: string | null
-      jenisPresensi: string
-      statusPresensi: boolean
+      statusPresensi: $Enums.StatusPresensi
+      statusApproval: $Enums.StatusApproval
       createdAt: Date
       updatedAt: Date
       deletedAt: Date | null
@@ -11136,8 +11224,8 @@ export namespace Prisma {
     readonly latitude: FieldRef<"Presensi", 'Int'>
     readonly longitude: FieldRef<"Presensi", 'Int'>
     readonly fotoDiri: FieldRef<"Presensi", 'String'>
-    readonly jenisPresensi: FieldRef<"Presensi", 'String'>
-    readonly statusPresensi: FieldRef<"Presensi", 'Boolean'>
+    readonly statusPresensi: FieldRef<"Presensi", 'StatusPresensi'>
+    readonly statusApproval: FieldRef<"Presensi", 'StatusApproval'>
     readonly createdAt: FieldRef<"Presensi", 'DateTime'>
     readonly updatedAt: FieldRef<"Presensi", 'DateTime'>
     readonly deletedAt: FieldRef<"Presensi", 'DateTime'>
@@ -11573,6 +11661,7 @@ export namespace Prisma {
     flowRate: number | null
     volt: number | null
     pH: number | null
+    ampere: number | null
     TDS: number | null
     EC: number | null
     userId: number | null
@@ -11583,6 +11672,7 @@ export namespace Prisma {
     flowRate: number | null
     volt: number | null
     pH: number | null
+    ampere: number | null
     TDS: number | null
     EC: number | null
     userId: number | null
@@ -11590,49 +11680,65 @@ export namespace Prisma {
 
   export type LaporanMinAggregateOutputType = {
     id: number | null
-    fotoSampel: string | null
-    laporanStatus: boolean | null
     flowRate: number | null
     volt: number | null
     pH: number | null
+    ampere: number | null
     TDS: number | null
     EC: number | null
+    laporanStatus: $Enums.StatusApproval | null
+    agitatorStatus: $Enums.EquipmentStatus | null
+    settleStatus: $Enums.EquipmentStatus | null
+    outFilterStatus: $Enums.EquipmentStatus | null
+    notes: string | null
     laporanDate: Date | null
     createdAt: Date | null
     updatedAt: Date | null
     deletedAt: Date | null
+    siteName: string | null
     userId: number | null
   }
 
   export type LaporanMaxAggregateOutputType = {
     id: number | null
-    fotoSampel: string | null
-    laporanStatus: boolean | null
     flowRate: number | null
     volt: number | null
     pH: number | null
+    ampere: number | null
     TDS: number | null
     EC: number | null
+    laporanStatus: $Enums.StatusApproval | null
+    agitatorStatus: $Enums.EquipmentStatus | null
+    settleStatus: $Enums.EquipmentStatus | null
+    outFilterStatus: $Enums.EquipmentStatus | null
+    notes: string | null
     laporanDate: Date | null
     createdAt: Date | null
     updatedAt: Date | null
     deletedAt: Date | null
+    siteName: string | null
     userId: number | null
   }
 
   export type LaporanCountAggregateOutputType = {
     id: number
     fotoSampel: number
-    laporanStatus: number
     flowRate: number
     volt: number
     pH: number
+    ampere: number
     TDS: number
     EC: number
+    laporanStatus: number
+    agitatorStatus: number
+    settleStatus: number
+    outFilterStatus: number
+    notes: number
     laporanDate: number
     createdAt: number
     updatedAt: number
     deletedAt: number
+    siteName: number
     userId: number
     _all: number
   }
@@ -11643,6 +11749,7 @@ export namespace Prisma {
     flowRate?: true
     volt?: true
     pH?: true
+    ampere?: true
     TDS?: true
     EC?: true
     userId?: true
@@ -11653,6 +11760,7 @@ export namespace Prisma {
     flowRate?: true
     volt?: true
     pH?: true
+    ampere?: true
     TDS?: true
     EC?: true
     userId?: true
@@ -11660,49 +11768,65 @@ export namespace Prisma {
 
   export type LaporanMinAggregateInputType = {
     id?: true
-    fotoSampel?: true
-    laporanStatus?: true
     flowRate?: true
     volt?: true
     pH?: true
+    ampere?: true
     TDS?: true
     EC?: true
+    laporanStatus?: true
+    agitatorStatus?: true
+    settleStatus?: true
+    outFilterStatus?: true
+    notes?: true
     laporanDate?: true
     createdAt?: true
     updatedAt?: true
     deletedAt?: true
+    siteName?: true
     userId?: true
   }
 
   export type LaporanMaxAggregateInputType = {
     id?: true
-    fotoSampel?: true
-    laporanStatus?: true
     flowRate?: true
     volt?: true
     pH?: true
+    ampere?: true
     TDS?: true
     EC?: true
+    laporanStatus?: true
+    agitatorStatus?: true
+    settleStatus?: true
+    outFilterStatus?: true
+    notes?: true
     laporanDate?: true
     createdAt?: true
     updatedAt?: true
     deletedAt?: true
+    siteName?: true
     userId?: true
   }
 
   export type LaporanCountAggregateInputType = {
     id?: true
     fotoSampel?: true
-    laporanStatus?: true
     flowRate?: true
     volt?: true
     pH?: true
+    ampere?: true
     TDS?: true
     EC?: true
+    laporanStatus?: true
+    agitatorStatus?: true
+    settleStatus?: true
+    outFilterStatus?: true
+    notes?: true
     laporanDate?: true
     createdAt?: true
     updatedAt?: true
     deletedAt?: true
+    siteName?: true
     userId?: true
     _all?: true
   }
@@ -11795,17 +11919,23 @@ export namespace Prisma {
 
   export type LaporanGroupByOutputType = {
     id: number
-    fotoSampel: string | null
-    laporanStatus: boolean
+    fotoSampel: string[]
     flowRate: number
     volt: number
     pH: number
+    ampere: number
     TDS: number
     EC: number
+    laporanStatus: $Enums.StatusApproval
+    agitatorStatus: $Enums.EquipmentStatus
+    settleStatus: $Enums.EquipmentStatus
+    outFilterStatus: $Enums.EquipmentStatus
+    notes: string
     laporanDate: Date
     createdAt: Date
     updatedAt: Date
     deletedAt: Date | null
+    siteName: string
     userId: number
     _count: LaporanCountAggregateOutputType | null
     _avg: LaporanAvgAggregateOutputType | null
@@ -11831,99 +11961,136 @@ export namespace Prisma {
   export type LaporanSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     fotoSampel?: boolean
-    laporanStatus?: boolean
     flowRate?: boolean
     volt?: boolean
     pH?: boolean
+    ampere?: boolean
     TDS?: boolean
     EC?: boolean
+    laporanStatus?: boolean
+    agitatorStatus?: boolean
+    settleStatus?: boolean
+    outFilterStatus?: boolean
+    notes?: boolean
     laporanDate?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     deletedAt?: boolean
+    siteName?: boolean
     userId?: boolean
+    site?: boolean | SiteDefaultArgs<ExtArgs>
     user?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["laporan"]>
 
   export type LaporanSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     fotoSampel?: boolean
-    laporanStatus?: boolean
     flowRate?: boolean
     volt?: boolean
     pH?: boolean
+    ampere?: boolean
     TDS?: boolean
     EC?: boolean
+    laporanStatus?: boolean
+    agitatorStatus?: boolean
+    settleStatus?: boolean
+    outFilterStatus?: boolean
+    notes?: boolean
     laporanDate?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     deletedAt?: boolean
+    siteName?: boolean
     userId?: boolean
+    site?: boolean | SiteDefaultArgs<ExtArgs>
     user?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["laporan"]>
 
   export type LaporanSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     fotoSampel?: boolean
-    laporanStatus?: boolean
     flowRate?: boolean
     volt?: boolean
     pH?: boolean
+    ampere?: boolean
     TDS?: boolean
     EC?: boolean
+    laporanStatus?: boolean
+    agitatorStatus?: boolean
+    settleStatus?: boolean
+    outFilterStatus?: boolean
+    notes?: boolean
     laporanDate?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     deletedAt?: boolean
+    siteName?: boolean
     userId?: boolean
+    site?: boolean | SiteDefaultArgs<ExtArgs>
     user?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["laporan"]>
 
   export type LaporanSelectScalar = {
     id?: boolean
     fotoSampel?: boolean
-    laporanStatus?: boolean
     flowRate?: boolean
     volt?: boolean
     pH?: boolean
+    ampere?: boolean
     TDS?: boolean
     EC?: boolean
+    laporanStatus?: boolean
+    agitatorStatus?: boolean
+    settleStatus?: boolean
+    outFilterStatus?: boolean
+    notes?: boolean
     laporanDate?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     deletedAt?: boolean
+    siteName?: boolean
     userId?: boolean
   }
 
-  export type LaporanOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "fotoSampel" | "laporanStatus" | "flowRate" | "volt" | "pH" | "TDS" | "EC" | "laporanDate" | "createdAt" | "updatedAt" | "deletedAt" | "userId", ExtArgs["result"]["laporan"]>
+  export type LaporanOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "fotoSampel" | "flowRate" | "volt" | "pH" | "ampere" | "TDS" | "EC" | "laporanStatus" | "agitatorStatus" | "settleStatus" | "outFilterStatus" | "notes" | "laporanDate" | "createdAt" | "updatedAt" | "deletedAt" | "siteName" | "userId", ExtArgs["result"]["laporan"]>
   export type LaporanInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    site?: boolean | SiteDefaultArgs<ExtArgs>
     user?: boolean | UserDefaultArgs<ExtArgs>
   }
   export type LaporanIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    site?: boolean | SiteDefaultArgs<ExtArgs>
     user?: boolean | UserDefaultArgs<ExtArgs>
   }
   export type LaporanIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    site?: boolean | SiteDefaultArgs<ExtArgs>
     user?: boolean | UserDefaultArgs<ExtArgs>
   }
 
   export type $LaporanPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Laporan"
     objects: {
+      site: Prisma.$SitePayload<ExtArgs>
       user: Prisma.$UserPayload<ExtArgs>
     }
     scalars: $Extensions.GetPayloadResult<{
       id: number
-      fotoSampel: string | null
-      laporanStatus: boolean
+      fotoSampel: string[]
       flowRate: number
       volt: number
       pH: number
+      ampere: number
       TDS: number
       EC: number
+      laporanStatus: $Enums.StatusApproval
+      agitatorStatus: $Enums.EquipmentStatus
+      settleStatus: $Enums.EquipmentStatus
+      outFilterStatus: $Enums.EquipmentStatus
+      notes: string
       laporanDate: Date
       createdAt: Date
       updatedAt: Date
       deletedAt: Date | null
+      siteName: string
       userId: number
     }, ExtArgs["result"]["laporan"]>
     composites: {}
@@ -12319,6 +12486,7 @@ export namespace Prisma {
    */
   export interface Prisma__LaporanClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
+    site<T extends SiteDefaultArgs<ExtArgs> = {}>(args?: Subset<T, SiteDefaultArgs<ExtArgs>>): Prisma__SiteClient<$Result.GetResult<Prisma.$SitePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -12350,17 +12518,23 @@ export namespace Prisma {
    */
   interface LaporanFieldRefs {
     readonly id: FieldRef<"Laporan", 'Int'>
-    readonly fotoSampel: FieldRef<"Laporan", 'String'>
-    readonly laporanStatus: FieldRef<"Laporan", 'Boolean'>
+    readonly fotoSampel: FieldRef<"Laporan", 'String[]'>
     readonly flowRate: FieldRef<"Laporan", 'Float'>
     readonly volt: FieldRef<"Laporan", 'Float'>
     readonly pH: FieldRef<"Laporan", 'Float'>
+    readonly ampere: FieldRef<"Laporan", 'Float'>
     readonly TDS: FieldRef<"Laporan", 'Float'>
     readonly EC: FieldRef<"Laporan", 'Float'>
+    readonly laporanStatus: FieldRef<"Laporan", 'StatusApproval'>
+    readonly agitatorStatus: FieldRef<"Laporan", 'EquipmentStatus'>
+    readonly settleStatus: FieldRef<"Laporan", 'EquipmentStatus'>
+    readonly outFilterStatus: FieldRef<"Laporan", 'EquipmentStatus'>
+    readonly notes: FieldRef<"Laporan", 'String'>
     readonly laporanDate: FieldRef<"Laporan", 'DateTime'>
     readonly createdAt: FieldRef<"Laporan", 'DateTime'>
     readonly updatedAt: FieldRef<"Laporan", 'DateTime'>
     readonly deletedAt: FieldRef<"Laporan", 'DateTime'>
+    readonly siteName: FieldRef<"Laporan", 'String'>
     readonly userId: FieldRef<"Laporan", 'Int'>
   }
     
@@ -12801,7 +12975,7 @@ export namespace Prisma {
   export type IjinMinAggregateOutputType = {
     id: number | null
     ijinDate: Date | null
-    ijinStatus: boolean | null
+    ijinStatus: $Enums.StatusApproval | null
     createdAt: Date | null
     updatedAt: Date | null
     deletedAt: Date | null
@@ -12811,7 +12985,7 @@ export namespace Prisma {
   export type IjinMaxAggregateOutputType = {
     id: number | null
     ijinDate: Date | null
-    ijinStatus: boolean | null
+    ijinStatus: $Enums.StatusApproval | null
     createdAt: Date | null
     updatedAt: Date | null
     deletedAt: Date | null
@@ -12960,7 +13134,7 @@ export namespace Prisma {
   export type IjinGroupByOutputType = {
     id: number
     ijinDate: Date
-    ijinStatus: boolean
+    ijinStatus: $Enums.StatusApproval
     createdAt: Date
     updatedAt: Date
     deletedAt: Date | null
@@ -13048,7 +13222,7 @@ export namespace Prisma {
     scalars: $Extensions.GetPayloadResult<{
       id: number
       ijinDate: Date
-      ijinStatus: boolean
+      ijinStatus: $Enums.StatusApproval
       createdAt: Date
       updatedAt: Date
       deletedAt: Date | null
@@ -13479,7 +13653,7 @@ export namespace Prisma {
   interface IjinFieldRefs {
     readonly id: FieldRef<"Ijin", 'Int'>
     readonly ijinDate: FieldRef<"Ijin", 'DateTime'>
-    readonly ijinStatus: FieldRef<"Ijin", 'Boolean'>
+    readonly ijinStatus: FieldRef<"Ijin", 'StatusApproval'>
     readonly createdAt: FieldRef<"Ijin", 'DateTime'>
     readonly updatedAt: FieldRef<"Ijin", 'DateTime'>
     readonly deletedAt: FieldRef<"Ijin", 'DateTime'>
@@ -13923,7 +14097,7 @@ export namespace Prisma {
   export type LiburMinAggregateOutputType = {
     id: number | null
     liburDate: Date | null
-    liburStatus: boolean | null
+    liburStatus: $Enums.StatusApproval | null
     createdAt: Date | null
     updatedAt: Date | null
     deletedAt: Date | null
@@ -13933,7 +14107,7 @@ export namespace Prisma {
   export type LiburMaxAggregateOutputType = {
     id: number | null
     liburDate: Date | null
-    liburStatus: boolean | null
+    liburStatus: $Enums.StatusApproval | null
     createdAt: Date | null
     updatedAt: Date | null
     deletedAt: Date | null
@@ -14082,7 +14256,7 @@ export namespace Prisma {
   export type LiburGroupByOutputType = {
     id: number
     liburDate: Date
-    liburStatus: boolean
+    liburStatus: $Enums.StatusApproval
     createdAt: Date
     updatedAt: Date
     deletedAt: Date | null
@@ -14170,7 +14344,7 @@ export namespace Prisma {
     scalars: $Extensions.GetPayloadResult<{
       id: number
       liburDate: Date
-      liburStatus: boolean
+      liburStatus: $Enums.StatusApproval
       createdAt: Date
       updatedAt: Date
       deletedAt: Date | null
@@ -14601,7 +14775,7 @@ export namespace Prisma {
   interface LiburFieldRefs {
     readonly id: FieldRef<"Libur", 'Int'>
     readonly liburDate: FieldRef<"Libur", 'DateTime'>
-    readonly liburStatus: FieldRef<"Libur", 'Boolean'>
+    readonly liburStatus: FieldRef<"Libur", 'StatusApproval'>
     readonly createdAt: FieldRef<"Libur", 'DateTime'>
     readonly updatedAt: FieldRef<"Libur", 'DateTime'>
     readonly deletedAt: FieldRef<"Libur", 'DateTime'>
@@ -17403,8 +17577,8 @@ export namespace Prisma {
     latitude: 'latitude',
     longitude: 'longitude',
     fotoDiri: 'fotoDiri',
-    jenisPresensi: 'jenisPresensi',
     statusPresensi: 'statusPresensi',
+    statusApproval: 'statusApproval',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt',
     deletedAt: 'deletedAt',
@@ -17417,16 +17591,22 @@ export namespace Prisma {
   export const LaporanScalarFieldEnum: {
     id: 'id',
     fotoSampel: 'fotoSampel',
-    laporanStatus: 'laporanStatus',
     flowRate: 'flowRate',
     volt: 'volt',
     pH: 'pH',
+    ampere: 'ampere',
     TDS: 'TDS',
     EC: 'EC',
+    laporanStatus: 'laporanStatus',
+    agitatorStatus: 'agitatorStatus',
+    settleStatus: 'settleStatus',
+    outFilterStatus: 'outFilterStatus',
+    notes: 'notes',
     laporanDate: 'laporanDate',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt',
     deletedAt: 'deletedAt',
+    siteName: 'siteName',
     userId: 'userId'
   };
 
@@ -17573,9 +17753,16 @@ export namespace Prisma {
 
 
   /**
-   * Reference to a field of type 'Boolean'
+   * Reference to a field of type 'siteStatus'
    */
-  export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Boolean'>
+  export type EnumsiteStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'siteStatus'>
+    
+
+
+  /**
+   * Reference to a field of type 'siteStatus[]'
+   */
+  export type ListEnumsiteStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'siteStatus[]'>
     
 
 
@@ -17590,6 +17777,48 @@ export namespace Prisma {
    * Reference to a field of type 'Float[]'
    */
   export type ListFloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'StatusPresensi'
+   */
+  export type EnumStatusPresensiFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'StatusPresensi'>
+    
+
+
+  /**
+   * Reference to a field of type 'StatusPresensi[]'
+   */
+  export type ListEnumStatusPresensiFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'StatusPresensi[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'StatusApproval'
+   */
+  export type EnumStatusApprovalFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'StatusApproval'>
+    
+
+
+  /**
+   * Reference to a field of type 'StatusApproval[]'
+   */
+  export type ListEnumStatusApprovalFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'StatusApproval[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'EquipmentStatus'
+   */
+  export type EnumEquipmentStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'EquipmentStatus'>
+    
+
+
+  /**
+   * Reference to a field of type 'EquipmentStatus[]'
+   */
+  export type ListEnumEquipmentStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'EquipmentStatus[]'>
     
   /**
    * Deep Input Types
@@ -17824,13 +18053,14 @@ export namespace Prisma {
     id?: IntFilter<"Site"> | number
     name?: StringFilter<"Site"> | string
     image?: StringNullableFilter<"Site"> | string | null
-    status?: BoolFilter<"Site"> | boolean
+    status?: EnumsiteStatusFilter<"Site"> | $Enums.siteStatus
     createdAt?: DateTimeFilter<"Site"> | Date | string
     updatedAt?: DateTimeFilter<"Site"> | Date | string
     deletedAt?: DateTimeNullableFilter<"Site"> | Date | string | null
     addressId?: IntFilter<"Site"> | number
     address?: XOR<SiteAddressScalarRelationFilter, SiteAddressWhereInput>
     users?: UserListRelationFilter
+    report?: LaporanListRelationFilter
     shift?: JadwalShiftListRelationFilter
   }
 
@@ -17845,6 +18075,7 @@ export namespace Prisma {
     addressId?: SortOrder
     address?: SiteAddressOrderByWithRelationInput
     users?: UserOrderByRelationAggregateInput
+    report?: LaporanOrderByRelationAggregateInput
     shift?: JadwalShiftOrderByRelationAggregateInput
   }
 
@@ -17856,12 +18087,13 @@ export namespace Prisma {
     OR?: SiteWhereInput[]
     NOT?: SiteWhereInput | SiteWhereInput[]
     image?: StringNullableFilter<"Site"> | string | null
-    status?: BoolFilter<"Site"> | boolean
+    status?: EnumsiteStatusFilter<"Site"> | $Enums.siteStatus
     createdAt?: DateTimeFilter<"Site"> | Date | string
     updatedAt?: DateTimeFilter<"Site"> | Date | string
     deletedAt?: DateTimeNullableFilter<"Site"> | Date | string | null
     address?: XOR<SiteAddressScalarRelationFilter, SiteAddressWhereInput>
     users?: UserListRelationFilter
+    report?: LaporanListRelationFilter
     shift?: JadwalShiftListRelationFilter
   }, "id" | "name" | "addressId">
 
@@ -17888,7 +18120,7 @@ export namespace Prisma {
     id?: IntWithAggregatesFilter<"Site"> | number
     name?: StringWithAggregatesFilter<"Site"> | string
     image?: StringNullableWithAggregatesFilter<"Site"> | string | null
-    status?: BoolWithAggregatesFilter<"Site"> | boolean
+    status?: EnumsiteStatusWithAggregatesFilter<"Site"> | $Enums.siteStatus
     createdAt?: DateTimeWithAggregatesFilter<"Site"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Site"> | Date | string
     deletedAt?: DateTimeNullableWithAggregatesFilter<"Site"> | Date | string | null
@@ -18123,8 +18355,8 @@ export namespace Prisma {
     latitude?: IntFilter<"Presensi"> | number
     longitude?: IntFilter<"Presensi"> | number
     fotoDiri?: StringNullableFilter<"Presensi"> | string | null
-    jenisPresensi?: StringFilter<"Presensi"> | string
-    statusPresensi?: BoolFilter<"Presensi"> | boolean
+    statusPresensi?: EnumStatusPresensiFilter<"Presensi"> | $Enums.StatusPresensi
+    statusApproval?: EnumStatusApprovalFilter<"Presensi"> | $Enums.StatusApproval
     createdAt?: DateTimeFilter<"Presensi"> | Date | string
     updatedAt?: DateTimeFilter<"Presensi"> | Date | string
     deletedAt?: DateTimeNullableFilter<"Presensi"> | Date | string | null
@@ -18138,8 +18370,8 @@ export namespace Prisma {
     latitude?: SortOrder
     longitude?: SortOrder
     fotoDiri?: SortOrderInput | SortOrder
-    jenisPresensi?: SortOrder
     statusPresensi?: SortOrder
+    statusApproval?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     deletedAt?: SortOrderInput | SortOrder
@@ -18156,8 +18388,8 @@ export namespace Prisma {
     latitude?: IntFilter<"Presensi"> | number
     longitude?: IntFilter<"Presensi"> | number
     fotoDiri?: StringNullableFilter<"Presensi"> | string | null
-    jenisPresensi?: StringFilter<"Presensi"> | string
-    statusPresensi?: BoolFilter<"Presensi"> | boolean
+    statusPresensi?: EnumStatusPresensiFilter<"Presensi"> | $Enums.StatusPresensi
+    statusApproval?: EnumStatusApprovalFilter<"Presensi"> | $Enums.StatusApproval
     createdAt?: DateTimeFilter<"Presensi"> | Date | string
     updatedAt?: DateTimeFilter<"Presensi"> | Date | string
     deletedAt?: DateTimeNullableFilter<"Presensi"> | Date | string | null
@@ -18171,8 +18403,8 @@ export namespace Prisma {
     latitude?: SortOrder
     longitude?: SortOrder
     fotoDiri?: SortOrderInput | SortOrder
-    jenisPresensi?: SortOrder
     statusPresensi?: SortOrder
+    statusApproval?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     deletedAt?: SortOrderInput | SortOrder
@@ -18193,8 +18425,8 @@ export namespace Prisma {
     latitude?: IntWithAggregatesFilter<"Presensi"> | number
     longitude?: IntWithAggregatesFilter<"Presensi"> | number
     fotoDiri?: StringNullableWithAggregatesFilter<"Presensi"> | string | null
-    jenisPresensi?: StringWithAggregatesFilter<"Presensi"> | string
-    statusPresensi?: BoolWithAggregatesFilter<"Presensi"> | boolean
+    statusPresensi?: EnumStatusPresensiWithAggregatesFilter<"Presensi"> | $Enums.StatusPresensi
+    statusApproval?: EnumStatusApprovalWithAggregatesFilter<"Presensi"> | $Enums.StatusApproval
     createdAt?: DateTimeWithAggregatesFilter<"Presensi"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Presensi"> | Date | string
     deletedAt?: DateTimeNullableWithAggregatesFilter<"Presensi"> | Date | string | null
@@ -18206,35 +18438,49 @@ export namespace Prisma {
     OR?: LaporanWhereInput[]
     NOT?: LaporanWhereInput | LaporanWhereInput[]
     id?: IntFilter<"Laporan"> | number
-    fotoSampel?: StringNullableFilter<"Laporan"> | string | null
-    laporanStatus?: BoolFilter<"Laporan"> | boolean
+    fotoSampel?: StringNullableListFilter<"Laporan">
     flowRate?: FloatFilter<"Laporan"> | number
     volt?: FloatFilter<"Laporan"> | number
     pH?: FloatFilter<"Laporan"> | number
+    ampere?: FloatFilter<"Laporan"> | number
     TDS?: FloatFilter<"Laporan"> | number
     EC?: FloatFilter<"Laporan"> | number
+    laporanStatus?: EnumStatusApprovalFilter<"Laporan"> | $Enums.StatusApproval
+    agitatorStatus?: EnumEquipmentStatusFilter<"Laporan"> | $Enums.EquipmentStatus
+    settleStatus?: EnumEquipmentStatusFilter<"Laporan"> | $Enums.EquipmentStatus
+    outFilterStatus?: EnumEquipmentStatusFilter<"Laporan"> | $Enums.EquipmentStatus
+    notes?: StringFilter<"Laporan"> | string
     laporanDate?: DateTimeFilter<"Laporan"> | Date | string
     createdAt?: DateTimeFilter<"Laporan"> | Date | string
     updatedAt?: DateTimeFilter<"Laporan"> | Date | string
     deletedAt?: DateTimeNullableFilter<"Laporan"> | Date | string | null
+    siteName?: StringFilter<"Laporan"> | string
     userId?: IntFilter<"Laporan"> | number
+    site?: XOR<SiteScalarRelationFilter, SiteWhereInput>
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
   }
 
   export type LaporanOrderByWithRelationInput = {
     id?: SortOrder
-    fotoSampel?: SortOrderInput | SortOrder
-    laporanStatus?: SortOrder
+    fotoSampel?: SortOrder
     flowRate?: SortOrder
     volt?: SortOrder
     pH?: SortOrder
+    ampere?: SortOrder
     TDS?: SortOrder
     EC?: SortOrder
+    laporanStatus?: SortOrder
+    agitatorStatus?: SortOrder
+    settleStatus?: SortOrder
+    outFilterStatus?: SortOrder
+    notes?: SortOrder
     laporanDate?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     deletedAt?: SortOrderInput | SortOrder
+    siteName?: SortOrder
     userId?: SortOrder
+    site?: SiteOrderByWithRelationInput
     user?: UserOrderByWithRelationInput
   }
 
@@ -18243,34 +18489,47 @@ export namespace Prisma {
     AND?: LaporanWhereInput | LaporanWhereInput[]
     OR?: LaporanWhereInput[]
     NOT?: LaporanWhereInput | LaporanWhereInput[]
-    fotoSampel?: StringNullableFilter<"Laporan"> | string | null
-    laporanStatus?: BoolFilter<"Laporan"> | boolean
+    fotoSampel?: StringNullableListFilter<"Laporan">
     flowRate?: FloatFilter<"Laporan"> | number
     volt?: FloatFilter<"Laporan"> | number
     pH?: FloatFilter<"Laporan"> | number
+    ampere?: FloatFilter<"Laporan"> | number
     TDS?: FloatFilter<"Laporan"> | number
     EC?: FloatFilter<"Laporan"> | number
+    laporanStatus?: EnumStatusApprovalFilter<"Laporan"> | $Enums.StatusApproval
+    agitatorStatus?: EnumEquipmentStatusFilter<"Laporan"> | $Enums.EquipmentStatus
+    settleStatus?: EnumEquipmentStatusFilter<"Laporan"> | $Enums.EquipmentStatus
+    outFilterStatus?: EnumEquipmentStatusFilter<"Laporan"> | $Enums.EquipmentStatus
+    notes?: StringFilter<"Laporan"> | string
     laporanDate?: DateTimeFilter<"Laporan"> | Date | string
     createdAt?: DateTimeFilter<"Laporan"> | Date | string
     updatedAt?: DateTimeFilter<"Laporan"> | Date | string
     deletedAt?: DateTimeNullableFilter<"Laporan"> | Date | string | null
+    siteName?: StringFilter<"Laporan"> | string
     userId?: IntFilter<"Laporan"> | number
+    site?: XOR<SiteScalarRelationFilter, SiteWhereInput>
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
   }, "id">
 
   export type LaporanOrderByWithAggregationInput = {
     id?: SortOrder
-    fotoSampel?: SortOrderInput | SortOrder
-    laporanStatus?: SortOrder
+    fotoSampel?: SortOrder
     flowRate?: SortOrder
     volt?: SortOrder
     pH?: SortOrder
+    ampere?: SortOrder
     TDS?: SortOrder
     EC?: SortOrder
+    laporanStatus?: SortOrder
+    agitatorStatus?: SortOrder
+    settleStatus?: SortOrder
+    outFilterStatus?: SortOrder
+    notes?: SortOrder
     laporanDate?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     deletedAt?: SortOrderInput | SortOrder
+    siteName?: SortOrder
     userId?: SortOrder
     _count?: LaporanCountOrderByAggregateInput
     _avg?: LaporanAvgOrderByAggregateInput
@@ -18284,17 +18543,23 @@ export namespace Prisma {
     OR?: LaporanScalarWhereWithAggregatesInput[]
     NOT?: LaporanScalarWhereWithAggregatesInput | LaporanScalarWhereWithAggregatesInput[]
     id?: IntWithAggregatesFilter<"Laporan"> | number
-    fotoSampel?: StringNullableWithAggregatesFilter<"Laporan"> | string | null
-    laporanStatus?: BoolWithAggregatesFilter<"Laporan"> | boolean
+    fotoSampel?: StringNullableListFilter<"Laporan">
     flowRate?: FloatWithAggregatesFilter<"Laporan"> | number
     volt?: FloatWithAggregatesFilter<"Laporan"> | number
     pH?: FloatWithAggregatesFilter<"Laporan"> | number
+    ampere?: FloatWithAggregatesFilter<"Laporan"> | number
     TDS?: FloatWithAggregatesFilter<"Laporan"> | number
     EC?: FloatWithAggregatesFilter<"Laporan"> | number
+    laporanStatus?: EnumStatusApprovalWithAggregatesFilter<"Laporan"> | $Enums.StatusApproval
+    agitatorStatus?: EnumEquipmentStatusWithAggregatesFilter<"Laporan"> | $Enums.EquipmentStatus
+    settleStatus?: EnumEquipmentStatusWithAggregatesFilter<"Laporan"> | $Enums.EquipmentStatus
+    outFilterStatus?: EnumEquipmentStatusWithAggregatesFilter<"Laporan"> | $Enums.EquipmentStatus
+    notes?: StringWithAggregatesFilter<"Laporan"> | string
     laporanDate?: DateTimeWithAggregatesFilter<"Laporan"> | Date | string
     createdAt?: DateTimeWithAggregatesFilter<"Laporan"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Laporan"> | Date | string
     deletedAt?: DateTimeNullableWithAggregatesFilter<"Laporan"> | Date | string | null
+    siteName?: StringWithAggregatesFilter<"Laporan"> | string
     userId?: IntWithAggregatesFilter<"Laporan"> | number
   }
 
@@ -18304,7 +18569,7 @@ export namespace Prisma {
     NOT?: IjinWhereInput | IjinWhereInput[]
     id?: IntFilter<"Ijin"> | number
     ijinDate?: DateTimeFilter<"Ijin"> | Date | string
-    ijinStatus?: BoolFilter<"Ijin"> | boolean
+    ijinStatus?: EnumStatusApprovalFilter<"Ijin"> | $Enums.StatusApproval
     createdAt?: DateTimeFilter<"Ijin"> | Date | string
     updatedAt?: DateTimeFilter<"Ijin"> | Date | string
     deletedAt?: DateTimeNullableFilter<"Ijin"> | Date | string | null
@@ -18329,7 +18594,7 @@ export namespace Prisma {
     OR?: IjinWhereInput[]
     NOT?: IjinWhereInput | IjinWhereInput[]
     ijinDate?: DateTimeFilter<"Ijin"> | Date | string
-    ijinStatus?: BoolFilter<"Ijin"> | boolean
+    ijinStatus?: EnumStatusApprovalFilter<"Ijin"> | $Enums.StatusApproval
     createdAt?: DateTimeFilter<"Ijin"> | Date | string
     updatedAt?: DateTimeFilter<"Ijin"> | Date | string
     deletedAt?: DateTimeNullableFilter<"Ijin"> | Date | string | null
@@ -18358,7 +18623,7 @@ export namespace Prisma {
     NOT?: IjinScalarWhereWithAggregatesInput | IjinScalarWhereWithAggregatesInput[]
     id?: IntWithAggregatesFilter<"Ijin"> | number
     ijinDate?: DateTimeWithAggregatesFilter<"Ijin"> | Date | string
-    ijinStatus?: BoolWithAggregatesFilter<"Ijin"> | boolean
+    ijinStatus?: EnumStatusApprovalWithAggregatesFilter<"Ijin"> | $Enums.StatusApproval
     createdAt?: DateTimeWithAggregatesFilter<"Ijin"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Ijin"> | Date | string
     deletedAt?: DateTimeNullableWithAggregatesFilter<"Ijin"> | Date | string | null
@@ -18371,7 +18636,7 @@ export namespace Prisma {
     NOT?: LiburWhereInput | LiburWhereInput[]
     id?: IntFilter<"Libur"> | number
     liburDate?: DateTimeFilter<"Libur"> | Date | string
-    liburStatus?: BoolFilter<"Libur"> | boolean
+    liburStatus?: EnumStatusApprovalFilter<"Libur"> | $Enums.StatusApproval
     createdAt?: DateTimeFilter<"Libur"> | Date | string
     updatedAt?: DateTimeFilter<"Libur"> | Date | string
     deletedAt?: DateTimeNullableFilter<"Libur"> | Date | string | null
@@ -18396,7 +18661,7 @@ export namespace Prisma {
     OR?: LiburWhereInput[]
     NOT?: LiburWhereInput | LiburWhereInput[]
     liburDate?: DateTimeFilter<"Libur"> | Date | string
-    liburStatus?: BoolFilter<"Libur"> | boolean
+    liburStatus?: EnumStatusApprovalFilter<"Libur"> | $Enums.StatusApproval
     createdAt?: DateTimeFilter<"Libur"> | Date | string
     updatedAt?: DateTimeFilter<"Libur"> | Date | string
     deletedAt?: DateTimeNullableFilter<"Libur"> | Date | string | null
@@ -18425,7 +18690,7 @@ export namespace Prisma {
     NOT?: LiburScalarWhereWithAggregatesInput | LiburScalarWhereWithAggregatesInput[]
     id?: IntWithAggregatesFilter<"Libur"> | number
     liburDate?: DateTimeWithAggregatesFilter<"Libur"> | Date | string
-    liburStatus?: BoolWithAggregatesFilter<"Libur"> | boolean
+    liburStatus?: EnumStatusApprovalWithAggregatesFilter<"Libur"> | $Enums.StatusApproval
     createdAt?: DateTimeWithAggregatesFilter<"Libur"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Libur"> | Date | string
     deletedAt?: DateTimeNullableWithAggregatesFilter<"Libur"> | Date | string | null
@@ -18803,12 +19068,13 @@ export namespace Prisma {
   export type SiteCreateInput = {
     name: string
     image?: string | null
-    status?: boolean
+    status?: $Enums.siteStatus
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
     address: SiteAddressCreateNestedOneWithoutSiteInput
     users?: UserCreateNestedManyWithoutSitesInput
+    report?: LaporanCreateNestedManyWithoutSiteInput
     shift?: JadwalShiftCreateNestedManyWithoutSiteInput
   }
 
@@ -18816,24 +19082,26 @@ export namespace Prisma {
     id?: number
     name: string
     image?: string | null
-    status?: boolean
+    status?: $Enums.siteStatus
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
     addressId: number
     users?: UserUncheckedCreateNestedManyWithoutSitesInput
+    report?: LaporanUncheckedCreateNestedManyWithoutSiteInput
     shift?: JadwalShiftUncheckedCreateNestedManyWithoutSiteInput
   }
 
   export type SiteUpdateInput = {
     name?: StringFieldUpdateOperationsInput | string
     image?: NullableStringFieldUpdateOperationsInput | string | null
-    status?: BoolFieldUpdateOperationsInput | boolean
+    status?: EnumsiteStatusFieldUpdateOperationsInput | $Enums.siteStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     address?: SiteAddressUpdateOneRequiredWithoutSiteNestedInput
     users?: UserUpdateManyWithoutSitesNestedInput
+    report?: LaporanUpdateManyWithoutSiteNestedInput
     shift?: JadwalShiftUpdateManyWithoutSiteNestedInput
   }
 
@@ -18841,12 +19109,13 @@ export namespace Prisma {
     id?: IntFieldUpdateOperationsInput | number
     name?: StringFieldUpdateOperationsInput | string
     image?: NullableStringFieldUpdateOperationsInput | string | null
-    status?: BoolFieldUpdateOperationsInput | boolean
+    status?: EnumsiteStatusFieldUpdateOperationsInput | $Enums.siteStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     addressId?: IntFieldUpdateOperationsInput | number
     users?: UserUncheckedUpdateManyWithoutSitesNestedInput
+    report?: LaporanUncheckedUpdateManyWithoutSiteNestedInput
     shift?: JadwalShiftUncheckedUpdateManyWithoutSiteNestedInput
   }
 
@@ -18854,7 +19123,7 @@ export namespace Prisma {
     id?: number
     name: string
     image?: string | null
-    status?: boolean
+    status?: $Enums.siteStatus
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
@@ -18864,7 +19133,7 @@ export namespace Prisma {
   export type SiteUpdateManyMutationInput = {
     name?: StringFieldUpdateOperationsInput | string
     image?: NullableStringFieldUpdateOperationsInput | string | null
-    status?: BoolFieldUpdateOperationsInput | boolean
+    status?: EnumsiteStatusFieldUpdateOperationsInput | $Enums.siteStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -18874,7 +19143,7 @@ export namespace Prisma {
     id?: IntFieldUpdateOperationsInput | number
     name?: StringFieldUpdateOperationsInput | string
     image?: NullableStringFieldUpdateOperationsInput | string | null
-    status?: BoolFieldUpdateOperationsInput | boolean
+    status?: EnumsiteStatusFieldUpdateOperationsInput | $Enums.siteStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -19114,8 +19383,8 @@ export namespace Prisma {
     latitude: number
     longitude: number
     fotoDiri?: string | null
-    jenisPresensi: string
-    statusPresensi?: boolean
+    statusPresensi: $Enums.StatusPresensi
+    statusApproval?: $Enums.StatusApproval
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
@@ -19128,8 +19397,8 @@ export namespace Prisma {
     latitude: number
     longitude: number
     fotoDiri?: string | null
-    jenisPresensi: string
-    statusPresensi?: boolean
+    statusPresensi: $Enums.StatusPresensi
+    statusApproval?: $Enums.StatusApproval
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
@@ -19141,8 +19410,8 @@ export namespace Prisma {
     latitude?: IntFieldUpdateOperationsInput | number
     longitude?: IntFieldUpdateOperationsInput | number
     fotoDiri?: NullableStringFieldUpdateOperationsInput | string | null
-    jenisPresensi?: StringFieldUpdateOperationsInput | string
-    statusPresensi?: BoolFieldUpdateOperationsInput | boolean
+    statusPresensi?: EnumStatusPresensiFieldUpdateOperationsInput | $Enums.StatusPresensi
+    statusApproval?: EnumStatusApprovalFieldUpdateOperationsInput | $Enums.StatusApproval
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -19155,8 +19424,8 @@ export namespace Prisma {
     latitude?: IntFieldUpdateOperationsInput | number
     longitude?: IntFieldUpdateOperationsInput | number
     fotoDiri?: NullableStringFieldUpdateOperationsInput | string | null
-    jenisPresensi?: StringFieldUpdateOperationsInput | string
-    statusPresensi?: BoolFieldUpdateOperationsInput | boolean
+    statusPresensi?: EnumStatusPresensiFieldUpdateOperationsInput | $Enums.StatusPresensi
+    statusApproval?: EnumStatusApprovalFieldUpdateOperationsInput | $Enums.StatusApproval
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -19169,8 +19438,8 @@ export namespace Prisma {
     latitude: number
     longitude: number
     fotoDiri?: string | null
-    jenisPresensi: string
-    statusPresensi?: boolean
+    statusPresensi: $Enums.StatusPresensi
+    statusApproval?: $Enums.StatusApproval
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
@@ -19182,8 +19451,8 @@ export namespace Prisma {
     latitude?: IntFieldUpdateOperationsInput | number
     longitude?: IntFieldUpdateOperationsInput | number
     fotoDiri?: NullableStringFieldUpdateOperationsInput | string | null
-    jenisPresensi?: StringFieldUpdateOperationsInput | string
-    statusPresensi?: BoolFieldUpdateOperationsInput | boolean
+    statusPresensi?: EnumStatusPresensiFieldUpdateOperationsInput | $Enums.StatusPresensi
+    statusApproval?: EnumStatusApprovalFieldUpdateOperationsInput | $Enums.StatusApproval
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -19195,8 +19464,8 @@ export namespace Prisma {
     latitude?: IntFieldUpdateOperationsInput | number
     longitude?: IntFieldUpdateOperationsInput | number
     fotoDiri?: NullableStringFieldUpdateOperationsInput | string | null
-    jenisPresensi?: StringFieldUpdateOperationsInput | string
-    statusPresensi?: BoolFieldUpdateOperationsInput | boolean
+    statusPresensi?: EnumStatusPresensiFieldUpdateOperationsInput | $Enums.StatusPresensi
+    statusApproval?: EnumStatusApprovalFieldUpdateOperationsInput | $Enums.StatusApproval
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -19204,91 +19473,126 @@ export namespace Prisma {
   }
 
   export type LaporanCreateInput = {
-    fotoSampel?: string | null
-    laporanStatus?: boolean
+    fotoSampel?: LaporanCreatefotoSampelInput | string[]
     flowRate: number
     volt: number
     pH: number
+    ampere: number
     TDS: number
     EC: number
+    laporanStatus?: $Enums.StatusApproval
+    agitatorStatus?: $Enums.EquipmentStatus
+    settleStatus?: $Enums.EquipmentStatus
+    outFilterStatus?: $Enums.EquipmentStatus
+    notes: string
     laporanDate?: Date | string
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
+    site: SiteCreateNestedOneWithoutReportInput
     user: UserCreateNestedOneWithoutLaporanInput
   }
 
   export type LaporanUncheckedCreateInput = {
     id?: number
-    fotoSampel?: string | null
-    laporanStatus?: boolean
+    fotoSampel?: LaporanCreatefotoSampelInput | string[]
     flowRate: number
     volt: number
     pH: number
+    ampere: number
     TDS: number
     EC: number
+    laporanStatus?: $Enums.StatusApproval
+    agitatorStatus?: $Enums.EquipmentStatus
+    settleStatus?: $Enums.EquipmentStatus
+    outFilterStatus?: $Enums.EquipmentStatus
+    notes: string
     laporanDate?: Date | string
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
+    siteName: string
     userId: number
   }
 
   export type LaporanUpdateInput = {
-    fotoSampel?: NullableStringFieldUpdateOperationsInput | string | null
-    laporanStatus?: BoolFieldUpdateOperationsInput | boolean
+    fotoSampel?: LaporanUpdatefotoSampelInput | string[]
     flowRate?: FloatFieldUpdateOperationsInput | number
     volt?: FloatFieldUpdateOperationsInput | number
     pH?: FloatFieldUpdateOperationsInput | number
+    ampere?: FloatFieldUpdateOperationsInput | number
     TDS?: FloatFieldUpdateOperationsInput | number
     EC?: FloatFieldUpdateOperationsInput | number
+    laporanStatus?: EnumStatusApprovalFieldUpdateOperationsInput | $Enums.StatusApproval
+    agitatorStatus?: EnumEquipmentStatusFieldUpdateOperationsInput | $Enums.EquipmentStatus
+    settleStatus?: EnumEquipmentStatusFieldUpdateOperationsInput | $Enums.EquipmentStatus
+    outFilterStatus?: EnumEquipmentStatusFieldUpdateOperationsInput | $Enums.EquipmentStatus
+    notes?: StringFieldUpdateOperationsInput | string
     laporanDate?: DateTimeFieldUpdateOperationsInput | Date | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    site?: SiteUpdateOneRequiredWithoutReportNestedInput
     user?: UserUpdateOneRequiredWithoutLaporanNestedInput
   }
 
   export type LaporanUncheckedUpdateInput = {
     id?: IntFieldUpdateOperationsInput | number
-    fotoSampel?: NullableStringFieldUpdateOperationsInput | string | null
-    laporanStatus?: BoolFieldUpdateOperationsInput | boolean
+    fotoSampel?: LaporanUpdatefotoSampelInput | string[]
     flowRate?: FloatFieldUpdateOperationsInput | number
     volt?: FloatFieldUpdateOperationsInput | number
     pH?: FloatFieldUpdateOperationsInput | number
+    ampere?: FloatFieldUpdateOperationsInput | number
     TDS?: FloatFieldUpdateOperationsInput | number
     EC?: FloatFieldUpdateOperationsInput | number
+    laporanStatus?: EnumStatusApprovalFieldUpdateOperationsInput | $Enums.StatusApproval
+    agitatorStatus?: EnumEquipmentStatusFieldUpdateOperationsInput | $Enums.EquipmentStatus
+    settleStatus?: EnumEquipmentStatusFieldUpdateOperationsInput | $Enums.EquipmentStatus
+    outFilterStatus?: EnumEquipmentStatusFieldUpdateOperationsInput | $Enums.EquipmentStatus
+    notes?: StringFieldUpdateOperationsInput | string
     laporanDate?: DateTimeFieldUpdateOperationsInput | Date | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    siteName?: StringFieldUpdateOperationsInput | string
     userId?: IntFieldUpdateOperationsInput | number
   }
 
   export type LaporanCreateManyInput = {
     id?: number
-    fotoSampel?: string | null
-    laporanStatus?: boolean
+    fotoSampel?: LaporanCreatefotoSampelInput | string[]
     flowRate: number
     volt: number
     pH: number
+    ampere: number
     TDS: number
     EC: number
+    laporanStatus?: $Enums.StatusApproval
+    agitatorStatus?: $Enums.EquipmentStatus
+    settleStatus?: $Enums.EquipmentStatus
+    outFilterStatus?: $Enums.EquipmentStatus
+    notes: string
     laporanDate?: Date | string
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
+    siteName: string
     userId: number
   }
 
   export type LaporanUpdateManyMutationInput = {
-    fotoSampel?: NullableStringFieldUpdateOperationsInput | string | null
-    laporanStatus?: BoolFieldUpdateOperationsInput | boolean
+    fotoSampel?: LaporanUpdatefotoSampelInput | string[]
     flowRate?: FloatFieldUpdateOperationsInput | number
     volt?: FloatFieldUpdateOperationsInput | number
     pH?: FloatFieldUpdateOperationsInput | number
+    ampere?: FloatFieldUpdateOperationsInput | number
     TDS?: FloatFieldUpdateOperationsInput | number
     EC?: FloatFieldUpdateOperationsInput | number
+    laporanStatus?: EnumStatusApprovalFieldUpdateOperationsInput | $Enums.StatusApproval
+    agitatorStatus?: EnumEquipmentStatusFieldUpdateOperationsInput | $Enums.EquipmentStatus
+    settleStatus?: EnumEquipmentStatusFieldUpdateOperationsInput | $Enums.EquipmentStatus
+    outFilterStatus?: EnumEquipmentStatusFieldUpdateOperationsInput | $Enums.EquipmentStatus
+    notes?: StringFieldUpdateOperationsInput | string
     laporanDate?: DateTimeFieldUpdateOperationsInput | Date | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -19297,23 +19601,29 @@ export namespace Prisma {
 
   export type LaporanUncheckedUpdateManyInput = {
     id?: IntFieldUpdateOperationsInput | number
-    fotoSampel?: NullableStringFieldUpdateOperationsInput | string | null
-    laporanStatus?: BoolFieldUpdateOperationsInput | boolean
+    fotoSampel?: LaporanUpdatefotoSampelInput | string[]
     flowRate?: FloatFieldUpdateOperationsInput | number
     volt?: FloatFieldUpdateOperationsInput | number
     pH?: FloatFieldUpdateOperationsInput | number
+    ampere?: FloatFieldUpdateOperationsInput | number
     TDS?: FloatFieldUpdateOperationsInput | number
     EC?: FloatFieldUpdateOperationsInput | number
+    laporanStatus?: EnumStatusApprovalFieldUpdateOperationsInput | $Enums.StatusApproval
+    agitatorStatus?: EnumEquipmentStatusFieldUpdateOperationsInput | $Enums.EquipmentStatus
+    settleStatus?: EnumEquipmentStatusFieldUpdateOperationsInput | $Enums.EquipmentStatus
+    outFilterStatus?: EnumEquipmentStatusFieldUpdateOperationsInput | $Enums.EquipmentStatus
+    notes?: StringFieldUpdateOperationsInput | string
     laporanDate?: DateTimeFieldUpdateOperationsInput | Date | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    siteName?: StringFieldUpdateOperationsInput | string
     userId?: IntFieldUpdateOperationsInput | number
   }
 
   export type IjinCreateInput = {
     ijinDate?: Date | string
-    ijinStatus?: boolean
+    ijinStatus?: $Enums.StatusApproval
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
@@ -19323,7 +19633,7 @@ export namespace Prisma {
   export type IjinUncheckedCreateInput = {
     id?: number
     ijinDate?: Date | string
-    ijinStatus?: boolean
+    ijinStatus?: $Enums.StatusApproval
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
@@ -19332,7 +19642,7 @@ export namespace Prisma {
 
   export type IjinUpdateInput = {
     ijinDate?: DateTimeFieldUpdateOperationsInput | Date | string
-    ijinStatus?: BoolFieldUpdateOperationsInput | boolean
+    ijinStatus?: EnumStatusApprovalFieldUpdateOperationsInput | $Enums.StatusApproval
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -19342,7 +19652,7 @@ export namespace Prisma {
   export type IjinUncheckedUpdateInput = {
     id?: IntFieldUpdateOperationsInput | number
     ijinDate?: DateTimeFieldUpdateOperationsInput | Date | string
-    ijinStatus?: BoolFieldUpdateOperationsInput | boolean
+    ijinStatus?: EnumStatusApprovalFieldUpdateOperationsInput | $Enums.StatusApproval
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -19352,7 +19662,7 @@ export namespace Prisma {
   export type IjinCreateManyInput = {
     id?: number
     ijinDate?: Date | string
-    ijinStatus?: boolean
+    ijinStatus?: $Enums.StatusApproval
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
@@ -19361,7 +19671,7 @@ export namespace Prisma {
 
   export type IjinUpdateManyMutationInput = {
     ijinDate?: DateTimeFieldUpdateOperationsInput | Date | string
-    ijinStatus?: BoolFieldUpdateOperationsInput | boolean
+    ijinStatus?: EnumStatusApprovalFieldUpdateOperationsInput | $Enums.StatusApproval
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -19370,7 +19680,7 @@ export namespace Prisma {
   export type IjinUncheckedUpdateManyInput = {
     id?: IntFieldUpdateOperationsInput | number
     ijinDate?: DateTimeFieldUpdateOperationsInput | Date | string
-    ijinStatus?: BoolFieldUpdateOperationsInput | boolean
+    ijinStatus?: EnumStatusApprovalFieldUpdateOperationsInput | $Enums.StatusApproval
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -19379,7 +19689,7 @@ export namespace Prisma {
 
   export type LiburCreateInput = {
     liburDate: Date | string
-    liburStatus?: boolean
+    liburStatus?: $Enums.StatusApproval
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
@@ -19389,7 +19699,7 @@ export namespace Prisma {
   export type LiburUncheckedCreateInput = {
     id?: number
     liburDate: Date | string
-    liburStatus?: boolean
+    liburStatus?: $Enums.StatusApproval
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
@@ -19398,7 +19708,7 @@ export namespace Prisma {
 
   export type LiburUpdateInput = {
     liburDate?: DateTimeFieldUpdateOperationsInput | Date | string
-    liburStatus?: BoolFieldUpdateOperationsInput | boolean
+    liburStatus?: EnumStatusApprovalFieldUpdateOperationsInput | $Enums.StatusApproval
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -19408,7 +19718,7 @@ export namespace Prisma {
   export type LiburUncheckedUpdateInput = {
     id?: IntFieldUpdateOperationsInput | number
     liburDate?: DateTimeFieldUpdateOperationsInput | Date | string
-    liburStatus?: BoolFieldUpdateOperationsInput | boolean
+    liburStatus?: EnumStatusApprovalFieldUpdateOperationsInput | $Enums.StatusApproval
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -19418,7 +19728,7 @@ export namespace Prisma {
   export type LiburCreateManyInput = {
     id?: number
     liburDate: Date | string
-    liburStatus?: boolean
+    liburStatus?: $Enums.StatusApproval
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
@@ -19427,7 +19737,7 @@ export namespace Prisma {
 
   export type LiburUpdateManyMutationInput = {
     liburDate?: DateTimeFieldUpdateOperationsInput | Date | string
-    liburStatus?: BoolFieldUpdateOperationsInput | boolean
+    liburStatus?: EnumStatusApprovalFieldUpdateOperationsInput | $Enums.StatusApproval
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -19436,7 +19746,7 @@ export namespace Prisma {
   export type LiburUncheckedUpdateManyInput = {
     id?: IntFieldUpdateOperationsInput | number
     liburDate?: DateTimeFieldUpdateOperationsInput | Date | string
-    liburStatus?: BoolFieldUpdateOperationsInput | boolean
+    liburStatus?: EnumStatusApprovalFieldUpdateOperationsInput | $Enums.StatusApproval
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -19960,9 +20270,11 @@ export namespace Prisma {
     not?: NestedStringNullableFilter<$PrismaModel> | string | null
   }
 
-  export type BoolFilter<$PrismaModel = never> = {
-    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
-    not?: NestedBoolFilter<$PrismaModel> | boolean
+  export type EnumsiteStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.siteStatus | EnumsiteStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.siteStatus[] | ListEnumsiteStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.siteStatus[] | ListEnumsiteStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumsiteStatusFilter<$PrismaModel> | $Enums.siteStatus
   }
 
   export type SiteAddressScalarRelationFilter = {
@@ -20031,12 +20343,14 @@ export namespace Prisma {
     _max?: NestedStringNullableFilter<$PrismaModel>
   }
 
-  export type BoolWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
-    not?: NestedBoolWithAggregatesFilter<$PrismaModel> | boolean
+  export type EnumsiteStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.siteStatus | EnumsiteStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.siteStatus[] | ListEnumsiteStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.siteStatus[] | ListEnumsiteStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumsiteStatusWithAggregatesFilter<$PrismaModel> | $Enums.siteStatus
     _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedBoolFilter<$PrismaModel>
-    _max?: NestedBoolFilter<$PrismaModel>
+    _min?: NestedEnumsiteStatusFilter<$PrismaModel>
+    _max?: NestedEnumsiteStatusFilter<$PrismaModel>
   }
 
   export type FloatFilter<$PrismaModel = never> = {
@@ -20212,14 +20526,28 @@ export namespace Prisma {
     profileId?: SortOrder
   }
 
+  export type EnumStatusPresensiFilter<$PrismaModel = never> = {
+    equals?: $Enums.StatusPresensi | EnumStatusPresensiFieldRefInput<$PrismaModel>
+    in?: $Enums.StatusPresensi[] | ListEnumStatusPresensiFieldRefInput<$PrismaModel>
+    notIn?: $Enums.StatusPresensi[] | ListEnumStatusPresensiFieldRefInput<$PrismaModel>
+    not?: NestedEnumStatusPresensiFilter<$PrismaModel> | $Enums.StatusPresensi
+  }
+
+  export type EnumStatusApprovalFilter<$PrismaModel = never> = {
+    equals?: $Enums.StatusApproval | EnumStatusApprovalFieldRefInput<$PrismaModel>
+    in?: $Enums.StatusApproval[] | ListEnumStatusApprovalFieldRefInput<$PrismaModel>
+    notIn?: $Enums.StatusApproval[] | ListEnumStatusApprovalFieldRefInput<$PrismaModel>
+    not?: NestedEnumStatusApprovalFilter<$PrismaModel> | $Enums.StatusApproval
+  }
+
   export type PresensiCountOrderByAggregateInput = {
     id?: SortOrder
     presensiDate?: SortOrder
     latitude?: SortOrder
     longitude?: SortOrder
     fotoDiri?: SortOrder
-    jenisPresensi?: SortOrder
     statusPresensi?: SortOrder
+    statusApproval?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     deletedAt?: SortOrder
@@ -20239,8 +20567,8 @@ export namespace Prisma {
     latitude?: SortOrder
     longitude?: SortOrder
     fotoDiri?: SortOrder
-    jenisPresensi?: SortOrder
     statusPresensi?: SortOrder
+    statusApproval?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     deletedAt?: SortOrder
@@ -20253,8 +20581,8 @@ export namespace Prisma {
     latitude?: SortOrder
     longitude?: SortOrder
     fotoDiri?: SortOrder
-    jenisPresensi?: SortOrder
     statusPresensi?: SortOrder
+    statusApproval?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     deletedAt?: SortOrder
@@ -20268,19 +20596,60 @@ export namespace Prisma {
     userId?: SortOrder
   }
 
+  export type EnumStatusPresensiWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.StatusPresensi | EnumStatusPresensiFieldRefInput<$PrismaModel>
+    in?: $Enums.StatusPresensi[] | ListEnumStatusPresensiFieldRefInput<$PrismaModel>
+    notIn?: $Enums.StatusPresensi[] | ListEnumStatusPresensiFieldRefInput<$PrismaModel>
+    not?: NestedEnumStatusPresensiWithAggregatesFilter<$PrismaModel> | $Enums.StatusPresensi
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumStatusPresensiFilter<$PrismaModel>
+    _max?: NestedEnumStatusPresensiFilter<$PrismaModel>
+  }
+
+  export type EnumStatusApprovalWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.StatusApproval | EnumStatusApprovalFieldRefInput<$PrismaModel>
+    in?: $Enums.StatusApproval[] | ListEnumStatusApprovalFieldRefInput<$PrismaModel>
+    notIn?: $Enums.StatusApproval[] | ListEnumStatusApprovalFieldRefInput<$PrismaModel>
+    not?: NestedEnumStatusApprovalWithAggregatesFilter<$PrismaModel> | $Enums.StatusApproval
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumStatusApprovalFilter<$PrismaModel>
+    _max?: NestedEnumStatusApprovalFilter<$PrismaModel>
+  }
+
+  export type StringNullableListFilter<$PrismaModel = never> = {
+    equals?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    has?: string | StringFieldRefInput<$PrismaModel> | null
+    hasEvery?: string[] | ListStringFieldRefInput<$PrismaModel>
+    hasSome?: string[] | ListStringFieldRefInput<$PrismaModel>
+    isEmpty?: boolean
+  }
+
+  export type EnumEquipmentStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.EquipmentStatus | EnumEquipmentStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.EquipmentStatus[] | ListEnumEquipmentStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.EquipmentStatus[] | ListEnumEquipmentStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumEquipmentStatusFilter<$PrismaModel> | $Enums.EquipmentStatus
+  }
+
   export type LaporanCountOrderByAggregateInput = {
     id?: SortOrder
     fotoSampel?: SortOrder
-    laporanStatus?: SortOrder
     flowRate?: SortOrder
     volt?: SortOrder
     pH?: SortOrder
+    ampere?: SortOrder
     TDS?: SortOrder
     EC?: SortOrder
+    laporanStatus?: SortOrder
+    agitatorStatus?: SortOrder
+    settleStatus?: SortOrder
+    outFilterStatus?: SortOrder
+    notes?: SortOrder
     laporanDate?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     deletedAt?: SortOrder
+    siteName?: SortOrder
     userId?: SortOrder
   }
 
@@ -20289,6 +20658,7 @@ export namespace Prisma {
     flowRate?: SortOrder
     volt?: SortOrder
     pH?: SortOrder
+    ampere?: SortOrder
     TDS?: SortOrder
     EC?: SortOrder
     userId?: SortOrder
@@ -20296,33 +20666,43 @@ export namespace Prisma {
 
   export type LaporanMaxOrderByAggregateInput = {
     id?: SortOrder
-    fotoSampel?: SortOrder
-    laporanStatus?: SortOrder
     flowRate?: SortOrder
     volt?: SortOrder
     pH?: SortOrder
+    ampere?: SortOrder
     TDS?: SortOrder
     EC?: SortOrder
+    laporanStatus?: SortOrder
+    agitatorStatus?: SortOrder
+    settleStatus?: SortOrder
+    outFilterStatus?: SortOrder
+    notes?: SortOrder
     laporanDate?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     deletedAt?: SortOrder
+    siteName?: SortOrder
     userId?: SortOrder
   }
 
   export type LaporanMinOrderByAggregateInput = {
     id?: SortOrder
-    fotoSampel?: SortOrder
-    laporanStatus?: SortOrder
     flowRate?: SortOrder
     volt?: SortOrder
     pH?: SortOrder
+    ampere?: SortOrder
     TDS?: SortOrder
     EC?: SortOrder
+    laporanStatus?: SortOrder
+    agitatorStatus?: SortOrder
+    settleStatus?: SortOrder
+    outFilterStatus?: SortOrder
+    notes?: SortOrder
     laporanDate?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     deletedAt?: SortOrder
+    siteName?: SortOrder
     userId?: SortOrder
   }
 
@@ -20331,9 +20711,20 @@ export namespace Prisma {
     flowRate?: SortOrder
     volt?: SortOrder
     pH?: SortOrder
+    ampere?: SortOrder
     TDS?: SortOrder
     EC?: SortOrder
     userId?: SortOrder
+  }
+
+  export type EnumEquipmentStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.EquipmentStatus | EnumEquipmentStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.EquipmentStatus[] | ListEnumEquipmentStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.EquipmentStatus[] | ListEnumEquipmentStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumEquipmentStatusWithAggregatesFilter<$PrismaModel> | $Enums.EquipmentStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumEquipmentStatusFilter<$PrismaModel>
+    _max?: NestedEnumEquipmentStatusFilter<$PrismaModel>
   }
 
   export type IjinCountOrderByAggregateInput = {
@@ -20986,6 +21377,13 @@ export namespace Prisma {
     connect?: UserWhereUniqueInput | UserWhereUniqueInput[]
   }
 
+  export type LaporanCreateNestedManyWithoutSiteInput = {
+    create?: XOR<LaporanCreateWithoutSiteInput, LaporanUncheckedCreateWithoutSiteInput> | LaporanCreateWithoutSiteInput[] | LaporanUncheckedCreateWithoutSiteInput[]
+    connectOrCreate?: LaporanCreateOrConnectWithoutSiteInput | LaporanCreateOrConnectWithoutSiteInput[]
+    createMany?: LaporanCreateManySiteInputEnvelope
+    connect?: LaporanWhereUniqueInput | LaporanWhereUniqueInput[]
+  }
+
   export type JadwalShiftCreateNestedManyWithoutSiteInput = {
     create?: XOR<JadwalShiftCreateWithoutSiteInput, JadwalShiftUncheckedCreateWithoutSiteInput> | JadwalShiftCreateWithoutSiteInput[] | JadwalShiftUncheckedCreateWithoutSiteInput[]
     connectOrCreate?: JadwalShiftCreateOrConnectWithoutSiteInput | JadwalShiftCreateOrConnectWithoutSiteInput[]
@@ -20999,6 +21397,13 @@ export namespace Prisma {
     connect?: UserWhereUniqueInput | UserWhereUniqueInput[]
   }
 
+  export type LaporanUncheckedCreateNestedManyWithoutSiteInput = {
+    create?: XOR<LaporanCreateWithoutSiteInput, LaporanUncheckedCreateWithoutSiteInput> | LaporanCreateWithoutSiteInput[] | LaporanUncheckedCreateWithoutSiteInput[]
+    connectOrCreate?: LaporanCreateOrConnectWithoutSiteInput | LaporanCreateOrConnectWithoutSiteInput[]
+    createMany?: LaporanCreateManySiteInputEnvelope
+    connect?: LaporanWhereUniqueInput | LaporanWhereUniqueInput[]
+  }
+
   export type JadwalShiftUncheckedCreateNestedManyWithoutSiteInput = {
     create?: XOR<JadwalShiftCreateWithoutSiteInput, JadwalShiftUncheckedCreateWithoutSiteInput> | JadwalShiftCreateWithoutSiteInput[] | JadwalShiftUncheckedCreateWithoutSiteInput[]
     connectOrCreate?: JadwalShiftCreateOrConnectWithoutSiteInput | JadwalShiftCreateOrConnectWithoutSiteInput[]
@@ -21010,8 +21415,8 @@ export namespace Prisma {
     set?: string | null
   }
 
-  export type BoolFieldUpdateOperationsInput = {
-    set?: boolean
+  export type EnumsiteStatusFieldUpdateOperationsInput = {
+    set?: $Enums.siteStatus
   }
 
   export type SiteAddressUpdateOneRequiredWithoutSiteNestedInput = {
@@ -21033,6 +21438,20 @@ export namespace Prisma {
     update?: UserUpdateWithWhereUniqueWithoutSitesInput | UserUpdateWithWhereUniqueWithoutSitesInput[]
     updateMany?: UserUpdateManyWithWhereWithoutSitesInput | UserUpdateManyWithWhereWithoutSitesInput[]
     deleteMany?: UserScalarWhereInput | UserScalarWhereInput[]
+  }
+
+  export type LaporanUpdateManyWithoutSiteNestedInput = {
+    create?: XOR<LaporanCreateWithoutSiteInput, LaporanUncheckedCreateWithoutSiteInput> | LaporanCreateWithoutSiteInput[] | LaporanUncheckedCreateWithoutSiteInput[]
+    connectOrCreate?: LaporanCreateOrConnectWithoutSiteInput | LaporanCreateOrConnectWithoutSiteInput[]
+    upsert?: LaporanUpsertWithWhereUniqueWithoutSiteInput | LaporanUpsertWithWhereUniqueWithoutSiteInput[]
+    createMany?: LaporanCreateManySiteInputEnvelope
+    set?: LaporanWhereUniqueInput | LaporanWhereUniqueInput[]
+    disconnect?: LaporanWhereUniqueInput | LaporanWhereUniqueInput[]
+    delete?: LaporanWhereUniqueInput | LaporanWhereUniqueInput[]
+    connect?: LaporanWhereUniqueInput | LaporanWhereUniqueInput[]
+    update?: LaporanUpdateWithWhereUniqueWithoutSiteInput | LaporanUpdateWithWhereUniqueWithoutSiteInput[]
+    updateMany?: LaporanUpdateManyWithWhereWithoutSiteInput | LaporanUpdateManyWithWhereWithoutSiteInput[]
+    deleteMany?: LaporanScalarWhereInput | LaporanScalarWhereInput[]
   }
 
   export type JadwalShiftUpdateManyWithoutSiteNestedInput = {
@@ -21060,6 +21479,20 @@ export namespace Prisma {
     update?: UserUpdateWithWhereUniqueWithoutSitesInput | UserUpdateWithWhereUniqueWithoutSitesInput[]
     updateMany?: UserUpdateManyWithWhereWithoutSitesInput | UserUpdateManyWithWhereWithoutSitesInput[]
     deleteMany?: UserScalarWhereInput | UserScalarWhereInput[]
+  }
+
+  export type LaporanUncheckedUpdateManyWithoutSiteNestedInput = {
+    create?: XOR<LaporanCreateWithoutSiteInput, LaporanUncheckedCreateWithoutSiteInput> | LaporanCreateWithoutSiteInput[] | LaporanUncheckedCreateWithoutSiteInput[]
+    connectOrCreate?: LaporanCreateOrConnectWithoutSiteInput | LaporanCreateOrConnectWithoutSiteInput[]
+    upsert?: LaporanUpsertWithWhereUniqueWithoutSiteInput | LaporanUpsertWithWhereUniqueWithoutSiteInput[]
+    createMany?: LaporanCreateManySiteInputEnvelope
+    set?: LaporanWhereUniqueInput | LaporanWhereUniqueInput[]
+    disconnect?: LaporanWhereUniqueInput | LaporanWhereUniqueInput[]
+    delete?: LaporanWhereUniqueInput | LaporanWhereUniqueInput[]
+    connect?: LaporanWhereUniqueInput | LaporanWhereUniqueInput[]
+    update?: LaporanUpdateWithWhereUniqueWithoutSiteInput | LaporanUpdateWithWhereUniqueWithoutSiteInput[]
+    updateMany?: LaporanUpdateManyWithWhereWithoutSiteInput | LaporanUpdateManyWithWhereWithoutSiteInput[]
+    deleteMany?: LaporanScalarWhereInput | LaporanScalarWhereInput[]
   }
 
   export type JadwalShiftUncheckedUpdateManyWithoutSiteNestedInput = {
@@ -21182,6 +21615,14 @@ export namespace Prisma {
     connect?: UserWhereUniqueInput
   }
 
+  export type EnumStatusPresensiFieldUpdateOperationsInput = {
+    set?: $Enums.StatusPresensi
+  }
+
+  export type EnumStatusApprovalFieldUpdateOperationsInput = {
+    set?: $Enums.StatusApproval
+  }
+
   export type UserUpdateOneRequiredWithoutPresensiNestedInput = {
     create?: XOR<UserCreateWithoutPresensiInput, UserUncheckedCreateWithoutPresensiInput>
     connectOrCreate?: UserCreateOrConnectWithoutPresensiInput
@@ -21190,10 +21631,37 @@ export namespace Prisma {
     update?: XOR<XOR<UserUpdateToOneWithWhereWithoutPresensiInput, UserUpdateWithoutPresensiInput>, UserUncheckedUpdateWithoutPresensiInput>
   }
 
+  export type LaporanCreatefotoSampelInput = {
+    set: string[]
+  }
+
+  export type SiteCreateNestedOneWithoutReportInput = {
+    create?: XOR<SiteCreateWithoutReportInput, SiteUncheckedCreateWithoutReportInput>
+    connectOrCreate?: SiteCreateOrConnectWithoutReportInput
+    connect?: SiteWhereUniqueInput
+  }
+
   export type UserCreateNestedOneWithoutLaporanInput = {
     create?: XOR<UserCreateWithoutLaporanInput, UserUncheckedCreateWithoutLaporanInput>
     connectOrCreate?: UserCreateOrConnectWithoutLaporanInput
     connect?: UserWhereUniqueInput
+  }
+
+  export type LaporanUpdatefotoSampelInput = {
+    set?: string[]
+    push?: string | string[]
+  }
+
+  export type EnumEquipmentStatusFieldUpdateOperationsInput = {
+    set?: $Enums.EquipmentStatus
+  }
+
+  export type SiteUpdateOneRequiredWithoutReportNestedInput = {
+    create?: XOR<SiteCreateWithoutReportInput, SiteUncheckedCreateWithoutReportInput>
+    connectOrCreate?: SiteCreateOrConnectWithoutReportInput
+    upsert?: SiteUpsertWithoutReportInput
+    connect?: SiteWhereUniqueInput
+    update?: XOR<XOR<SiteUpdateToOneWithWhereWithoutReportInput, SiteUpdateWithoutReportInput>, SiteUncheckedUpdateWithoutReportInput>
   }
 
   export type UserUpdateOneRequiredWithoutLaporanNestedInput = {
@@ -21421,9 +21889,11 @@ export namespace Prisma {
     not?: NestedStringNullableFilter<$PrismaModel> | string | null
   }
 
-  export type NestedBoolFilter<$PrismaModel = never> = {
-    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
-    not?: NestedBoolFilter<$PrismaModel> | boolean
+  export type NestedEnumsiteStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.siteStatus | EnumsiteStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.siteStatus[] | ListEnumsiteStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.siteStatus[] | ListEnumsiteStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumsiteStatusFilter<$PrismaModel> | $Enums.siteStatus
   }
 
   export type NestedStringNullableWithAggregatesFilter<$PrismaModel = never> = {
@@ -21443,12 +21913,14 @@ export namespace Prisma {
     _max?: NestedStringNullableFilter<$PrismaModel>
   }
 
-  export type NestedBoolWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
-    not?: NestedBoolWithAggregatesFilter<$PrismaModel> | boolean
+  export type NestedEnumsiteStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.siteStatus | EnumsiteStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.siteStatus[] | ListEnumsiteStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.siteStatus[] | ListEnumsiteStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumsiteStatusWithAggregatesFilter<$PrismaModel> | $Enums.siteStatus
     _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedBoolFilter<$PrismaModel>
-    _max?: NestedBoolFilter<$PrismaModel>
+    _min?: NestedEnumsiteStatusFilter<$PrismaModel>
+    _max?: NestedEnumsiteStatusFilter<$PrismaModel>
   }
 
   export type NestedFloatWithAggregatesFilter<$PrismaModel = never> = {
@@ -21465,6 +21937,57 @@ export namespace Prisma {
     _sum?: NestedFloatFilter<$PrismaModel>
     _min?: NestedFloatFilter<$PrismaModel>
     _max?: NestedFloatFilter<$PrismaModel>
+  }
+
+  export type NestedEnumStatusPresensiFilter<$PrismaModel = never> = {
+    equals?: $Enums.StatusPresensi | EnumStatusPresensiFieldRefInput<$PrismaModel>
+    in?: $Enums.StatusPresensi[] | ListEnumStatusPresensiFieldRefInput<$PrismaModel>
+    notIn?: $Enums.StatusPresensi[] | ListEnumStatusPresensiFieldRefInput<$PrismaModel>
+    not?: NestedEnumStatusPresensiFilter<$PrismaModel> | $Enums.StatusPresensi
+  }
+
+  export type NestedEnumStatusApprovalFilter<$PrismaModel = never> = {
+    equals?: $Enums.StatusApproval | EnumStatusApprovalFieldRefInput<$PrismaModel>
+    in?: $Enums.StatusApproval[] | ListEnumStatusApprovalFieldRefInput<$PrismaModel>
+    notIn?: $Enums.StatusApproval[] | ListEnumStatusApprovalFieldRefInput<$PrismaModel>
+    not?: NestedEnumStatusApprovalFilter<$PrismaModel> | $Enums.StatusApproval
+  }
+
+  export type NestedEnumStatusPresensiWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.StatusPresensi | EnumStatusPresensiFieldRefInput<$PrismaModel>
+    in?: $Enums.StatusPresensi[] | ListEnumStatusPresensiFieldRefInput<$PrismaModel>
+    notIn?: $Enums.StatusPresensi[] | ListEnumStatusPresensiFieldRefInput<$PrismaModel>
+    not?: NestedEnumStatusPresensiWithAggregatesFilter<$PrismaModel> | $Enums.StatusPresensi
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumStatusPresensiFilter<$PrismaModel>
+    _max?: NestedEnumStatusPresensiFilter<$PrismaModel>
+  }
+
+  export type NestedEnumStatusApprovalWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.StatusApproval | EnumStatusApprovalFieldRefInput<$PrismaModel>
+    in?: $Enums.StatusApproval[] | ListEnumStatusApprovalFieldRefInput<$PrismaModel>
+    notIn?: $Enums.StatusApproval[] | ListEnumStatusApprovalFieldRefInput<$PrismaModel>
+    not?: NestedEnumStatusApprovalWithAggregatesFilter<$PrismaModel> | $Enums.StatusApproval
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumStatusApprovalFilter<$PrismaModel>
+    _max?: NestedEnumStatusApprovalFilter<$PrismaModel>
+  }
+
+  export type NestedEnumEquipmentStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.EquipmentStatus | EnumEquipmentStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.EquipmentStatus[] | ListEnumEquipmentStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.EquipmentStatus[] | ListEnumEquipmentStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumEquipmentStatusFilter<$PrismaModel> | $Enums.EquipmentStatus
+  }
+
+  export type NestedEnumEquipmentStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.EquipmentStatus | EnumEquipmentStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.EquipmentStatus[] | ListEnumEquipmentStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.EquipmentStatus[] | ListEnumEquipmentStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumEquipmentStatusWithAggregatesFilter<$PrismaModel> | $Enums.EquipmentStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumEquipmentStatusFilter<$PrismaModel>
+    _max?: NestedEnumEquipmentStatusFilter<$PrismaModel>
   }
 
   export type RoleCreateWithoutUsersInput = {
@@ -21514,11 +22037,12 @@ export namespace Prisma {
   export type SiteCreateWithoutUsersInput = {
     name: string
     image?: string | null
-    status?: boolean
+    status?: $Enums.siteStatus
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
     address: SiteAddressCreateNestedOneWithoutSiteInput
+    report?: LaporanCreateNestedManyWithoutSiteInput
     shift?: JadwalShiftCreateNestedManyWithoutSiteInput
   }
 
@@ -21526,11 +22050,12 @@ export namespace Prisma {
     id?: number
     name: string
     image?: string | null
-    status?: boolean
+    status?: $Enums.siteStatus
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
     addressId: number
+    report?: LaporanUncheckedCreateNestedManyWithoutSiteInput
     shift?: JadwalShiftUncheckedCreateNestedManyWithoutSiteInput
   }
 
@@ -21571,8 +22096,8 @@ export namespace Prisma {
     latitude: number
     longitude: number
     fotoDiri?: string | null
-    jenisPresensi: string
-    statusPresensi?: boolean
+    statusPresensi: $Enums.StatusPresensi
+    statusApproval?: $Enums.StatusApproval
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
@@ -21584,8 +22109,8 @@ export namespace Prisma {
     latitude: number
     longitude: number
     fotoDiri?: string | null
-    jenisPresensi: string
-    statusPresensi?: boolean
+    statusPresensi: $Enums.StatusPresensi
+    statusApproval?: $Enums.StatusApproval
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
@@ -21602,32 +22127,44 @@ export namespace Prisma {
   }
 
   export type LaporanCreateWithoutUserInput = {
-    fotoSampel?: string | null
-    laporanStatus?: boolean
+    fotoSampel?: LaporanCreatefotoSampelInput | string[]
     flowRate: number
     volt: number
     pH: number
+    ampere: number
     TDS: number
     EC: number
+    laporanStatus?: $Enums.StatusApproval
+    agitatorStatus?: $Enums.EquipmentStatus
+    settleStatus?: $Enums.EquipmentStatus
+    outFilterStatus?: $Enums.EquipmentStatus
+    notes: string
     laporanDate?: Date | string
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
+    site: SiteCreateNestedOneWithoutReportInput
   }
 
   export type LaporanUncheckedCreateWithoutUserInput = {
     id?: number
-    fotoSampel?: string | null
-    laporanStatus?: boolean
+    fotoSampel?: LaporanCreatefotoSampelInput | string[]
     flowRate: number
     volt: number
     pH: number
+    ampere: number
     TDS: number
     EC: number
+    laporanStatus?: $Enums.StatusApproval
+    agitatorStatus?: $Enums.EquipmentStatus
+    settleStatus?: $Enums.EquipmentStatus
+    outFilterStatus?: $Enums.EquipmentStatus
+    notes: string
     laporanDate?: Date | string
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
+    siteName: string
   }
 
   export type LaporanCreateOrConnectWithoutUserInput = {
@@ -21642,7 +22179,7 @@ export namespace Prisma {
 
   export type IjinCreateWithoutUserInput = {
     ijinDate?: Date | string
-    ijinStatus?: boolean
+    ijinStatus?: $Enums.StatusApproval
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
@@ -21651,7 +22188,7 @@ export namespace Prisma {
   export type IjinUncheckedCreateWithoutUserInput = {
     id?: number
     ijinDate?: Date | string
-    ijinStatus?: boolean
+    ijinStatus?: $Enums.StatusApproval
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
@@ -21669,7 +22206,7 @@ export namespace Prisma {
 
   export type LiburCreateWithoutUserInput = {
     liburDate: Date | string
-    liburStatus?: boolean
+    liburStatus?: $Enums.StatusApproval
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
@@ -21678,7 +22215,7 @@ export namespace Prisma {
   export type LiburUncheckedCreateWithoutUserInput = {
     id?: number
     liburDate: Date | string
-    liburStatus?: boolean
+    liburStatus?: $Enums.StatusApproval
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
@@ -21831,7 +22368,7 @@ export namespace Prisma {
     id?: IntFilter<"Site"> | number
     name?: StringFilter<"Site"> | string
     image?: StringNullableFilter<"Site"> | string | null
-    status?: BoolFilter<"Site"> | boolean
+    status?: EnumsiteStatusFilter<"Site"> | $Enums.siteStatus
     createdAt?: DateTimeFilter<"Site"> | Date | string
     updatedAt?: DateTimeFilter<"Site"> | Date | string
     deletedAt?: DateTimeNullableFilter<"Site"> | Date | string | null
@@ -21892,8 +22429,8 @@ export namespace Prisma {
     latitude?: IntFilter<"Presensi"> | number
     longitude?: IntFilter<"Presensi"> | number
     fotoDiri?: StringNullableFilter<"Presensi"> | string | null
-    jenisPresensi?: StringFilter<"Presensi"> | string
-    statusPresensi?: BoolFilter<"Presensi"> | boolean
+    statusPresensi?: EnumStatusPresensiFilter<"Presensi"> | $Enums.StatusPresensi
+    statusApproval?: EnumStatusApprovalFilter<"Presensi"> | $Enums.StatusApproval
     createdAt?: DateTimeFilter<"Presensi"> | Date | string
     updatedAt?: DateTimeFilter<"Presensi"> | Date | string
     deletedAt?: DateTimeNullableFilter<"Presensi"> | Date | string | null
@@ -21921,17 +22458,23 @@ export namespace Prisma {
     OR?: LaporanScalarWhereInput[]
     NOT?: LaporanScalarWhereInput | LaporanScalarWhereInput[]
     id?: IntFilter<"Laporan"> | number
-    fotoSampel?: StringNullableFilter<"Laporan"> | string | null
-    laporanStatus?: BoolFilter<"Laporan"> | boolean
+    fotoSampel?: StringNullableListFilter<"Laporan">
     flowRate?: FloatFilter<"Laporan"> | number
     volt?: FloatFilter<"Laporan"> | number
     pH?: FloatFilter<"Laporan"> | number
+    ampere?: FloatFilter<"Laporan"> | number
     TDS?: FloatFilter<"Laporan"> | number
     EC?: FloatFilter<"Laporan"> | number
+    laporanStatus?: EnumStatusApprovalFilter<"Laporan"> | $Enums.StatusApproval
+    agitatorStatus?: EnumEquipmentStatusFilter<"Laporan"> | $Enums.EquipmentStatus
+    settleStatus?: EnumEquipmentStatusFilter<"Laporan"> | $Enums.EquipmentStatus
+    outFilterStatus?: EnumEquipmentStatusFilter<"Laporan"> | $Enums.EquipmentStatus
+    notes?: StringFilter<"Laporan"> | string
     laporanDate?: DateTimeFilter<"Laporan"> | Date | string
     createdAt?: DateTimeFilter<"Laporan"> | Date | string
     updatedAt?: DateTimeFilter<"Laporan"> | Date | string
     deletedAt?: DateTimeNullableFilter<"Laporan"> | Date | string | null
+    siteName?: StringFilter<"Laporan"> | string
     userId?: IntFilter<"Laporan"> | number
   }
 
@@ -21957,7 +22500,7 @@ export namespace Prisma {
     NOT?: IjinScalarWhereInput | IjinScalarWhereInput[]
     id?: IntFilter<"Ijin"> | number
     ijinDate?: DateTimeFilter<"Ijin"> | Date | string
-    ijinStatus?: BoolFilter<"Ijin"> | boolean
+    ijinStatus?: EnumStatusApprovalFilter<"Ijin"> | $Enums.StatusApproval
     createdAt?: DateTimeFilter<"Ijin"> | Date | string
     updatedAt?: DateTimeFilter<"Ijin"> | Date | string
     deletedAt?: DateTimeNullableFilter<"Ijin"> | Date | string | null
@@ -21986,7 +22529,7 @@ export namespace Prisma {
     NOT?: LiburScalarWhereInput | LiburScalarWhereInput[]
     id?: IntFilter<"Libur"> | number
     liburDate?: DateTimeFilter<"Libur"> | Date | string
-    liburStatus?: BoolFilter<"Libur"> | boolean
+    liburStatus?: EnumStatusApprovalFilter<"Libur"> | $Enums.StatusApproval
     createdAt?: DateTimeFilter<"Libur"> | Date | string
     updatedAt?: DateTimeFilter<"Libur"> | Date | string
     deletedAt?: DateTimeNullableFilter<"Libur"> | Date | string | null
@@ -22170,24 +22713,26 @@ export namespace Prisma {
   export type SiteCreateWithoutShiftInput = {
     name: string
     image?: string | null
-    status?: boolean
+    status?: $Enums.siteStatus
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
     address: SiteAddressCreateNestedOneWithoutSiteInput
     users?: UserCreateNestedManyWithoutSitesInput
+    report?: LaporanCreateNestedManyWithoutSiteInput
   }
 
   export type SiteUncheckedCreateWithoutShiftInput = {
     id?: number
     name: string
     image?: string | null
-    status?: boolean
+    status?: $Enums.siteStatus
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
     addressId: number
     users?: UserUncheckedCreateNestedManyWithoutSitesInput
+    report?: LaporanUncheckedCreateNestedManyWithoutSiteInput
   }
 
   export type SiteCreateOrConnectWithoutShiftInput = {
@@ -22255,24 +22800,26 @@ export namespace Prisma {
   export type SiteUpdateWithoutShiftInput = {
     name?: StringFieldUpdateOperationsInput | string
     image?: NullableStringFieldUpdateOperationsInput | string | null
-    status?: BoolFieldUpdateOperationsInput | boolean
+    status?: EnumsiteStatusFieldUpdateOperationsInput | $Enums.siteStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     address?: SiteAddressUpdateOneRequiredWithoutSiteNestedInput
     users?: UserUpdateManyWithoutSitesNestedInput
+    report?: LaporanUpdateManyWithoutSiteNestedInput
   }
 
   export type SiteUncheckedUpdateWithoutShiftInput = {
     id?: IntFieldUpdateOperationsInput | number
     name?: StringFieldUpdateOperationsInput | string
     image?: NullableStringFieldUpdateOperationsInput | string | null
-    status?: BoolFieldUpdateOperationsInput | boolean
+    status?: EnumsiteStatusFieldUpdateOperationsInput | $Enums.siteStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     addressId?: IntFieldUpdateOperationsInput | number
     users?: UserUncheckedUpdateManyWithoutSitesNestedInput
+    report?: LaporanUncheckedUpdateManyWithoutSiteNestedInput
   }
 
   export type SiteAddressCreateWithoutSiteInput = {
@@ -22341,6 +22888,57 @@ export namespace Prisma {
   export type UserCreateOrConnectWithoutSitesInput = {
     where: UserWhereUniqueInput
     create: XOR<UserCreateWithoutSitesInput, UserUncheckedCreateWithoutSitesInput>
+  }
+
+  export type LaporanCreateWithoutSiteInput = {
+    fotoSampel?: LaporanCreatefotoSampelInput | string[]
+    flowRate: number
+    volt: number
+    pH: number
+    ampere: number
+    TDS: number
+    EC: number
+    laporanStatus?: $Enums.StatusApproval
+    agitatorStatus?: $Enums.EquipmentStatus
+    settleStatus?: $Enums.EquipmentStatus
+    outFilterStatus?: $Enums.EquipmentStatus
+    notes: string
+    laporanDate?: Date | string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+    user: UserCreateNestedOneWithoutLaporanInput
+  }
+
+  export type LaporanUncheckedCreateWithoutSiteInput = {
+    id?: number
+    fotoSampel?: LaporanCreatefotoSampelInput | string[]
+    flowRate: number
+    volt: number
+    pH: number
+    ampere: number
+    TDS: number
+    EC: number
+    laporanStatus?: $Enums.StatusApproval
+    agitatorStatus?: $Enums.EquipmentStatus
+    settleStatus?: $Enums.EquipmentStatus
+    outFilterStatus?: $Enums.EquipmentStatus
+    notes: string
+    laporanDate?: Date | string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+    userId: number
+  }
+
+  export type LaporanCreateOrConnectWithoutSiteInput = {
+    where: LaporanWhereUniqueInput
+    create: XOR<LaporanCreateWithoutSiteInput, LaporanUncheckedCreateWithoutSiteInput>
+  }
+
+  export type LaporanCreateManySiteInputEnvelope = {
+    data: LaporanCreateManySiteInput | LaporanCreateManySiteInput[]
+    skipDuplicates?: boolean
   }
 
   export type JadwalShiftCreateWithoutSiteInput = {
@@ -22420,6 +23018,22 @@ export namespace Prisma {
     data: XOR<UserUpdateManyMutationInput, UserUncheckedUpdateManyWithoutSitesInput>
   }
 
+  export type LaporanUpsertWithWhereUniqueWithoutSiteInput = {
+    where: LaporanWhereUniqueInput
+    update: XOR<LaporanUpdateWithoutSiteInput, LaporanUncheckedUpdateWithoutSiteInput>
+    create: XOR<LaporanCreateWithoutSiteInput, LaporanUncheckedCreateWithoutSiteInput>
+  }
+
+  export type LaporanUpdateWithWhereUniqueWithoutSiteInput = {
+    where: LaporanWhereUniqueInput
+    data: XOR<LaporanUpdateWithoutSiteInput, LaporanUncheckedUpdateWithoutSiteInput>
+  }
+
+  export type LaporanUpdateManyWithWhereWithoutSiteInput = {
+    where: LaporanScalarWhereInput
+    data: XOR<LaporanUpdateManyMutationInput, LaporanUncheckedUpdateManyWithoutSiteInput>
+  }
+
   export type JadwalShiftUpsertWithWhereUniqueWithoutSiteInput = {
     where: JadwalShiftWhereUniqueInput
     update: XOR<JadwalShiftUpdateWithoutSiteInput, JadwalShiftUncheckedUpdateWithoutSiteInput>
@@ -22439,11 +23053,12 @@ export namespace Prisma {
   export type SiteCreateWithoutAddressInput = {
     name: string
     image?: string | null
-    status?: boolean
+    status?: $Enums.siteStatus
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
     users?: UserCreateNestedManyWithoutSitesInput
+    report?: LaporanCreateNestedManyWithoutSiteInput
     shift?: JadwalShiftCreateNestedManyWithoutSiteInput
   }
 
@@ -22451,11 +23066,12 @@ export namespace Prisma {
     id?: number
     name: string
     image?: string | null
-    status?: boolean
+    status?: $Enums.siteStatus
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
     users?: UserUncheckedCreateNestedManyWithoutSitesInput
+    report?: LaporanUncheckedCreateNestedManyWithoutSiteInput
     shift?: JadwalShiftUncheckedCreateNestedManyWithoutSiteInput
   }
 
@@ -22478,11 +23094,12 @@ export namespace Prisma {
   export type SiteUpdateWithoutAddressInput = {
     name?: StringFieldUpdateOperationsInput | string
     image?: NullableStringFieldUpdateOperationsInput | string | null
-    status?: BoolFieldUpdateOperationsInput | boolean
+    status?: EnumsiteStatusFieldUpdateOperationsInput | $Enums.siteStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     users?: UserUpdateManyWithoutSitesNestedInput
+    report?: LaporanUpdateManyWithoutSiteNestedInput
     shift?: JadwalShiftUpdateManyWithoutSiteNestedInput
   }
 
@@ -22490,11 +23107,12 @@ export namespace Prisma {
     id?: IntFieldUpdateOperationsInput | number
     name?: StringFieldUpdateOperationsInput | string
     image?: NullableStringFieldUpdateOperationsInput | string | null
-    status?: BoolFieldUpdateOperationsInput | boolean
+    status?: EnumsiteStatusFieldUpdateOperationsInput | $Enums.siteStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     users?: UserUncheckedUpdateManyWithoutSitesNestedInput
+    report?: LaporanUncheckedUpdateManyWithoutSiteNestedInput
     shift?: JadwalShiftUncheckedUpdateManyWithoutSiteNestedInput
   }
 
@@ -22778,6 +23396,36 @@ export namespace Prisma {
     ticket?: TicketUncheckedUpdateManyWithoutUserNestedInput
   }
 
+  export type SiteCreateWithoutReportInput = {
+    name: string
+    image?: string | null
+    status?: $Enums.siteStatus
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+    address: SiteAddressCreateNestedOneWithoutSiteInput
+    users?: UserCreateNestedManyWithoutSitesInput
+    shift?: JadwalShiftCreateNestedManyWithoutSiteInput
+  }
+
+  export type SiteUncheckedCreateWithoutReportInput = {
+    id?: number
+    name: string
+    image?: string | null
+    status?: $Enums.siteStatus
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+    addressId: number
+    users?: UserUncheckedCreateNestedManyWithoutSitesInput
+    shift?: JadwalShiftUncheckedCreateNestedManyWithoutSiteInput
+  }
+
+  export type SiteCreateOrConnectWithoutReportInput = {
+    where: SiteWhereUniqueInput
+    create: XOR<SiteCreateWithoutReportInput, SiteUncheckedCreateWithoutReportInput>
+  }
+
   export type UserCreateWithoutLaporanInput = {
     username: string
     password: string
@@ -22816,6 +23464,42 @@ export namespace Prisma {
   export type UserCreateOrConnectWithoutLaporanInput = {
     where: UserWhereUniqueInput
     create: XOR<UserCreateWithoutLaporanInput, UserUncheckedCreateWithoutLaporanInput>
+  }
+
+  export type SiteUpsertWithoutReportInput = {
+    update: XOR<SiteUpdateWithoutReportInput, SiteUncheckedUpdateWithoutReportInput>
+    create: XOR<SiteCreateWithoutReportInput, SiteUncheckedCreateWithoutReportInput>
+    where?: SiteWhereInput
+  }
+
+  export type SiteUpdateToOneWithWhereWithoutReportInput = {
+    where?: SiteWhereInput
+    data: XOR<SiteUpdateWithoutReportInput, SiteUncheckedUpdateWithoutReportInput>
+  }
+
+  export type SiteUpdateWithoutReportInput = {
+    name?: StringFieldUpdateOperationsInput | string
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumsiteStatusFieldUpdateOperationsInput | $Enums.siteStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    address?: SiteAddressUpdateOneRequiredWithoutSiteNestedInput
+    users?: UserUpdateManyWithoutSitesNestedInput
+    shift?: JadwalShiftUpdateManyWithoutSiteNestedInput
+  }
+
+  export type SiteUncheckedUpdateWithoutReportInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    name?: StringFieldUpdateOperationsInput | string
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumsiteStatusFieldUpdateOperationsInput | $Enums.siteStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    addressId?: IntFieldUpdateOperationsInput | number
+    users?: UserUncheckedUpdateManyWithoutSitesNestedInput
+    shift?: JadwalShiftUncheckedUpdateManyWithoutSiteNestedInput
   }
 
   export type UserUpsertWithoutLaporanInput = {
@@ -23223,8 +23907,8 @@ export namespace Prisma {
     latitude: number
     longitude: number
     fotoDiri?: string | null
-    jenisPresensi: string
-    statusPresensi?: boolean
+    statusPresensi: $Enums.StatusPresensi
+    statusApproval?: $Enums.StatusApproval
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
@@ -23232,23 +23916,29 @@ export namespace Prisma {
 
   export type LaporanCreateManyUserInput = {
     id?: number
-    fotoSampel?: string | null
-    laporanStatus?: boolean
+    fotoSampel?: LaporanCreatefotoSampelInput | string[]
     flowRate: number
     volt: number
     pH: number
+    ampere: number
     TDS: number
     EC: number
+    laporanStatus?: $Enums.StatusApproval
+    agitatorStatus?: $Enums.EquipmentStatus
+    settleStatus?: $Enums.EquipmentStatus
+    outFilterStatus?: $Enums.EquipmentStatus
+    notes: string
     laporanDate?: Date | string
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
+    siteName: string
   }
 
   export type IjinCreateManyUserInput = {
     id?: number
     ijinDate?: Date | string
-    ijinStatus?: boolean
+    ijinStatus?: $Enums.StatusApproval
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
@@ -23257,7 +23947,7 @@ export namespace Prisma {
   export type LiburCreateManyUserInput = {
     id?: number
     liburDate: Date | string
-    liburStatus?: boolean
+    liburStatus?: $Enums.StatusApproval
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
@@ -23286,11 +23976,12 @@ export namespace Prisma {
   export type SiteUpdateWithoutUsersInput = {
     name?: StringFieldUpdateOperationsInput | string
     image?: NullableStringFieldUpdateOperationsInput | string | null
-    status?: BoolFieldUpdateOperationsInput | boolean
+    status?: EnumsiteStatusFieldUpdateOperationsInput | $Enums.siteStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     address?: SiteAddressUpdateOneRequiredWithoutSiteNestedInput
+    report?: LaporanUpdateManyWithoutSiteNestedInput
     shift?: JadwalShiftUpdateManyWithoutSiteNestedInput
   }
 
@@ -23298,11 +23989,12 @@ export namespace Prisma {
     id?: IntFieldUpdateOperationsInput | number
     name?: StringFieldUpdateOperationsInput | string
     image?: NullableStringFieldUpdateOperationsInput | string | null
-    status?: BoolFieldUpdateOperationsInput | boolean
+    status?: EnumsiteStatusFieldUpdateOperationsInput | $Enums.siteStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     addressId?: IntFieldUpdateOperationsInput | number
+    report?: LaporanUncheckedUpdateManyWithoutSiteNestedInput
     shift?: JadwalShiftUncheckedUpdateManyWithoutSiteNestedInput
   }
 
@@ -23310,7 +24002,7 @@ export namespace Prisma {
     id?: IntFieldUpdateOperationsInput | number
     name?: StringFieldUpdateOperationsInput | string
     image?: NullableStringFieldUpdateOperationsInput | string | null
-    status?: BoolFieldUpdateOperationsInput | boolean
+    status?: EnumsiteStatusFieldUpdateOperationsInput | $Enums.siteStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -23348,8 +24040,8 @@ export namespace Prisma {
     latitude?: IntFieldUpdateOperationsInput | number
     longitude?: IntFieldUpdateOperationsInput | number
     fotoDiri?: NullableStringFieldUpdateOperationsInput | string | null
-    jenisPresensi?: StringFieldUpdateOperationsInput | string
-    statusPresensi?: BoolFieldUpdateOperationsInput | boolean
+    statusPresensi?: EnumStatusPresensiFieldUpdateOperationsInput | $Enums.StatusPresensi
+    statusApproval?: EnumStatusApprovalFieldUpdateOperationsInput | $Enums.StatusApproval
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -23361,8 +24053,8 @@ export namespace Prisma {
     latitude?: IntFieldUpdateOperationsInput | number
     longitude?: IntFieldUpdateOperationsInput | number
     fotoDiri?: NullableStringFieldUpdateOperationsInput | string | null
-    jenisPresensi?: StringFieldUpdateOperationsInput | string
-    statusPresensi?: BoolFieldUpdateOperationsInput | boolean
+    statusPresensi?: EnumStatusPresensiFieldUpdateOperationsInput | $Enums.StatusPresensi
+    statusApproval?: EnumStatusApprovalFieldUpdateOperationsInput | $Enums.StatusApproval
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -23374,60 +24066,78 @@ export namespace Prisma {
     latitude?: IntFieldUpdateOperationsInput | number
     longitude?: IntFieldUpdateOperationsInput | number
     fotoDiri?: NullableStringFieldUpdateOperationsInput | string | null
-    jenisPresensi?: StringFieldUpdateOperationsInput | string
-    statusPresensi?: BoolFieldUpdateOperationsInput | boolean
+    statusPresensi?: EnumStatusPresensiFieldUpdateOperationsInput | $Enums.StatusPresensi
+    statusApproval?: EnumStatusApprovalFieldUpdateOperationsInput | $Enums.StatusApproval
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
   export type LaporanUpdateWithoutUserInput = {
-    fotoSampel?: NullableStringFieldUpdateOperationsInput | string | null
-    laporanStatus?: BoolFieldUpdateOperationsInput | boolean
+    fotoSampel?: LaporanUpdatefotoSampelInput | string[]
     flowRate?: FloatFieldUpdateOperationsInput | number
     volt?: FloatFieldUpdateOperationsInput | number
     pH?: FloatFieldUpdateOperationsInput | number
+    ampere?: FloatFieldUpdateOperationsInput | number
     TDS?: FloatFieldUpdateOperationsInput | number
     EC?: FloatFieldUpdateOperationsInput | number
+    laporanStatus?: EnumStatusApprovalFieldUpdateOperationsInput | $Enums.StatusApproval
+    agitatorStatus?: EnumEquipmentStatusFieldUpdateOperationsInput | $Enums.EquipmentStatus
+    settleStatus?: EnumEquipmentStatusFieldUpdateOperationsInput | $Enums.EquipmentStatus
+    outFilterStatus?: EnumEquipmentStatusFieldUpdateOperationsInput | $Enums.EquipmentStatus
+    notes?: StringFieldUpdateOperationsInput | string
     laporanDate?: DateTimeFieldUpdateOperationsInput | Date | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    site?: SiteUpdateOneRequiredWithoutReportNestedInput
   }
 
   export type LaporanUncheckedUpdateWithoutUserInput = {
     id?: IntFieldUpdateOperationsInput | number
-    fotoSampel?: NullableStringFieldUpdateOperationsInput | string | null
-    laporanStatus?: BoolFieldUpdateOperationsInput | boolean
+    fotoSampel?: LaporanUpdatefotoSampelInput | string[]
     flowRate?: FloatFieldUpdateOperationsInput | number
     volt?: FloatFieldUpdateOperationsInput | number
     pH?: FloatFieldUpdateOperationsInput | number
+    ampere?: FloatFieldUpdateOperationsInput | number
     TDS?: FloatFieldUpdateOperationsInput | number
     EC?: FloatFieldUpdateOperationsInput | number
+    laporanStatus?: EnumStatusApprovalFieldUpdateOperationsInput | $Enums.StatusApproval
+    agitatorStatus?: EnumEquipmentStatusFieldUpdateOperationsInput | $Enums.EquipmentStatus
+    settleStatus?: EnumEquipmentStatusFieldUpdateOperationsInput | $Enums.EquipmentStatus
+    outFilterStatus?: EnumEquipmentStatusFieldUpdateOperationsInput | $Enums.EquipmentStatus
+    notes?: StringFieldUpdateOperationsInput | string
     laporanDate?: DateTimeFieldUpdateOperationsInput | Date | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    siteName?: StringFieldUpdateOperationsInput | string
   }
 
   export type LaporanUncheckedUpdateManyWithoutUserInput = {
     id?: IntFieldUpdateOperationsInput | number
-    fotoSampel?: NullableStringFieldUpdateOperationsInput | string | null
-    laporanStatus?: BoolFieldUpdateOperationsInput | boolean
+    fotoSampel?: LaporanUpdatefotoSampelInput | string[]
     flowRate?: FloatFieldUpdateOperationsInput | number
     volt?: FloatFieldUpdateOperationsInput | number
     pH?: FloatFieldUpdateOperationsInput | number
+    ampere?: FloatFieldUpdateOperationsInput | number
     TDS?: FloatFieldUpdateOperationsInput | number
     EC?: FloatFieldUpdateOperationsInput | number
+    laporanStatus?: EnumStatusApprovalFieldUpdateOperationsInput | $Enums.StatusApproval
+    agitatorStatus?: EnumEquipmentStatusFieldUpdateOperationsInput | $Enums.EquipmentStatus
+    settleStatus?: EnumEquipmentStatusFieldUpdateOperationsInput | $Enums.EquipmentStatus
+    outFilterStatus?: EnumEquipmentStatusFieldUpdateOperationsInput | $Enums.EquipmentStatus
+    notes?: StringFieldUpdateOperationsInput | string
     laporanDate?: DateTimeFieldUpdateOperationsInput | Date | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    siteName?: StringFieldUpdateOperationsInput | string
   }
 
   export type IjinUpdateWithoutUserInput = {
     ijinDate?: DateTimeFieldUpdateOperationsInput | Date | string
-    ijinStatus?: BoolFieldUpdateOperationsInput | boolean
+    ijinStatus?: EnumStatusApprovalFieldUpdateOperationsInput | $Enums.StatusApproval
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -23436,7 +24146,7 @@ export namespace Prisma {
   export type IjinUncheckedUpdateWithoutUserInput = {
     id?: IntFieldUpdateOperationsInput | number
     ijinDate?: DateTimeFieldUpdateOperationsInput | Date | string
-    ijinStatus?: BoolFieldUpdateOperationsInput | boolean
+    ijinStatus?: EnumStatusApprovalFieldUpdateOperationsInput | $Enums.StatusApproval
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -23445,7 +24155,7 @@ export namespace Prisma {
   export type IjinUncheckedUpdateManyWithoutUserInput = {
     id?: IntFieldUpdateOperationsInput | number
     ijinDate?: DateTimeFieldUpdateOperationsInput | Date | string
-    ijinStatus?: BoolFieldUpdateOperationsInput | boolean
+    ijinStatus?: EnumStatusApprovalFieldUpdateOperationsInput | $Enums.StatusApproval
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -23453,7 +24163,7 @@ export namespace Prisma {
 
   export type LiburUpdateWithoutUserInput = {
     liburDate?: DateTimeFieldUpdateOperationsInput | Date | string
-    liburStatus?: BoolFieldUpdateOperationsInput | boolean
+    liburStatus?: EnumStatusApprovalFieldUpdateOperationsInput | $Enums.StatusApproval
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -23462,7 +24172,7 @@ export namespace Prisma {
   export type LiburUncheckedUpdateWithoutUserInput = {
     id?: IntFieldUpdateOperationsInput | number
     liburDate?: DateTimeFieldUpdateOperationsInput | Date | string
-    liburStatus?: BoolFieldUpdateOperationsInput | boolean
+    liburStatus?: EnumStatusApprovalFieldUpdateOperationsInput | $Enums.StatusApproval
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -23471,7 +24181,7 @@ export namespace Prisma {
   export type LiburUncheckedUpdateManyWithoutUserInput = {
     id?: IntFieldUpdateOperationsInput | number
     liburDate?: DateTimeFieldUpdateOperationsInput | Date | string
-    liburStatus?: BoolFieldUpdateOperationsInput | boolean
+    liburStatus?: EnumStatusApprovalFieldUpdateOperationsInput | $Enums.StatusApproval
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -23588,6 +24298,27 @@ export namespace Prisma {
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
+  export type LaporanCreateManySiteInput = {
+    id?: number
+    fotoSampel?: LaporanCreatefotoSampelInput | string[]
+    flowRate: number
+    volt: number
+    pH: number
+    ampere: number
+    TDS: number
+    EC: number
+    laporanStatus?: $Enums.StatusApproval
+    agitatorStatus?: $Enums.EquipmentStatus
+    settleStatus?: $Enums.EquipmentStatus
+    outFilterStatus?: $Enums.EquipmentStatus
+    notes: string
+    laporanDate?: Date | string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+    userId: number
+  }
+
   export type JadwalShiftCreateManySiteInput = {
     id?: number
     shiftDate: Date | string
@@ -23640,6 +24371,68 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     roleId?: IntFieldUpdateOperationsInput | number
+  }
+
+  export type LaporanUpdateWithoutSiteInput = {
+    fotoSampel?: LaporanUpdatefotoSampelInput | string[]
+    flowRate?: FloatFieldUpdateOperationsInput | number
+    volt?: FloatFieldUpdateOperationsInput | number
+    pH?: FloatFieldUpdateOperationsInput | number
+    ampere?: FloatFieldUpdateOperationsInput | number
+    TDS?: FloatFieldUpdateOperationsInput | number
+    EC?: FloatFieldUpdateOperationsInput | number
+    laporanStatus?: EnumStatusApprovalFieldUpdateOperationsInput | $Enums.StatusApproval
+    agitatorStatus?: EnumEquipmentStatusFieldUpdateOperationsInput | $Enums.EquipmentStatus
+    settleStatus?: EnumEquipmentStatusFieldUpdateOperationsInput | $Enums.EquipmentStatus
+    outFilterStatus?: EnumEquipmentStatusFieldUpdateOperationsInput | $Enums.EquipmentStatus
+    notes?: StringFieldUpdateOperationsInput | string
+    laporanDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    user?: UserUpdateOneRequiredWithoutLaporanNestedInput
+  }
+
+  export type LaporanUncheckedUpdateWithoutSiteInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    fotoSampel?: LaporanUpdatefotoSampelInput | string[]
+    flowRate?: FloatFieldUpdateOperationsInput | number
+    volt?: FloatFieldUpdateOperationsInput | number
+    pH?: FloatFieldUpdateOperationsInput | number
+    ampere?: FloatFieldUpdateOperationsInput | number
+    TDS?: FloatFieldUpdateOperationsInput | number
+    EC?: FloatFieldUpdateOperationsInput | number
+    laporanStatus?: EnumStatusApprovalFieldUpdateOperationsInput | $Enums.StatusApproval
+    agitatorStatus?: EnumEquipmentStatusFieldUpdateOperationsInput | $Enums.EquipmentStatus
+    settleStatus?: EnumEquipmentStatusFieldUpdateOperationsInput | $Enums.EquipmentStatus
+    outFilterStatus?: EnumEquipmentStatusFieldUpdateOperationsInput | $Enums.EquipmentStatus
+    notes?: StringFieldUpdateOperationsInput | string
+    laporanDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    userId?: IntFieldUpdateOperationsInput | number
+  }
+
+  export type LaporanUncheckedUpdateManyWithoutSiteInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    fotoSampel?: LaporanUpdatefotoSampelInput | string[]
+    flowRate?: FloatFieldUpdateOperationsInput | number
+    volt?: FloatFieldUpdateOperationsInput | number
+    pH?: FloatFieldUpdateOperationsInput | number
+    ampere?: FloatFieldUpdateOperationsInput | number
+    TDS?: FloatFieldUpdateOperationsInput | number
+    EC?: FloatFieldUpdateOperationsInput | number
+    laporanStatus?: EnumStatusApprovalFieldUpdateOperationsInput | $Enums.StatusApproval
+    agitatorStatus?: EnumEquipmentStatusFieldUpdateOperationsInput | $Enums.EquipmentStatus
+    settleStatus?: EnumEquipmentStatusFieldUpdateOperationsInput | $Enums.EquipmentStatus
+    outFilterStatus?: EnumEquipmentStatusFieldUpdateOperationsInput | $Enums.EquipmentStatus
+    notes?: StringFieldUpdateOperationsInput | string
+    laporanDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    userId?: IntFieldUpdateOperationsInput | number
   }
 
   export type JadwalShiftUpdateWithoutSiteInput = {

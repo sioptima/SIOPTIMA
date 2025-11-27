@@ -76,19 +76,27 @@ model JadwalShift {
   siteId Int
 }
 
+enum siteStatus {
+  ACTIVE
+  MAINTENANCE
+  INACTIVE
+}
+
 model Site {
-  id        Int       @id @default(autoincrement())
-  name      String    @unique
+  id        Int        @id @default(autoincrement())
+  name      String     @unique
   image     String?
-  status    Boolean   @default(true)
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
+  status    siteStatus @default(ACTIVE)
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
   deletedAt DateTime?
 
   address   SiteAddress @relation(fields: [addressId], references: [id])
   addressId Int         @unique
 
   users User[]
+
+  report Laporan[]
 
   shift JadwalShift[]
 }
@@ -134,46 +142,71 @@ model UserAddress {
   profileId Int     @unique
 }
 
+enum StatusApproval {
+  APPROVED
+  PENDING
+  REJECTED
+}
+
+enum StatusPresensi {
+  ONTIME
+  LATE
+}
+
 model Presensi {
-  id             Int       @id @default(autoincrement())
+  id             Int            @id @default(autoincrement())
   presensiDate   DateTime
   latitude       Int
   longitude      Int
   fotoDiri       String?
-  jenisPresensi  String
-  statusPresensi Boolean   @default(false)
-  createdAt      DateTime  @default(now())
-  updatedAt      DateTime  @updatedAt
+  statusPresensi StatusPresensi
+  statusApproval StatusApproval @default(PENDING)
+  createdAt      DateTime       @default(now())
+  updatedAt      DateTime       @updatedAt
   deletedAt      DateTime?
 
   user   User @relation(fields: [userId], references: [id])
   userId Int
 }
 
+enum EquipmentStatus {
+  NORMAL
+  MAINTENANCE
+  BROKEN
+}
+
 model Laporan {
-  id            Int       @id @default(autoincrement())
-  fotoSampel    String?
-  laporanStatus Boolean   @default(false)
-  flowRate      Float
-  volt          Float
-  pH            Float
-  TDS           Float
-  EC            Float
-  laporanDate   DateTime  @default(now())
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
-  deletedAt     DateTime?
+  id              Int             @id @default(autoincrement())
+  fotoSampel      String[]
+  flowRate        Float
+  volt            Float
+  pH              Float
+  ampere          Float
+  TDS             Float
+  EC              Float
+  laporanStatus   StatusApproval  @default(PENDING)
+  agitatorStatus  EquipmentStatus @default(NORMAL)
+  settleStatus    EquipmentStatus @default(NORMAL)
+  outFilterStatus EquipmentStatus @default(NORMAL)
+  notes           String          @db.Text
+  laporanDate     DateTime        @default(now())
+  createdAt       DateTime        @default(now())
+  updatedAt       DateTime        @updatedAt
+  deletedAt       DateTime?
+
+  site     Site   @relation(fields: [siteName], references: [name])
+  siteName String
 
   user   User @relation(fields: [userId], references: [id])
   userId Int
 }
 
 model Ijin {
-  id         Int       @id @default(autoincrement())
-  ijinDate   DateTime  @default(now())
-  ijinStatus Boolean   @default(false)
-  createdAt  DateTime  @default(now())
-  updatedAt  DateTime  @updatedAt
+  id         Int            @id @default(autoincrement())
+  ijinDate   DateTime       @default(now())
+  ijinStatus StatusApproval @default(PENDING)
+  createdAt  DateTime       @default(now())
+  updatedAt  DateTime       @updatedAt
   deletedAt  DateTime?
 
   user   User @relation(fields: [userId], references: [id])
@@ -181,11 +214,11 @@ model Ijin {
 }
 
 model Libur {
-  id          Int       @id @default(autoincrement())
+  id          Int            @id @default(autoincrement())
   liburDate   DateTime
-  liburStatus Boolean   @default(false)
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
+  liburStatus StatusApproval @default(PENDING)
+  createdAt   DateTime       @default(now())
+  updatedAt   DateTime       @updatedAt
   deletedAt   DateTime?
 
   user   User @relation(fields: [userId], references: [id])
@@ -194,7 +227,7 @@ model Libur {
 
 model Help {
   id        Int       @id @default(autoincrement())
-  deskripsi String
+  deskripsi String    @db.Text
   gambar    String?
   helpDate  DateTime  @default(now())
   createdAt DateTime  @default(now())
@@ -207,7 +240,7 @@ model Help {
 
 model Ticket {
   id         Int       @id @default(autoincrement())
-  deskripsi  String
+  deskripsi  String    @db.Text
   gambar     String?
   ticketDate DateTime
   createdAt  DateTime  @default(now())

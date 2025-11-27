@@ -19,6 +19,8 @@ export class SiteService {
         const newSite = await SiteRepository.create({
             name: createRequest.name,
             address: createRequest.address,
+            city: createRequest.city,
+            province: createRequest.province,
             latitude: createRequest.latitude,
             longitude: createRequest.longitude
         });
@@ -31,14 +33,15 @@ export class SiteService {
         }
     }
 
-    static async getAll(page, size) {
-        const queryData = { page, size }
-        const getRequest = SiteValidation.GET.parse(queryData);
+    static async getAll(parameter) {
+        const getRequest = SiteValidation.GET.parse(parameter);
         if(!getRequest){
             throw new ResponseError(400, "Invalid request data");
         }
 
-        const sites = await SiteRepository.findAll(queryData);
+        const { page, size } = getRequest;
+
+        const sites = await SiteRepository.findAll(getRequest);
         if (!sites) {
             throw new ResponseError (204, "No site found")
         }

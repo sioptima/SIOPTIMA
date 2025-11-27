@@ -1,0 +1,132 @@
+paths:
+  /api/admin/site:
+    post:
+      summary: Create a site
+      tags:
+        - Sites
+
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  example: Surabaya - Site A
+                address:
+                  type: string
+                  example: Jalan Mastrip No 40, Surabaya
+                city:
+                  type: string
+                  example: Surabaya
+                province:
+                  type: string
+                  example: Jawa Timur
+                latitude:
+                  type: number
+                  format: float
+                  example: -7.321725109341672
+                longitude:
+                  type: number
+                  format: float
+                  example: 112.70984636375198
+
+      responses:
+        '200':
+          description: Request confirmation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: Site created
+                  data:
+                    type: object
+                    properties:
+                      name:
+                        type: string
+                        example: Surabaya - Site A
+
+    get:
+      parameters:
+      - in: query
+        name: page
+        schema:
+          type: integer
+          description: Which page to show
+      - in: query
+        name: size
+        schema:
+          type: integer
+          description: Number of site to return
+      summary: Get all site information and total count
+      tags:
+        - Sites
+
+      responses:
+        '200':
+          description: List of sites
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: Sites retrieved
+                  data:
+                    type: object
+                    properties:
+                      result:
+                        type: object
+                        properties:
+                          count:
+                            type: string
+                            example: 5
+                          sites:
+                            type: array
+                            items:
+                              type: object
+                              properties:
+                                id:
+                                  type: number
+                                  example: 1
+                                name:
+                                  type: string
+                                  example: Surabaya - Site A
+                                image:
+                                  type: string
+                                  example: imagelink
+                                address:
+                                  type: string
+                                  example: Jalan Mastrip No 40, Surabaya
+                                latitude:
+                                  type: float
+                                  example: -7.321725109341672
+                                longitude:
+                                  type: float
+                                  example: 112.70984636375198
+                      paging:
+                        type: object
+                        properties:
+                          size:
+                            type: number
+                            example: 1
+                          total_page:
+                            type: number
+                            example: 5
+                          current_page:
+                            type: number
+                            example: 1
+
+

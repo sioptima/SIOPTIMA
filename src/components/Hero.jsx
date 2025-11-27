@@ -356,7 +356,7 @@ export default function Hero() {
       }
 
       console.log("Redirecting to:", data.redirectTo); 
-      router.push(data.result.role.toLowerCase());
+      router.push(data.data.role.toLowerCase());
       
     } catch (err) {
       console.error("Login error:", err);

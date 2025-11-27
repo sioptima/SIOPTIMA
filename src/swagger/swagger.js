@@ -20,6 +20,7 @@ const options = {
   apis: [
     `./src/swagger/auth.yaml`, 
     `./src/swagger/*.yaml`, 
+    `./src/swagger/**/*.yaml`, 
   ],
 };
 

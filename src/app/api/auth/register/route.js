@@ -1,28 +1,25 @@
-import { ResponseError } from "@/src/lib/response-error";
 import { requireRole } from "@/src/server/utils/auth";
 import { UserService } from "@/src/server/modules/user/user-service.js";
 
 export async function POST(request) {
     try {
-        const checkRole = await requireRole("ADMIN");
-        if (!checkRole){
-          throw new ResponseError(403, "Unauthorized")
-        }
+        await requireRole("ADMIN");
         const data = await request.json();
-        const user = await UserService.register(data);
+        const result = await UserService.register(data);
         return Response.json({
            success: true, 
            message: "User registered successfully" ,
-           result: user
+           data: result
           },
           { status: 200 }
         );
     } catch (error) {
-      return Response.json( 
-         {
+      return Response.json(
+        { 
           success: error.success,
-          message: error.errors || error.message || "Internal Server Error"},
-         {status: error.status || 500} 
-      );
+          code: error.status || 500,
+          message: error.issues || error.message || "Internal Server Error" },
+        { status: error.status || 500 }
+        );
     }
 }

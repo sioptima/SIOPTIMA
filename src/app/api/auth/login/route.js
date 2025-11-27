@@ -84,11 +84,11 @@ import { UserService } from "@/src/server/modules/user/user-service.js";
 export async function POST(request) {
   try {
     const data = await request.json();
-    const user = await UserService.login(data);
+    const result = await UserService.login(data);
     return Response.json({
        success: true, 
        message: "User logged in successfully" ,
-       result: user
+       data: result
       },
       { status: 200 }
     );
@@ -96,9 +96,10 @@ export async function POST(request) {
     return Response.json(
       { 
         success: error.success,
-        message: error.errors || error.message || "Internal Server Error" },
+        code: error.status || 500,
+        message: error.issues || error.message || "Internal Server Error" },
       { status: error.status || 500 }
-    );
+      );
   }
 }
 

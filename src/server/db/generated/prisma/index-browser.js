@@ -199,8 +199,8 @@ exports.Prisma.PresensiScalarFieldEnum = {
   latitude: 'latitude',
   longitude: 'longitude',
   fotoDiri: 'fotoDiri',
-  jenisPresensi: 'jenisPresensi',
   statusPresensi: 'statusPresensi',
+  statusApproval: 'statusApproval',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
   deletedAt: 'deletedAt',
@@ -210,16 +210,22 @@ exports.Prisma.PresensiScalarFieldEnum = {
 exports.Prisma.LaporanScalarFieldEnum = {
   id: 'id',
   fotoSampel: 'fotoSampel',
-  laporanStatus: 'laporanStatus',
   flowRate: 'flowRate',
   volt: 'volt',
   pH: 'pH',
+  ampere: 'ampere',
   TDS: 'TDS',
   EC: 'EC',
+  laporanStatus: 'laporanStatus',
+  agitatorStatus: 'agitatorStatus',
+  settleStatus: 'settleStatus',
+  outFilterStatus: 'outFilterStatus',
+  notes: 'notes',
   laporanDate: 'laporanDate',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
   deletedAt: 'deletedAt',
+  siteName: 'siteName',
   userId: 'userId'
 };
 
@@ -283,6 +289,29 @@ exports.RoleName = exports.$Enums.RoleName = {
   ADMIN: 'ADMIN',
   OPERATOR: 'OPERATOR',
   HRD: 'HRD'
+};
+
+exports.siteStatus = exports.$Enums.siteStatus = {
+  ACTIVE: 'ACTIVE',
+  MAINTENANCE: 'MAINTENANCE',
+  INACTIVE: 'INACTIVE'
+};
+
+exports.StatusPresensi = exports.$Enums.StatusPresensi = {
+  ONTIME: 'ONTIME',
+  LATE: 'LATE'
+};
+
+exports.StatusApproval = exports.$Enums.StatusApproval = {
+  APPROVED: 'APPROVED',
+  PENDING: 'PENDING',
+  REJECTED: 'REJECTED'
+};
+
+exports.EquipmentStatus = exports.$Enums.EquipmentStatus = {
+  NORMAL: 'NORMAL',
+  MAINTENANCE: 'MAINTENANCE',
+  BROKEN: 'BROKEN'
 };
 
 exports.Prisma.ModelName = {

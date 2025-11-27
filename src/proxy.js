@@ -75,20 +75,3 @@ export const config = {
     '/((?!_next/static|_next/image|favicon|api|hero|.well-known|marker-icon-2x|marker-shadow).*)',
   ],
 };
-
-
-
-
-
-//// MIDDLEWARE SEDERHANA UNTUK SEMENTARA - ini nanti bisa di comment out aja
-//import { NextResponse } from "next/server";
-//
-//export function middleware(request) {
-//  // Biarkan semua request lepas tanpa pengecekan
-//  return NextResponse.next();
-//}
-//
-//export const config = {
-//  matcher: "/",
-//};
-//// MIDDLEWARE SEDERHANA UNTUK SEMENTARA - ini nanti bisa di comment out aja

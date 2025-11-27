@@ -1,0 +1,305 @@
+paths:
+  /api/operator/report:
+    post:
+      summary: create a new report
+      tags:
+        - Report
+
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                siteName:
+                  type: string
+                  example: "Surabaya - Site A"
+                date:
+                  type: string
+                  format: date
+                  example: "2024-07-21"
+                time:
+                  type: string
+                  example: "08:30"
+                phLevel:
+                  type: number
+                  format: double
+                  example: 7.2
+                flowRate:
+                  type: number
+                  format: dobule
+                  example: 450
+                volt:
+                  type: number
+                  format: double
+                  example: 220
+                ampere:
+                  type: number
+                  format: double
+                  example: 15
+                tds:
+                  type: number
+                  format: double
+                  example: 480
+                ec:
+                  type: number
+                  format: double
+                  example: 720
+                agitatorStatus:
+                  type: string
+                  enum: [Normal, Maintenance, Broken]
+                  example: Normal
+                settleStatus:
+                  type: string
+                  enum: [Normal, Maintenance, Broken]
+                  example: Normal
+                outFilterStatus:
+                  type: string
+                  enum: [Normal, Maintenance, Broken]
+                  example: Normal
+                additionalNotes:
+                  type: string
+                  example: Semua parameter dalam batas normal
+                images:
+                  type: array
+                  items:
+                    type: string
+                    format: binary
+                  
+      responses:
+        '200':
+          description: Request confirmation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: Report submitted successfully
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                        example: 1
+                      date:
+                        type: string
+                        format: date
+                        example: "2024-01-27"
+                      time:
+                        type: string
+                        example: "08:30"
+                      status:
+                        type: string
+                        enum: [Approved, Pending, Rejected]
+                        example: submitted
+    
+    get:
+      parameters:
+      - in: query
+        name: page
+        schema:
+          type: integer
+          description: Which page to show
+      - in: query
+        name: size
+        schema:
+          type: integer
+          description: Number of report to return
+      summary: Get all current user report information
+      tags:
+        - Report
+
+      responses:
+        '200':
+          description: List of reports
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: Reports retrieved
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: number
+                          example: 1
+                        date:
+                          type: string
+                          format: date
+                          example: "2024-01-27"
+                        time:
+                          type: string
+                          example: "08:30"
+                        site:
+                          type: string
+                          example: "Jakarta Utara - Site A"
+                        operator:
+                          type: string
+                          example: "Budi Santoso"
+                        pH:
+                          type: number
+                          format: double
+                          example: 7.2
+                        flowRate:
+                          type: number
+                          format: double
+                          example: 450
+                        volt:
+                          type: number
+                          format: double
+                          example: 220
+                        ampere:
+                          type: number
+                          example: 15
+                        tds:
+                          type: number
+                          example: 480
+                        ec:
+                          type: number
+                          example: 720
+                        agitatorStatus:
+                          type: string
+                          enum: ["Normal", "Broken", "Maintenance"]
+                          example: "Normal"
+                        settleStatus:
+                          type: string
+                          enum: ["Normal", "Broken", "Maintenance"]
+                          example: "Normal"
+                        outFilterStatus:
+                          type: string
+                          enum: ["Normal", "Broken", "Maintenance"]
+                          example: "Normal"
+                        additionalNotes:
+                          type: string
+                          example: "OK"
+                        status:
+                          type: string
+                          example: submitted
+                        images:
+                          type: array
+                          items:
+                            type: string
+                          example: ["link", "link"]
+                  pagination:
+                    type: object
+                    properties:
+                      page:
+                        type: number
+                        example: 1
+                      limit:
+                        type: number
+                        example: 10
+                      total:
+                        type: number
+                        example: 5
+                      total_page:
+                        type: number
+                        example: 1
+
+  /api/operator/report/{id}:
+    get:
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+          description: Report's id to search
+      summary: Get report by id
+      tags:
+        - Report
+
+      responses:
+        '200':
+          description: Report information
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: Report retrieved
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: number
+                        example: 1
+                      date:
+                        type: string
+                        format: date
+                        example: "2024-01-27"
+                      time:
+                        type: string
+                        example: "08:30"
+                      site:
+                        type: string
+                        example: "Jakarta Utara - Site A"
+                      operator:
+                        type: string
+                        example: "Budi Santoso"
+                      pH:
+                        type: number
+                        format: double
+                        example: 7.2
+                      flowRate:
+                        type: number
+                        format: double
+                        example: 450
+                      volt:
+                        type: number
+                        format: double
+                        example: 220
+                      ampere:
+                        type: number
+                        example: 15
+                      tds:
+                        type: number
+                        example: 480
+                      ec:
+                        type: number
+                        example: 720
+                      agitatorStatus:
+                        type: string
+                        enum: ["Normal", "Broken", "Maintenance"]
+                        example: "Normal"
+                      settleStatus:
+                        type: string
+                        enum: ["Normal", "Broken", "Maintenance"]
+                        example: "Normal"
+                      outFilterStatus:
+                        type: string
+                        enum: ["Normal", "Broken", "Maintenance"]
+                        example: "Normal"
+                      additionalNotes:
+                        type: string
+                        example: "OK"
+                      status:
+                        type: string
+                        example: submitted
+                      images:
+                        type: array
+                        items:
+                          type: string
+                        example: ["link", "link"]
+                      createdAt:
+                        type: string
+                        format: date-time
+                        example: "2024-01-27T08:30:00Z"

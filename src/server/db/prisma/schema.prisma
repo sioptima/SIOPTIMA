@@ -96,6 +96,8 @@ model Site {
 
   users             User[]
 
+  report            Laporan[]
+
   shift             JadwalShift[]
 }
 
@@ -175,14 +177,14 @@ enum EquipmentStatus {
 
 model Laporan {
   id                Int             @id @default(autoincrement())
-  fotoSampel        String?
-  laporanStatus     Boolean         @default(false)
+  fotoSampel        String[]
   flowRate          Float
   volt              Float
   pH                Float
   ampere            Float
   TDS               Float
   EC                Float
+  laporanStatus     StatusApproval  @default(PENDING)
   agitatorStatus    EquipmentStatus @default(NORMAL)
   settleStatus      EquipmentStatus @default(NORMAL)
   outFilterStatus   EquipmentStatus @default(NORMAL)
@@ -191,6 +193,9 @@ model Laporan {
   createdAt         DateTime        @default(now())
   updatedAt         DateTime        @updatedAt
   deletedAt         DateTime?
+  
+  site              Site            @relation(fields: [siteName], references: [name])
+  siteName          String
 
   user              User            @relation(fields: [userId], references: [id])
   userId            Int

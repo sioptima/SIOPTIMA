@@ -12,10 +12,13 @@ paths:
               schema:
                 type: object
                 properties:
+                  success:
+                    type: boolean
+                    example: true
                   message:
                     type: string
                     example: User retrieved
-                  result:
+                  data:
                     type: object
                     properties:
                       userId:
@@ -53,10 +56,13 @@ paths:
               schema:
                 type: object
                 properties:
+                  success:
+                    type: boolean
+                    example: true
                   message:
                     type: string
                     example: "User logged in successfully"
-                  result:
+                  data:
                     type: object
                     properties:
                       userId:
@@ -80,6 +86,9 @@ paths:
               schema:
                 type: object
                 properties:
+                  success:
+                    type: boolean
+                    message: true
                   message:
                     type: string
                     example: "User logged out"
@@ -115,10 +124,13 @@ paths:
               schema:
                 type: object
                 properties:
+                  success:
+                    type: boolean
+                    example: true
                   message:
                     type: string
                     example: "User registered successfully"
-                  result:
+                  data:
                     type: object
                     properties:
                       userId:
