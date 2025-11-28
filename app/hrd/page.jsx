@@ -1965,11 +1965,11 @@ export default function HRD() {
                     className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg text-left transition
                       ${
                         activeMenu === item.id
-                          ? "bg-green-800 text-teal-100 border-r-2 border-teal-900"
+                          ? "bg-green-800 text-green-50 border-teal-900"
                           : "text-gray-800 hover:bg-gray-100"
                       }`}
                   >
-                    <Icon className="w-5 h-5 text-gray-800" />
+                    <Icon className="w-5 h-5 text-green-400"  />
                     <span className="whitespace-nowrap">{item.name}</span>
                   </button>
                 </li>

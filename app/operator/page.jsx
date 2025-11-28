@@ -9989,7 +9989,7 @@ export default function Operator() {
                     }}
                     className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg text-left transition ${
                       activeMenu === item.id
-                        ? "bg-cyan-500 text-cyan-100 border-r-2 border-cyan-900"
+                        ? "bg-cyan-500 text-cyan-100 border-cyan-900"
                         : "text-gray-800 hover:bg-cyan-100"
                     }`}
                   >
@@ -10166,3 +10166,4 @@ export default function Operator() {
     </div>
   );
 }
+
