@@ -13,7 +13,7 @@ export class SiteService {
         
         const site = await SiteRepository.findByName(createRequest.name);
         if (site) {
-            throw new ResponseError (404, "Site by this name already exist")
+            throw new ResponseError (409, "Site by this name already exist")
         }
         
         const newSite = await SiteRepository.create({
