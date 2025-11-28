@@ -4850,7 +4850,7 @@ export default function Admin() {
                 </div>
               </div>
 
-             {/* Report Status - PERBAIKAN: Layout responsive untuk pie chart */}
+             {/* Report Status - PERBAIKAN: Layout responsive untuk pie chartt */}
 <div className="bg-white p-4 sm:p-6 rounded-2xl border border-gray-200 shadow-md">
   {/* PERBAIKAN: Tambahkan tanggal seperti di HRD */}
   <div className="flex justify-between items-center mb-4 sm:mb-5">
