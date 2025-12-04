@@ -92,13 +92,13 @@ export namespace $Enums {
 export type RoleName = (typeof RoleName)[keyof typeof RoleName]
 
 
-export const siteStatus: {
+export const SiteStatus: {
   ACTIVE: 'ACTIVE',
   MAINTENANCE: 'MAINTENANCE',
   INACTIVE: 'INACTIVE'
 };
 
-export type siteStatus = (typeof siteStatus)[keyof typeof siteStatus]
+export type SiteStatus = (typeof SiteStatus)[keyof typeof SiteStatus]
 
 
 export const StatusApproval: {
@@ -132,9 +132,9 @@ export type RoleName = $Enums.RoleName
 
 export const RoleName: typeof $Enums.RoleName
 
-export type siteStatus = $Enums.siteStatus
+export type SiteStatus = $Enums.SiteStatus
 
-export const siteStatus: typeof $Enums.siteStatus
+export const SiteStatus: typeof $Enums.SiteStatus
 
 export type StatusApproval = $Enums.StatusApproval
 
@@ -2025,6 +2025,7 @@ export namespace Prisma {
     sites: number
     shift: number
     presensi: number
+    approve: number
     laporan: number
     ijin: number
     libur: number
@@ -2036,6 +2037,7 @@ export namespace Prisma {
     sites?: boolean | UserCountOutputTypeCountSitesArgs
     shift?: boolean | UserCountOutputTypeCountShiftArgs
     presensi?: boolean | UserCountOutputTypeCountPresensiArgs
+    approve?: boolean | UserCountOutputTypeCountApproveArgs
     laporan?: boolean | UserCountOutputTypeCountLaporanArgs
     ijin?: boolean | UserCountOutputTypeCountIjinArgs
     libur?: boolean | UserCountOutputTypeCountLiburArgs
@@ -2072,6 +2074,13 @@ export namespace Prisma {
    * UserCountOutputType without action
    */
   export type UserCountOutputTypeCountPresensiArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: PresensiWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountApproveArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: PresensiWhereInput
   }
 
@@ -2139,6 +2148,37 @@ export namespace Prisma {
    */
   export type RoleCountOutputTypeCountUsersArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: UserWhereInput
+  }
+
+
+  /**
+   * Count Type JadwalShiftCountOutputType
+   */
+
+  export type JadwalShiftCountOutputType = {
+    presensi: number
+  }
+
+  export type JadwalShiftCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    presensi?: boolean | JadwalShiftCountOutputTypeCountPresensiArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * JadwalShiftCountOutputType without action
+   */
+  export type JadwalShiftCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the JadwalShiftCountOutputType
+     */
+    select?: JadwalShiftCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * JadwalShiftCountOutputType without action
+   */
+  export type JadwalShiftCountOutputTypeCountPresensiArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: PresensiWhereInput
   }
 
 
@@ -2418,6 +2458,7 @@ export namespace Prisma {
     sites?: boolean | User$sitesArgs<ExtArgs>
     shift?: boolean | User$shiftArgs<ExtArgs>
     presensi?: boolean | User$presensiArgs<ExtArgs>
+    approve?: boolean | User$approveArgs<ExtArgs>
     laporan?: boolean | User$laporanArgs<ExtArgs>
     ijin?: boolean | User$ijinArgs<ExtArgs>
     libur?: boolean | User$liburArgs<ExtArgs>
@@ -2465,6 +2506,7 @@ export namespace Prisma {
     sites?: boolean | User$sitesArgs<ExtArgs>
     shift?: boolean | User$shiftArgs<ExtArgs>
     presensi?: boolean | User$presensiArgs<ExtArgs>
+    approve?: boolean | User$approveArgs<ExtArgs>
     laporan?: boolean | User$laporanArgs<ExtArgs>
     ijin?: boolean | User$ijinArgs<ExtArgs>
     libur?: boolean | User$liburArgs<ExtArgs>
@@ -2487,6 +2529,7 @@ export namespace Prisma {
       sites: Prisma.$SitePayload<ExtArgs>[]
       shift: Prisma.$JadwalShiftPayload<ExtArgs>[]
       presensi: Prisma.$PresensiPayload<ExtArgs>[]
+      approve: Prisma.$PresensiPayload<ExtArgs>[]
       laporan: Prisma.$LaporanPayload<ExtArgs>[]
       ijin: Prisma.$IjinPayload<ExtArgs>[]
       libur: Prisma.$LiburPayload<ExtArgs>[]
@@ -2900,6 +2943,7 @@ export namespace Prisma {
     sites<T extends User$sitesArgs<ExtArgs> = {}>(args?: Subset<T, User$sitesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SitePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     shift<T extends User$shiftArgs<ExtArgs> = {}>(args?: Subset<T, User$shiftArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$JadwalShiftPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     presensi<T extends User$presensiArgs<ExtArgs> = {}>(args?: Subset<T, User$presensiArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PresensiPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    approve<T extends User$approveArgs<ExtArgs> = {}>(args?: Subset<T, User$approveArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PresensiPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     laporan<T extends User$laporanArgs<ExtArgs> = {}>(args?: Subset<T, User$laporanArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$LaporanPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     ijin<T extends User$ijinArgs<ExtArgs> = {}>(args?: Subset<T, User$ijinArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$IjinPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     libur<T extends User$liburArgs<ExtArgs> = {}>(args?: Subset<T, User$liburArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$LiburPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
@@ -3407,6 +3451,30 @@ export namespace Prisma {
    * User.presensi
    */
   export type User$presensiArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Presensi
+     */
+    select?: PresensiSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Presensi
+     */
+    omit?: PresensiOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PresensiInclude<ExtArgs> | null
+    where?: PresensiWhereInput
+    orderBy?: PresensiOrderByWithRelationInput | PresensiOrderByWithRelationInput[]
+    cursor?: PresensiWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: PresensiScalarFieldEnum | PresensiScalarFieldEnum[]
+  }
+
+  /**
+   * User.approve
+   */
+  export type User$approveArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the Presensi
      */
@@ -4894,6 +4962,8 @@ export namespace Prisma {
     siteId?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
     site?: boolean | SiteDefaultArgs<ExtArgs>
+    presensi?: boolean | JadwalShift$presensiArgs<ExtArgs>
+    _count?: boolean | JadwalShiftCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["jadwalShift"]>
 
   export type JadwalShiftSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -4934,6 +5004,8 @@ export namespace Prisma {
   export type JadwalShiftInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | UserDefaultArgs<ExtArgs>
     site?: boolean | SiteDefaultArgs<ExtArgs>
+    presensi?: boolean | JadwalShift$presensiArgs<ExtArgs>
+    _count?: boolean | JadwalShiftCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type JadwalShiftIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | UserDefaultArgs<ExtArgs>
@@ -4949,6 +5021,7 @@ export namespace Prisma {
     objects: {
       user: Prisma.$UserPayload<ExtArgs>
       site: Prisma.$SitePayload<ExtArgs>
+      presensi: Prisma.$PresensiPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: number
@@ -5354,6 +5427,7 @@ export namespace Prisma {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     site<T extends SiteDefaultArgs<ExtArgs> = {}>(args?: Subset<T, SiteDefaultArgs<ExtArgs>>): Prisma__SiteClient<$Result.GetResult<Prisma.$SitePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    presensi<T extends JadwalShift$presensiArgs<ExtArgs> = {}>(args?: Subset<T, JadwalShift$presensiArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PresensiPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -5786,6 +5860,30 @@ export namespace Prisma {
   }
 
   /**
+   * JadwalShift.presensi
+   */
+  export type JadwalShift$presensiArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Presensi
+     */
+    select?: PresensiSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Presensi
+     */
+    omit?: PresensiOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PresensiInclude<ExtArgs> | null
+    where?: PresensiWhereInput
+    orderBy?: PresensiOrderByWithRelationInput | PresensiOrderByWithRelationInput[]
+    cursor?: PresensiWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: PresensiScalarFieldEnum | PresensiScalarFieldEnum[]
+  }
+
+  /**
    * JadwalShift without action
    */
   export type JadwalShiftDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -5830,7 +5928,7 @@ export namespace Prisma {
     id: number | null
     name: string | null
     image: string | null
-    status: $Enums.siteStatus | null
+    status: $Enums.SiteStatus | null
     createdAt: Date | null
     updatedAt: Date | null
     deletedAt: Date | null
@@ -5841,7 +5939,7 @@ export namespace Prisma {
     id: number | null
     name: string | null
     image: string | null
-    status: $Enums.siteStatus | null
+    status: $Enums.SiteStatus | null
     createdAt: Date | null
     updatedAt: Date | null
     deletedAt: Date | null
@@ -5995,7 +6093,7 @@ export namespace Prisma {
     id: number
     name: string
     image: string | null
-    status: $Enums.siteStatus
+    status: $Enums.SiteStatus
     createdAt: Date
     updatedAt: Date
     deletedAt: Date | null
@@ -6099,7 +6197,7 @@ export namespace Prisma {
       id: number
       name: string
       image: string | null
-      status: $Enums.siteStatus
+      status: $Enums.SiteStatus
       createdAt: Date
       updatedAt: Date
       deletedAt: Date | null
@@ -6534,7 +6632,7 @@ export namespace Prisma {
     readonly id: FieldRef<"Site", 'Int'>
     readonly name: FieldRef<"Site", 'String'>
     readonly image: FieldRef<"Site", 'String'>
-    readonly status: FieldRef<"Site", 'siteStatus'>
+    readonly status: FieldRef<"Site", 'SiteStatus'>
     readonly createdAt: FieldRef<"Site", 'DateTime'>
     readonly updatedAt: FieldRef<"Site", 'DateTime'>
     readonly deletedAt: FieldRef<"Site", 'DateTime'>
@@ -10478,14 +10576,18 @@ export namespace Prisma {
     id: number | null
     latitude: number | null
     longitude: number | null
+    shiftid: number | null
     userId: number | null
+    approvedBy: number | null
   }
 
   export type PresensiSumAggregateOutputType = {
     id: number | null
     latitude: number | null
     longitude: number | null
+    shiftid: number | null
     userId: number | null
+    approvedBy: number | null
   }
 
   export type PresensiMinAggregateOutputType = {
@@ -10496,10 +10598,13 @@ export namespace Prisma {
     fotoDiri: string | null
     statusPresensi: $Enums.StatusPresensi | null
     statusApproval: $Enums.StatusApproval | null
+    approvedAt: Date | null
     createdAt: Date | null
     updatedAt: Date | null
     deletedAt: Date | null
+    shiftid: number | null
     userId: number | null
+    approvedBy: number | null
   }
 
   export type PresensiMaxAggregateOutputType = {
@@ -10510,10 +10615,13 @@ export namespace Prisma {
     fotoDiri: string | null
     statusPresensi: $Enums.StatusPresensi | null
     statusApproval: $Enums.StatusApproval | null
+    approvedAt: Date | null
     createdAt: Date | null
     updatedAt: Date | null
     deletedAt: Date | null
+    shiftid: number | null
     userId: number | null
+    approvedBy: number | null
   }
 
   export type PresensiCountAggregateOutputType = {
@@ -10524,10 +10632,13 @@ export namespace Prisma {
     fotoDiri: number
     statusPresensi: number
     statusApproval: number
+    approvedAt: number
     createdAt: number
     updatedAt: number
     deletedAt: number
+    shiftid: number
     userId: number
+    approvedBy: number
     _all: number
   }
 
@@ -10536,14 +10647,18 @@ export namespace Prisma {
     id?: true
     latitude?: true
     longitude?: true
+    shiftid?: true
     userId?: true
+    approvedBy?: true
   }
 
   export type PresensiSumAggregateInputType = {
     id?: true
     latitude?: true
     longitude?: true
+    shiftid?: true
     userId?: true
+    approvedBy?: true
   }
 
   export type PresensiMinAggregateInputType = {
@@ -10554,10 +10669,13 @@ export namespace Prisma {
     fotoDiri?: true
     statusPresensi?: true
     statusApproval?: true
+    approvedAt?: true
     createdAt?: true
     updatedAt?: true
     deletedAt?: true
+    shiftid?: true
     userId?: true
+    approvedBy?: true
   }
 
   export type PresensiMaxAggregateInputType = {
@@ -10568,10 +10686,13 @@ export namespace Prisma {
     fotoDiri?: true
     statusPresensi?: true
     statusApproval?: true
+    approvedAt?: true
     createdAt?: true
     updatedAt?: true
     deletedAt?: true
+    shiftid?: true
     userId?: true
+    approvedBy?: true
   }
 
   export type PresensiCountAggregateInputType = {
@@ -10582,10 +10703,13 @@ export namespace Prisma {
     fotoDiri?: true
     statusPresensi?: true
     statusApproval?: true
+    approvedAt?: true
     createdAt?: true
     updatedAt?: true
     deletedAt?: true
+    shiftid?: true
     userId?: true
+    approvedBy?: true
     _all?: true
   }
 
@@ -10683,10 +10807,13 @@ export namespace Prisma {
     fotoDiri: string | null
     statusPresensi: $Enums.StatusPresensi
     statusApproval: $Enums.StatusApproval
+    approvedAt: Date | null
     createdAt: Date
     updatedAt: Date
     deletedAt: Date | null
+    shiftid: number
     userId: number
+    approvedBy: number | null
     _count: PresensiCountAggregateOutputType | null
     _avg: PresensiAvgAggregateOutputType | null
     _sum: PresensiSumAggregateOutputType | null
@@ -10716,11 +10843,16 @@ export namespace Prisma {
     fotoDiri?: boolean
     statusPresensi?: boolean
     statusApproval?: boolean
+    approvedAt?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     deletedAt?: boolean
+    shiftid?: boolean
     userId?: boolean
+    approvedBy?: boolean
+    shift?: boolean | JadwalShiftDefaultArgs<ExtArgs>
     user?: boolean | UserDefaultArgs<ExtArgs>
+    approver?: boolean | Presensi$approverArgs<ExtArgs>
   }, ExtArgs["result"]["presensi"]>
 
   export type PresensiSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -10731,11 +10863,16 @@ export namespace Prisma {
     fotoDiri?: boolean
     statusPresensi?: boolean
     statusApproval?: boolean
+    approvedAt?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     deletedAt?: boolean
+    shiftid?: boolean
     userId?: boolean
+    approvedBy?: boolean
+    shift?: boolean | JadwalShiftDefaultArgs<ExtArgs>
     user?: boolean | UserDefaultArgs<ExtArgs>
+    approver?: boolean | Presensi$approverArgs<ExtArgs>
   }, ExtArgs["result"]["presensi"]>
 
   export type PresensiSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -10746,11 +10883,16 @@ export namespace Prisma {
     fotoDiri?: boolean
     statusPresensi?: boolean
     statusApproval?: boolean
+    approvedAt?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     deletedAt?: boolean
+    shiftid?: boolean
     userId?: boolean
+    approvedBy?: boolean
+    shift?: boolean | JadwalShiftDefaultArgs<ExtArgs>
     user?: boolean | UserDefaultArgs<ExtArgs>
+    approver?: boolean | Presensi$approverArgs<ExtArgs>
   }, ExtArgs["result"]["presensi"]>
 
   export type PresensiSelectScalar = {
@@ -10761,27 +10903,38 @@ export namespace Prisma {
     fotoDiri?: boolean
     statusPresensi?: boolean
     statusApproval?: boolean
+    approvedAt?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     deletedAt?: boolean
+    shiftid?: boolean
     userId?: boolean
+    approvedBy?: boolean
   }
 
-  export type PresensiOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "presensiDate" | "latitude" | "longitude" | "fotoDiri" | "statusPresensi" | "statusApproval" | "createdAt" | "updatedAt" | "deletedAt" | "userId", ExtArgs["result"]["presensi"]>
+  export type PresensiOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "presensiDate" | "latitude" | "longitude" | "fotoDiri" | "statusPresensi" | "statusApproval" | "approvedAt" | "createdAt" | "updatedAt" | "deletedAt" | "shiftid" | "userId" | "approvedBy", ExtArgs["result"]["presensi"]>
   export type PresensiInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    shift?: boolean | JadwalShiftDefaultArgs<ExtArgs>
     user?: boolean | UserDefaultArgs<ExtArgs>
+    approver?: boolean | Presensi$approverArgs<ExtArgs>
   }
   export type PresensiIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    shift?: boolean | JadwalShiftDefaultArgs<ExtArgs>
     user?: boolean | UserDefaultArgs<ExtArgs>
+    approver?: boolean | Presensi$approverArgs<ExtArgs>
   }
   export type PresensiIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    shift?: boolean | JadwalShiftDefaultArgs<ExtArgs>
     user?: boolean | UserDefaultArgs<ExtArgs>
+    approver?: boolean | Presensi$approverArgs<ExtArgs>
   }
 
   export type $PresensiPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Presensi"
     objects: {
+      shift: Prisma.$JadwalShiftPayload<ExtArgs>
       user: Prisma.$UserPayload<ExtArgs>
+      approver: Prisma.$UserPayload<ExtArgs> | null
     }
     scalars: $Extensions.GetPayloadResult<{
       id: number
@@ -10791,10 +10944,13 @@ export namespace Prisma {
       fotoDiri: string | null
       statusPresensi: $Enums.StatusPresensi
       statusApproval: $Enums.StatusApproval
+      approvedAt: Date | null
       createdAt: Date
       updatedAt: Date
       deletedAt: Date | null
+      shiftid: number
       userId: number
+      approvedBy: number | null
     }, ExtArgs["result"]["presensi"]>
     composites: {}
   }
@@ -11189,7 +11345,9 @@ export namespace Prisma {
    */
   export interface Prisma__PresensiClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
+    shift<T extends JadwalShiftDefaultArgs<ExtArgs> = {}>(args?: Subset<T, JadwalShiftDefaultArgs<ExtArgs>>): Prisma__JadwalShiftClient<$Result.GetResult<Prisma.$JadwalShiftPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    approver<T extends Presensi$approverArgs<ExtArgs> = {}>(args?: Subset<T, Presensi$approverArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -11221,15 +11379,18 @@ export namespace Prisma {
   interface PresensiFieldRefs {
     readonly id: FieldRef<"Presensi", 'Int'>
     readonly presensiDate: FieldRef<"Presensi", 'DateTime'>
-    readonly latitude: FieldRef<"Presensi", 'Int'>
-    readonly longitude: FieldRef<"Presensi", 'Int'>
+    readonly latitude: FieldRef<"Presensi", 'Float'>
+    readonly longitude: FieldRef<"Presensi", 'Float'>
     readonly fotoDiri: FieldRef<"Presensi", 'String'>
     readonly statusPresensi: FieldRef<"Presensi", 'StatusPresensi'>
     readonly statusApproval: FieldRef<"Presensi", 'StatusApproval'>
+    readonly approvedAt: FieldRef<"Presensi", 'DateTime'>
     readonly createdAt: FieldRef<"Presensi", 'DateTime'>
     readonly updatedAt: FieldRef<"Presensi", 'DateTime'>
     readonly deletedAt: FieldRef<"Presensi", 'DateTime'>
+    readonly shiftid: FieldRef<"Presensi", 'Int'>
     readonly userId: FieldRef<"Presensi", 'Int'>
+    readonly approvedBy: FieldRef<"Presensi", 'Int'>
   }
     
 
@@ -11623,6 +11784,25 @@ export namespace Prisma {
      * Limit how many Presensis to delete.
      */
     limit?: number
+  }
+
+  /**
+   * Presensi.approver
+   */
+  export type Presensi$approverArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the User
+     */
+    select?: UserSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the User
+     */
+    omit?: UserOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserInclude<ExtArgs> | null
+    where?: UserWhereInput
   }
 
   /**
@@ -17579,10 +17759,13 @@ export namespace Prisma {
     fotoDiri: 'fotoDiri',
     statusPresensi: 'statusPresensi',
     statusApproval: 'statusApproval',
+    approvedAt: 'approvedAt',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt',
     deletedAt: 'deletedAt',
-    userId: 'userId'
+    shiftid: 'shiftid',
+    userId: 'userId',
+    approvedBy: 'approvedBy'
   };
 
   export type PresensiScalarFieldEnum = (typeof PresensiScalarFieldEnum)[keyof typeof PresensiScalarFieldEnum]
@@ -17753,16 +17936,16 @@ export namespace Prisma {
 
 
   /**
-   * Reference to a field of type 'siteStatus'
+   * Reference to a field of type 'SiteStatus'
    */
-  export type EnumsiteStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'siteStatus'>
+  export type EnumSiteStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'SiteStatus'>
     
 
 
   /**
-   * Reference to a field of type 'siteStatus[]'
+   * Reference to a field of type 'SiteStatus[]'
    */
-  export type ListEnumsiteStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'siteStatus[]'>
+  export type ListEnumSiteStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'SiteStatus[]'>
     
 
 
@@ -17841,6 +18024,7 @@ export namespace Prisma {
     sites?: SiteListRelationFilter
     shift?: JadwalShiftListRelationFilter
     presensi?: PresensiListRelationFilter
+    approve?: PresensiListRelationFilter
     laporan?: LaporanListRelationFilter
     ijin?: IjinListRelationFilter
     libur?: LiburListRelationFilter
@@ -17861,6 +18045,7 @@ export namespace Prisma {
     sites?: SiteOrderByRelationAggregateInput
     shift?: JadwalShiftOrderByRelationAggregateInput
     presensi?: PresensiOrderByRelationAggregateInput
+    approve?: PresensiOrderByRelationAggregateInput
     laporan?: LaporanOrderByRelationAggregateInput
     ijin?: IjinOrderByRelationAggregateInput
     libur?: LiburOrderByRelationAggregateInput
@@ -17884,6 +18069,7 @@ export namespace Prisma {
     sites?: SiteListRelationFilter
     shift?: JadwalShiftListRelationFilter
     presensi?: PresensiListRelationFilter
+    approve?: PresensiListRelationFilter
     laporan?: LaporanListRelationFilter
     ijin?: IjinListRelationFilter
     libur?: LiburListRelationFilter
@@ -17989,6 +18175,7 @@ export namespace Prisma {
     siteId?: IntFilter<"JadwalShift"> | number
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
     site?: XOR<SiteScalarRelationFilter, SiteWhereInput>
+    presensi?: PresensiListRelationFilter
   }
 
   export type JadwalShiftOrderByWithRelationInput = {
@@ -18001,6 +18188,7 @@ export namespace Prisma {
     siteId?: SortOrder
     user?: UserOrderByWithRelationInput
     site?: SiteOrderByWithRelationInput
+    presensi?: PresensiOrderByRelationAggregateInput
   }
 
   export type JadwalShiftWhereUniqueInput = Prisma.AtLeast<{
@@ -18016,6 +18204,7 @@ export namespace Prisma {
     siteId?: IntFilter<"JadwalShift"> | number
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
     site?: XOR<SiteScalarRelationFilter, SiteWhereInput>
+    presensi?: PresensiListRelationFilter
   }, "id">
 
   export type JadwalShiftOrderByWithAggregationInput = {
@@ -18053,7 +18242,7 @@ export namespace Prisma {
     id?: IntFilter<"Site"> | number
     name?: StringFilter<"Site"> | string
     image?: StringNullableFilter<"Site"> | string | null
-    status?: EnumsiteStatusFilter<"Site"> | $Enums.siteStatus
+    status?: EnumSiteStatusFilter<"Site"> | $Enums.SiteStatus
     createdAt?: DateTimeFilter<"Site"> | Date | string
     updatedAt?: DateTimeFilter<"Site"> | Date | string
     deletedAt?: DateTimeNullableFilter<"Site"> | Date | string | null
@@ -18087,7 +18276,7 @@ export namespace Prisma {
     OR?: SiteWhereInput[]
     NOT?: SiteWhereInput | SiteWhereInput[]
     image?: StringNullableFilter<"Site"> | string | null
-    status?: EnumsiteStatusFilter<"Site"> | $Enums.siteStatus
+    status?: EnumSiteStatusFilter<"Site"> | $Enums.SiteStatus
     createdAt?: DateTimeFilter<"Site"> | Date | string
     updatedAt?: DateTimeFilter<"Site"> | Date | string
     deletedAt?: DateTimeNullableFilter<"Site"> | Date | string | null
@@ -18120,7 +18309,7 @@ export namespace Prisma {
     id?: IntWithAggregatesFilter<"Site"> | number
     name?: StringWithAggregatesFilter<"Site"> | string
     image?: StringNullableWithAggregatesFilter<"Site"> | string | null
-    status?: EnumsiteStatusWithAggregatesFilter<"Site"> | $Enums.siteStatus
+    status?: EnumSiteStatusWithAggregatesFilter<"Site"> | $Enums.SiteStatus
     createdAt?: DateTimeWithAggregatesFilter<"Site"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Site"> | Date | string
     deletedAt?: DateTimeNullableWithAggregatesFilter<"Site"> | Date | string | null
@@ -18352,16 +18541,21 @@ export namespace Prisma {
     NOT?: PresensiWhereInput | PresensiWhereInput[]
     id?: IntFilter<"Presensi"> | number
     presensiDate?: DateTimeFilter<"Presensi"> | Date | string
-    latitude?: IntFilter<"Presensi"> | number
-    longitude?: IntFilter<"Presensi"> | number
+    latitude?: FloatFilter<"Presensi"> | number
+    longitude?: FloatFilter<"Presensi"> | number
     fotoDiri?: StringNullableFilter<"Presensi"> | string | null
     statusPresensi?: EnumStatusPresensiFilter<"Presensi"> | $Enums.StatusPresensi
     statusApproval?: EnumStatusApprovalFilter<"Presensi"> | $Enums.StatusApproval
+    approvedAt?: DateTimeNullableFilter<"Presensi"> | Date | string | null
     createdAt?: DateTimeFilter<"Presensi"> | Date | string
     updatedAt?: DateTimeFilter<"Presensi"> | Date | string
     deletedAt?: DateTimeNullableFilter<"Presensi"> | Date | string | null
+    shiftid?: IntFilter<"Presensi"> | number
     userId?: IntFilter<"Presensi"> | number
+    approvedBy?: IntNullableFilter<"Presensi"> | number | null
+    shift?: XOR<JadwalShiftScalarRelationFilter, JadwalShiftWhereInput>
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
+    approver?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
   }
 
   export type PresensiOrderByWithRelationInput = {
@@ -18372,11 +18566,16 @@ export namespace Prisma {
     fotoDiri?: SortOrderInput | SortOrder
     statusPresensi?: SortOrder
     statusApproval?: SortOrder
+    approvedAt?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     deletedAt?: SortOrderInput | SortOrder
+    shiftid?: SortOrder
     userId?: SortOrder
+    approvedBy?: SortOrderInput | SortOrder
+    shift?: JadwalShiftOrderByWithRelationInput
     user?: UserOrderByWithRelationInput
+    approver?: UserOrderByWithRelationInput
   }
 
   export type PresensiWhereUniqueInput = Prisma.AtLeast<{
@@ -18385,16 +18584,21 @@ export namespace Prisma {
     OR?: PresensiWhereInput[]
     NOT?: PresensiWhereInput | PresensiWhereInput[]
     presensiDate?: DateTimeFilter<"Presensi"> | Date | string
-    latitude?: IntFilter<"Presensi"> | number
-    longitude?: IntFilter<"Presensi"> | number
+    latitude?: FloatFilter<"Presensi"> | number
+    longitude?: FloatFilter<"Presensi"> | number
     fotoDiri?: StringNullableFilter<"Presensi"> | string | null
     statusPresensi?: EnumStatusPresensiFilter<"Presensi"> | $Enums.StatusPresensi
     statusApproval?: EnumStatusApprovalFilter<"Presensi"> | $Enums.StatusApproval
+    approvedAt?: DateTimeNullableFilter<"Presensi"> | Date | string | null
     createdAt?: DateTimeFilter<"Presensi"> | Date | string
     updatedAt?: DateTimeFilter<"Presensi"> | Date | string
     deletedAt?: DateTimeNullableFilter<"Presensi"> | Date | string | null
+    shiftid?: IntFilter<"Presensi"> | number
     userId?: IntFilter<"Presensi"> | number
+    approvedBy?: IntNullableFilter<"Presensi"> | number | null
+    shift?: XOR<JadwalShiftScalarRelationFilter, JadwalShiftWhereInput>
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
+    approver?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
   }, "id">
 
   export type PresensiOrderByWithAggregationInput = {
@@ -18405,10 +18609,13 @@ export namespace Prisma {
     fotoDiri?: SortOrderInput | SortOrder
     statusPresensi?: SortOrder
     statusApproval?: SortOrder
+    approvedAt?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     deletedAt?: SortOrderInput | SortOrder
+    shiftid?: SortOrder
     userId?: SortOrder
+    approvedBy?: SortOrderInput | SortOrder
     _count?: PresensiCountOrderByAggregateInput
     _avg?: PresensiAvgOrderByAggregateInput
     _max?: PresensiMaxOrderByAggregateInput
@@ -18422,15 +18629,18 @@ export namespace Prisma {
     NOT?: PresensiScalarWhereWithAggregatesInput | PresensiScalarWhereWithAggregatesInput[]
     id?: IntWithAggregatesFilter<"Presensi"> | number
     presensiDate?: DateTimeWithAggregatesFilter<"Presensi"> | Date | string
-    latitude?: IntWithAggregatesFilter<"Presensi"> | number
-    longitude?: IntWithAggregatesFilter<"Presensi"> | number
+    latitude?: FloatWithAggregatesFilter<"Presensi"> | number
+    longitude?: FloatWithAggregatesFilter<"Presensi"> | number
     fotoDiri?: StringNullableWithAggregatesFilter<"Presensi"> | string | null
     statusPresensi?: EnumStatusPresensiWithAggregatesFilter<"Presensi"> | $Enums.StatusPresensi
     statusApproval?: EnumStatusApprovalWithAggregatesFilter<"Presensi"> | $Enums.StatusApproval
+    approvedAt?: DateTimeNullableWithAggregatesFilter<"Presensi"> | Date | string | null
     createdAt?: DateTimeWithAggregatesFilter<"Presensi"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Presensi"> | Date | string
     deletedAt?: DateTimeNullableWithAggregatesFilter<"Presensi"> | Date | string | null
+    shiftid?: IntWithAggregatesFilter<"Presensi"> | number
     userId?: IntWithAggregatesFilter<"Presensi"> | number
+    approvedBy?: IntNullableWithAggregatesFilter<"Presensi"> | number | null
   }
 
   export type LaporanWhereInput = {
@@ -18852,6 +19062,7 @@ export namespace Prisma {
     sites?: SiteCreateNestedManyWithoutUsersInput
     shift?: JadwalShiftCreateNestedManyWithoutUserInput
     presensi?: PresensiCreateNestedManyWithoutUserInput
+    approve?: PresensiCreateNestedManyWithoutApproverInput
     laporan?: LaporanCreateNestedManyWithoutUserInput
     ijin?: IjinCreateNestedManyWithoutUserInput
     libur?: LiburCreateNestedManyWithoutUserInput
@@ -18871,6 +19082,7 @@ export namespace Prisma {
     sites?: SiteUncheckedCreateNestedManyWithoutUsersInput
     shift?: JadwalShiftUncheckedCreateNestedManyWithoutUserInput
     presensi?: PresensiUncheckedCreateNestedManyWithoutUserInput
+    approve?: PresensiUncheckedCreateNestedManyWithoutApproverInput
     laporan?: LaporanUncheckedCreateNestedManyWithoutUserInput
     ijin?: IjinUncheckedCreateNestedManyWithoutUserInput
     libur?: LiburUncheckedCreateNestedManyWithoutUserInput
@@ -18889,6 +19101,7 @@ export namespace Prisma {
     sites?: SiteUpdateManyWithoutUsersNestedInput
     shift?: JadwalShiftUpdateManyWithoutUserNestedInput
     presensi?: PresensiUpdateManyWithoutUserNestedInput
+    approve?: PresensiUpdateManyWithoutApproverNestedInput
     laporan?: LaporanUpdateManyWithoutUserNestedInput
     ijin?: IjinUpdateManyWithoutUserNestedInput
     libur?: LiburUpdateManyWithoutUserNestedInput
@@ -18908,6 +19121,7 @@ export namespace Prisma {
     sites?: SiteUncheckedUpdateManyWithoutUsersNestedInput
     shift?: JadwalShiftUncheckedUpdateManyWithoutUserNestedInput
     presensi?: PresensiUncheckedUpdateManyWithoutUserNestedInput
+    approve?: PresensiUncheckedUpdateManyWithoutApproverNestedInput
     laporan?: LaporanUncheckedUpdateManyWithoutUserNestedInput
     ijin?: IjinUncheckedUpdateManyWithoutUserNestedInput
     libur?: LiburUncheckedUpdateManyWithoutUserNestedInput
@@ -19007,6 +19221,7 @@ export namespace Prisma {
     deletedAt?: Date | string | null
     user: UserCreateNestedOneWithoutShiftInput
     site: SiteCreateNestedOneWithoutShiftInput
+    presensi?: PresensiCreateNestedManyWithoutShiftInput
   }
 
   export type JadwalShiftUncheckedCreateInput = {
@@ -19017,6 +19232,7 @@ export namespace Prisma {
     deletedAt?: Date | string | null
     userId: number
     siteId: number
+    presensi?: PresensiUncheckedCreateNestedManyWithoutShiftInput
   }
 
   export type JadwalShiftUpdateInput = {
@@ -19026,6 +19242,7 @@ export namespace Prisma {
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     user?: UserUpdateOneRequiredWithoutShiftNestedInput
     site?: SiteUpdateOneRequiredWithoutShiftNestedInput
+    presensi?: PresensiUpdateManyWithoutShiftNestedInput
   }
 
   export type JadwalShiftUncheckedUpdateInput = {
@@ -19036,6 +19253,7 @@ export namespace Prisma {
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     userId?: IntFieldUpdateOperationsInput | number
     siteId?: IntFieldUpdateOperationsInput | number
+    presensi?: PresensiUncheckedUpdateManyWithoutShiftNestedInput
   }
 
   export type JadwalShiftCreateManyInput = {
@@ -19068,7 +19286,7 @@ export namespace Prisma {
   export type SiteCreateInput = {
     name: string
     image?: string | null
-    status?: $Enums.siteStatus
+    status?: $Enums.SiteStatus
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
@@ -19082,7 +19300,7 @@ export namespace Prisma {
     id?: number
     name: string
     image?: string | null
-    status?: $Enums.siteStatus
+    status?: $Enums.SiteStatus
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
@@ -19095,7 +19313,7 @@ export namespace Prisma {
   export type SiteUpdateInput = {
     name?: StringFieldUpdateOperationsInput | string
     image?: NullableStringFieldUpdateOperationsInput | string | null
-    status?: EnumsiteStatusFieldUpdateOperationsInput | $Enums.siteStatus
+    status?: EnumSiteStatusFieldUpdateOperationsInput | $Enums.SiteStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -19109,7 +19327,7 @@ export namespace Prisma {
     id?: IntFieldUpdateOperationsInput | number
     name?: StringFieldUpdateOperationsInput | string
     image?: NullableStringFieldUpdateOperationsInput | string | null
-    status?: EnumsiteStatusFieldUpdateOperationsInput | $Enums.siteStatus
+    status?: EnumSiteStatusFieldUpdateOperationsInput | $Enums.SiteStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -19123,7 +19341,7 @@ export namespace Prisma {
     id?: number
     name: string
     image?: string | null
-    status?: $Enums.siteStatus
+    status?: $Enums.SiteStatus
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
@@ -19133,7 +19351,7 @@ export namespace Prisma {
   export type SiteUpdateManyMutationInput = {
     name?: StringFieldUpdateOperationsInput | string
     image?: NullableStringFieldUpdateOperationsInput | string | null
-    status?: EnumsiteStatusFieldUpdateOperationsInput | $Enums.siteStatus
+    status?: EnumSiteStatusFieldUpdateOperationsInput | $Enums.SiteStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -19143,7 +19361,7 @@ export namespace Prisma {
     id?: IntFieldUpdateOperationsInput | number
     name?: StringFieldUpdateOperationsInput | string
     image?: NullableStringFieldUpdateOperationsInput | string | null
-    status?: EnumsiteStatusFieldUpdateOperationsInput | $Enums.siteStatus
+    status?: EnumSiteStatusFieldUpdateOperationsInput | $Enums.SiteStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -19385,10 +19603,13 @@ export namespace Prisma {
     fotoDiri?: string | null
     statusPresensi: $Enums.StatusPresensi
     statusApproval?: $Enums.StatusApproval
+    approvedAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
+    shift: JadwalShiftCreateNestedOneWithoutPresensiInput
     user: UserCreateNestedOneWithoutPresensiInput
+    approver?: UserCreateNestedOneWithoutApproveInput
   }
 
   export type PresensiUncheckedCreateInput = {
@@ -19399,37 +19620,46 @@ export namespace Prisma {
     fotoDiri?: string | null
     statusPresensi: $Enums.StatusPresensi
     statusApproval?: $Enums.StatusApproval
+    approvedAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
+    shiftid: number
     userId: number
+    approvedBy?: number | null
   }
 
   export type PresensiUpdateInput = {
     presensiDate?: DateTimeFieldUpdateOperationsInput | Date | string
-    latitude?: IntFieldUpdateOperationsInput | number
-    longitude?: IntFieldUpdateOperationsInput | number
+    latitude?: FloatFieldUpdateOperationsInput | number
+    longitude?: FloatFieldUpdateOperationsInput | number
     fotoDiri?: NullableStringFieldUpdateOperationsInput | string | null
     statusPresensi?: EnumStatusPresensiFieldUpdateOperationsInput | $Enums.StatusPresensi
     statusApproval?: EnumStatusApprovalFieldUpdateOperationsInput | $Enums.StatusApproval
+    approvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    shift?: JadwalShiftUpdateOneRequiredWithoutPresensiNestedInput
     user?: UserUpdateOneRequiredWithoutPresensiNestedInput
+    approver?: UserUpdateOneWithoutApproveNestedInput
   }
 
   export type PresensiUncheckedUpdateInput = {
     id?: IntFieldUpdateOperationsInput | number
     presensiDate?: DateTimeFieldUpdateOperationsInput | Date | string
-    latitude?: IntFieldUpdateOperationsInput | number
-    longitude?: IntFieldUpdateOperationsInput | number
+    latitude?: FloatFieldUpdateOperationsInput | number
+    longitude?: FloatFieldUpdateOperationsInput | number
     fotoDiri?: NullableStringFieldUpdateOperationsInput | string | null
     statusPresensi?: EnumStatusPresensiFieldUpdateOperationsInput | $Enums.StatusPresensi
     statusApproval?: EnumStatusApprovalFieldUpdateOperationsInput | $Enums.StatusApproval
+    approvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    shiftid?: IntFieldUpdateOperationsInput | number
     userId?: IntFieldUpdateOperationsInput | number
+    approvedBy?: NullableIntFieldUpdateOperationsInput | number | null
   }
 
   export type PresensiCreateManyInput = {
@@ -19440,19 +19670,23 @@ export namespace Prisma {
     fotoDiri?: string | null
     statusPresensi: $Enums.StatusPresensi
     statusApproval?: $Enums.StatusApproval
+    approvedAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
+    shiftid: number
     userId: number
+    approvedBy?: number | null
   }
 
   export type PresensiUpdateManyMutationInput = {
     presensiDate?: DateTimeFieldUpdateOperationsInput | Date | string
-    latitude?: IntFieldUpdateOperationsInput | number
-    longitude?: IntFieldUpdateOperationsInput | number
+    latitude?: FloatFieldUpdateOperationsInput | number
+    longitude?: FloatFieldUpdateOperationsInput | number
     fotoDiri?: NullableStringFieldUpdateOperationsInput | string | null
     statusPresensi?: EnumStatusPresensiFieldUpdateOperationsInput | $Enums.StatusPresensi
     statusApproval?: EnumStatusApprovalFieldUpdateOperationsInput | $Enums.StatusApproval
+    approvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -19461,15 +19695,18 @@ export namespace Prisma {
   export type PresensiUncheckedUpdateManyInput = {
     id?: IntFieldUpdateOperationsInput | number
     presensiDate?: DateTimeFieldUpdateOperationsInput | Date | string
-    latitude?: IntFieldUpdateOperationsInput | number
-    longitude?: IntFieldUpdateOperationsInput | number
+    latitude?: FloatFieldUpdateOperationsInput | number
+    longitude?: FloatFieldUpdateOperationsInput | number
     fotoDiri?: NullableStringFieldUpdateOperationsInput | string | null
     statusPresensi?: EnumStatusPresensiFieldUpdateOperationsInput | $Enums.StatusPresensi
     statusApproval?: EnumStatusApprovalFieldUpdateOperationsInput | $Enums.StatusApproval
+    approvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    shiftid?: IntFieldUpdateOperationsInput | number
     userId?: IntFieldUpdateOperationsInput | number
+    approvedBy?: NullableIntFieldUpdateOperationsInput | number | null
   }
 
   export type LaporanCreateInput = {
@@ -20270,11 +20507,11 @@ export namespace Prisma {
     not?: NestedStringNullableFilter<$PrismaModel> | string | null
   }
 
-  export type EnumsiteStatusFilter<$PrismaModel = never> = {
-    equals?: $Enums.siteStatus | EnumsiteStatusFieldRefInput<$PrismaModel>
-    in?: $Enums.siteStatus[] | ListEnumsiteStatusFieldRefInput<$PrismaModel>
-    notIn?: $Enums.siteStatus[] | ListEnumsiteStatusFieldRefInput<$PrismaModel>
-    not?: NestedEnumsiteStatusFilter<$PrismaModel> | $Enums.siteStatus
+  export type EnumSiteStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.SiteStatus | EnumSiteStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.SiteStatus[] | ListEnumSiteStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.SiteStatus[] | ListEnumSiteStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumSiteStatusFilter<$PrismaModel> | $Enums.SiteStatus
   }
 
   export type SiteAddressScalarRelationFilter = {
@@ -20343,14 +20580,14 @@ export namespace Prisma {
     _max?: NestedStringNullableFilter<$PrismaModel>
   }
 
-  export type EnumsiteStatusWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: $Enums.siteStatus | EnumsiteStatusFieldRefInput<$PrismaModel>
-    in?: $Enums.siteStatus[] | ListEnumsiteStatusFieldRefInput<$PrismaModel>
-    notIn?: $Enums.siteStatus[] | ListEnumsiteStatusFieldRefInput<$PrismaModel>
-    not?: NestedEnumsiteStatusWithAggregatesFilter<$PrismaModel> | $Enums.siteStatus
+  export type EnumSiteStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.SiteStatus | EnumSiteStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.SiteStatus[] | ListEnumSiteStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.SiteStatus[] | ListEnumSiteStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumSiteStatusWithAggregatesFilter<$PrismaModel> | $Enums.SiteStatus
     _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedEnumsiteStatusFilter<$PrismaModel>
-    _max?: NestedEnumsiteStatusFilter<$PrismaModel>
+    _min?: NestedEnumSiteStatusFilter<$PrismaModel>
+    _max?: NestedEnumSiteStatusFilter<$PrismaModel>
   }
 
   export type FloatFilter<$PrismaModel = never> = {
@@ -20540,6 +20777,27 @@ export namespace Prisma {
     not?: NestedEnumStatusApprovalFilter<$PrismaModel> | $Enums.StatusApproval
   }
 
+  export type IntNullableFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel> | null
+    in?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntNullableFilter<$PrismaModel> | number | null
+  }
+
+  export type JadwalShiftScalarRelationFilter = {
+    is?: JadwalShiftWhereInput
+    isNot?: JadwalShiftWhereInput
+  }
+
+  export type UserNullableScalarRelationFilter = {
+    is?: UserWhereInput | null
+    isNot?: UserWhereInput | null
+  }
+
   export type PresensiCountOrderByAggregateInput = {
     id?: SortOrder
     presensiDate?: SortOrder
@@ -20548,17 +20806,22 @@ export namespace Prisma {
     fotoDiri?: SortOrder
     statusPresensi?: SortOrder
     statusApproval?: SortOrder
+    approvedAt?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     deletedAt?: SortOrder
+    shiftid?: SortOrder
     userId?: SortOrder
+    approvedBy?: SortOrder
   }
 
   export type PresensiAvgOrderByAggregateInput = {
     id?: SortOrder
     latitude?: SortOrder
     longitude?: SortOrder
+    shiftid?: SortOrder
     userId?: SortOrder
+    approvedBy?: SortOrder
   }
 
   export type PresensiMaxOrderByAggregateInput = {
@@ -20569,10 +20832,13 @@ export namespace Prisma {
     fotoDiri?: SortOrder
     statusPresensi?: SortOrder
     statusApproval?: SortOrder
+    approvedAt?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     deletedAt?: SortOrder
+    shiftid?: SortOrder
     userId?: SortOrder
+    approvedBy?: SortOrder
   }
 
   export type PresensiMinOrderByAggregateInput = {
@@ -20583,17 +20849,22 @@ export namespace Prisma {
     fotoDiri?: SortOrder
     statusPresensi?: SortOrder
     statusApproval?: SortOrder
+    approvedAt?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     deletedAt?: SortOrder
+    shiftid?: SortOrder
     userId?: SortOrder
+    approvedBy?: SortOrder
   }
 
   export type PresensiSumOrderByAggregateInput = {
     id?: SortOrder
     latitude?: SortOrder
     longitude?: SortOrder
+    shiftid?: SortOrder
     userId?: SortOrder
+    approvedBy?: SortOrder
   }
 
   export type EnumStatusPresensiWithAggregatesFilter<$PrismaModel = never> = {
@@ -20614,6 +20885,22 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedEnumStatusApprovalFilter<$PrismaModel>
     _max?: NestedEnumStatusApprovalFilter<$PrismaModel>
+  }
+
+  export type IntNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel> | null
+    in?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntNullableWithAggregatesFilter<$PrismaModel> | number | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _avg?: NestedFloatNullableFilter<$PrismaModel>
+    _sum?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedIntNullableFilter<$PrismaModel>
+    _max?: NestedIntNullableFilter<$PrismaModel>
   }
 
   export type StringNullableListFilter<$PrismaModel = never> = {
@@ -20925,6 +21212,13 @@ export namespace Prisma {
     connect?: PresensiWhereUniqueInput | PresensiWhereUniqueInput[]
   }
 
+  export type PresensiCreateNestedManyWithoutApproverInput = {
+    create?: XOR<PresensiCreateWithoutApproverInput, PresensiUncheckedCreateWithoutApproverInput> | PresensiCreateWithoutApproverInput[] | PresensiUncheckedCreateWithoutApproverInput[]
+    connectOrCreate?: PresensiCreateOrConnectWithoutApproverInput | PresensiCreateOrConnectWithoutApproverInput[]
+    createMany?: PresensiCreateManyApproverInputEnvelope
+    connect?: PresensiWhereUniqueInput | PresensiWhereUniqueInput[]
+  }
+
   export type LaporanCreateNestedManyWithoutUserInput = {
     create?: XOR<LaporanCreateWithoutUserInput, LaporanUncheckedCreateWithoutUserInput> | LaporanCreateWithoutUserInput[] | LaporanUncheckedCreateWithoutUserInput[]
     connectOrCreate?: LaporanCreateOrConnectWithoutUserInput | LaporanCreateOrConnectWithoutUserInput[]
@@ -20983,6 +21277,13 @@ export namespace Prisma {
     create?: XOR<PresensiCreateWithoutUserInput, PresensiUncheckedCreateWithoutUserInput> | PresensiCreateWithoutUserInput[] | PresensiUncheckedCreateWithoutUserInput[]
     connectOrCreate?: PresensiCreateOrConnectWithoutUserInput | PresensiCreateOrConnectWithoutUserInput[]
     createMany?: PresensiCreateManyUserInputEnvelope
+    connect?: PresensiWhereUniqueInput | PresensiWhereUniqueInput[]
+  }
+
+  export type PresensiUncheckedCreateNestedManyWithoutApproverInput = {
+    create?: XOR<PresensiCreateWithoutApproverInput, PresensiUncheckedCreateWithoutApproverInput> | PresensiCreateWithoutApproverInput[] | PresensiUncheckedCreateWithoutApproverInput[]
+    connectOrCreate?: PresensiCreateOrConnectWithoutApproverInput | PresensiCreateOrConnectWithoutApproverInput[]
+    createMany?: PresensiCreateManyApproverInputEnvelope
     connect?: PresensiWhereUniqueInput | PresensiWhereUniqueInput[]
   }
 
@@ -21089,6 +21390,20 @@ export namespace Prisma {
     connect?: PresensiWhereUniqueInput | PresensiWhereUniqueInput[]
     update?: PresensiUpdateWithWhereUniqueWithoutUserInput | PresensiUpdateWithWhereUniqueWithoutUserInput[]
     updateMany?: PresensiUpdateManyWithWhereWithoutUserInput | PresensiUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: PresensiScalarWhereInput | PresensiScalarWhereInput[]
+  }
+
+  export type PresensiUpdateManyWithoutApproverNestedInput = {
+    create?: XOR<PresensiCreateWithoutApproverInput, PresensiUncheckedCreateWithoutApproverInput> | PresensiCreateWithoutApproverInput[] | PresensiUncheckedCreateWithoutApproverInput[]
+    connectOrCreate?: PresensiCreateOrConnectWithoutApproverInput | PresensiCreateOrConnectWithoutApproverInput[]
+    upsert?: PresensiUpsertWithWhereUniqueWithoutApproverInput | PresensiUpsertWithWhereUniqueWithoutApproverInput[]
+    createMany?: PresensiCreateManyApproverInputEnvelope
+    set?: PresensiWhereUniqueInput | PresensiWhereUniqueInput[]
+    disconnect?: PresensiWhereUniqueInput | PresensiWhereUniqueInput[]
+    delete?: PresensiWhereUniqueInput | PresensiWhereUniqueInput[]
+    connect?: PresensiWhereUniqueInput | PresensiWhereUniqueInput[]
+    update?: PresensiUpdateWithWhereUniqueWithoutApproverInput | PresensiUpdateWithWhereUniqueWithoutApproverInput[]
+    updateMany?: PresensiUpdateManyWithWhereWithoutApproverInput | PresensiUpdateManyWithWhereWithoutApproverInput[]
     deleteMany?: PresensiScalarWhereInput | PresensiScalarWhereInput[]
   }
 
@@ -21221,6 +21536,20 @@ export namespace Prisma {
     deleteMany?: PresensiScalarWhereInput | PresensiScalarWhereInput[]
   }
 
+  export type PresensiUncheckedUpdateManyWithoutApproverNestedInput = {
+    create?: XOR<PresensiCreateWithoutApproverInput, PresensiUncheckedCreateWithoutApproverInput> | PresensiCreateWithoutApproverInput[] | PresensiUncheckedCreateWithoutApproverInput[]
+    connectOrCreate?: PresensiCreateOrConnectWithoutApproverInput | PresensiCreateOrConnectWithoutApproverInput[]
+    upsert?: PresensiUpsertWithWhereUniqueWithoutApproverInput | PresensiUpsertWithWhereUniqueWithoutApproverInput[]
+    createMany?: PresensiCreateManyApproverInputEnvelope
+    set?: PresensiWhereUniqueInput | PresensiWhereUniqueInput[]
+    disconnect?: PresensiWhereUniqueInput | PresensiWhereUniqueInput[]
+    delete?: PresensiWhereUniqueInput | PresensiWhereUniqueInput[]
+    connect?: PresensiWhereUniqueInput | PresensiWhereUniqueInput[]
+    update?: PresensiUpdateWithWhereUniqueWithoutApproverInput | PresensiUpdateWithWhereUniqueWithoutApproverInput[]
+    updateMany?: PresensiUpdateManyWithWhereWithoutApproverInput | PresensiUpdateManyWithWhereWithoutApproverInput[]
+    deleteMany?: PresensiScalarWhereInput | PresensiScalarWhereInput[]
+  }
+
   export type LaporanUncheckedUpdateManyWithoutUserNestedInput = {
     create?: XOR<LaporanCreateWithoutUserInput, LaporanUncheckedCreateWithoutUserInput> | LaporanCreateWithoutUserInput[] | LaporanUncheckedCreateWithoutUserInput[]
     connectOrCreate?: LaporanCreateOrConnectWithoutUserInput | LaporanCreateOrConnectWithoutUserInput[]
@@ -21349,6 +21678,20 @@ export namespace Prisma {
     connect?: SiteWhereUniqueInput
   }
 
+  export type PresensiCreateNestedManyWithoutShiftInput = {
+    create?: XOR<PresensiCreateWithoutShiftInput, PresensiUncheckedCreateWithoutShiftInput> | PresensiCreateWithoutShiftInput[] | PresensiUncheckedCreateWithoutShiftInput[]
+    connectOrCreate?: PresensiCreateOrConnectWithoutShiftInput | PresensiCreateOrConnectWithoutShiftInput[]
+    createMany?: PresensiCreateManyShiftInputEnvelope
+    connect?: PresensiWhereUniqueInput | PresensiWhereUniqueInput[]
+  }
+
+  export type PresensiUncheckedCreateNestedManyWithoutShiftInput = {
+    create?: XOR<PresensiCreateWithoutShiftInput, PresensiUncheckedCreateWithoutShiftInput> | PresensiCreateWithoutShiftInput[] | PresensiUncheckedCreateWithoutShiftInput[]
+    connectOrCreate?: PresensiCreateOrConnectWithoutShiftInput | PresensiCreateOrConnectWithoutShiftInput[]
+    createMany?: PresensiCreateManyShiftInputEnvelope
+    connect?: PresensiWhereUniqueInput | PresensiWhereUniqueInput[]
+  }
+
   export type UserUpdateOneRequiredWithoutShiftNestedInput = {
     create?: XOR<UserCreateWithoutShiftInput, UserUncheckedCreateWithoutShiftInput>
     connectOrCreate?: UserCreateOrConnectWithoutShiftInput
@@ -21363,6 +21706,34 @@ export namespace Prisma {
     upsert?: SiteUpsertWithoutShiftInput
     connect?: SiteWhereUniqueInput
     update?: XOR<XOR<SiteUpdateToOneWithWhereWithoutShiftInput, SiteUpdateWithoutShiftInput>, SiteUncheckedUpdateWithoutShiftInput>
+  }
+
+  export type PresensiUpdateManyWithoutShiftNestedInput = {
+    create?: XOR<PresensiCreateWithoutShiftInput, PresensiUncheckedCreateWithoutShiftInput> | PresensiCreateWithoutShiftInput[] | PresensiUncheckedCreateWithoutShiftInput[]
+    connectOrCreate?: PresensiCreateOrConnectWithoutShiftInput | PresensiCreateOrConnectWithoutShiftInput[]
+    upsert?: PresensiUpsertWithWhereUniqueWithoutShiftInput | PresensiUpsertWithWhereUniqueWithoutShiftInput[]
+    createMany?: PresensiCreateManyShiftInputEnvelope
+    set?: PresensiWhereUniqueInput | PresensiWhereUniqueInput[]
+    disconnect?: PresensiWhereUniqueInput | PresensiWhereUniqueInput[]
+    delete?: PresensiWhereUniqueInput | PresensiWhereUniqueInput[]
+    connect?: PresensiWhereUniqueInput | PresensiWhereUniqueInput[]
+    update?: PresensiUpdateWithWhereUniqueWithoutShiftInput | PresensiUpdateWithWhereUniqueWithoutShiftInput[]
+    updateMany?: PresensiUpdateManyWithWhereWithoutShiftInput | PresensiUpdateManyWithWhereWithoutShiftInput[]
+    deleteMany?: PresensiScalarWhereInput | PresensiScalarWhereInput[]
+  }
+
+  export type PresensiUncheckedUpdateManyWithoutShiftNestedInput = {
+    create?: XOR<PresensiCreateWithoutShiftInput, PresensiUncheckedCreateWithoutShiftInput> | PresensiCreateWithoutShiftInput[] | PresensiUncheckedCreateWithoutShiftInput[]
+    connectOrCreate?: PresensiCreateOrConnectWithoutShiftInput | PresensiCreateOrConnectWithoutShiftInput[]
+    upsert?: PresensiUpsertWithWhereUniqueWithoutShiftInput | PresensiUpsertWithWhereUniqueWithoutShiftInput[]
+    createMany?: PresensiCreateManyShiftInputEnvelope
+    set?: PresensiWhereUniqueInput | PresensiWhereUniqueInput[]
+    disconnect?: PresensiWhereUniqueInput | PresensiWhereUniqueInput[]
+    delete?: PresensiWhereUniqueInput | PresensiWhereUniqueInput[]
+    connect?: PresensiWhereUniqueInput | PresensiWhereUniqueInput[]
+    update?: PresensiUpdateWithWhereUniqueWithoutShiftInput | PresensiUpdateWithWhereUniqueWithoutShiftInput[]
+    updateMany?: PresensiUpdateManyWithWhereWithoutShiftInput | PresensiUpdateManyWithWhereWithoutShiftInput[]
+    deleteMany?: PresensiScalarWhereInput | PresensiScalarWhereInput[]
   }
 
   export type SiteAddressCreateNestedOneWithoutSiteInput = {
@@ -21415,8 +21786,8 @@ export namespace Prisma {
     set?: string | null
   }
 
-  export type EnumsiteStatusFieldUpdateOperationsInput = {
-    set?: $Enums.siteStatus
+  export type EnumSiteStatusFieldUpdateOperationsInput = {
+    set?: $Enums.SiteStatus
   }
 
   export type SiteAddressUpdateOneRequiredWithoutSiteNestedInput = {
@@ -21609,9 +21980,21 @@ export namespace Prisma {
     update?: XOR<XOR<ProfileUpdateToOneWithWhereWithoutAddressInput, ProfileUpdateWithoutAddressInput>, ProfileUncheckedUpdateWithoutAddressInput>
   }
 
+  export type JadwalShiftCreateNestedOneWithoutPresensiInput = {
+    create?: XOR<JadwalShiftCreateWithoutPresensiInput, JadwalShiftUncheckedCreateWithoutPresensiInput>
+    connectOrCreate?: JadwalShiftCreateOrConnectWithoutPresensiInput
+    connect?: JadwalShiftWhereUniqueInput
+  }
+
   export type UserCreateNestedOneWithoutPresensiInput = {
     create?: XOR<UserCreateWithoutPresensiInput, UserUncheckedCreateWithoutPresensiInput>
     connectOrCreate?: UserCreateOrConnectWithoutPresensiInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type UserCreateNestedOneWithoutApproveInput = {
+    create?: XOR<UserCreateWithoutApproveInput, UserUncheckedCreateWithoutApproveInput>
+    connectOrCreate?: UserCreateOrConnectWithoutApproveInput
     connect?: UserWhereUniqueInput
   }
 
@@ -21623,12 +22006,38 @@ export namespace Prisma {
     set?: $Enums.StatusApproval
   }
 
+  export type JadwalShiftUpdateOneRequiredWithoutPresensiNestedInput = {
+    create?: XOR<JadwalShiftCreateWithoutPresensiInput, JadwalShiftUncheckedCreateWithoutPresensiInput>
+    connectOrCreate?: JadwalShiftCreateOrConnectWithoutPresensiInput
+    upsert?: JadwalShiftUpsertWithoutPresensiInput
+    connect?: JadwalShiftWhereUniqueInput
+    update?: XOR<XOR<JadwalShiftUpdateToOneWithWhereWithoutPresensiInput, JadwalShiftUpdateWithoutPresensiInput>, JadwalShiftUncheckedUpdateWithoutPresensiInput>
+  }
+
   export type UserUpdateOneRequiredWithoutPresensiNestedInput = {
     create?: XOR<UserCreateWithoutPresensiInput, UserUncheckedCreateWithoutPresensiInput>
     connectOrCreate?: UserCreateOrConnectWithoutPresensiInput
     upsert?: UserUpsertWithoutPresensiInput
     connect?: UserWhereUniqueInput
     update?: XOR<XOR<UserUpdateToOneWithWhereWithoutPresensiInput, UserUpdateWithoutPresensiInput>, UserUncheckedUpdateWithoutPresensiInput>
+  }
+
+  export type UserUpdateOneWithoutApproveNestedInput = {
+    create?: XOR<UserCreateWithoutApproveInput, UserUncheckedCreateWithoutApproveInput>
+    connectOrCreate?: UserCreateOrConnectWithoutApproveInput
+    upsert?: UserUpsertWithoutApproveInput
+    disconnect?: UserWhereInput | boolean
+    delete?: UserWhereInput | boolean
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutApproveInput, UserUpdateWithoutApproveInput>, UserUncheckedUpdateWithoutApproveInput>
+  }
+
+  export type NullableIntFieldUpdateOperationsInput = {
+    set?: number | null
+    increment?: number
+    decrement?: number
+    multiply?: number
+    divide?: number
   }
 
   export type LaporanCreatefotoSampelInput = {
@@ -21889,11 +22298,11 @@ export namespace Prisma {
     not?: NestedStringNullableFilter<$PrismaModel> | string | null
   }
 
-  export type NestedEnumsiteStatusFilter<$PrismaModel = never> = {
-    equals?: $Enums.siteStatus | EnumsiteStatusFieldRefInput<$PrismaModel>
-    in?: $Enums.siteStatus[] | ListEnumsiteStatusFieldRefInput<$PrismaModel>
-    notIn?: $Enums.siteStatus[] | ListEnumsiteStatusFieldRefInput<$PrismaModel>
-    not?: NestedEnumsiteStatusFilter<$PrismaModel> | $Enums.siteStatus
+  export type NestedEnumSiteStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.SiteStatus | EnumSiteStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.SiteStatus[] | ListEnumSiteStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.SiteStatus[] | ListEnumSiteStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumSiteStatusFilter<$PrismaModel> | $Enums.SiteStatus
   }
 
   export type NestedStringNullableWithAggregatesFilter<$PrismaModel = never> = {
@@ -21913,14 +22322,14 @@ export namespace Prisma {
     _max?: NestedStringNullableFilter<$PrismaModel>
   }
 
-  export type NestedEnumsiteStatusWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: $Enums.siteStatus | EnumsiteStatusFieldRefInput<$PrismaModel>
-    in?: $Enums.siteStatus[] | ListEnumsiteStatusFieldRefInput<$PrismaModel>
-    notIn?: $Enums.siteStatus[] | ListEnumsiteStatusFieldRefInput<$PrismaModel>
-    not?: NestedEnumsiteStatusWithAggregatesFilter<$PrismaModel> | $Enums.siteStatus
+  export type NestedEnumSiteStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.SiteStatus | EnumSiteStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.SiteStatus[] | ListEnumSiteStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.SiteStatus[] | ListEnumSiteStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumSiteStatusWithAggregatesFilter<$PrismaModel> | $Enums.SiteStatus
     _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedEnumsiteStatusFilter<$PrismaModel>
-    _max?: NestedEnumsiteStatusFilter<$PrismaModel>
+    _min?: NestedEnumSiteStatusFilter<$PrismaModel>
+    _max?: NestedEnumSiteStatusFilter<$PrismaModel>
   }
 
   export type NestedFloatWithAggregatesFilter<$PrismaModel = never> = {
@@ -21971,6 +22380,33 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedEnumStatusApprovalFilter<$PrismaModel>
     _max?: NestedEnumStatusApprovalFilter<$PrismaModel>
+  }
+
+  export type NestedIntNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel> | null
+    in?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntNullableWithAggregatesFilter<$PrismaModel> | number | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _avg?: NestedFloatNullableFilter<$PrismaModel>
+    _sum?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedIntNullableFilter<$PrismaModel>
+    _max?: NestedIntNullableFilter<$PrismaModel>
+  }
+
+  export type NestedFloatNullableFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel> | null
+    in?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
+    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
+    lt?: number | FloatFieldRefInput<$PrismaModel>
+    lte?: number | FloatFieldRefInput<$PrismaModel>
+    gt?: number | FloatFieldRefInput<$PrismaModel>
+    gte?: number | FloatFieldRefInput<$PrismaModel>
+    not?: NestedFloatNullableFilter<$PrismaModel> | number | null
   }
 
   export type NestedEnumEquipmentStatusFilter<$PrismaModel = never> = {
@@ -22037,7 +22473,7 @@ export namespace Prisma {
   export type SiteCreateWithoutUsersInput = {
     name: string
     image?: string | null
-    status?: $Enums.siteStatus
+    status?: $Enums.SiteStatus
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
@@ -22050,7 +22486,7 @@ export namespace Prisma {
     id?: number
     name: string
     image?: string | null
-    status?: $Enums.siteStatus
+    status?: $Enums.SiteStatus
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
@@ -22070,6 +22506,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     deletedAt?: Date | string | null
     site: SiteCreateNestedOneWithoutShiftInput
+    presensi?: PresensiCreateNestedManyWithoutShiftInput
   }
 
   export type JadwalShiftUncheckedCreateWithoutUserInput = {
@@ -22079,6 +22516,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     deletedAt?: Date | string | null
     siteId: number
+    presensi?: PresensiUncheckedCreateNestedManyWithoutShiftInput
   }
 
   export type JadwalShiftCreateOrConnectWithoutUserInput = {
@@ -22098,9 +22536,12 @@ export namespace Prisma {
     fotoDiri?: string | null
     statusPresensi: $Enums.StatusPresensi
     statusApproval?: $Enums.StatusApproval
+    approvedAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
+    shift: JadwalShiftCreateNestedOneWithoutPresensiInput
+    approver?: UserCreateNestedOneWithoutApproveInput
   }
 
   export type PresensiUncheckedCreateWithoutUserInput = {
@@ -22111,9 +22552,12 @@ export namespace Prisma {
     fotoDiri?: string | null
     statusPresensi: $Enums.StatusPresensi
     statusApproval?: $Enums.StatusApproval
+    approvedAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
+    shiftid: number
+    approvedBy?: number | null
   }
 
   export type PresensiCreateOrConnectWithoutUserInput = {
@@ -22123,6 +22567,47 @@ export namespace Prisma {
 
   export type PresensiCreateManyUserInputEnvelope = {
     data: PresensiCreateManyUserInput | PresensiCreateManyUserInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type PresensiCreateWithoutApproverInput = {
+    presensiDate: Date | string
+    latitude: number
+    longitude: number
+    fotoDiri?: string | null
+    statusPresensi: $Enums.StatusPresensi
+    statusApproval?: $Enums.StatusApproval
+    approvedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+    shift: JadwalShiftCreateNestedOneWithoutPresensiInput
+    user: UserCreateNestedOneWithoutPresensiInput
+  }
+
+  export type PresensiUncheckedCreateWithoutApproverInput = {
+    id?: number
+    presensiDate: Date | string
+    latitude: number
+    longitude: number
+    fotoDiri?: string | null
+    statusPresensi: $Enums.StatusPresensi
+    statusApproval?: $Enums.StatusApproval
+    approvedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+    shiftid: number
+    userId: number
+  }
+
+  export type PresensiCreateOrConnectWithoutApproverInput = {
+    where: PresensiWhereUniqueInput
+    create: XOR<PresensiCreateWithoutApproverInput, PresensiUncheckedCreateWithoutApproverInput>
+  }
+
+  export type PresensiCreateManyApproverInputEnvelope = {
+    data: PresensiCreateManyApproverInput | PresensiCreateManyApproverInput[]
     skipDuplicates?: boolean
   }
 
@@ -22368,7 +22853,7 @@ export namespace Prisma {
     id?: IntFilter<"Site"> | number
     name?: StringFilter<"Site"> | string
     image?: StringNullableFilter<"Site"> | string | null
-    status?: EnumsiteStatusFilter<"Site"> | $Enums.siteStatus
+    status?: EnumSiteStatusFilter<"Site"> | $Enums.SiteStatus
     createdAt?: DateTimeFilter<"Site"> | Date | string
     updatedAt?: DateTimeFilter<"Site"> | Date | string
     deletedAt?: DateTimeNullableFilter<"Site"> | Date | string | null
@@ -22426,15 +22911,34 @@ export namespace Prisma {
     NOT?: PresensiScalarWhereInput | PresensiScalarWhereInput[]
     id?: IntFilter<"Presensi"> | number
     presensiDate?: DateTimeFilter<"Presensi"> | Date | string
-    latitude?: IntFilter<"Presensi"> | number
-    longitude?: IntFilter<"Presensi"> | number
+    latitude?: FloatFilter<"Presensi"> | number
+    longitude?: FloatFilter<"Presensi"> | number
     fotoDiri?: StringNullableFilter<"Presensi"> | string | null
     statusPresensi?: EnumStatusPresensiFilter<"Presensi"> | $Enums.StatusPresensi
     statusApproval?: EnumStatusApprovalFilter<"Presensi"> | $Enums.StatusApproval
+    approvedAt?: DateTimeNullableFilter<"Presensi"> | Date | string | null
     createdAt?: DateTimeFilter<"Presensi"> | Date | string
     updatedAt?: DateTimeFilter<"Presensi"> | Date | string
     deletedAt?: DateTimeNullableFilter<"Presensi"> | Date | string | null
+    shiftid?: IntFilter<"Presensi"> | number
     userId?: IntFilter<"Presensi"> | number
+    approvedBy?: IntNullableFilter<"Presensi"> | number | null
+  }
+
+  export type PresensiUpsertWithWhereUniqueWithoutApproverInput = {
+    where: PresensiWhereUniqueInput
+    update: XOR<PresensiUpdateWithoutApproverInput, PresensiUncheckedUpdateWithoutApproverInput>
+    create: XOR<PresensiCreateWithoutApproverInput, PresensiUncheckedCreateWithoutApproverInput>
+  }
+
+  export type PresensiUpdateWithWhereUniqueWithoutApproverInput = {
+    where: PresensiWhereUniqueInput
+    data: XOR<PresensiUpdateWithoutApproverInput, PresensiUncheckedUpdateWithoutApproverInput>
+  }
+
+  export type PresensiUpdateManyWithWhereWithoutApproverInput = {
+    where: PresensiScalarWhereInput
+    data: XOR<PresensiUpdateManyMutationInput, PresensiUncheckedUpdateManyWithoutApproverInput>
   }
 
   export type LaporanUpsertWithWhereUniqueWithoutUserInput = {
@@ -22606,6 +23110,7 @@ export namespace Prisma {
     sites?: SiteCreateNestedManyWithoutUsersInput
     shift?: JadwalShiftCreateNestedManyWithoutUserInput
     presensi?: PresensiCreateNestedManyWithoutUserInput
+    approve?: PresensiCreateNestedManyWithoutApproverInput
     laporan?: LaporanCreateNestedManyWithoutUserInput
     ijin?: IjinCreateNestedManyWithoutUserInput
     libur?: LiburCreateNestedManyWithoutUserInput
@@ -22624,6 +23129,7 @@ export namespace Prisma {
     sites?: SiteUncheckedCreateNestedManyWithoutUsersInput
     shift?: JadwalShiftUncheckedCreateNestedManyWithoutUserInput
     presensi?: PresensiUncheckedCreateNestedManyWithoutUserInput
+    approve?: PresensiUncheckedCreateNestedManyWithoutApproverInput
     laporan?: LaporanUncheckedCreateNestedManyWithoutUserInput
     ijin?: IjinUncheckedCreateNestedManyWithoutUserInput
     libur?: LiburUncheckedCreateNestedManyWithoutUserInput
@@ -22680,6 +23186,7 @@ export namespace Prisma {
     profile?: ProfileCreateNestedOneWithoutUserInput
     sites?: SiteCreateNestedManyWithoutUsersInput
     presensi?: PresensiCreateNestedManyWithoutUserInput
+    approve?: PresensiCreateNestedManyWithoutApproverInput
     laporan?: LaporanCreateNestedManyWithoutUserInput
     ijin?: IjinCreateNestedManyWithoutUserInput
     libur?: LiburCreateNestedManyWithoutUserInput
@@ -22698,6 +23205,7 @@ export namespace Prisma {
     profile?: ProfileUncheckedCreateNestedOneWithoutUserInput
     sites?: SiteUncheckedCreateNestedManyWithoutUsersInput
     presensi?: PresensiUncheckedCreateNestedManyWithoutUserInput
+    approve?: PresensiUncheckedCreateNestedManyWithoutApproverInput
     laporan?: LaporanUncheckedCreateNestedManyWithoutUserInput
     ijin?: IjinUncheckedCreateNestedManyWithoutUserInput
     libur?: LiburUncheckedCreateNestedManyWithoutUserInput
@@ -22713,7 +23221,7 @@ export namespace Prisma {
   export type SiteCreateWithoutShiftInput = {
     name: string
     image?: string | null
-    status?: $Enums.siteStatus
+    status?: $Enums.SiteStatus
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
@@ -22726,7 +23234,7 @@ export namespace Prisma {
     id?: number
     name: string
     image?: string | null
-    status?: $Enums.siteStatus
+    status?: $Enums.SiteStatus
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
@@ -22738,6 +23246,47 @@ export namespace Prisma {
   export type SiteCreateOrConnectWithoutShiftInput = {
     where: SiteWhereUniqueInput
     create: XOR<SiteCreateWithoutShiftInput, SiteUncheckedCreateWithoutShiftInput>
+  }
+
+  export type PresensiCreateWithoutShiftInput = {
+    presensiDate: Date | string
+    latitude: number
+    longitude: number
+    fotoDiri?: string | null
+    statusPresensi: $Enums.StatusPresensi
+    statusApproval?: $Enums.StatusApproval
+    approvedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+    user: UserCreateNestedOneWithoutPresensiInput
+    approver?: UserCreateNestedOneWithoutApproveInput
+  }
+
+  export type PresensiUncheckedCreateWithoutShiftInput = {
+    id?: number
+    presensiDate: Date | string
+    latitude: number
+    longitude: number
+    fotoDiri?: string | null
+    statusPresensi: $Enums.StatusPresensi
+    statusApproval?: $Enums.StatusApproval
+    approvedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+    userId: number
+    approvedBy?: number | null
+  }
+
+  export type PresensiCreateOrConnectWithoutShiftInput = {
+    where: PresensiWhereUniqueInput
+    create: XOR<PresensiCreateWithoutShiftInput, PresensiUncheckedCreateWithoutShiftInput>
+  }
+
+  export type PresensiCreateManyShiftInputEnvelope = {
+    data: PresensiCreateManyShiftInput | PresensiCreateManyShiftInput[]
+    skipDuplicates?: boolean
   }
 
   export type UserUpsertWithoutShiftInput = {
@@ -22761,6 +23310,7 @@ export namespace Prisma {
     profile?: ProfileUpdateOneWithoutUserNestedInput
     sites?: SiteUpdateManyWithoutUsersNestedInput
     presensi?: PresensiUpdateManyWithoutUserNestedInput
+    approve?: PresensiUpdateManyWithoutApproverNestedInput
     laporan?: LaporanUpdateManyWithoutUserNestedInput
     ijin?: IjinUpdateManyWithoutUserNestedInput
     libur?: LiburUpdateManyWithoutUserNestedInput
@@ -22779,6 +23329,7 @@ export namespace Prisma {
     profile?: ProfileUncheckedUpdateOneWithoutUserNestedInput
     sites?: SiteUncheckedUpdateManyWithoutUsersNestedInput
     presensi?: PresensiUncheckedUpdateManyWithoutUserNestedInput
+    approve?: PresensiUncheckedUpdateManyWithoutApproverNestedInput
     laporan?: LaporanUncheckedUpdateManyWithoutUserNestedInput
     ijin?: IjinUncheckedUpdateManyWithoutUserNestedInput
     libur?: LiburUncheckedUpdateManyWithoutUserNestedInput
@@ -22800,7 +23351,7 @@ export namespace Prisma {
   export type SiteUpdateWithoutShiftInput = {
     name?: StringFieldUpdateOperationsInput | string
     image?: NullableStringFieldUpdateOperationsInput | string | null
-    status?: EnumsiteStatusFieldUpdateOperationsInput | $Enums.siteStatus
+    status?: EnumSiteStatusFieldUpdateOperationsInput | $Enums.SiteStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -22813,13 +23364,29 @@ export namespace Prisma {
     id?: IntFieldUpdateOperationsInput | number
     name?: StringFieldUpdateOperationsInput | string
     image?: NullableStringFieldUpdateOperationsInput | string | null
-    status?: EnumsiteStatusFieldUpdateOperationsInput | $Enums.siteStatus
+    status?: EnumSiteStatusFieldUpdateOperationsInput | $Enums.SiteStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     addressId?: IntFieldUpdateOperationsInput | number
     users?: UserUncheckedUpdateManyWithoutSitesNestedInput
     report?: LaporanUncheckedUpdateManyWithoutSiteNestedInput
+  }
+
+  export type PresensiUpsertWithWhereUniqueWithoutShiftInput = {
+    where: PresensiWhereUniqueInput
+    update: XOR<PresensiUpdateWithoutShiftInput, PresensiUncheckedUpdateWithoutShiftInput>
+    create: XOR<PresensiCreateWithoutShiftInput, PresensiUncheckedCreateWithoutShiftInput>
+  }
+
+  export type PresensiUpdateWithWhereUniqueWithoutShiftInput = {
+    where: PresensiWhereUniqueInput
+    data: XOR<PresensiUpdateWithoutShiftInput, PresensiUncheckedUpdateWithoutShiftInput>
+  }
+
+  export type PresensiUpdateManyWithWhereWithoutShiftInput = {
+    where: PresensiScalarWhereInput
+    data: XOR<PresensiUpdateManyMutationInput, PresensiUncheckedUpdateManyWithoutShiftInput>
   }
 
   export type SiteAddressCreateWithoutSiteInput = {
@@ -22860,6 +23427,7 @@ export namespace Prisma {
     profile?: ProfileCreateNestedOneWithoutUserInput
     shift?: JadwalShiftCreateNestedManyWithoutUserInput
     presensi?: PresensiCreateNestedManyWithoutUserInput
+    approve?: PresensiCreateNestedManyWithoutApproverInput
     laporan?: LaporanCreateNestedManyWithoutUserInput
     ijin?: IjinCreateNestedManyWithoutUserInput
     libur?: LiburCreateNestedManyWithoutUserInput
@@ -22878,6 +23446,7 @@ export namespace Prisma {
     profile?: ProfileUncheckedCreateNestedOneWithoutUserInput
     shift?: JadwalShiftUncheckedCreateNestedManyWithoutUserInput
     presensi?: PresensiUncheckedCreateNestedManyWithoutUserInput
+    approve?: PresensiUncheckedCreateNestedManyWithoutApproverInput
     laporan?: LaporanUncheckedCreateNestedManyWithoutUserInput
     ijin?: IjinUncheckedCreateNestedManyWithoutUserInput
     libur?: LiburUncheckedCreateNestedManyWithoutUserInput
@@ -22947,6 +23516,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     deletedAt?: Date | string | null
     user: UserCreateNestedOneWithoutShiftInput
+    presensi?: PresensiCreateNestedManyWithoutShiftInput
   }
 
   export type JadwalShiftUncheckedCreateWithoutSiteInput = {
@@ -22956,6 +23526,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     deletedAt?: Date | string | null
     userId: number
+    presensi?: PresensiUncheckedCreateNestedManyWithoutShiftInput
   }
 
   export type JadwalShiftCreateOrConnectWithoutSiteInput = {
@@ -23053,7 +23624,7 @@ export namespace Prisma {
   export type SiteCreateWithoutAddressInput = {
     name: string
     image?: string | null
-    status?: $Enums.siteStatus
+    status?: $Enums.SiteStatus
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
@@ -23066,7 +23637,7 @@ export namespace Prisma {
     id?: number
     name: string
     image?: string | null
-    status?: $Enums.siteStatus
+    status?: $Enums.SiteStatus
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
@@ -23094,7 +23665,7 @@ export namespace Prisma {
   export type SiteUpdateWithoutAddressInput = {
     name?: StringFieldUpdateOperationsInput | string
     image?: NullableStringFieldUpdateOperationsInput | string | null
-    status?: EnumsiteStatusFieldUpdateOperationsInput | $Enums.siteStatus
+    status?: EnumSiteStatusFieldUpdateOperationsInput | $Enums.SiteStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -23107,7 +23678,7 @@ export namespace Prisma {
     id?: IntFieldUpdateOperationsInput | number
     name?: StringFieldUpdateOperationsInput | string
     image?: NullableStringFieldUpdateOperationsInput | string | null
-    status?: EnumsiteStatusFieldUpdateOperationsInput | $Enums.siteStatus
+    status?: EnumSiteStatusFieldUpdateOperationsInput | $Enums.SiteStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -23126,6 +23697,7 @@ export namespace Prisma {
     sites?: SiteCreateNestedManyWithoutUsersInput
     shift?: JadwalShiftCreateNestedManyWithoutUserInput
     presensi?: PresensiCreateNestedManyWithoutUserInput
+    approve?: PresensiCreateNestedManyWithoutApproverInput
     laporan?: LaporanCreateNestedManyWithoutUserInput
     ijin?: IjinCreateNestedManyWithoutUserInput
     libur?: LiburCreateNestedManyWithoutUserInput
@@ -23144,6 +23716,7 @@ export namespace Prisma {
     sites?: SiteUncheckedCreateNestedManyWithoutUsersInput
     shift?: JadwalShiftUncheckedCreateNestedManyWithoutUserInput
     presensi?: PresensiUncheckedCreateNestedManyWithoutUserInput
+    approve?: PresensiUncheckedCreateNestedManyWithoutApproverInput
     laporan?: LaporanUncheckedCreateNestedManyWithoutUserInput
     ijin?: IjinUncheckedCreateNestedManyWithoutUserInput
     libur?: LiburUncheckedCreateNestedManyWithoutUserInput
@@ -23201,6 +23774,7 @@ export namespace Prisma {
     sites?: SiteUpdateManyWithoutUsersNestedInput
     shift?: JadwalShiftUpdateManyWithoutUserNestedInput
     presensi?: PresensiUpdateManyWithoutUserNestedInput
+    approve?: PresensiUpdateManyWithoutApproverNestedInput
     laporan?: LaporanUpdateManyWithoutUserNestedInput
     ijin?: IjinUpdateManyWithoutUserNestedInput
     libur?: LiburUpdateManyWithoutUserNestedInput
@@ -23219,6 +23793,7 @@ export namespace Prisma {
     sites?: SiteUncheckedUpdateManyWithoutUsersNestedInput
     shift?: JadwalShiftUncheckedUpdateManyWithoutUserNestedInput
     presensi?: PresensiUncheckedUpdateManyWithoutUserNestedInput
+    approve?: PresensiUncheckedUpdateManyWithoutApproverNestedInput
     laporan?: LaporanUncheckedUpdateManyWithoutUserNestedInput
     ijin?: IjinUncheckedUpdateManyWithoutUserNestedInput
     libur?: LiburUncheckedUpdateManyWithoutUserNestedInput
@@ -23310,6 +23885,30 @@ export namespace Prisma {
     userId?: IntFieldUpdateOperationsInput | number
   }
 
+  export type JadwalShiftCreateWithoutPresensiInput = {
+    shiftDate: Date | string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+    user: UserCreateNestedOneWithoutShiftInput
+    site: SiteCreateNestedOneWithoutShiftInput
+  }
+
+  export type JadwalShiftUncheckedCreateWithoutPresensiInput = {
+    id?: number
+    shiftDate: Date | string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+    userId: number
+    siteId: number
+  }
+
+  export type JadwalShiftCreateOrConnectWithoutPresensiInput = {
+    where: JadwalShiftWhereUniqueInput
+    create: XOR<JadwalShiftCreateWithoutPresensiInput, JadwalShiftUncheckedCreateWithoutPresensiInput>
+  }
+
   export type UserCreateWithoutPresensiInput = {
     username: string
     password: string
@@ -23320,6 +23919,7 @@ export namespace Prisma {
     profile?: ProfileCreateNestedOneWithoutUserInput
     sites?: SiteCreateNestedManyWithoutUsersInput
     shift?: JadwalShiftCreateNestedManyWithoutUserInput
+    approve?: PresensiCreateNestedManyWithoutApproverInput
     laporan?: LaporanCreateNestedManyWithoutUserInput
     ijin?: IjinCreateNestedManyWithoutUserInput
     libur?: LiburCreateNestedManyWithoutUserInput
@@ -23338,6 +23938,7 @@ export namespace Prisma {
     profile?: ProfileUncheckedCreateNestedOneWithoutUserInput
     sites?: SiteUncheckedCreateNestedManyWithoutUsersInput
     shift?: JadwalShiftUncheckedCreateNestedManyWithoutUserInput
+    approve?: PresensiUncheckedCreateNestedManyWithoutApproverInput
     laporan?: LaporanUncheckedCreateNestedManyWithoutUserInput
     ijin?: IjinUncheckedCreateNestedManyWithoutUserInput
     libur?: LiburUncheckedCreateNestedManyWithoutUserInput
@@ -23348,6 +23949,78 @@ export namespace Prisma {
   export type UserCreateOrConnectWithoutPresensiInput = {
     where: UserWhereUniqueInput
     create: XOR<UserCreateWithoutPresensiInput, UserUncheckedCreateWithoutPresensiInput>
+  }
+
+  export type UserCreateWithoutApproveInput = {
+    username: string
+    password: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+    role: RoleCreateNestedOneWithoutUsersInput
+    profile?: ProfileCreateNestedOneWithoutUserInput
+    sites?: SiteCreateNestedManyWithoutUsersInput
+    shift?: JadwalShiftCreateNestedManyWithoutUserInput
+    presensi?: PresensiCreateNestedManyWithoutUserInput
+    laporan?: LaporanCreateNestedManyWithoutUserInput
+    ijin?: IjinCreateNestedManyWithoutUserInput
+    libur?: LiburCreateNestedManyWithoutUserInput
+    help?: HelpCreateNestedManyWithoutUserInput
+    ticket?: TicketCreateNestedManyWithoutUserInput
+  }
+
+  export type UserUncheckedCreateWithoutApproveInput = {
+    id?: number
+    username: string
+    password: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+    roleId: number
+    profile?: ProfileUncheckedCreateNestedOneWithoutUserInput
+    sites?: SiteUncheckedCreateNestedManyWithoutUsersInput
+    shift?: JadwalShiftUncheckedCreateNestedManyWithoutUserInput
+    presensi?: PresensiUncheckedCreateNestedManyWithoutUserInput
+    laporan?: LaporanUncheckedCreateNestedManyWithoutUserInput
+    ijin?: IjinUncheckedCreateNestedManyWithoutUserInput
+    libur?: LiburUncheckedCreateNestedManyWithoutUserInput
+    help?: HelpUncheckedCreateNestedManyWithoutUserInput
+    ticket?: TicketUncheckedCreateNestedManyWithoutUserInput
+  }
+
+  export type UserCreateOrConnectWithoutApproveInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutApproveInput, UserUncheckedCreateWithoutApproveInput>
+  }
+
+  export type JadwalShiftUpsertWithoutPresensiInput = {
+    update: XOR<JadwalShiftUpdateWithoutPresensiInput, JadwalShiftUncheckedUpdateWithoutPresensiInput>
+    create: XOR<JadwalShiftCreateWithoutPresensiInput, JadwalShiftUncheckedCreateWithoutPresensiInput>
+    where?: JadwalShiftWhereInput
+  }
+
+  export type JadwalShiftUpdateToOneWithWhereWithoutPresensiInput = {
+    where?: JadwalShiftWhereInput
+    data: XOR<JadwalShiftUpdateWithoutPresensiInput, JadwalShiftUncheckedUpdateWithoutPresensiInput>
+  }
+
+  export type JadwalShiftUpdateWithoutPresensiInput = {
+    shiftDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    user?: UserUpdateOneRequiredWithoutShiftNestedInput
+    site?: SiteUpdateOneRequiredWithoutShiftNestedInput
+  }
+
+  export type JadwalShiftUncheckedUpdateWithoutPresensiInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    shiftDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    userId?: IntFieldUpdateOperationsInput | number
+    siteId?: IntFieldUpdateOperationsInput | number
   }
 
   export type UserUpsertWithoutPresensiInput = {
@@ -23371,6 +24044,7 @@ export namespace Prisma {
     profile?: ProfileUpdateOneWithoutUserNestedInput
     sites?: SiteUpdateManyWithoutUsersNestedInput
     shift?: JadwalShiftUpdateManyWithoutUserNestedInput
+    approve?: PresensiUpdateManyWithoutApproverNestedInput
     laporan?: LaporanUpdateManyWithoutUserNestedInput
     ijin?: IjinUpdateManyWithoutUserNestedInput
     libur?: LiburUpdateManyWithoutUserNestedInput
@@ -23389,6 +24063,55 @@ export namespace Prisma {
     profile?: ProfileUncheckedUpdateOneWithoutUserNestedInput
     sites?: SiteUncheckedUpdateManyWithoutUsersNestedInput
     shift?: JadwalShiftUncheckedUpdateManyWithoutUserNestedInput
+    approve?: PresensiUncheckedUpdateManyWithoutApproverNestedInput
+    laporan?: LaporanUncheckedUpdateManyWithoutUserNestedInput
+    ijin?: IjinUncheckedUpdateManyWithoutUserNestedInput
+    libur?: LiburUncheckedUpdateManyWithoutUserNestedInput
+    help?: HelpUncheckedUpdateManyWithoutUserNestedInput
+    ticket?: TicketUncheckedUpdateManyWithoutUserNestedInput
+  }
+
+  export type UserUpsertWithoutApproveInput = {
+    update: XOR<UserUpdateWithoutApproveInput, UserUncheckedUpdateWithoutApproveInput>
+    create: XOR<UserCreateWithoutApproveInput, UserUncheckedCreateWithoutApproveInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutApproveInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutApproveInput, UserUncheckedUpdateWithoutApproveInput>
+  }
+
+  export type UserUpdateWithoutApproveInput = {
+    username?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    role?: RoleUpdateOneRequiredWithoutUsersNestedInput
+    profile?: ProfileUpdateOneWithoutUserNestedInput
+    sites?: SiteUpdateManyWithoutUsersNestedInput
+    shift?: JadwalShiftUpdateManyWithoutUserNestedInput
+    presensi?: PresensiUpdateManyWithoutUserNestedInput
+    laporan?: LaporanUpdateManyWithoutUserNestedInput
+    ijin?: IjinUpdateManyWithoutUserNestedInput
+    libur?: LiburUpdateManyWithoutUserNestedInput
+    help?: HelpUpdateManyWithoutUserNestedInput
+    ticket?: TicketUpdateManyWithoutUserNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutApproveInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    username?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    roleId?: IntFieldUpdateOperationsInput | number
+    profile?: ProfileUncheckedUpdateOneWithoutUserNestedInput
+    sites?: SiteUncheckedUpdateManyWithoutUsersNestedInput
+    shift?: JadwalShiftUncheckedUpdateManyWithoutUserNestedInput
+    presensi?: PresensiUncheckedUpdateManyWithoutUserNestedInput
     laporan?: LaporanUncheckedUpdateManyWithoutUserNestedInput
     ijin?: IjinUncheckedUpdateManyWithoutUserNestedInput
     libur?: LiburUncheckedUpdateManyWithoutUserNestedInput
@@ -23399,7 +24122,7 @@ export namespace Prisma {
   export type SiteCreateWithoutReportInput = {
     name: string
     image?: string | null
-    status?: $Enums.siteStatus
+    status?: $Enums.SiteStatus
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
@@ -23412,7 +24135,7 @@ export namespace Prisma {
     id?: number
     name: string
     image?: string | null
-    status?: $Enums.siteStatus
+    status?: $Enums.SiteStatus
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
@@ -23437,6 +24160,7 @@ export namespace Prisma {
     sites?: SiteCreateNestedManyWithoutUsersInput
     shift?: JadwalShiftCreateNestedManyWithoutUserInput
     presensi?: PresensiCreateNestedManyWithoutUserInput
+    approve?: PresensiCreateNestedManyWithoutApproverInput
     ijin?: IjinCreateNestedManyWithoutUserInput
     libur?: LiburCreateNestedManyWithoutUserInput
     help?: HelpCreateNestedManyWithoutUserInput
@@ -23455,6 +24179,7 @@ export namespace Prisma {
     sites?: SiteUncheckedCreateNestedManyWithoutUsersInput
     shift?: JadwalShiftUncheckedCreateNestedManyWithoutUserInput
     presensi?: PresensiUncheckedCreateNestedManyWithoutUserInput
+    approve?: PresensiUncheckedCreateNestedManyWithoutApproverInput
     ijin?: IjinUncheckedCreateNestedManyWithoutUserInput
     libur?: LiburUncheckedCreateNestedManyWithoutUserInput
     help?: HelpUncheckedCreateNestedManyWithoutUserInput
@@ -23480,7 +24205,7 @@ export namespace Prisma {
   export type SiteUpdateWithoutReportInput = {
     name?: StringFieldUpdateOperationsInput | string
     image?: NullableStringFieldUpdateOperationsInput | string | null
-    status?: EnumsiteStatusFieldUpdateOperationsInput | $Enums.siteStatus
+    status?: EnumSiteStatusFieldUpdateOperationsInput | $Enums.SiteStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -23493,7 +24218,7 @@ export namespace Prisma {
     id?: IntFieldUpdateOperationsInput | number
     name?: StringFieldUpdateOperationsInput | string
     image?: NullableStringFieldUpdateOperationsInput | string | null
-    status?: EnumsiteStatusFieldUpdateOperationsInput | $Enums.siteStatus
+    status?: EnumSiteStatusFieldUpdateOperationsInput | $Enums.SiteStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -23524,6 +24249,7 @@ export namespace Prisma {
     sites?: SiteUpdateManyWithoutUsersNestedInput
     shift?: JadwalShiftUpdateManyWithoutUserNestedInput
     presensi?: PresensiUpdateManyWithoutUserNestedInput
+    approve?: PresensiUpdateManyWithoutApproverNestedInput
     ijin?: IjinUpdateManyWithoutUserNestedInput
     libur?: LiburUpdateManyWithoutUserNestedInput
     help?: HelpUpdateManyWithoutUserNestedInput
@@ -23542,6 +24268,7 @@ export namespace Prisma {
     sites?: SiteUncheckedUpdateManyWithoutUsersNestedInput
     shift?: JadwalShiftUncheckedUpdateManyWithoutUserNestedInput
     presensi?: PresensiUncheckedUpdateManyWithoutUserNestedInput
+    approve?: PresensiUncheckedUpdateManyWithoutApproverNestedInput
     ijin?: IjinUncheckedUpdateManyWithoutUserNestedInput
     libur?: LiburUncheckedUpdateManyWithoutUserNestedInput
     help?: HelpUncheckedUpdateManyWithoutUserNestedInput
@@ -23559,6 +24286,7 @@ export namespace Prisma {
     sites?: SiteCreateNestedManyWithoutUsersInput
     shift?: JadwalShiftCreateNestedManyWithoutUserInput
     presensi?: PresensiCreateNestedManyWithoutUserInput
+    approve?: PresensiCreateNestedManyWithoutApproverInput
     laporan?: LaporanCreateNestedManyWithoutUserInput
     libur?: LiburCreateNestedManyWithoutUserInput
     help?: HelpCreateNestedManyWithoutUserInput
@@ -23577,6 +24305,7 @@ export namespace Prisma {
     sites?: SiteUncheckedCreateNestedManyWithoutUsersInput
     shift?: JadwalShiftUncheckedCreateNestedManyWithoutUserInput
     presensi?: PresensiUncheckedCreateNestedManyWithoutUserInput
+    approve?: PresensiUncheckedCreateNestedManyWithoutApproverInput
     laporan?: LaporanUncheckedCreateNestedManyWithoutUserInput
     libur?: LiburUncheckedCreateNestedManyWithoutUserInput
     help?: HelpUncheckedCreateNestedManyWithoutUserInput
@@ -23610,6 +24339,7 @@ export namespace Prisma {
     sites?: SiteUpdateManyWithoutUsersNestedInput
     shift?: JadwalShiftUpdateManyWithoutUserNestedInput
     presensi?: PresensiUpdateManyWithoutUserNestedInput
+    approve?: PresensiUpdateManyWithoutApproverNestedInput
     laporan?: LaporanUpdateManyWithoutUserNestedInput
     libur?: LiburUpdateManyWithoutUserNestedInput
     help?: HelpUpdateManyWithoutUserNestedInput
@@ -23628,6 +24358,7 @@ export namespace Prisma {
     sites?: SiteUncheckedUpdateManyWithoutUsersNestedInput
     shift?: JadwalShiftUncheckedUpdateManyWithoutUserNestedInput
     presensi?: PresensiUncheckedUpdateManyWithoutUserNestedInput
+    approve?: PresensiUncheckedUpdateManyWithoutApproverNestedInput
     laporan?: LaporanUncheckedUpdateManyWithoutUserNestedInput
     libur?: LiburUncheckedUpdateManyWithoutUserNestedInput
     help?: HelpUncheckedUpdateManyWithoutUserNestedInput
@@ -23645,6 +24376,7 @@ export namespace Prisma {
     sites?: SiteCreateNestedManyWithoutUsersInput
     shift?: JadwalShiftCreateNestedManyWithoutUserInput
     presensi?: PresensiCreateNestedManyWithoutUserInput
+    approve?: PresensiCreateNestedManyWithoutApproverInput
     laporan?: LaporanCreateNestedManyWithoutUserInput
     ijin?: IjinCreateNestedManyWithoutUserInput
     help?: HelpCreateNestedManyWithoutUserInput
@@ -23663,6 +24395,7 @@ export namespace Prisma {
     sites?: SiteUncheckedCreateNestedManyWithoutUsersInput
     shift?: JadwalShiftUncheckedCreateNestedManyWithoutUserInput
     presensi?: PresensiUncheckedCreateNestedManyWithoutUserInput
+    approve?: PresensiUncheckedCreateNestedManyWithoutApproverInput
     laporan?: LaporanUncheckedCreateNestedManyWithoutUserInput
     ijin?: IjinUncheckedCreateNestedManyWithoutUserInput
     help?: HelpUncheckedCreateNestedManyWithoutUserInput
@@ -23696,6 +24429,7 @@ export namespace Prisma {
     sites?: SiteUpdateManyWithoutUsersNestedInput
     shift?: JadwalShiftUpdateManyWithoutUserNestedInput
     presensi?: PresensiUpdateManyWithoutUserNestedInput
+    approve?: PresensiUpdateManyWithoutApproverNestedInput
     laporan?: LaporanUpdateManyWithoutUserNestedInput
     ijin?: IjinUpdateManyWithoutUserNestedInput
     help?: HelpUpdateManyWithoutUserNestedInput
@@ -23714,6 +24448,7 @@ export namespace Prisma {
     sites?: SiteUncheckedUpdateManyWithoutUsersNestedInput
     shift?: JadwalShiftUncheckedUpdateManyWithoutUserNestedInput
     presensi?: PresensiUncheckedUpdateManyWithoutUserNestedInput
+    approve?: PresensiUncheckedUpdateManyWithoutApproverNestedInput
     laporan?: LaporanUncheckedUpdateManyWithoutUserNestedInput
     ijin?: IjinUncheckedUpdateManyWithoutUserNestedInput
     help?: HelpUncheckedUpdateManyWithoutUserNestedInput
@@ -23731,6 +24466,7 @@ export namespace Prisma {
     sites?: SiteCreateNestedManyWithoutUsersInput
     shift?: JadwalShiftCreateNestedManyWithoutUserInput
     presensi?: PresensiCreateNestedManyWithoutUserInput
+    approve?: PresensiCreateNestedManyWithoutApproverInput
     laporan?: LaporanCreateNestedManyWithoutUserInput
     ijin?: IjinCreateNestedManyWithoutUserInput
     libur?: LiburCreateNestedManyWithoutUserInput
@@ -23749,6 +24485,7 @@ export namespace Prisma {
     sites?: SiteUncheckedCreateNestedManyWithoutUsersInput
     shift?: JadwalShiftUncheckedCreateNestedManyWithoutUserInput
     presensi?: PresensiUncheckedCreateNestedManyWithoutUserInput
+    approve?: PresensiUncheckedCreateNestedManyWithoutApproverInput
     laporan?: LaporanUncheckedCreateNestedManyWithoutUserInput
     ijin?: IjinUncheckedCreateNestedManyWithoutUserInput
     libur?: LiburUncheckedCreateNestedManyWithoutUserInput
@@ -23782,6 +24519,7 @@ export namespace Prisma {
     sites?: SiteUpdateManyWithoutUsersNestedInput
     shift?: JadwalShiftUpdateManyWithoutUserNestedInput
     presensi?: PresensiUpdateManyWithoutUserNestedInput
+    approve?: PresensiUpdateManyWithoutApproverNestedInput
     laporan?: LaporanUpdateManyWithoutUserNestedInput
     ijin?: IjinUpdateManyWithoutUserNestedInput
     libur?: LiburUpdateManyWithoutUserNestedInput
@@ -23800,6 +24538,7 @@ export namespace Prisma {
     sites?: SiteUncheckedUpdateManyWithoutUsersNestedInput
     shift?: JadwalShiftUncheckedUpdateManyWithoutUserNestedInput
     presensi?: PresensiUncheckedUpdateManyWithoutUserNestedInput
+    approve?: PresensiUncheckedUpdateManyWithoutApproverNestedInput
     laporan?: LaporanUncheckedUpdateManyWithoutUserNestedInput
     ijin?: IjinUncheckedUpdateManyWithoutUserNestedInput
     libur?: LiburUncheckedUpdateManyWithoutUserNestedInput
@@ -23817,6 +24556,7 @@ export namespace Prisma {
     sites?: SiteCreateNestedManyWithoutUsersInput
     shift?: JadwalShiftCreateNestedManyWithoutUserInput
     presensi?: PresensiCreateNestedManyWithoutUserInput
+    approve?: PresensiCreateNestedManyWithoutApproverInput
     laporan?: LaporanCreateNestedManyWithoutUserInput
     ijin?: IjinCreateNestedManyWithoutUserInput
     libur?: LiburCreateNestedManyWithoutUserInput
@@ -23835,6 +24575,7 @@ export namespace Prisma {
     sites?: SiteUncheckedCreateNestedManyWithoutUsersInput
     shift?: JadwalShiftUncheckedCreateNestedManyWithoutUserInput
     presensi?: PresensiUncheckedCreateNestedManyWithoutUserInput
+    approve?: PresensiUncheckedCreateNestedManyWithoutApproverInput
     laporan?: LaporanUncheckedCreateNestedManyWithoutUserInput
     ijin?: IjinUncheckedCreateNestedManyWithoutUserInput
     libur?: LiburUncheckedCreateNestedManyWithoutUserInput
@@ -23868,6 +24609,7 @@ export namespace Prisma {
     sites?: SiteUpdateManyWithoutUsersNestedInput
     shift?: JadwalShiftUpdateManyWithoutUserNestedInput
     presensi?: PresensiUpdateManyWithoutUserNestedInput
+    approve?: PresensiUpdateManyWithoutApproverNestedInput
     laporan?: LaporanUpdateManyWithoutUserNestedInput
     ijin?: IjinUpdateManyWithoutUserNestedInput
     libur?: LiburUpdateManyWithoutUserNestedInput
@@ -23886,6 +24628,7 @@ export namespace Prisma {
     sites?: SiteUncheckedUpdateManyWithoutUsersNestedInput
     shift?: JadwalShiftUncheckedUpdateManyWithoutUserNestedInput
     presensi?: PresensiUncheckedUpdateManyWithoutUserNestedInput
+    approve?: PresensiUncheckedUpdateManyWithoutApproverNestedInput
     laporan?: LaporanUncheckedUpdateManyWithoutUserNestedInput
     ijin?: IjinUncheckedUpdateManyWithoutUserNestedInput
     libur?: LiburUncheckedUpdateManyWithoutUserNestedInput
@@ -23909,9 +24652,28 @@ export namespace Prisma {
     fotoDiri?: string | null
     statusPresensi: $Enums.StatusPresensi
     statusApproval?: $Enums.StatusApproval
+    approvedAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
+    shiftid: number
+    approvedBy?: number | null
+  }
+
+  export type PresensiCreateManyApproverInput = {
+    id?: number
+    presensiDate: Date | string
+    latitude: number
+    longitude: number
+    fotoDiri?: string | null
+    statusPresensi: $Enums.StatusPresensi
+    statusApproval?: $Enums.StatusApproval
+    approvedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+    shiftid: number
+    userId: number
   }
 
   export type LaporanCreateManyUserInput = {
@@ -23976,7 +24738,7 @@ export namespace Prisma {
   export type SiteUpdateWithoutUsersInput = {
     name?: StringFieldUpdateOperationsInput | string
     image?: NullableStringFieldUpdateOperationsInput | string | null
-    status?: EnumsiteStatusFieldUpdateOperationsInput | $Enums.siteStatus
+    status?: EnumSiteStatusFieldUpdateOperationsInput | $Enums.SiteStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -23989,7 +24751,7 @@ export namespace Prisma {
     id?: IntFieldUpdateOperationsInput | number
     name?: StringFieldUpdateOperationsInput | string
     image?: NullableStringFieldUpdateOperationsInput | string | null
-    status?: EnumsiteStatusFieldUpdateOperationsInput | $Enums.siteStatus
+    status?: EnumSiteStatusFieldUpdateOperationsInput | $Enums.SiteStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -24002,7 +24764,7 @@ export namespace Prisma {
     id?: IntFieldUpdateOperationsInput | number
     name?: StringFieldUpdateOperationsInput | string
     image?: NullableStringFieldUpdateOperationsInput | string | null
-    status?: EnumsiteStatusFieldUpdateOperationsInput | $Enums.siteStatus
+    status?: EnumSiteStatusFieldUpdateOperationsInput | $Enums.SiteStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -24015,6 +24777,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     site?: SiteUpdateOneRequiredWithoutShiftNestedInput
+    presensi?: PresensiUpdateManyWithoutShiftNestedInput
   }
 
   export type JadwalShiftUncheckedUpdateWithoutUserInput = {
@@ -24024,6 +24787,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     siteId?: IntFieldUpdateOperationsInput | number
+    presensi?: PresensiUncheckedUpdateManyWithoutShiftNestedInput
   }
 
   export type JadwalShiftUncheckedUpdateManyWithoutUserInput = {
@@ -24037,40 +24801,96 @@ export namespace Prisma {
 
   export type PresensiUpdateWithoutUserInput = {
     presensiDate?: DateTimeFieldUpdateOperationsInput | Date | string
-    latitude?: IntFieldUpdateOperationsInput | number
-    longitude?: IntFieldUpdateOperationsInput | number
+    latitude?: FloatFieldUpdateOperationsInput | number
+    longitude?: FloatFieldUpdateOperationsInput | number
     fotoDiri?: NullableStringFieldUpdateOperationsInput | string | null
     statusPresensi?: EnumStatusPresensiFieldUpdateOperationsInput | $Enums.StatusPresensi
     statusApproval?: EnumStatusApprovalFieldUpdateOperationsInput | $Enums.StatusApproval
+    approvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    shift?: JadwalShiftUpdateOneRequiredWithoutPresensiNestedInput
+    approver?: UserUpdateOneWithoutApproveNestedInput
   }
 
   export type PresensiUncheckedUpdateWithoutUserInput = {
     id?: IntFieldUpdateOperationsInput | number
     presensiDate?: DateTimeFieldUpdateOperationsInput | Date | string
-    latitude?: IntFieldUpdateOperationsInput | number
-    longitude?: IntFieldUpdateOperationsInput | number
+    latitude?: FloatFieldUpdateOperationsInput | number
+    longitude?: FloatFieldUpdateOperationsInput | number
     fotoDiri?: NullableStringFieldUpdateOperationsInput | string | null
     statusPresensi?: EnumStatusPresensiFieldUpdateOperationsInput | $Enums.StatusPresensi
     statusApproval?: EnumStatusApprovalFieldUpdateOperationsInput | $Enums.StatusApproval
+    approvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    shiftid?: IntFieldUpdateOperationsInput | number
+    approvedBy?: NullableIntFieldUpdateOperationsInput | number | null
   }
 
   export type PresensiUncheckedUpdateManyWithoutUserInput = {
     id?: IntFieldUpdateOperationsInput | number
     presensiDate?: DateTimeFieldUpdateOperationsInput | Date | string
-    latitude?: IntFieldUpdateOperationsInput | number
-    longitude?: IntFieldUpdateOperationsInput | number
+    latitude?: FloatFieldUpdateOperationsInput | number
+    longitude?: FloatFieldUpdateOperationsInput | number
     fotoDiri?: NullableStringFieldUpdateOperationsInput | string | null
     statusPresensi?: EnumStatusPresensiFieldUpdateOperationsInput | $Enums.StatusPresensi
     statusApproval?: EnumStatusApprovalFieldUpdateOperationsInput | $Enums.StatusApproval
+    approvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    shiftid?: IntFieldUpdateOperationsInput | number
+    approvedBy?: NullableIntFieldUpdateOperationsInput | number | null
+  }
+
+  export type PresensiUpdateWithoutApproverInput = {
+    presensiDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    latitude?: FloatFieldUpdateOperationsInput | number
+    longitude?: FloatFieldUpdateOperationsInput | number
+    fotoDiri?: NullableStringFieldUpdateOperationsInput | string | null
+    statusPresensi?: EnumStatusPresensiFieldUpdateOperationsInput | $Enums.StatusPresensi
+    statusApproval?: EnumStatusApprovalFieldUpdateOperationsInput | $Enums.StatusApproval
+    approvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    shift?: JadwalShiftUpdateOneRequiredWithoutPresensiNestedInput
+    user?: UserUpdateOneRequiredWithoutPresensiNestedInput
+  }
+
+  export type PresensiUncheckedUpdateWithoutApproverInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    presensiDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    latitude?: FloatFieldUpdateOperationsInput | number
+    longitude?: FloatFieldUpdateOperationsInput | number
+    fotoDiri?: NullableStringFieldUpdateOperationsInput | string | null
+    statusPresensi?: EnumStatusPresensiFieldUpdateOperationsInput | $Enums.StatusPresensi
+    statusApproval?: EnumStatusApprovalFieldUpdateOperationsInput | $Enums.StatusApproval
+    approvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    shiftid?: IntFieldUpdateOperationsInput | number
+    userId?: IntFieldUpdateOperationsInput | number
+  }
+
+  export type PresensiUncheckedUpdateManyWithoutApproverInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    presensiDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    latitude?: FloatFieldUpdateOperationsInput | number
+    longitude?: FloatFieldUpdateOperationsInput | number
+    fotoDiri?: NullableStringFieldUpdateOperationsInput | string | null
+    statusPresensi?: EnumStatusPresensiFieldUpdateOperationsInput | $Enums.StatusPresensi
+    statusApproval?: EnumStatusApprovalFieldUpdateOperationsInput | $Enums.StatusApproval
+    approvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    shiftid?: IntFieldUpdateOperationsInput | number
+    userId?: IntFieldUpdateOperationsInput | number
   }
 
   export type LaporanUpdateWithoutUserInput = {
@@ -24264,6 +25084,7 @@ export namespace Prisma {
     sites?: SiteUpdateManyWithoutUsersNestedInput
     shift?: JadwalShiftUpdateManyWithoutUserNestedInput
     presensi?: PresensiUpdateManyWithoutUserNestedInput
+    approve?: PresensiUpdateManyWithoutApproverNestedInput
     laporan?: LaporanUpdateManyWithoutUserNestedInput
     ijin?: IjinUpdateManyWithoutUserNestedInput
     libur?: LiburUpdateManyWithoutUserNestedInput
@@ -24282,6 +25103,7 @@ export namespace Prisma {
     sites?: SiteUncheckedUpdateManyWithoutUsersNestedInput
     shift?: JadwalShiftUncheckedUpdateManyWithoutUserNestedInput
     presensi?: PresensiUncheckedUpdateManyWithoutUserNestedInput
+    approve?: PresensiUncheckedUpdateManyWithoutApproverNestedInput
     laporan?: LaporanUncheckedUpdateManyWithoutUserNestedInput
     ijin?: IjinUncheckedUpdateManyWithoutUserNestedInput
     libur?: LiburUncheckedUpdateManyWithoutUserNestedInput
@@ -24296,6 +25118,69 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type PresensiCreateManyShiftInput = {
+    id?: number
+    presensiDate: Date | string
+    latitude: number
+    longitude: number
+    fotoDiri?: string | null
+    statusPresensi: $Enums.StatusPresensi
+    statusApproval?: $Enums.StatusApproval
+    approvedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+    userId: number
+    approvedBy?: number | null
+  }
+
+  export type PresensiUpdateWithoutShiftInput = {
+    presensiDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    latitude?: FloatFieldUpdateOperationsInput | number
+    longitude?: FloatFieldUpdateOperationsInput | number
+    fotoDiri?: NullableStringFieldUpdateOperationsInput | string | null
+    statusPresensi?: EnumStatusPresensiFieldUpdateOperationsInput | $Enums.StatusPresensi
+    statusApproval?: EnumStatusApprovalFieldUpdateOperationsInput | $Enums.StatusApproval
+    approvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    user?: UserUpdateOneRequiredWithoutPresensiNestedInput
+    approver?: UserUpdateOneWithoutApproveNestedInput
+  }
+
+  export type PresensiUncheckedUpdateWithoutShiftInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    presensiDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    latitude?: FloatFieldUpdateOperationsInput | number
+    longitude?: FloatFieldUpdateOperationsInput | number
+    fotoDiri?: NullableStringFieldUpdateOperationsInput | string | null
+    statusPresensi?: EnumStatusPresensiFieldUpdateOperationsInput | $Enums.StatusPresensi
+    statusApproval?: EnumStatusApprovalFieldUpdateOperationsInput | $Enums.StatusApproval
+    approvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    userId?: IntFieldUpdateOperationsInput | number
+    approvedBy?: NullableIntFieldUpdateOperationsInput | number | null
+  }
+
+  export type PresensiUncheckedUpdateManyWithoutShiftInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    presensiDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    latitude?: FloatFieldUpdateOperationsInput | number
+    longitude?: FloatFieldUpdateOperationsInput | number
+    fotoDiri?: NullableStringFieldUpdateOperationsInput | string | null
+    statusPresensi?: EnumStatusPresensiFieldUpdateOperationsInput | $Enums.StatusPresensi
+    statusApproval?: EnumStatusApprovalFieldUpdateOperationsInput | $Enums.StatusApproval
+    approvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    userId?: IntFieldUpdateOperationsInput | number
+    approvedBy?: NullableIntFieldUpdateOperationsInput | number | null
   }
 
   export type LaporanCreateManySiteInput = {
@@ -24338,6 +25223,7 @@ export namespace Prisma {
     profile?: ProfileUpdateOneWithoutUserNestedInput
     shift?: JadwalShiftUpdateManyWithoutUserNestedInput
     presensi?: PresensiUpdateManyWithoutUserNestedInput
+    approve?: PresensiUpdateManyWithoutApproverNestedInput
     laporan?: LaporanUpdateManyWithoutUserNestedInput
     ijin?: IjinUpdateManyWithoutUserNestedInput
     libur?: LiburUpdateManyWithoutUserNestedInput
@@ -24356,6 +25242,7 @@ export namespace Prisma {
     profile?: ProfileUncheckedUpdateOneWithoutUserNestedInput
     shift?: JadwalShiftUncheckedUpdateManyWithoutUserNestedInput
     presensi?: PresensiUncheckedUpdateManyWithoutUserNestedInput
+    approve?: PresensiUncheckedUpdateManyWithoutApproverNestedInput
     laporan?: LaporanUncheckedUpdateManyWithoutUserNestedInput
     ijin?: IjinUncheckedUpdateManyWithoutUserNestedInput
     libur?: LiburUncheckedUpdateManyWithoutUserNestedInput
@@ -24441,6 +25328,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     user?: UserUpdateOneRequiredWithoutShiftNestedInput
+    presensi?: PresensiUpdateManyWithoutShiftNestedInput
   }
 
   export type JadwalShiftUncheckedUpdateWithoutSiteInput = {
@@ -24450,6 +25338,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     userId?: IntFieldUpdateOperationsInput | number
+    presensi?: PresensiUncheckedUpdateManyWithoutShiftNestedInput
   }
 
   export type JadwalShiftUncheckedUpdateManyWithoutSiteInput = {

@@ -30,7 +30,7 @@ export async function GET(request) {
       const searchParams = request.nextUrl.searchParams;
       const parameter = {
         page: searchParams.get("page") || 1,
-        size: searchParams.get("size") || 5,
+        size: searchParams.get("limit") || 5,
       }
 
       const result = await ReportService.getAll(parameter);

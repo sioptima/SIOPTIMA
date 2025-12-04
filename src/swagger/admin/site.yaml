@@ -26,11 +26,11 @@ paths:
                   example: Jawa Timur
                 latitude:
                   type: number
-                  format: float
+                  format: double
                   example: -7.321725109341672
                 longitude:
                   type: number
-                  format: float
+                  format: double
                   example: 112.70984636375198
 
       responses:
@@ -62,7 +62,7 @@ paths:
           type: integer
           description: Which page to show
       - in: query
-        name: size
+        name: limit
         schema:
           type: integer
           description: Number of site to return
@@ -111,10 +111,12 @@ paths:
                                   type: string
                                   example: Jalan Mastrip No 40, Surabaya
                                 latitude:
-                                  type: float
+                                  type: number
+                                  format: double
                                   example: -7.321725109341672
                                 longitude:
-                                  type: float
+                                  type: number
+                                  format: double
                                   example: 112.70984636375198
                       paging:
                         type: object

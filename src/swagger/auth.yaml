@@ -43,10 +43,10 @@ paths:
               properties:
                 username:
                   type: string
-                  example: admin
+                  example: operator
                 password:
                   type: string
-                  example: 0XUdhBawnt4uUG1H
+                  example: operator123
 
       responses:
         '200':

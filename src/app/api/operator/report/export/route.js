@@ -1,7 +1,7 @@
 import { ReportService } from "@/src/server/modules/report/report-service";
 import { requireRole } from "@/src/server/utils/auth";
 
-export async function GET(request, {params}) {
+export async function GET(request) {
     try {
       await requireRole("OPERATOR");
       const searchParams = request.nextUrl.searchParams;
@@ -11,11 +11,11 @@ export async function GET(request, {params}) {
         endDate: searchParams.get("endDate") || null,
         status: searchParams.get("status") || all,
       }
-      const result = await ReportService.getById(id);
+      const result = await ReportService.export(parameter);
       return Response.json({
          success: true, 
-         message: "Report retrieved" ,
-         data: result.reportTransform
+         message: `Report exported to ${format}` ,
+         data: result
         },
         { status: 200 }
       );

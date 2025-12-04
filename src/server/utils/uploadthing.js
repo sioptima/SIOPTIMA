@@ -9,10 +9,17 @@ export const utapi = new UTApi({
 export async function uploadImage(images){
   //upload image(s) to uploadthing
   const response = await utapi.uploadFiles(images)
-  response.forEach((element) => {
-    if (element.error !== null) {
-        throw new ResponseError(200, `Created report in database but failed to upload images \n code: ${element.error.code} \n message: ${element.error.message}`)
+  //check if error exist in uploadthing response, if exist then throw error
+  if (images.constructor === Array){
+    response.forEach((element) => {
+      if (element.error !== null) {
+          throw new ResponseError(200, `Created report in database but failed to upload images \n code: ${element.error.code} \n message: ${element.error.message}`)
+      }
+    })
+  } else {
+    if (response.error !== null) {
+      throw new ResponseError(200, `Created report in database but failed to upload images \n code: ${element.error.code} \n message: ${element.error.message}`)
     }
-  })
+  }
   return response; 
 }

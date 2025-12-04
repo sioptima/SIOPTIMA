@@ -33,7 +33,9 @@ model User {
 
   shift JadwalShift[]
 
-  presensi Presensi[]
+  presensi Presensi[] @relation("holder")
+
+  approve Presensi[] @relation("approver")
 
   laporan Laporan[]
 
@@ -74,9 +76,11 @@ model JadwalShift {
 
   site   Site @relation(fields: [siteId], references: [id])
   siteId Int
+
+  presensi Presensi[]
 }
 
-enum siteStatus {
+enum SiteStatus {
   ACTIVE
   MAINTENANCE
   INACTIVE
@@ -86,7 +90,7 @@ model Site {
   id        Int        @id @default(autoincrement())
   name      String     @unique
   image     String?
-  status    siteStatus @default(ACTIVE)
+  status    SiteStatus @default(ACTIVE)
   createdAt DateTime   @default(now())
   updatedAt DateTime   @updatedAt
   deletedAt DateTime?
@@ -156,17 +160,24 @@ enum StatusPresensi {
 model Presensi {
   id             Int            @id @default(autoincrement())
   presensiDate   DateTime
-  latitude       Int
-  longitude      Int
+  latitude       Float
+  longitude      Float
   fotoDiri       String?
   statusPresensi StatusPresensi
   statusApproval StatusApproval @default(PENDING)
+  approvedAt     DateTime?
   createdAt      DateTime       @default(now())
   updatedAt      DateTime       @updatedAt
   deletedAt      DateTime?
 
-  user   User @relation(fields: [userId], references: [id])
+  shift   JadwalShift @relation(fields: [shiftid], references: [id])
+  shiftid Int
+
+  user   User @relation(fields: [userId], references: [id], name: "holder")
   userId Int
+
+  approver   User? @relation(fields: [approvedBy], references: [id], name: "approver")
+  approvedBy Int?
 }
 
 enum EquipmentStatus {

@@ -18,7 +18,9 @@ export class UserValidation {
     static GET = z.object({
         page: z.number("Invalid query"),
         size: z.number("Invalid query"),
-        roleName: z.enum(["ADMIN", "OPERATOR", "HRD"], "Invalid query"),
+        roleName: z.string().toUpperCase()
+                   .pipe(z.enum(["ADMIN", "OPERATOR", "HRD"], "Invalid query"))
+                   .optional()
     })
 
     static ASSIGN = z.object({

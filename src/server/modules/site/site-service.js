@@ -43,7 +43,7 @@ export class SiteService {
 
         const sites = await SiteRepository.findAll(getRequest);
         if (!sites) {
-            throw new ResponseError (204, "No site found")
+            throw new ResponseError (200, "No site found")
         }
 
         return {

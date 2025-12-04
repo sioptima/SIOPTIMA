@@ -8,7 +8,7 @@ paths:
           type: integer
           description: Which page to show
       - in: query
-        name: size
+        name: limit
         schema:
           type: integer
           description: Number of user to return
@@ -36,40 +36,35 @@ paths:
                     type: string
                     example: Users retrieved
                   data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: number
+                          example: 1
+                        username:
+                          type: string
+                          example: hrd
+                        role:
+                          type: object
+                          properties:
+                            role:
+                              type: string
+                              enum: ["ADMIN", "HRD", "OPERATOR"]
+                              example: "HRD"
+                  pagination:
                     type: object
                     properties:
-                      query:
-                        type: object
-                        properties:
-                          count:
-                            type: string
-                            example: 5
-                          sites:
-                            type: array
-                            items:
-                              type: object
-                              properties:
-                                name:
-                                  type: string
-                                  example: Surabaya - Site A
-                                address:
-                                  type: string
-                                  example: Jalan Mastrip No 40, Surabaya
-                                latitude:
-                                  type: float
-                                  example: -7.321725109341672
-                                longitude:
-                                  type: float
-                                  example: 112.70984636375198
-                  paging:
-                    type: object
-                    properties:
-                      size:
+                      page:
                         type: integer
                         example: 1
-                      total_page:
+                      limit:
                         type: integer
                         example: 5
-                      current_page:
+                      total:
+                        type: integer
+                        example: 3
+                      totalPages:
                         type: integer
                         example: 1

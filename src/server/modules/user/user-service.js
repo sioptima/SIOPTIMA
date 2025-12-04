@@ -82,7 +82,7 @@ export class UserService {
                 data: users,
                 paging: {
                     size: size,
-                    total_page: Math.ceil(users.count / size),
+                    total_page: Math.ceil(users.total / size),
                     current_page: page,
                 }
             }
@@ -97,7 +97,7 @@ export class UserService {
             query: users,
             paging: {
                 size: size,
-                total_page: Math.ceil(users.count / size),
+                total_page: Math.ceil(users.total / size),
                 current_page: page,
             }
         }

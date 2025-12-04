@@ -10,7 +10,7 @@ export class ReportService {
     static async create(request) {
         const user = await getUser();
 
-        //transform request into validable object for zod
+        //transform request from formdata into validable object for zod
         // Source - https://stackoverflow.com/questions/41431322/how-to-convert-formdata-html5-object-to-json
         // Posted by Wilt, modified by community. See post 'Timeline' for change history
         // Retrieved 2025-11-25, License - CC BY-SA 4.0
@@ -61,9 +61,6 @@ export class ReportService {
 
         //upload image to uploadthing and retrieve image link from uploadthing response
         const uploadImageData = await uploadImage(createRequest.images)
-        if(!obj.data.ufsUrl){
-            throw new ResponseError (200, "Created report in database but failed to upload images")
-        }
         const imageLink = uploadImageData.map((obj) => obj.data.ufsUrl)
 
         //update report with image link
@@ -89,7 +86,7 @@ export class ReportService {
 
         const reports = await ReportRepository.findAll(getRequest, user.userId);
         if (!reports) {
-            throw new ResponseError (204, "No report found")
+            throw new ResponseError (200, "No report found")
         }
 
         const reportTransform = reports.result.map((report) => ({
@@ -160,6 +157,18 @@ export class ReportService {
         return{
             reportTransform
         }
+    }
+
+    static async export (parameter){
+        //file validation
+        const exportRequest = parameter;
+
+        //get current user report
+        const { userId } = await getUser();
+        const reports = await ReportRepository.findAllNoPaging(userId)
+
+        //export to pdf
+        
     }
 
 }

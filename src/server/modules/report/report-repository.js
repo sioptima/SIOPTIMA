@@ -91,6 +91,22 @@ export class ReportRepository {
         }
     }
 
+    static async findAllNoPaging(userId){
+        try {
+            const reports = await PrismaClient.laporan.findMany({
+                where: {
+                    userId
+                },
+                orderBy: {
+                        createdAt: 'desc',
+                },
+            })
+            return reports
+        } catch (error){
+            throw new ResponseError (500, "Failed when querying in database")
+        }
+    }
+
     static async findById(id){
         try {
             const report = await PrismaClient.laporan.findUnique({

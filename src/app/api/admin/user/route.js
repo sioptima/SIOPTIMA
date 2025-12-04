@@ -3,10 +3,10 @@ import { requireRole } from "@/src/server/utils/auth";
 
 export async function GET(request) {
     try {
-        //await requireRole("ADMIN");
+        await requireRole("ADMIN");
         const searchParams = request.nextUrl.searchParams;
         const page = searchParams.get("page") || 1;
-        const size = searchParams.get("size") || 5;
+        const size = searchParams.get("limit") || 5;
         const role = searchParams.get("role") || null;
 
         const result = await UserService.getAll(parseInt(page), parseInt(size), role?.toUpperCase());
@@ -14,7 +14,13 @@ export async function GET(request) {
           {
            success: true, 
            message: "Users retrieved" ,
-           data: result
+           data: result.data.users,
+           pagination: {
+            page: result.paging.current_page,
+            limit: result.paging.size,
+            total: result.data.total,
+            totalPages: result.paging.total_page,
+           }
           },
           { status: 200 }
         );

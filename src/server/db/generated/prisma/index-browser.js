@@ -201,10 +201,13 @@ exports.Prisma.PresensiScalarFieldEnum = {
   fotoDiri: 'fotoDiri',
   statusPresensi: 'statusPresensi',
   statusApproval: 'statusApproval',
+  approvedAt: 'approvedAt',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
   deletedAt: 'deletedAt',
-  userId: 'userId'
+  shiftid: 'shiftid',
+  userId: 'userId',
+  approvedBy: 'approvedBy'
 };
 
 exports.Prisma.LaporanScalarFieldEnum = {
@@ -291,7 +294,7 @@ exports.RoleName = exports.$Enums.RoleName = {
   HRD: 'HRD'
 };
 
-exports.siteStatus = exports.$Enums.siteStatus = {
+exports.SiteStatus = exports.$Enums.SiteStatus = {
   ACTIVE: 'ACTIVE',
   MAINTENANCE: 'MAINTENANCE',
   INACTIVE: 'INACTIVE'

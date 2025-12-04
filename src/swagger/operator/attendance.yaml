@@ -1,0 +1,175 @@
+paths:
+  /api/operator/attendance/check-in:
+    post:
+      summary: create a new check in record
+      tags:
+        - Attendance
+
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                lat:
+                  type: number
+                  format: double
+                  example: -6.123456
+                long:
+                  type: number
+                  format: double
+                  example: 106.123456
+                selfie:
+                  type: string
+                  format: binary
+                timestamp:
+                  type: string
+                  format: date-time
+                  example: "2024-01-27T08:00:00Z"
+                  
+      responses:
+        '200':
+          description: Request confirmation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: Check-in successful
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                        example: 1
+                      checkInTime:
+                        type: string
+                        example: "08:00"
+                      status:
+                        type: string
+                        enum: [On Time, Late]
+                        example: On Time
+                      approvalStatus:
+                        type: string
+                        enum: [APPROVED, PENDING, REJECTED]
+                        example: PENDING
+  
+  /api/operator/attendance:
+    get:
+      parameters:
+      - in: query
+        name: page
+        schema:
+          type: integer
+          description: Which page to show
+      - in: query
+        name: limit
+        schema:
+          type: integer
+          description: Number of records to return
+      summary: Get current user attendance records history
+      tags:
+        - Attendance
+
+      responses:
+        '200':
+          description: List of attendance records
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: Records retrieved
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: number
+                          example: 1
+                        date:
+                          type: string
+                          format: date
+                          example: "2024-01-27"
+                        checkIn:
+                          type: string
+                          example: "08:30"
+                        checkOut:
+                          type: string
+                          example: "16:00"
+                        location:
+                          type: string
+                          example: "Jakarta Utara - Site A"
+                        status:
+                          type: string
+                          example: "approved; ini status apa??"
+                        approvalStatus:
+                          type: string
+                          enum: ["APPROVED", "PENDING", "REJECTED"]
+                          example: APPROVED
+                        checkInStatus:
+                          type: string
+                          enum: ["LATE", "ONTIME"]
+                          example: "ON TIME"
+                        checkInLocation:
+                          type: object
+                          properties:
+                            Lat:
+                              type: number
+                              format: double
+                              example: -6.123456
+                            Long:
+                              type: number
+                              format: double
+                              example: 106.123456  
+                        checkOutLocation:
+                          type: object
+                          properties:
+                            Lat:
+                              type: number
+                              format: double
+                              example: -6.123456
+                            Long:
+                              type: number
+                              format: double
+                              example: 106.123456  
+                        selfieCheckIn:
+                          type: string
+                          example: imagelink
+                        selfieCheckOut:
+                          type: string
+                          example: imagelink
+                        approvedBy:
+                          type: string
+                          example: "Admin"
+                        approvedAt:
+                          type: string
+                          format: date-time
+                          example: "2024-01-27T08:30:00Z"
+                  pagination:
+                    type: object
+                    properties:
+                      page:
+                        type: number
+                        example: 1
+                      limit:
+                        type: number
+                        example: 10
+                      total:
+                        type: number
+                        example: 5
+                      total_page:
+                        type: number
+                        example: 1

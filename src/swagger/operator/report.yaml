@@ -107,7 +107,7 @@ paths:
           type: integer
           description: Which page to show
       - in: query
-        name: size
+        name: limit
         schema:
           type: integer
           description: Number of report to return
