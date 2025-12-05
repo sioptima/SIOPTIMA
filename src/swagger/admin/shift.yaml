@@ -1,0 +1,58 @@
+paths:
+  /api/admin/shift:
+    post:
+      summary: Create a shift for a user
+      tags:
+        - Shifts
+
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                date:
+                  type: string
+                  format: date
+                  example: "2024-01-27"
+                time:
+                  type: string
+                  example: "15:30"
+                userId:
+                  type: integer
+                  example: 1
+                siteId:
+                  type: integer
+                  example: 1
+
+      responses:
+        '200':
+          description: Request confirmation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: Shift created
+                  data:
+                    type: object
+                    properties:
+                      date:
+                        type: string
+                        format: date
+                        example: "2025-07-21"
+                      time:
+                        type: string
+                        example: "08:00"
+                      user:
+                        type: string
+                        example: operator
+                      site:
+                        type: string
+                        example: Surabaya - Site A

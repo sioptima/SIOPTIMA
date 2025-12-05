@@ -48,13 +48,73 @@ paths:
                       id:
                         type: integer
                         example: 1
+                      shiftStart:
+                        type: string
+                        example: "08:15"
                       checkInTime:
                         type: string
                         example: "08:00"
                       status:
                         type: string
-                        enum: [On Time, Late]
-                        example: On Time
+                        enum: ["ONTIME", "LATE"]
+                        example: ONTIME
+                      approvalStatus:
+                        type: string
+                        enum: [APPROVED, PENDING, REJECTED]
+                        example: PENDING
+
+  /api/operator/attendance/check-out:
+    post:
+      summary: create a new check out record
+      tags:
+        - Attendance
+
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                lat:
+                  type: number
+                  format: double
+                  example: -6.123456
+                long:
+                  type: number
+                  format: double
+                  example: 106.123456
+                selfie:
+                  type: string
+                  format: binary
+                timestamp:
+                  type: string
+                  format: date-time
+                  example: "2024-01-27T08:00:00Z"
+                  
+      responses:
+        '200':
+          description: Request confirmation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: Check-in successful
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                        example: 1
+                      checkOutTime:
+                        type: string
+                        example: "16:00"
                       approvalStatus:
                         type: string
                         enum: [APPROVED, PENDING, REJECTED]
@@ -173,3 +233,143 @@ paths:
                       total_page:
                         type: number
                         example: 1
+
+  /api/operator/attendance/today:
+    get:
+      summary: Get current user today's attendance record
+      tags:
+        - Attendance
+
+      responses:
+        '200':
+          description: Today's attendance record
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: Record retrieved
+                  data:
+                    type: object
+                    properties:
+                      checkInTime:
+                        type: string
+                        example: "08:00"
+                      checkOutTime:
+                        type: string
+                        example: "--:--"
+                      location:
+                        type: string
+                        example: "Jakarta Utara - Site A"
+                      status:
+                        type: string
+                        example: "ONTIME"
+                      isCheckedIn:
+                        type: boolean
+                        example: true
+                      isCheckedOut:
+                        type: boolean
+                        example: false
+
+/api/operator/attendance/{id}:
+    get:
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+            description: Attendance's id to search
+      summary: Get current user's specific attendance record
+      tags:
+        - Attendance
+
+      responses:
+        '200':
+          description: Attendance record information
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: Attendance record retrieved
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                        example: 1
+                      date:
+                        type: string
+                        format: date
+                        example: "2024-01-27"
+                      checkIn:
+                        type: string
+                        example: "08:00"
+                      checkOut:
+                        type: string
+                        example: "16:00"
+                      location:
+                        type: string
+                        example: "Jakarta Utara - Site A"
+                      status:
+                        type: string
+                        enum: ["APPROVED", "PENDING", "REJECTED"]
+                        example: "APPROVED"
+                      approvalStatus:
+                        type: string
+                        enum: ["APPROVED", "PENDING", "REJECTED"]
+                        example: "APPROVED"
+                      checkInStatus:
+                        type: string
+                        enum: ["ONTIME", "LATE"]
+                        example: "ONTIME"
+                      checkInLocation:
+                        type: object
+                        properties:
+                          Lat:
+                            type: number
+                            format: double
+                            example: -6.123456
+                          Long:
+                            type: number
+                            format: double
+                            example: 106.123456
+                      checkOutLocation:
+                        type: object
+                        properties:
+                          Lat:
+                            type: number
+                            format: double
+                            example: -6.123456
+                          Long:
+                            type: number
+                            format: double
+                            example: 106.123456
+                      selfieCheckIn:
+                        type: string
+                        example: imageLink.com
+                      selfieCheckOut:
+                        type: string
+                        example: imageLink.com
+                      approvedBy:
+                        type: string
+                        example: "Admin"
+                      approvedAt:
+                        type: string
+                        format: date-time
+                        example: "2024-01-27T08:30:00Z"
+                      notes:
+                        type: string
+                        example: Attendance approved by Admin
+
+                      

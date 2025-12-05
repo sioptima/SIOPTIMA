@@ -104,17 +104,15 @@ export class UserService {
     }
 
     static async assignUserToSite(request) {
+        //validate
         const assignRequest = UserValidation.ASSIGN.parse(request);
-        if(!assignRequest){
-            throw new ResponseError(400, "Invalid request data");
-        }
 
-        const user = await UserRepository.findByUsername(assignRequest.username)
+        const user = await UserRepository.findById(assignRequest.userId)
         if (!user){
             throw new ResponseError(200, "User not found")
         }
 
-        const site = await SiteRepository.findByName(assignRequest.siteName)
+        const site = await SiteRepository.findById({siteId: assignRequest.siteId})
         if (!site){
             throw new ResponseError (200, "Site not found")
         }
@@ -133,12 +131,12 @@ export class UserService {
             throw new ResponseError(400, "Invalid request data");
         }
 
-        const user = await UserRepository.findByUsername(unassignRequest.username)
+        const user = await UserRepository.findById(unassignRequest.userId)
         if (!user){
             throw new ResponseError(200, "User not found")
         }
 
-        const site = await SiteRepository.findByName(unassignRequest.siteName)
+        const site = await SiteRepository.findById({siteId: unassignRequest.siteId})
         if (!site){
             throw new ResponseError (200, "Site not found")
         }

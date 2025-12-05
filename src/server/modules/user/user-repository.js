@@ -11,7 +11,7 @@ export class UserRepository {
                 }
             });
         } catch (error) {
-            throw new ResponseError("Failed when querying in database")
+            throw new ResponseError(500, "Failed when querying in database")
         }
     }
 
@@ -23,7 +23,7 @@ export class UserRepository {
                 }
             });
         } catch (error) {
-            throw new ResponseError("Failed when querying in database")
+            throw new ResponseError(500, "Failed when querying in database")
         }
     }
     
@@ -37,7 +37,7 @@ export class UserRepository {
                 },
             });
         } catch (error) {
-            throw new ResponseError("Failed when writing in database")
+            throw new ResponseError(500, "Failed when writing in database")
         }
     }
 
@@ -49,7 +49,7 @@ export class UserRepository {
                 }
             });
         } catch (error) {
-            throw new ResponseError("Failed when querying in database")
+            throw new ResponseError(500, "Failed when querying in database")
         }
     }
 
@@ -61,7 +61,7 @@ export class UserRepository {
                 }
             });
         } catch (error) {
-            throw new ResponseError("Failed when querying in database")
+            throw new ResponseError(500, "Failed when querying in database")
         }
     }
 
@@ -88,7 +88,7 @@ export class UserRepository {
             const total = await PrismaClient.user.count()
             return {total, users};
         } catch (error) {
-            throw new ResponseError("Failed when querying in database")
+            throw new ResponseError(500, "Failed when querying in database")
         }
     }
 
@@ -126,7 +126,7 @@ export class UserRepository {
             })
             return {total, users};
         } catch (error) {
-            throw new ResponseError("Failed when querying in database")
+            throw new ResponseError(500, "Failed when querying in database")
         }
     }
 
@@ -134,12 +134,12 @@ export class UserRepository {
         try {
             const user = await PrismaClient.user.update({
                 where: {
-                    username: data.username
+                    id: data.userId
                 },
                 data: {
                     sites: {
                         connect: {
-                            name: data.siteName   
+                            id: data.siteId   
                         }
                     }
                 },
@@ -154,7 +154,7 @@ export class UserRepository {
             })
             return user;
         } catch (error) {
-            throw new ResponseError("Failed when connecting table in database")
+            throw new ResponseError(500, "Failed when connecting table in database")
         }
     }
 
@@ -162,12 +162,12 @@ export class UserRepository {
         try {
             const user = await PrismaClient.user.update({
                 where: {
-                    username: data.username
+                    id: data.userId
                 },
                 data: {
                     sites: {
                         disconnect: {
-                            name: data.siteName   
+                            id: data.siteId   
                         }
                     }
                 },
@@ -182,7 +182,26 @@ export class UserRepository {
             })
             return user;
         } catch (error) {
-            throw new ResponseError("Failed when disconnecting table in database")
+            throw new ResponseError(500, "Failed when disconnecting table in database")
+        }
+    }
+
+    static async isAssigned(data){
+        try {
+            return await PrismaClient.user.findUnique({
+                where: {
+                    id: data.userId
+                },
+                select: {
+                    sites: {
+                        where: {
+                            id: data.siteId
+                        }
+                    }
+                }
+            })
+        } catch (error) {
+            throw new ResponseError(500, "Failed when querying in database")
         }
     }
 }

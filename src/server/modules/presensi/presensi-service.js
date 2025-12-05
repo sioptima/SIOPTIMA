@@ -3,10 +3,11 @@ import { PresensiValidation } from "./presensi-validation";
 import { PresensiRepository } from "./presensi-repository";
 import { uploadImage } from "../../utils/uploadthing";
 import { getUser } from "../../utils/auth";
+import { ShiftRepository } from "../shift/shift-repository";
 
 export class PresensiService{
 
-    static async checkin(request){
+    static async checkIn(request){
         const user = await getUser();
 
         //turn formdata to object
@@ -25,68 +26,206 @@ export class PresensiService{
 
         //validate
         const checkInRequest = PresensiValidation.CHECKIN.parse(object);
+
+        //check if theres an active checkin session
+        const isActive = await PresensiRepository.getActiveCheckIn({userId: user.userId}) 
+        if (isActive){
+            throw new ResponseError(400, "Active check in found, please checkout first")
+        }
+
+        const checkInDateUTC = new Date(checkInRequest.timestamp);
+        const startOfDay = new Date(checkInDateUTC.getFullYear(), checkInDateUTC.getMonth(), checkInDateUTC.getDate())
+        const endOfDay = new Date(checkInDateUTC.getFullYear(), checkInDateUTC.getMonth(), checkInDateUTC.getDate() + 1)
+        //get today's shift information or whatever shift's information based on the date of request's timestamp
+        const shift = await ShiftRepository.getToday({start: startOfDay, end: endOfDay, userId: user.userId})
+        //check ontime/late status
+        const isLate = () => {
+            if(!shift){
+                return true; // if no shift found default to late
+            }
+            if(checkInDateUTC <= shift.shiftDate) {
+                return false;
+            }
+        }
+
         //write to db without image link
-        const checkIn = await PresensiRepository.checkin(checkInRequest, user.userId);
+        const checkIn = await PresensiRepository.checkIn({
+            request: checkInRequest, 
+            userId: user.userId, 
+            isLate: isLate(), 
+            shiftId: (shift) ? shift.id : null
+        });
         //upload image
         const uploadImageData = await uploadImage(checkInRequest.selfie)
         if(!uploadImageData.data.ufsUrl){
-            throw new ResponseError (200, "Created report in database but failed to upload images")
+            throw new ResponseError (200, "Attendance recorded in database but failed to upload images", true, checkIn)
         }
         const imageLink = uploadImageData.data.ufsUrl;
         //update record in db with image
-        const result = await PresensiRepository.updateImage({imageLink: imageLink, presensiId: checkIn.id})
-        //return result
-        return {
+        const result = await PresensiRepository.updateCheckInImage({imageLink: imageLink, presensiId: checkIn.id})
+        const transformedResult = {
             id: result.id,
+            shiftStart: (shift) ? shift.shiftDate.toLocaleTimeString() : "--:--",
             checkInTime: result.presensiDate.toLocaleTimeString(),
             status: result.statusPresensi,
             approvalStatus: result.statusApproval
+        }
+        if(!shift){
+            throw new ResponseError(200, 
+                "Attendance recorded but no shift were found for this check-in, make sure you have been assigned a shift schedule for the checkin day", 
+                true,
+                transformedResult)
+        }
+        //return result
+        return {
+            transformedResult
+        }
+    }
+
+    static async checkOut(request){
+        const user = await getUser();
+
+        //turn formdata to object
+        var object = {};
+        request.forEach((value, key) => {
+            // Reflect.has in favor of: object.hasOwnProperty(key)
+            if(!Reflect.has(object, key)){
+                object[key] = value;
+                return;
+            }
+            if(!Array.isArray(object[key])){
+                object[key] = [object[key]];    
+            }
+            object[key].push(value);
+        });
+
+        //validate
+        const checkOutRequest = PresensiValidation.CHECKIN.parse(object);
+
+        //get the corresponding checkin(clockin) information by assuming its related if its 'open' (no checkout appended yet)
+        const checkIn = await PresensiRepository.getActiveCheckIn({userId: user.userId}) 
+        if(!checkIn){
+            throw new ResponseError(400, "No active checkin found. Make sure you checked in first before checking out")
+        }
+
+        //write to db without image link and connect the corresponding checkin checkout relation
+        const checkOut = await PresensiRepository.checkOut({
+            request: checkOutRequest, 
+            userId: user.userId,
+            checkInId: checkIn.id
+        });
+        //upload image
+        const uploadImageData = await uploadImage(checkOutRequest.selfie)
+        if(!uploadImageData.data.ufsUrl){
+            throw new ResponseError (200, "Check out recorded in database but failed to upload images", true,
+                {
+                    id: checkOut.id,
+                    checkOutTime: checkOut.checkOutDate.toLocaleTimeString(),
+                    approvalStatus: checkOut.checkIn.statusApproval
+                })
+        }
+        const imageLink = uploadImageData.data.ufsUrl;
+        //update record in db with image
+        const result = await PresensiRepository.updateCheckOutImage({imageLink: imageLink, checkOutId: checkOut.id})
+        //return result
+        return {
+            id: result.id,
+            checkOutTime: result.checkOutDate.toLocaleTimeString(),
+            approvalStatus: result.checkIn.statusApproval
         }
     }
 
     static async getMany(parameter){
         const user = await getUser()
-
-        const getRequest = parameter;
+        //validate param
+        const getRequest = PresensiValidation.GETMANY.parse(parameter);
         if(!getRequest){
             throw new ResponseError(400, "Invalid request data");
         }
 
-        const {page, size, month} = getRequest;
-
+        
         const records = await PresensiRepository.findMany(getRequest, user.userId);
-        if (!records) {
+        if (records.count === 0) {
             throw new ResponseError (200, "No record found")
         }
 
-        const reportTransform = reports.result.map((report) => ({
-            id: report.id,
-            date: report.laporanDate.toLocaleDateString(),
-            time: report.laporanDate.toLocaleTimeString(),
-            site: report.siteName,
-            operator: report.user.username,
-            pH: report.pH,
-            flowRate: report.flowRate,
-            volt: report.volt,
-            ampere: report.ampere,
-            tds: report.TDS,
-            ec: report.EC,
-            agitatorStatus: report.agitatorStatus,
-            settleStatus: report.settleStatus,
-            outFilterStatus: report.outFilterStatus,
-            additionalNotes: report.notes,
-            status: "submitted",
-            images: report.fotoSampel
+        //format result
+        const {page, size} = getRequest;
+        const recordTransform = records.result.map((record) => ({
+            id: record.id,
+            date: record.presensiDate.toLocaleDateString(),
+            checkIn: record.presensiDate.toLocaleTimeString(),
+            checkOut: (record.checkOut) ? record.checkOut.checkOutDate.toLocaleTimeString() : null,
         }))
 
         return {
-            result: reportTransform,
+            result: recordTransform,
             paging: {
                 size: size,
-                total: reports.count,
-                total_page: Math.ceil(reports.count / size),
+                total: records.count,
+                total_page: Math.ceil(records.count / size),
                 current_page: page,
             }
         }
+    }
+
+    static async getToday(){
+        const user = await getUser()
+        
+        const record = await PresensiRepository.findToday({userId: user.Id});
+        return {
+            checkInTime: (record) ? record.presensiDate.toLocaleTimeString() : "--:--",
+            checkOutTime: (record?.checkOut) ? record.checkOut.checkOutDate.toLocaleTimeString() : "--:--",
+            location: (record.shift) ? record.shift.site.name : null,
+            status: (record) ? record.statusPresensi : null,
+            isCheckedIn: (record.presensiDate) ? true : false,
+            isCheckedOut: (record?.checkOut) ? true : false
+        }
+    }
+
+    static async getById(parameter){
+        const user = await getUser()
+
+        const validatedParameter = PresensiValidation.GETBYID.parse(parameter);
+
+        const record = await PresensiRepository.findById({presensiId: validatedParameter.id})
+        if(!record){
+            throw new ResponseError (200, "No record found")
+        }
+        //check if user is authorized to get this data
+        if (user.role !== "ADMIN"){
+            if (user.role !== "HRD"){
+                if(user.userId !== record.userId){
+                    throw new ResponseError(403, "This record belong to another user")
+                }
+            }
+        }
+
+        //format response
+        const recordTransform = {
+            id: record.id,
+            date: record.presensiDate,
+            checkIn: record.presensiDate.toLocaleTimeString(),
+            checkOut: (record.checkOut?.checkOutDate) ? record.checkOut.checkOutDate.toLocaleTimeString() : "--:--",
+            location: (record.shift?.site.name) ? record.shift.site.name : "-",
+            status: record.statusApproval,
+            approvalStatus: record.statusApproval,
+            checkInStatus: record.statusPresensi,
+            checkInLocation: {
+                Lat: record.latitude,
+                Long: record. longitude
+            },
+            checkOutLocation: {
+                Lat: (record.checkOut?.latitude) ? record.checkOut.latitude : "-",
+                Long: (record.checkOut?.longitude) ? record. checkOut.longitude : "-"
+            },
+            selfieCheckIn: record.fotoDiri,
+            selfieCheckOut: (record.checkOut?.fotoDiri) ? record.checkOut.fotoDiri : "-",
+            approvedBy: (record.approver?.username) ? record.approver.username : "-",
+            approvedAt: (record.approvedAt) ? record.approvedAt : "-",
+            notes: (record.approvedAt) ? `Attendance approved by ${record.approver.username}` : "Attendance not approved yet" 
+        }
+
+        return recordTransform;
     }
 }

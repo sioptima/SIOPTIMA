@@ -85,39 +85,35 @@ paths:
                     type: string
                     example: Sites retrieved
                   data:
-                    type: object
-                    properties:
-                      result:
-                        type: object
-                        properties:
-                          count:
-                            type: string
-                            example: 5
-                          sites:
-                            type: array
-                            items:
-                              type: object
-                              properties:
-                                id:
-                                  type: number
-                                  example: 1
-                                name:
-                                  type: string
-                                  example: Surabaya - Site A
-                                image:
-                                  type: string
-                                  example: imagelink
-                                address:
-                                  type: string
-                                  example: Jalan Mastrip No 40, Surabaya
-                                latitude:
-                                  type: number
-                                  format: double
-                                  example: -7.321725109341672
-                                longitude:
-                                  type: number
-                                  format: double
-                                  example: 112.70984636375198
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        sites:
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              id:
+                                type: number
+                                example: 1
+                              name:
+                                type: string
+                                example: Surabaya - Site A
+                              image:
+                                type: string
+                                example: imagelink
+                              address:
+                                type: string
+                                example: Jalan Mastrip No 40, Surabaya
+                              latitude:
+                                type: number
+                                format: double
+                                example: -7.321725109341672
+                              longitude:
+                                type: number
+                                format: double
+                                example: 112.70984636375198
                       paging:
                         type: object
                         properties:
@@ -130,5 +126,67 @@ paths:
                           current_page:
                             type: number
                             example: 1
+
+  /api/admin/site/{id}:
+    get:
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+            description: Site's id to search
+      summary: Get a specific site information
+      tags:
+        - Sites
+
+      responses:
+        '200':
+          description: Site information
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: Site retrieved
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                        example: 1
+                      name:
+                        type: string
+                        string: "Jakarta Utara - Site A"
+                      city:
+                        type: string
+                        example: "Jakarta Utara"
+                      address:
+                        type: string
+                        example: "Jl. Industri No.123, Jakarta Utara"
+                      province:
+                        type: string
+                        example: "DKI Jakarta"
+                      operators:
+                        type: integer
+                        example: 3
+                      status:
+                        type: string
+                        enum: ["ACTIVE", "MAINTENANCE", "INACTIVE"]
+                      lastReport:
+                        type: string
+                        example: "2 hours ago"
+                      createdAt:
+                        type: string
+                        format: date-time
+                        example: "2024-01-01T00:00:00Z"
+                      updatedAt:
+                        type: string
+                        format: date-time
+                        example: "2024-01-27T08:30:00Z"
 
 

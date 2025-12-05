@@ -24,8 +24,8 @@ export class UserValidation {
     })
 
     static ASSIGN = z.object({
-        username: z.string("Invalid request"),
-        siteName: z.string("Invalid request")
+        userId: z.number("Invalid request").int(),
+        siteId: z.number("Invalid request").int(),
     })
 
 }

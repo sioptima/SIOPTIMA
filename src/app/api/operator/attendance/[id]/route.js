@@ -1,14 +1,14 @@
 import { PresensiService } from "@/src/server/modules/presensi/presensi-service";
 import { requireRole } from "@/src/server/utils/auth";
 
-export async function POST(request) {
+export async function GET(request, {params}) {
     try {
       await requireRole("OPERATOR");
-      const data = await request.formData();
-      const result = await PresensiService.checkIn(data);
+      const { id } = await params;//grab query parameter(/:id)
+      const result = await PresensiService.getById({id: id});
       return Response.json({
          success: true, 
-         message: "Check-in successful" ,
+         message: "Attendance record retrieved" ,
          data: result
         },
         { status: 200 }
@@ -16,11 +16,10 @@ export async function POST(request) {
     } catch (error) {
       return Response.json(
         { 
-          success: error.success || false,
+          success: error.success,
           code: error.status || 500,
-          message: error.issues || error.message || "Internal Server Error",
-          data: error.data },
+          message: error.issues || error.message || "Internal Server Error" },
         { status: error.status || 500 }
         );
-      }
+    }
 }

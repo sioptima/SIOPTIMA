@@ -19,4 +19,13 @@ export class PresensiValidation {
         timestamp: z.string().datetime()
     });
     
+    static GETMANY = z.object({
+      page: z.coerce.number().int(),
+      size:  z.coerce.number().int(),
+      month:  z.string().nullable()
+    })
+
+    static GETBYID = z.object({
+      id: z.coerce.number().int()
+    })
 }

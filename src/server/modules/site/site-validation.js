@@ -16,4 +16,8 @@ export class SiteValidation {
         size: z.coerce.number("Invalid parameter")
     })
 
+    static GETBYID = z.object({
+        id: z.coerce.number("Invalid parameter"),
+    })
+
 }

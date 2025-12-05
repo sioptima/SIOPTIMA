@@ -39,7 +39,7 @@ export class ReportService {
         //check if site in report exist
         const site = await SiteRepository.findByName(createRequest.siteName);
         if (!site){
-            throw new ResponseError(204, "Site in report does not exist")
+            throw new ResponseError(200, "Site in report does not exist")
         }
 
         //write report to database
@@ -130,7 +130,7 @@ export class ReportService {
 
         const report = await ReportRepository.findById(getRequest);
         if(!report){
-            throw new ResponseError(204, "No report found")
+            throw new ResponseError(200, "No report found")
         }
 
         const reportTransform = {

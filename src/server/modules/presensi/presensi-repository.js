@@ -3,33 +3,102 @@ import { ResponseError } from "@/src/lib/response-error.js";
 
 export class PresensiRepository {
 
-    static async checkin(data, userId){
+    static async checkIn(data){
         try {
             return await PrismaClient.presensi.create({
                 data: {       
-                    latitude: data.lat,
-                    longitude: data.long,
-                    presensiDate: data.timestamp,
-                    statusPresensi: "ONTIME",
+                    latitude: data.request.lat,
+                    longitude: data.request.long,
+                    presensiDate: data.request.timestamp,
+                    statusPresensi: data.isLate ? "LATE" : "ONTIME",
                     user: {
                         connect: {
-                            id: userId
+                            id: data.userId
                         }
                     },
-                    shift: {
-                        connect: {
-                            id: shiftId
+                    ...(data.shiftId && {
+                        shift: {
+                          connect: { id: data.shiftId }
                         }
-                    }
+                      })
                 },
-                
+                select: {
+                    id: true,
+                    presensiDate: true,
+                    statusPresensi: true,
+                    statusApproval: true,
+                }
             });
         } catch (error) {
             throw new ResponseError(500, "Failed when writing to database")
         }
     }
 
-    static async updateImage(data){
+    static async checkOut(data){
+        try {
+            const checkOut = await PrismaClient.checkOut.create({
+                data: {       
+                    latitude: data.request.lat,
+                    longitude: data.request.long,
+                    checkOutDate: data.request.timestamp,
+                    user: {
+                        connect: {
+                            id: data.userId
+                        }
+                    },
+                    checkIn: {
+                        connect: {
+                            id: data.checkInId,
+                        }
+                    }
+                },
+                select: {
+                    id: true,
+                    checkOutDate: true,
+                    checkIn: {
+                        select: {
+                            statusApproval: true,
+                        }
+                    }
+                }
+            });
+
+            await PrismaClient.presensi.update({
+                where: {
+                    id: data.checkInId,
+                },
+                data:{
+                    checkOut: {
+                        connect: {
+                            id: checkOut.id
+                        }
+                    }
+                }
+            })
+
+            return checkOut
+        } catch (error) {
+            throw new ResponseError(500, "Failed when writing to database")
+        }
+    }
+
+    static async getActiveCheckIn(data){
+        try {
+            return await PrismaClient.presensi.findFirst({
+                where: {
+                    userId: data.userId,
+                    checkOut: null
+                },
+                orderBy: {
+                    presensiDate: 'desc',
+                }
+            });
+        } catch (error) {
+            throw new ResponseError(500, "Failed when querying in database")
+        }
+    }
+
+    static async updateCheckInImage(data){
         try {
             return await PrismaClient.presensi.update({
                 where: {
@@ -47,7 +116,31 @@ export class PresensiRepository {
 
             });
         } catch (error) {
-            throw new ResponseError(500, "Failed when writing to database")
+            throw new ResponseError(500, "Failed when updating table in database")
+        }
+    }
+
+    static async updateCheckOutImage(data){
+        try {
+            return PrismaClient.checkOut.update({
+                where: {
+                    id: data.checkOutId
+                },
+                data: {
+                    fotoDiri: data.imageLink
+                },
+                select: {
+                    id: true,
+                    checkOutDate: true,
+                    checkIn: {
+                        select: {
+                            statusApproval:true
+                        }
+                    }
+                }
+            })
+        } catch (error) {
+            throw new ResponseError(500, "Failed when updating table in database")
         }
     }
 
@@ -56,7 +149,7 @@ export class PresensiRepository {
             const startOfMonth = new Date(data.month) 
             const endOfMonth = new Date(startOfMonth.getFullYear(), startOfMonth.getMonth()+1)
             const skip = (data.page - 1) * data.size;
-            const reports = await PrismaClient.presensi.findMany({
+            const records = await PrismaClient.presensi.findMany({
                 where: {
                     userId,
                     presensiDate: {
@@ -78,6 +171,11 @@ export class PresensiRepository {
                                 }
                             }
                         }
+                    },
+                    checkOut: {
+                        select: {
+                            checkOutDate: true,
+                        }
                     }
                 },
                 orderBy: {
@@ -87,15 +185,92 @@ export class PresensiRepository {
                 skip: skip
             })
             
-            const count = await PrismaClient.laporan.count({
+            const count = await PrismaClient.presensi.count({
                 where: {
-                    userId
+                    userId,
+                    presensiDate: {
+                        gte: data.month != null ? startOfMonth : undefined,
+                        lt: data.month != null ? endOfMonth : undefined
+                    }
                 }
             })
-            return {result: reports, count};
+            return {result: records, count: count};
             
         } catch (error) {
             throw new ResponseError(500, "Failed when querying in database")
+        }
+    }
+
+    //find latest check in record for today
+    static async findToday(data){
+        const today = new Date();
+        const startOfDay = new Date(today.getFullYear(), today.getMonth(), today.getDate())
+        const endOfDay = new Date(today.getFullYear(), today.getMonth(), today.getDate() + 1)
+        return await PrismaClient.presensi.findFirst({
+            where: {
+                userId: data.userId,
+                presensiDate: {
+                    gte: startOfDay,
+                    lt: endOfDay
+                }
+            },
+            select: {
+                presensiDate: true,
+                checkOut: {
+                    select: {
+                        checkOutDate: true,
+                    }
+                },
+                shift: {
+                    select: {
+                        site: {
+                            select: {
+                                name: true,
+                            }
+                        }
+                    }
+                },
+                statusPresensi: true,
+            },
+            orderBy: {
+                presensiDate: 'desc'
+            }
+        })
+    }
+
+    static async findById(data){
+        try {
+            return await PrismaClient.presensi.findUnique({
+                where:{
+                    id:data.presensiId
+                },
+                include:{
+                    checkOut: {
+                        select: {
+                            checkOutDate: true,
+                            fotoDiri: true,
+                            latitude: true,
+                            longitude: true,
+                        }
+                    },
+                    shift: {
+                        select:{
+                            site: {
+                                select: {
+                                    name: true
+                                }
+                            }
+                        }
+                    },
+                    approver: {
+                        select: {
+                            username: true
+                        }
+                    }
+                }
+            })
+        } catch (error) {
+            throw new ResponseError(500, "Failed when finding record by id in database")
         }
     }
 }

@@ -12,12 +12,12 @@ paths:
             schema:
               type: object
               properties:
-                username:
-                  type: string
-                  example: admin
-                siteName:
-                  type: string
-                  example: Surabaya - Site A
+                userId:
+                  type: integer
+                  example: 1
+                siteId:
+                  type: integer
+                  example: 1
                   
       responses:
         '200':
@@ -40,8 +40,13 @@ paths:
                         type: string
                         example: admin
                       site:
-                        type: string
-                        example: Surabaya - Site A
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            name:
+                              type: string
+                              example: Surabaya - Site A
 
     delete:
       summary: Unassign a user from a site
@@ -55,12 +60,12 @@ paths:
             schema:
               type: object
               properties:
-                username:
-                  type: string
-                  example: admin
-                siteName:
-                  type: string
-                  example: Surabaya - Site A
+                userId:
+                  type: integer
+                  example: 1
+                siteId:
+                  type: integer
+                  example: 1
                   
       responses:
         '200':

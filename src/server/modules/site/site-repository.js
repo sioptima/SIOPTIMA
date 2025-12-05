@@ -1,5 +1,6 @@
 import { ResponseError } from "@/src/lib/response-error.js";
 import PrismaClient from "../../db/db.js"
+import { M_PLUS_1 } from "next/font/google/index.js";
 
 export class SiteRepository {
 
@@ -15,24 +16,42 @@ export class SiteRepository {
             });
             
         } catch (error) {
-            throw new ResponseError(`"Failed when querying site in database"`);
+            throw new ResponseError(500, "Failed when querying site in database");
         }
     }
 
-    static async findById(id){
-        try {
+    static async findById(data){
+        //try {
             return await PrismaClient.site.findUnique({
                 where: { 
-                    id
+                    id: data.siteId
                 },
-                select: {
-                    id: true,
-                    name: true,
-                }
+                include: {
+                    _count: {
+                        select: {
+                            users: true,
+                        }
+                    },
+                    address: {
+                        select: {
+                            city: true,
+                            province: true,
+                        }
+                    },
+                    report: {
+                        take: 1,
+                        orderBy: {
+                            laporanDate: 'desc'
+                        },
+                        select: {
+                            laporanDate: true,
+                        }
+                    }
+                },
             });
-        } catch (error) {
-            throw new ResponseError(500, "Failed when querying site in database")
-        }
+        //} catch (error) {
+        //    throw new ResponseError(500, "Failed when querying site in database")
+        //}
     }
 
     static async findAll(data){

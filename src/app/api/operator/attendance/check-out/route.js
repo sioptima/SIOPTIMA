@@ -5,10 +5,10 @@ export async function POST(request) {
     try {
       await requireRole("OPERATOR");
       const data = await request.formData();
-      const result = await PresensiService.checkIn(data);
+      const result = await PresensiService.checkOut(data);
       return Response.json({
          success: true, 
-         message: "Check-in successful" ,
+         message: "Check-out successful" ,
          data: result
         },
         { status: 200 }

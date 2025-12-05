@@ -1,6 +1,7 @@
 import { ResponseError } from "@/src/lib/response-error";
 import { SiteRepository } from "./site-repository";
 import { SiteValidation } from "./site-validation";
+import { Sticker } from "lucide-react";
 
 export class SiteService {
 
@@ -54,5 +55,30 @@ export class SiteService {
                 current_page: page,
             }
         }
+    }
+
+    static async getById(parameter){
+        const validatedParameter = SiteValidation.GETBYID.parse(parameter);
+
+        const site = await SiteRepository.findById({siteId: validatedParameter.id})
+        if(!site){
+            throw new ResponseError (200, "No site found")
+        }
+
+        //format response
+        const recordTransform = {
+            id: site.id,
+            name: site.name,
+            city: site.address.city,
+            address: site.address.address,
+            province: site.address.province,
+            operators: site._count.users,
+            status: site.status,
+            lastReport: "To Be Added",
+            createdAt: site.createdAt,
+            updatedAt: site.updatedAt,
+        }
+
+        return recordTransform;
     }
 }

@@ -9,8 +9,10 @@ export async function requireRole(role) {
     }
   
     const session = await decrypt(cookie);
-    if (session.role !== role){
-      throw new ResponseError(403, "Unauthorized")
+    if(session.role !== "ADMIN"){
+      if (session.role !== role){
+        throw new ResponseError(403, "Unauthorized")
+      }
     }
   }
 

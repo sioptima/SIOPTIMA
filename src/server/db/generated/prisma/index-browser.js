@@ -207,7 +207,21 @@ exports.Prisma.PresensiScalarFieldEnum = {
   deletedAt: 'deletedAt',
   shiftid: 'shiftid',
   userId: 'userId',
-  approvedBy: 'approvedBy'
+  approverId: 'approverId'
+};
+
+exports.Prisma.CheckOutScalarFieldEnum = {
+  id: 'id',
+  checkOutDate: 'checkOutDate',
+  latitude: 'latitude',
+  longitude: 'longitude',
+  fotoDiri: 'fotoDiri',
+  approvedAt: 'approvedAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  deletedAt: 'deletedAt',
+  userId: 'userId',
+  checkInId: 'checkInId'
 };
 
 exports.Prisma.LaporanScalarFieldEnum = {
@@ -326,6 +340,7 @@ exports.Prisma.ModelName = {
   Profile: 'Profile',
   UserAddress: 'UserAddress',
   Presensi: 'Presensi',
+  CheckOut: 'CheckOut',
   Laporan: 'Laporan',
   Ijin: 'Ijin',
   Libur: 'Libur',
