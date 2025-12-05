@@ -3851,7 +3851,7 @@ export default function Admin() {
                     className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg text-left transition
                       ${
                         activeMenu === item.id
-                          ? "bg-teal-100 text-teal-800 border-r-2 border-teal-600 shadow-sm"
+                          ? "bg-teal-100 text-teal-800 border-teal-600 shadow-sm"
                           : "text-gray-700 hover:bg-teal-50 hover:text-teal-700"
                       }`}
                   >
@@ -3870,7 +3870,7 @@ export default function Admin() {
           <div className="bg-gray-50 rounded-xl p-4 border border-gray-200 shadow-sm hover:shadow-md transition-shadow duration-200">
             <div className="flex items-center gap-3">
               <div
-                className="w-12 h-12 bg-gradient-to-r from-blue-500 to-cyan-600 rounded-full
+                className="w-12 h-12 bg-gradient-to-r  from-teal-500 to-cyan-600 rounded-full
         flex items-center justify-center text-white font-bold text-lg shadow-md"
               >
                 {usersData.find((user) => user.role === "admin")?.initial ||
@@ -4851,91 +4851,111 @@ export default function Admin() {
                 </div>
               </div>
 
-              {/* Report Status - PERBAIKAN: Layout responsive untuk pie chart */}
-              <div className="bg-white p-4 sm:p-6 rounded-2xl border border-gray-200 shadow-md">
-                <h3 className="font-semibold text-base sm:text-lg text-gray-800 mb-4 sm:mb-5">
-                  Report Status
-                </h3>
-                <div className="flex flex-col lg:flex-row items-center gap-4 sm:gap-6 lg:gap-8">
-                  <div className="relative flex flex-col items-center">
-                    <svg
-                      width="120"
-                      height="120"
-                      className="sm:w-140 sm:h-140 lg:w-160 lg:h-160 cursor-pointer"
-                      viewBox="0 0 100 100"
-                    >
-                      {pieChartData.map((item, index) => (
-                        <path
-                          key={item.status}
-                          d={item.path}
-                          fill={item.color}
-                          className={`transition-all duration-300 ${
-                            hoveredPie === index
-                              ? "opacity-80 scale-105"
-                              : "opacity-100"
-                          }`}
-                          stroke="white"
-                          strokeWidth="2"
-                          onMouseEnter={() => setHoveredPie(index)}
-                          onMouseLeave={() => setHoveredPie(null)}
-                        />
-                      ))}
-                    </svg>
 
-                    <div className="text-center mt-2 sm:mt-4">
-                      <div className="text-xl sm:text-2xl font-bold text-gray-800">
-                        {complianceRate}%
-                      </div>
-                      <div className="text-sm text-gray-600">Approved</div>
-                    </div>
+             {/* Report Status - PERBAIKAN: Layout responsive untuk pie chart */}
 
-                    {hoveredPie !== null && (
-                      <div className="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-full bg-gray-800 text-white px-2 sm:px-3 py-1 sm:py-2 rounded-lg text-xs sm:text-sm z-10 shadow-lg">
-                        <div className="flex items-center gap-1 sm:gap-2">
-                          <div
-                            className="w-2 h-2 sm:w-3 sm:h-3 rounded"
-                            style={{
-                              backgroundColor: pieChartData[hoveredPie].color,
-                            }}
-                          ></div>
-                          <span>
-                            {pieChartData[hoveredPie].status}:{" "}
-                            {pieChartData[hoveredPie].value}%
-                          </span>
-                        </div>
-                      </div>
-                    )}
-                  </div>
+<div className="bg-white p-4 sm:p-6 rounded-2xl border border-gray-200 shadow-md">
+  {/* PERBAIKAN: Tambahkan tanggal seperti di HRD */}
+  <div className="flex justify-between items-center mb-4 sm:mb-5">
+    <h3 className="font-semibold text-base sm:text-lg text-gray-800">
+      Report Status
+    </h3>
+    <div className="text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded hidden sm:block">
+      {new Date().toLocaleDateString("en-US", {
+        weekday: "long",
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+      })}
+    </div>
+    <div className="text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded sm:hidden">
+      {new Date().toLocaleDateString("en-US", {
+        month: "short",
+        day: "numeric",
+      })}
+    </div>
+  </div>
 
-                  <div className="space-y-2 sm:space-y-3 lg:space-y-4 flex-1 w-full">
-                    {reportStatusData.map((item, index) => (
-                      <div
-                        key={item.status}
-                        className={`flex items-center justify-between p-2 sm:p-3 rounded-lg transition-all duration-200 cursor-pointer ${
-                          hoveredPie === index
-                            ? "bg-gray-50 transform scale-105"
-                            : ""
-                        }`}
-                        onMouseEnter={() => setHoveredPie(index)}
-                        onMouseLeave={() => setHoveredPie(null)}
-                      >
-                        <div className="flex items-center gap-2 sm:gap-3">
-                          <div
-                            className="w-3 h-3 sm:w-4 sm:h-4 rounded transition-transform duration-200"
-                            style={{ backgroundColor: item.color }}
-                          ></div>
-                          <span className="text-sm text-gray-700 font-medium">
-                            {item.status}
-                          </span>
-                        </div>
-                        <span className="text-base sm:text-lg font-bold text-gray-900">
-                          {item.value}%
-                        </span>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </div>
+  <div className="flex flex-col lg:flex-row items-center gap-4 sm:gap-6 lg:gap-8">
+    <div className="relative flex flex-col items-center">
+      <svg
+        width="120"
+        height="120"
+        className="sm:w-140 sm:h-140 lg:w-160 lg:h-160 cursor-pointer"
+        viewBox="0 0 100 100"
+      >
+        {pieChartData.map((item, index) => (
+          <path
+            key={item.status}
+            d={item.path}
+            fill={item.color}
+            className={`transition-all duration-300 ${
+              hoveredPie === index
+                ? "opacity-80 scale-105"
+                : "opacity-100"
+            }`}
+            stroke="white"
+            strokeWidth="2"
+            onMouseEnter={() => setHoveredPie(index)}
+            onMouseLeave={() => setHoveredPie(null)}
+          />
+        ))}
+      </svg>
+
+      <div className="text-center mt-2 sm:mt-4">
+        <div className="text-xl sm:text-2xl font-bold text-gray-800">
+          {complianceRate}%
+        </div>
+        <div className="text-sm text-gray-600">Approved</div>
+      </div>
+
+      {hoveredPie !== null && (
+        <div className="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-full bg-gray-800 text-white px-2 sm:px-3 py-1 sm:py-2 rounded-lg text-xs sm:text-sm z-10 shadow-lg">
+          <div className="flex items-center gap-1 sm:gap-2">
+            <div
+              className="w-2 h-2 sm:w-3 sm:h-3 rounded"
+              style={{
+                backgroundColor: pieChartData[hoveredPie].color,
+              }}
+            ></div>
+            <span>
+              {pieChartData[hoveredPie].status}:{" "}
+              {pieChartData[hoveredPie].value}%
+            </span>
+          </div>
+        </div>
+      )}
+    </div>
+
+    <div className="space-y-2 sm:space-y-3 lg:space-y-4 flex-1 w-full">
+      {reportStatusData.map((item, index) => (
+        <div
+          key={item.status}
+          className={`flex items-center justify-between p-2 sm:p-3 rounded-lg transition-all duration-200 cursor-pointer ${
+            hoveredPie === index
+              ? "bg-gray-50 transform scale-105"
+              : ""
+          }`}
+          onMouseEnter={() => setHoveredPie(index)}
+          onMouseLeave={() => setHoveredPie(null)}
+        >
+          <div className="flex items-center gap-2 sm:gap-3">
+            <div
+              className="w-3 h-3 sm:w-4 sm:h-4 rounded transition-transform duration-200"
+              style={{ backgroundColor: item.color }}
+            ></div>
+            <span className="text-sm text-gray-700 font-medium">
+              {item.status}
+            </span>
+          </div>
+          <span className="text-base sm:text-lg font-bold text-gray-900">
+            {item.value}%
+          </span>
+        </div>
+      ))}
+    </div>
+  </div>
+</div>
             </div>
 
             {/* THIRD ROW - Site Performance - PERBAIKAN: Responsive chart */}
