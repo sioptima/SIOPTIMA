@@ -20,4 +20,19 @@ export class SiteValidation {
         id: z.coerce.number("Invalid parameter"),
     })
 
+    static UPDATE = z.object({
+        id: z.coerce.number().int(),//siteid
+        data: z.object({
+            name: z.string().max(200).optional(),
+            city: z.string().max(50).optional(),
+            address: z.string().max(250).optional(),
+            province: z.string().max(50).optional(),
+            status: z.string().toUpperCase()
+                    .pipe(
+                        z.enum(["ACTIVE", "MAINTENANCE", "INACTIVE"])
+                    )
+                    .optional()
+        })
+    })
+
 }

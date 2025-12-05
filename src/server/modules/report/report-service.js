@@ -4,6 +4,8 @@ import { getUser } from "../../utils/auth";
 import { uploadImage } from "../../utils/uploadthing";
 import { ResponseError } from "@/src/lib/response-error";
 import { SiteRepository } from "../site/site-repository";
+import { PresensiRepository } from "../presensi/presensi-repository";
+import { ShiftRepository } from "../shift/shift-repository";
 
 export class ReportService {
     
@@ -36,10 +38,15 @@ export class ReportService {
         //validate request 
         const createRequest = ReportValidation.CREATE.parse(object);
 
-        //check if site in report exist
-        const site = await SiteRepository.findByName(createRequest.siteName);
-        if (!site){
-            throw new ResponseError(200, "Site in report does not exist")
+        //check if theres an active checkin session
+        const activeCheckIn = await PresensiRepository.getActiveCheckIn({userId: user.userId}) 
+        if (!activeCheckIn){
+            throw new ResponseError(400, "No active check in, please check-in first before making a report")
+        }
+
+        //check if site exist, if exist then it is used to associate new report with a site
+        if (!activeCheckIn.shift?.siteId){
+            throw new ResponseError(200, "Current active check in does not have a shift associated with. Make sure check-in's day = shift schedule's day")
         }
 
         //write report to database
@@ -51,10 +58,10 @@ export class ReportService {
             ec: createRequest.ec,
             notes: createRequest.additionalNotes,
             pH: createRequest.phLevel,
-            siteName: site.name,
-            agitatorStatus: createRequest.agitatorStatus.toUpperCase(),
-            outFilterStatus: createRequest.outFilterStatus.toUpperCase(),
-            settleStatus: createRequest.settleStatus.toUpperCase(),
+            siteId: activeCheckIn.shift.siteId,
+            agitatorStatus: createRequest.agitatorStatus,
+            outFilterStatus: createRequest.outFilterStatus,
+            settleStatus: createRequest.settleStatus,
             laporanDate: new Date(createRequest.date+","+createRequest.time),
             userId: user.userId
         });

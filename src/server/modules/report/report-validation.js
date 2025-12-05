@@ -28,11 +28,19 @@ export class ReportValidation {
                     (file) => file.every((file) => ACCEPTED_IMAGE_TYPES.includes(file.type)),
                     "Only .jpg, .jpeg, .png and .webp formats are supported."
                   ),
-        outFilterStatus: z.enum(["Normal", "Broken", "Maintenance"]),
-        agitatorStatus: z.enum(["Normal", "Broken", "Maintenance"]),
-        settleStatus: z.enum(["Normal", "Broken", "Maintenance"]),
+        outFilterStatus: z.string().toUpperCase()
+                          .pipe(
+                            z.enum(["NORMAL", "BROKEN", "MAINTENANCE"]),
+                          ),
+        agitatorStatus: z.string().toUpperCase()
+                          .pipe(
+                            z.enum(["NORMAL", "BROKEN", "MAINTENANCE"]),
+                          ),
+        settleStatus: z.string().toUpperCase()
+                        .pipe(
+                          z.enum(["NORMAL", "BROKEN", "MAINTENANCE"]),
+                        ),
         additionalNotes: z.string().max(1024),
-        siteName: z.string().max(75)
     })
 
     static GET = z.object({

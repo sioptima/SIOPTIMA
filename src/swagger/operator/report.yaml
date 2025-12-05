@@ -12,9 +12,6 @@ paths:
             schema:
               type: object
               properties:
-                siteName:
-                  type: string
-                  example: "Surabaya - Site A"
                 date:
                   type: string
                   format: date

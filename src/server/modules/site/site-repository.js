@@ -1,6 +1,5 @@
 import { ResponseError } from "@/src/lib/response-error.js";
 import PrismaClient from "../../db/db.js"
-import { M_PLUS_1 } from "next/font/google/index.js";
 
 export class SiteRepository {
 
@@ -21,7 +20,7 @@ export class SiteRepository {
     }
 
     static async findById(data){
-        //try {
+        try {
             return await PrismaClient.site.findUnique({
                 where: { 
                     id: data.siteId
@@ -34,6 +33,7 @@ export class SiteRepository {
                     },
                     address: {
                         select: {
+                            address: true,
                             city: true,
                             province: true,
                         }
@@ -49,9 +49,9 @@ export class SiteRepository {
                     }
                 },
             });
-        //} catch (error) {
-        //    throw new ResponseError(500, "Failed when querying site in database")
-        //}
+        } catch (error) {
+            throw new ResponseError(500, "Failed when querying site in database")
+        }
     }
 
     static async findAll(data){
@@ -110,4 +110,54 @@ export class SiteRepository {
         }
     }
 
+    static async update(data){
+        try {  
+            return await PrismaClient.site.update({
+                where: {
+                    id: data.siteId
+                },
+                data: {
+                    ...(data.name && { name: data.name }),
+                    ...(data.status && { status: data.status }),
+                    ...(data.city || data.address || data.province 
+                        ? 
+                        {
+                          address: {
+                            update: {
+                              ...(data.city && { city: data.city }),
+                              ...(data.address && { address: data.address }),
+                              ...(data.province && { province: data.province }),
+                            }
+                          }
+                        }
+                        : {})
+                },
+                include: {
+                    _count: {
+                        select: {
+                            users: true,
+                        }
+                    },
+                    address: {
+                        select: {
+                            address: true,
+                            city: true,
+                            province: true,
+                        }
+                    },
+                    report: {
+                        take: 1,
+                        orderBy: {
+                            laporanDate: 'desc'
+                        },
+                        select: {
+                            laporanDate: true,
+                        }
+                    }
+                },
+            })
+        } catch (error) {
+            throw new ResponseError(500, "Failed when updating site to database")
+        }
+    }
 }

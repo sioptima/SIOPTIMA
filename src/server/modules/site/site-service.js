@@ -1,7 +1,7 @@
 import { ResponseError } from "@/src/lib/response-error";
 import { SiteRepository } from "./site-repository";
 import { SiteValidation } from "./site-validation";
-import { Sticker } from "lucide-react";
+import { timeSince } from "./site-helper";
 
 export class SiteService {
 
@@ -64,7 +64,6 @@ export class SiteService {
         if(!site){
             throw new ResponseError (200, "No site found")
         }
-
         //format response
         const recordTransform = {
             id: site.id,
@@ -74,11 +73,46 @@ export class SiteService {
             province: site.address.province,
             operators: site._count.users,
             status: site.status,
-            lastReport: "To Be Added",
+            lastReport: (site.report?.length !== 0 ) ? `${timeSince(site.report[0].laporanDate)} ago` : "No report yet",
             createdAt: site.createdAt,
             updatedAt: site.updatedAt,
         }
 
         return recordTransform;
+    }
+
+    static async updateSite(request){
+        //validate request
+        const validatedRequest = SiteValidation.UPDATE.parse(request);
+
+        //check if site exist
+        const site = await SiteRepository.findById({siteId: validatedRequest.id});
+        if (!site){
+            throw new ResponseError(200, "Site to update does not exist")
+        }
+
+        //update site
+        const updatedSite = await SiteRepository.update({
+            siteId: validatedRequest.id,
+            name: (validatedRequest.data.name) ? validatedRequest.data.name : undefined,
+            city: (validatedRequest.data.city) ? validatedRequest.data.city : undefined,
+            address: (validatedRequest.data.address) ? validatedRequest.data.address : undefined,
+            province: (validatedRequest.data.province) ? validatedRequest.data.province : undefined,
+            status: (validatedRequest.data.status) ? validatedRequest.data.status : undefined,
+        })
+
+        //format response
+        const siteTransform = {
+            id: updatedSite.id,
+            name: updatedSite.name,
+            city: updatedSite.address.city,
+            address: updatedSite.address.address,
+            province: updatedSite.address.province,
+            operators: updatedSite._count,
+            status: updatedSite.status,
+            lastReport: (site.report?.length !== 0 ) ? `${timeSince(site.report[0].laporanDate)} ago` : "No report yet",
+        }
+
+        return  siteTransform;
     }
 }

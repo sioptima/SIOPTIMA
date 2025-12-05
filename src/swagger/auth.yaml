@@ -98,6 +98,7 @@ paths:
       summary: Registers a user
       tags:
         - Authentication
+        - Users
 
       requestBody:
         required: true

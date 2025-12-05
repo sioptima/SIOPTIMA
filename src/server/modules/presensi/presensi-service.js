@@ -37,7 +37,8 @@ export class PresensiService{
         const startOfDay = new Date(checkInDateUTC.getFullYear(), checkInDateUTC.getMonth(), checkInDateUTC.getDate())
         const endOfDay = new Date(checkInDateUTC.getFullYear(), checkInDateUTC.getMonth(), checkInDateUTC.getDate() + 1)
         //get today's shift information or whatever shift's information based on the date of request's timestamp
-        const shift = await ShiftRepository.getToday({start: startOfDay, end: endOfDay, userId: user.userId})
+        //if multiple grab oldest that is 'open'(no check in associated yet)
+        const shift = await ShiftRepository.findToday({start: startOfDay, end: endOfDay, userId: user.userId})
         //check ontime/late status
         const isLate = () => {
             if(!shift){
@@ -143,7 +144,6 @@ export class PresensiService{
             throw new ResponseError(400, "Invalid request data");
         }
 
-        
         const records = await PresensiRepository.findMany(getRequest, user.userId);
         if (records.count === 0) {
             throw new ResponseError (200, "No record found")
@@ -156,6 +156,22 @@ export class PresensiService{
             date: record.presensiDate.toLocaleDateString(),
             checkIn: record.presensiDate.toLocaleTimeString(),
             checkOut: (record.checkOut) ? record.checkOut.checkOutDate.toLocaleTimeString() : null,
+            location: (record.shift?.site.name) ? record.shift.site.name : "-",
+            status: record.statusApproval,
+            approvalStatus: record.statusApproval,
+            checkInStatus: record.statusPresensi,
+            checkInLocation: {
+                Lat: record.latitude,
+                Long: record. longitude
+            },
+            checkOutLocation: {
+                Lat: (record.checkOut?.latitude) ? record.checkOut.latitude : "-",
+                Long: (record.checkOut?.longitude) ? record. checkOut.longitude : "-"
+            },
+            selfieCheckIn: (record.fotoDiri) ? record.fotoDiri : "-",
+            selfieCheckOut: (record.checkOut?.fotoDiri) ? record.checkOut.fotoDiri : "-",
+            approvedBy: (record.approver?.username) ? record.approver.username : "-",
+            approvedAt: (record.approvedAt) ? record.approvedAt : "-",
         }))
 
         return {
@@ -219,7 +235,7 @@ export class PresensiService{
                 Lat: (record.checkOut?.latitude) ? record.checkOut.latitude : "-",
                 Long: (record.checkOut?.longitude) ? record. checkOut.longitude : "-"
             },
-            selfieCheckIn: record.fotoDiri,
+            selfieCheckIn: (record.fotoDiri) ? record.fotoDiri : "-",
             selfieCheckOut: (record.checkOut?.fotoDiri) ? record.checkOut.fotoDiri : "-",
             approvedBy: (record.approver?.username) ? record.approver.username : "-",
             approvedAt: (record.approvedAt) ? record.approvedAt : "-",

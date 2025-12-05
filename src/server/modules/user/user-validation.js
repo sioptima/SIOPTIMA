@@ -28,4 +28,8 @@ export class UserValidation {
         siteId: z.number("Invalid request").int(),
     })
 
+    static GETBYID = z.object({
+        id: z.coerce.number().int()
+    })
+
 }

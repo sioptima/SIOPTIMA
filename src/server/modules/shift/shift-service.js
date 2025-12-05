@@ -10,7 +10,7 @@ export class ShiftService {
         // validate request
         const createRequest = ShiftValidation.CREATE.parse(request);
 
-        const user = await UserRepository.findById(createRequest.userId);
+        const user = await UserRepository.findById({userId: createRequest.userId});
         if (!user) {
             throw new ResponseError(200, `User by id ${createRequest.userId} does not exist`)
         }

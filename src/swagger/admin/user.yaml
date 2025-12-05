@@ -68,3 +68,66 @@ paths:
                       totalPages:
                         type: integer
                         example: 1
+  
+  /api/admin/user/{id}:
+   get:
+     parameters:
+       - in: path
+         name: id
+         schema:
+           type: integer
+           description: Users's id to search
+     summary: Get a specific user information
+     tags:
+       - Users
+     responses:
+       '200':
+         description: User information
+         content:
+           application/json:
+             schema:
+               type: object
+               properties:
+                 success:
+                   type: boolean
+                   example: true
+                 message:
+                   type: string
+                   example: User retrieved
+                 data:
+                   type: object
+                   properties:
+                     id:
+                       type: integer
+                       example: 1
+                     name:
+                       type: string
+                       string: "Budi Santoso"
+                     email:
+                       type: string
+                       example: "budisantoso@gmail.com"
+                     role:
+                       type: string
+                       enum: ["ADMIN", "OPERATOR", "HRD"]
+                       example: "OPERATOR"
+                     site:
+                       type: string
+                       example: "Jakarta Utara - Site A"
+                     status:
+                       type: string
+                       enum: ["ACTIVE", "INACTIVE"]
+                       example: ACTIVE
+                     lastActive:
+                       type: string
+                       example: "2 hours ago" 
+                     initial:
+                       type: string
+                       example: "B"
+                     createdAt:
+                       type: string
+                       format: date-time
+                       example: "2024-01-01T00:00:00Z"
+                     updatedAt:
+                       type: string
+                       format: date-time
+                       example: "2024-01-27T08:30:00Z"

@@ -133,7 +133,7 @@ paths:
         schema:
           type: integer
           description: Number of records to return
-      summary: Get current user attendance records history
+      summary: Get current user attendance records history - ordered by latest
       tags:
         - Attendance
 
@@ -236,7 +236,7 @@ paths:
 
   /api/operator/attendance/today:
     get:
-      summary: Get current user today's attendance record
+      summary: Get current user today's attendance record - latest if multiple record in a day
       tags:
         - Attendance
 

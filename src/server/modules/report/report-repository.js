@@ -25,7 +25,7 @@ export class ReportRepository {
                     },
                     site: {
                         connect: {
-                            name: data.siteName
+                            id: data.siteId
                         }
                     }
                 },

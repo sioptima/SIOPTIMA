@@ -5,6 +5,7 @@ import { UserRepository } from "./user-repository.js";
 import { ResponseError } from "@/src/lib/response-error.js";
 import { hashPassword } from "@/src/server/utils/password.js";
 import { SiteRepository } from "../site/site-repository.js";
+import { getUser } from "../../utils/auth.js";
 
 export class UserService {
 
@@ -90,11 +91,10 @@ export class UserService {
 
         const users = await UserRepository.findByRole(queryData)
         if (!users) {
-            throw new ResponseError (200, "No site found")
+            throw new ResponseError (200, "No user found")
         }
-        
         return {
-            query: users,
+            data: users,
             paging: {
                 size: size,
                 total_page: Math.ceil(users.total / size),
@@ -107,7 +107,7 @@ export class UserService {
         //validate
         const assignRequest = UserValidation.ASSIGN.parse(request);
 
-        const user = await UserRepository.findById(assignRequest.userId)
+        const user = await UserRepository.findById({userId: assignRequest.userId})
         if (!user){
             throw new ResponseError(200, "User not found")
         }
@@ -131,7 +131,7 @@ export class UserService {
             throw new ResponseError(400, "Invalid request data");
         }
 
-        const user = await UserRepository.findById(unassignRequest.userId)
+        const user = await UserRepository.findById({userId: unassignRequest.userId})
         if (!user){
             throw new ResponseError(200, "User not found")
         }
@@ -147,5 +147,33 @@ export class UserService {
             username: response.username,
             site: response.sites
         }
+    }
+
+    static async getById(parameter) {
+        const test = await getUser()
+        //validate parameter
+        const validatedParam = UserValidation.GETBYID.parse(parameter)
+
+        //find userr
+        const user = await UserRepository.findById({userId: validatedParam.id})
+        if (!user){
+            throw new ResponseError(200, "User does not exist")
+        }
+
+        const transformUser= {
+            id: user.id,
+            username: user.id,
+            name: "TBA",
+            email: "TBA",
+            role: user.role.name,
+            site: user.sites,
+            status: (!user.deletedAt) ? "active" : "inactive",
+            lastActive: "TBA",
+            initial: "TBA",
+            createdAt: user.createdAt,
+            updatedAt: user.updatedAt,
+        }
+
+        return transformUser
     }
 }

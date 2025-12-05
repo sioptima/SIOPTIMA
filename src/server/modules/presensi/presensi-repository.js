@@ -89,6 +89,14 @@ export class PresensiRepository {
                     userId: data.userId,
                     checkOut: null
                 },
+                select: {
+                    id: true,
+                    shift: {
+                        select: {
+                            siteId: true,
+                        }
+                    }
+                },
                 orderBy: {
                     presensiDate: 'desc',
                 }

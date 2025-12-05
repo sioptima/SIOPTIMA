@@ -15,11 +15,23 @@ export class UserRepository {
         }
     }
 
-    static async findById(id){
+    static async findById(data){
         try {
             return await PrismaClient.user.findUnique({
                 where: { 
-                    id
+                    id: data.userId
+                },
+                include: {
+                    role: {
+                        select: {
+                            name: true,
+                        }
+                    },
+                    sites: {
+                        select: {
+                            name: true,
+                        }
+                    }
                 }
             });
         } catch (error) {
@@ -96,6 +108,11 @@ export class UserRepository {
         try {
             const skip = (data.page - 1) * data.size;
             const users = await PrismaClient.user.findMany({
+                where: {
+                    role: {
+                        name: data.roleName
+                    }
+                },
                 select: {
                     id: true,
                     username: true,
@@ -103,11 +120,6 @@ export class UserRepository {
                         select: {
                             name: true,
                         }
-                    }
-                },
-                where: {
-                    role: {
-                        name: data.roleName
                     }
                 },
                 orderBy: {

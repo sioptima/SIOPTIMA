@@ -177,6 +177,7 @@ paths:
                       status:
                         type: string
                         enum: ["ACTIVE", "MAINTENANCE", "INACTIVE"]
+                        example: "ACTIVE"
                       lastReport:
                         type: string
                         example: "2 hours ago"
@@ -189,4 +190,79 @@ paths:
                         format: date-time
                         example: "2024-01-27T08:30:00Z"
 
+    patch:
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+            description: Site's id to update
+      summary: Update a site
+      tags:
+        - Sites
 
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  example: Surabaya - Site A Updated
+                city:
+                  type: string
+                  example: Surabaya Timur
+                address:
+                  type: string
+                  example: Jalan Industri No 40, Surabaya Timur
+                province:
+                  type: string
+                  example: Jawa Timur
+                status: 
+                  type: string
+                  enum: ["ACTIVE", "MAINTENANCE", "INACTIVE"]
+                  example: MAINTENANCE
+      responses:
+        '200':
+          description: Request confirmation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: Site updated successfully
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                        example: 1
+                      name:
+                        type: string
+                        example: Surabaya - Site A Updated
+                      city:
+                        type: string
+                        example: Surabaya Timur
+                      address:
+                        type: string
+                        example: Jalan Industri No 40, Surabaya Timur
+                      province:
+                        type: string
+                        example: Jawa Timur
+                      operators:
+                        type: number
+                        example: 3
+                      status: 
+                        type: string
+                        enum: ["ACTIVE", "MAINTENANCE", "INACTIVE"]
+                        example: MAINTENANCE
+                      lastReport:
+                        type: string
+                        example: 2 hours ago

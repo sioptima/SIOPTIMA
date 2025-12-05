@@ -39,7 +39,7 @@ export class ShiftRepository {
         }
     }
 
-    static async getToday(data){
+    static async findToday(data){
         try {
             return await PrismaClient.jadwalShift.findFirst({
                 where: {
@@ -47,11 +47,15 @@ export class ShiftRepository {
                         gte: data.start, //find shift schedule that is the same day as the check-in's request
                         lt: data.end
                     },
-                    userId: data.userId
+                    userId: data.userId,
+                    presensi: null
                 },
                 select: {
                     shiftDate:true,
                     id: true,
+                },
+                orderBy: {
+                    shiftDate: 'asc'
                 }
             })
         } catch (error) {
