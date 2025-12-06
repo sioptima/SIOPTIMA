@@ -32,15 +32,30 @@ export class UserService {
             username: registerRequest.username,
             password: hashedPassword,
             role: role.id,
+            email: (registerRequest.email) ? registerRequest.email : undefined,
+            site: (site) ? site : undefined,
+            status: (registerRequest.status) ? registerRequest.status : undefined,
+            name: (registerRequest.name) ? registerRequest.name : undefined, 
         });
         if (!newUser) {
             throw new ResponseError(500, "Failed to create user");
         }
 
-        return {
+        const resultTransform = {
             id: newUser.id,
-            role: role.name
+            name: "TBA",
+            email: "TBA",
+            role: "TBA",
+            site: "TBA",
+            status: "TBA",
+            lastActive: "TBA",
+            initial: "TBA",
         }
+
+        if(!site) {
+            throw new ResponseError(200, "Created user but the site you entered does not exist", true, resultTransform)
+        }
+        return resultTransform;
     }
 
     static async login(request) {

@@ -42,4 +42,4 @@ test.rest
 .vscode
 
 #prisma generated file
-/src/server/db/generated
+src\server\db\generated

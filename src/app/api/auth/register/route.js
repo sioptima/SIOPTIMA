@@ -18,7 +18,9 @@ export async function POST(request) {
         { 
           success: error.success,
           code: error.status || 500,
-          message: error.issues || error.message || "Internal Server Error" },
+          message: error.issues || error.message || "Internal Server Error" ,
+          data: error.data || undefined
+        },
         { status: error.status || 500 }
         );
     }

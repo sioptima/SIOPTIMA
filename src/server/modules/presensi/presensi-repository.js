@@ -209,18 +209,20 @@ export class PresensiRepository {
         }
     }
 
-    //find latest check in record for today
-    static async findToday(data){
+    static async findToday(data){ //find oldest and active check in record for today
         const today = new Date();
         const startOfDay = new Date(today.getFullYear(), today.getMonth(), today.getDate())
         const endOfDay = new Date(today.getFullYear(), today.getMonth(), today.getDate() + 1)
-        return await PrismaClient.presensi.findFirst({
+        
+        //find active check in first
+        let presensi = await PrismaClient.presensi.findFirst({
             where: {
                 userId: data.userId,
                 presensiDate: {
                     gte: startOfDay,
                     lt: endOfDay
-                }
+                },
+                checkOut: null
             },
             select: {
                 presensiDate: true,
@@ -241,10 +243,47 @@ export class PresensiRepository {
                 statusPresensi: true,
             },
             orderBy: {
-                presensiDate: 'desc'
+                presensiDate: 'asc'
             }
         })
+
+        //if no active check in then grab latest check in for today
+        if (!presensi) {
+            presensi = await PrismaClient.presensi.findFirst({
+                where: {
+                    userId: data.userId,
+                    presensiDate: {
+                        gte: startOfDay,
+                        lt: endOfDay
+                    },
+                },
+                select: {
+                    presensiDate: true,
+                    checkOut: {
+                        select: {
+                            checkOutDate: true,
+                        }
+                    },
+                    shift: {
+                        select: {
+                            site: {
+                                select: {
+                                    name: true,
+                                }
+                            }
+                        }
+                    },
+                    statusPresensi: true,
+                },
+                orderBy: {
+                    presensiDate: 'desc'
+                }
+            })
+        }
+
+        return presensi;
     }
+        
 
     static async findById(data){
         try {

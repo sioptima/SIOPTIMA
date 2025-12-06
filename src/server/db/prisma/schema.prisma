@@ -16,6 +16,11 @@ datasource db {
   directUrl = env("DIRECT_URL")
 }
 
+enum UserStatus {
+  ACTIVE
+  INACTIVE
+}
+
 model User {
   id                Int             @id @default(autoincrement())
   username          String          @unique
@@ -23,6 +28,7 @@ model User {
   createdAt         DateTime        @default(now())
   updatedAt         DateTime        @updatedAt
   deletedAt         DateTime?
+  status            UserStatus
 
   role              Role            @relation(fields: [roleId], references: [id])
   roleId            Int
@@ -123,8 +129,9 @@ model SiteAddress {
 
 model Profile {
   id                Int             @id @default(autoincrement())
-  birthDate         DateTime
-  email             String
+  birthDate         DateTime?
+  email             String?
+  name              String?
   image             String?
   createdAt         DateTime        @default(now())
   updatedAt         DateTime        @updatedAt
@@ -138,9 +145,9 @@ model Profile {
 
 model UserAddress {
   id                Int             @id @default(autoincrement())
-  address           String
-  city              String
-  province          String
+  address           String?
+  city              String?
+  province          String?
   createdAt         DateTime        @default(now())
   updatedAt         DateTime        @updatedAt
   deletedAt         DateTime?
