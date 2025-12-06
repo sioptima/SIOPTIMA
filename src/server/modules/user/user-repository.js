@@ -31,6 +31,21 @@ export class UserRepository {
                         select: {
                             name: true,
                         }
+                    },
+                    profile: {
+                        select: {
+                            name: true,
+                            email: true,
+                        }
+                    },
+                    activity: {
+                        take: 1,
+                        orderBy: {
+                            createdAt: "desc"
+                        },
+                        select: {
+                            createdAt: true,
+                        }
                     }
                 }
             });
@@ -45,8 +60,59 @@ export class UserRepository {
                 data: { 
                     username: data.username,
                     password: data.password,
-                    roleId: data.role
+                    roleId: data.role,
+                    ...(data.status && {status: data.status}), //register with optional field
+                    ...(data.siteName && {
+                        sites: {
+                            connect: {
+                                name: data.siteName
+                            }
+                        },
+                    ...(data.email || data.name 
+                        ?
+                        {
+                            profile: {
+                                create: {
+                                    ...(data.email && { email: data.email }),
+                                    ...(data.name && {name: data.name})
+                                }
+                            }
+                        }
+                        : {}),
+                    activity: {
+                        create: {
+                            action: "Account register"
+                        }
+                    }
+                    })
                 },
+                include: {
+                    profile: {
+                        select: {
+                            name: true,
+                            email: true,
+                        }
+                    },
+                    role: {
+                        select: {
+                            name: true,
+                        }
+                    },
+                    sites: {
+                        select: {
+                            name: true,
+                        }
+                    },
+                    activity: {
+                        take: 1,
+                        orderBy: {
+                            createdAt: "desc"
+                        },
+                        select:{
+                            createdAt: true,
+                        }
+                    }
+                }
             });
         } catch (error) {
             throw new ResponseError(500, "Failed when writing in database")
@@ -58,7 +124,8 @@ export class UserRepository {
             return await PrismaClient.role.findUnique({
                 where: {
                     name
-                }
+                },
+                
             });
         } catch (error) {
             throw new ResponseError(500, "Failed when querying in database")
@@ -81,12 +148,30 @@ export class UserRepository {
         try {
             const skip = (data.page - 1) * data.size;
             const users = await PrismaClient.user.findMany({
-                select: {
-                    id: true,
-                    username: true,
+                include: {
+                    profile: {
+                        select: {
+                            name: true,
+                            email: true,
+                        }
+                    },
                     role: {
                         select: {
                             name: true,
+                        }
+                    },
+                    sites: {
+                        select: {
+                            name: true,
+                        }
+                    },
+                    activity: {
+                        take: 1,
+                        orderBy: {
+                            createdAt: "desc"
+                        },
+                        select:{
+                            createdAt: true,
                         }
                     }
                 },
@@ -113,12 +198,30 @@ export class UserRepository {
                         name: data.roleName
                     }
                 },
-                select: {
-                    id: true,
-                    username: true,
+                include: {
+                    profile: {
+                        select: {
+                            name: true,
+                            email: true,
+                        }
+                    },
                     role: {
                         select: {
                             name: true,
+                        }
+                    },
+                    sites: {
+                        select: {
+                            name: true,
+                        }
+                    },
+                    activity: {
+                        take: 1,
+                        orderBy: {
+                            createdAt: "desc"
+                        },
+                        select:{
+                            createdAt: true,
                         }
                     }
                 },

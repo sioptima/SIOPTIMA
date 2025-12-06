@@ -11,7 +11,7 @@ export class UserValidation {
         email: z.string().max(30).email().optional(),
         site: z.string().max(100).optional(),
         status: z.string().max(20).toUpperCase()
-                .pipe(z.enum(["ACTIVE", "MAINTENANCE", "INACTIVE"]))
+                .pipe(z.enum(["ACTIVE", "INACTIVE"]))
                 .optional(),
         name: z.string().max(35).optional()
     })
@@ -27,6 +27,20 @@ export class UserValidation {
         roleName: z.string().toUpperCase()
                    .pipe(z.enum(["ADMIN", "OPERATOR", "HRD"], "Invalid query"))
                    .optional()
+    })
+
+    static UPDATE = z.object({
+        id: z.coerce.number().int(),
+        data: z.object({
+            role: z.string().toUpperCase()
+                .pipe(z.enum(["ADMIN", "OPERATOR", "HRD"], "Invalid query")),
+            email: z.string().max(30).email().optional(),
+            site: z.string().max(100).optional(),
+            status: z.string().max(20).toUpperCase()
+                    .pipe(z.enum(["ACTIVE", "INACTIVE"]))
+                    .optional(),
+            name: z.string().max(35).optional()
+        })
     })
 
     static ASSIGN = z.object({

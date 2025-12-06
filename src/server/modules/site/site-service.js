@@ -1,7 +1,7 @@
 import { ResponseError } from "@/src/lib/response-error";
 import { SiteRepository } from "./site-repository";
 import { SiteValidation } from "./site-validation";
-import { timeSince } from "./site-helper";
+import { timeSince } from "../../utils/helper";
 
 export class SiteService {
 

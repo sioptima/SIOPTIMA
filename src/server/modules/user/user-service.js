@@ -6,6 +6,7 @@ import { ResponseError } from "@/src/lib/response-error.js";
 import { hashPassword } from "@/src/server/utils/password.js";
 import { SiteRepository } from "../site/site-repository.js";
 import { getUser } from "../../utils/auth.js";
+import { timeSince } from "../../utils/helper.js";
 
 export class UserService {
 
@@ -33,7 +34,7 @@ export class UserService {
             password: hashedPassword,
             role: role.id,
             email: (registerRequest.email) ? registerRequest.email : undefined,
-            site: (site) ? site : undefined,
+            siteName: (site) ? site : undefined,
             status: (registerRequest.status) ? registerRequest.status : undefined,
             name: (registerRequest.name) ? registerRequest.name : undefined, 
         });
@@ -43,13 +44,13 @@ export class UserService {
 
         const resultTransform = {
             id: newUser.id,
-            name: "TBA",
-            email: "TBA",
-            role: "TBA",
-            site: "TBA",
-            status: "TBA",
-            lastActive: "TBA",
-            initial: "TBA",
+            name: (newUser.profile?.name) ? newUser.profile.name : undefined,
+            email: (newUser.profile?.email) ? newUser.profile.email : undefined,
+            role: newUser.role.name,
+            site: (newUser.sites.length !== 0) ? newUser.sites[0].name : undefined,
+            status: newUser.status,
+            lastActive: (newUser.activity[0].createdAt) ? timeSince(newUser.activity[0].createdAt) : "-",
+            initial: (newUser.profile?.name) ? newUser.profile.name.slice(0,1).toUpperCase() : newUser.username.slice(0,1).toUpperCase(),
         }
 
         if(!site) {
@@ -92,30 +93,45 @@ export class UserService {
             throw new ResponseError(400, "Invalid request data");
         }
 
+        let users; //if role not specified then take all
         if (!queryData.roleName){
-            const users = await UserRepository.findAll(queryData);
-            return {
-                data: users,
-                paging: {
-                    size: size,
-                    total_page: Math.ceil(users.total / size),
-                    current_page: page,
-                }
-            }
+            users = await UserRepository.findAll(queryData);
         }
 
-        const users = await UserRepository.findByRole(queryData)
+        users = await UserRepository.findByRole(queryData)
         if (!users) {
             throw new ResponseError (200, "No user found")
         }
+
+        //format result
+        const usersTransform = users.users.map(user => ({
+            id: user.id,
+            username: user.id,
+            name: (user.profile?.name) ? user.profile.name : "-",
+            email: (user.profile?.email) ? user.profile.email : "-",
+            role: user.role.name,
+            site: user.sites,
+            status: (!user.deletedAt) ? "active" : "inactive",
+            lastActive: (user.activity[0].createdAt) ? timeSince(user.activity[0].createdAt) : "-",
+            initial: (user.profile?.name) ? user.profile.name.slice(0,1) : user.username.slice(0,1),
+            createdAt: user.createdAt,
+            updatedAt: user.updatedAt,
+        })
+        )
+
         return {
-            data: users,
+            data: usersTransform,
             paging: {
                 size: size,
                 total_page: Math.ceil(users.total / size),
                 current_page: page,
             }
         }
+    }
+
+    static async update(request){
+        //validate
+        const validatedRequest = UserValidation.UPDATE.parse(request)
     }
 
     static async assignUserToSite(request) {
@@ -178,13 +194,13 @@ export class UserService {
         const transformUser= {
             id: user.id,
             username: user.id,
-            name: "TBA",
-            email: "TBA",
+            name: (user.profile?.name) ? user.profile.name : "-",
+            email: (user.profile?.email) ? user.profile.email : "-",
             role: user.role.name,
             site: user.sites,
             status: (!user.deletedAt) ? "active" : "inactive",
-            lastActive: "TBA",
-            initial: "TBA",
+            lastActive: (user.activity[0].createdAt) ? timeSince(user.activity[0].createdAt) : "-",
+            initial: (user.profile?.name) ? user.profile.name.slice(0,1) : user.username.slice(0,1),
             createdAt: user.createdAt,
             updatedAt: user.updatedAt,
         }
