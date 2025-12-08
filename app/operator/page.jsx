@@ -35,7 +35,6 @@
 //   ChevronDownIcon,
 // } from "@heroicons/react/24/outline";
 
-
 // // BAGIAN GEOLOKASI OR GEOLOCATION
 // //rumus geolokasi
 // // Tambahkan kode ini setelah baris import dan sebelum "export default function Operator()"
@@ -65,7 +64,6 @@
 // };
 // // Fungsi untuk menghitung jarak antara dua koordinat (rumus Haversine)
 // // BAGIAN GEOLOKASI OR GEOLOCATION
-
 
 // // Fungsi untuk mengecek permission kamera
 // const checkCameraPermission = async () => {
@@ -4180,90 +4178,6 @@
 //INI JANGAN DIHAPUS
 //INI JANGAN DIHAPUS
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 //KODE DENGAN GEOLOKASI DEFAULT
 //KODE DENGAN GEOLOKASI DEFAULT
 //KODE DENGAN GEOLOKASI DEFAULT
@@ -4303,8 +4217,20 @@ import {
   ChevronDownIcon,
 } from "@heroicons/react/24/outline";
 
-
 // BAGIAN GEOLOKASI OR GEOLOCATION
+// ==================== DEMO MODE SETTINGS ====================
+const DEMO_MODE = true; // Setel ke true untuk mode demo
+const DEMO_SITE_COORDINATES = {
+  "Jakarta Utara - Site A": { lat: -6.123456, lng: 106.123456 },
+  "Jakarta Utara - Site B": { lat: -6.234567, lng: 106.234567 },
+  "IPAL Jakarta Pusat": { lat: -6.181818, lng: 106.818181 },
+  "IPAL Jakarta Utara": { lat: -6.123456, lng: 106.123456 },
+  "IPAL Jakarta Selatan": { lat: -6.261626, lng: 106.810623 },
+  "IPAL Jakarta Barat": { lat: -6.167347, lng: 106.758987 },
+  "IPAL Jakarta Timur": { lat: -6.225013, lng: 106.900146 },
+};
+// ==================== DEMO MODE SETTINGS ====================
+
 //rumus geolokasi
 // Tambahkan kode ini setelah baris import dan sebelum "export default function Operator()"
 
@@ -4333,7 +4259,6 @@ const calculateDistance = (lat1, lon1, lat2, lon2) => {
 };
 // Fungsi untuk menghitung jarak antara dua koordinat (rumus Haversine)
 // BAGIAN GEOLOKASI OR GEOLOCATION
-
 
 // Fungsi untuk mengecek permission kamera
 const checkCameraPermission = async () => {
@@ -5025,145 +4950,107 @@ export default function Operator() {
   };
 
  const getCurrentLocation = (isCheckOut = false) => {
-  // Mapping site ke koordinat yang sudah ditentukan
-  const siteCoordinates = {
-    "Jakarta Utara - Site A": { 
-      name: "Jakarta Utara - Site A", 
-      lat: -6.123456, 
-      lng: 106.123456 
-    },
-    "Jakarta Utara - Site B": { 
-      name: "Jakarta Utara - Site B", 
-      lat: -6.234567, 
-      lng: 106.234567 
-    },
-    "Jakarta Utara - Site C": { 
-      name: "Jakarta Utara - Site C", 
-      lat: -6.345678, 
-      lng: 106.345678 
-    },
-    "IPAL Jakarta Pusat": { 
-      name: "IPAL Jakarta Pusat", 
-      lat: -6.181818, 
-      lng: 106.818181 
-    },
-    "IPAL Jakarta Utara": { 
-      name: "IPAL Jakarta Utara", 
-      lat: -6.123456, 
-      lng: 106.123456 
-    },
-    "IPAL Jakarta Selatan": { 
-      name: "IPAL Jakarta Selatan", 
-      lat: -6.261626, 
-      lng: 106.810623 
-    },
-    "IPAL Jakarta Barat": { 
-      name: "IPAL Jakarta Barat", 
-      lat: -6.167347, 
-      lng: 106.758987 
-    },
-    "IPAL Jakarta Timur": { 
-      name: "IPAL Jakarta Timur", 
-      lat: -6.225013, 
-      lng: 106.900146 
-    }
-  };
-
-
-   // Gunakan site dari user, default ke "Jakarta Utara - Site A" jika tidak ditemukan
-  const userSite = user.site || "Jakarta Utara - Site A";
-  const siteData = siteCoordinates[userSite] || siteCoordinates["Jakarta Utara - Site A"];
-  
-  const locationString = `${siteData.name} (Lat: ${siteData.lat.toFixed(6)}, Long: ${siteData.lng.toFixed(6)})`;
-
-
-
-
-
-    if (isCheckOut) {
-      setCurrentLocationCheckOut("Getting location...");
-    } else {
-      setCurrentLocation("Getting location...");
-    }
-
-    const options = {
-      enableHighAccuracy: true,
-      timeout: 10000,
-      maximumAge: 0,
-    };
-
-    navigator.geolocation.getCurrentPosition(
-      (position) => {
-        const { latitude, longitude } = position.coords;
-
-        // Hitung jarak dari lokasi perusahaan
-        const distance = calculateDistance(
-          latitude,
-          longitude,
-          COMPANY_COORDINATES.latitude,
-          COMPANY_COORDINATES.longitude
-        );
-
-        const isWithinRadius = distance <= ALLOWED_RADIUS_METERS;
-
-        // Format lokasi dengan status validasi
-        const locationString = `Lat: ${latitude.toFixed(6)}, Long: ${longitude.toFixed(6)}`;
-        const statusMessage = isWithinRadius
-          ? `✓ Within allowed radius (${Math.round(distance)} m from company)`
-          : `✗ Outside allowed radius (${Math.round(distance)} m from company)`;
-
-        const fullLocationString = `${locationString}\n${statusMessage}`;
-
-        if (isCheckOut) {
-          setCurrentLocationCheckOut(fullLocationString);
-          setLocationCapturedCheckOut(isWithinRadius);
-
-          if (isWithinRadius) {
-            alert("Location valid! You are within the allowed radius.");
-          } else {
-            alert(
-              `Location outside radius! You are ${Math.round(distance)} meters from company. Maximum ${ALLOWED_RADIUS_METERS} meters allowed.`
-            );
-          }
-        } else {
-          setCurrentLocation(fullLocationString);
-          setLocationCaptured(isWithinRadius);
-
-          if (isWithinRadius) {
-            alert("Location valid! You are within the allowed radius.");
-          } else {
-            alert(
-              `Location outside radius! You are ${Math.round(distance)} meters from company. Maximum ${ALLOWED_RADIUS_METERS} meters allowed.`
-            );
-          }
-        }
-      },
-      (error) => {
-        console.error("Error getting location:", error);
-        let errorMessage = "Unknown error occurred";
-        switch (error.code) {
-          case error.PERMISSION_DENIED:
-            errorMessage = "Location access denied by user";
-            break;
-          case error.POSITION_UNAVAILABLE:
-            errorMessage = "Location information unavailable";
-            break;
-          case error.TIMEOUT:
-            errorMessage = "Location request timed out";
-            break;
-        }
-        if (isCheckOut) {
-          setCurrentLocationCheckOut("Location unavailable");
-          setLocationCapturedCheckOut(false);
-        } else {
-          setCurrentLocation("Location unavailable");
-          setLocationCaptured(false);
-        }
-        alert(`Failed to get location: ${errorMessage}`);
-      },
-      options
+  // Jika DEMO_MODE aktif, gunakan koordinat dummy dari site
+  if (DEMO_MODE) {
+    const userSite = user.site || "Jakarta Utara - Site A";
+    const siteData = DEMO_SITE_COORDINATES[userSite] || 
+                     DEMO_SITE_COORDINATES["Jakarta Utara - Site A"];
+    
+    // Buat koordinat random dalam radius 50-200 meter dari site
+    const randomOffset = () => (Math.random() * 0.003 - 0.0015); // ~50-200 meter
+    const demoLat = siteData.lat + randomOffset();
+    const demoLng = siteData.lng + randomOffset();
+    
+    // Hitung jarak dari perusahaan (simulasi)
+    const distance = calculateDistance(
+      demoLat,
+      demoLng,
+      COMPANY_COORDINATES.latitude,
+      COMPANY_COORDINATES.longitude
     );
-  };
+    
+    const isWithinRadius = distance <= ALLOWED_RADIUS_METERS;
+    
+    // Format lokasi demo
+    const locationString = `Lat: ${demoLat.toFixed(6)}, Long: ${demoLng.toFixed(6)}`;
+    const statusMessage = isWithinRadius
+      ? `✓ Within allowed radius (${Math.round(distance)} m from company)`
+      : `✗ Outside allowed radius (${Math.round(distance)} m from company) - DEMO MODE`;
+    
+    const fullLocationString = `${locationString}\n${statusMessage}`;
+    
+    if (isCheckOut) {
+      setCurrentLocationCheckOut(fullLocationString);
+      setLocationCapturedCheckOut(true); // Selalu true di demo mode
+    } else {
+      setCurrentLocation(fullLocationString);
+      setLocationCaptured(true); // Selalu true di demo mode
+    }
+    
+    // Alert khusus untuk demo mode
+    alert(
+      `DEMO MODE: Location simulated near ${userSite}\n` +
+      `Coordinates: ${demoLat.toFixed(6)}, ${demoLng.toFixed(6)}\n` +
+      `Distance from company: ${Math.round(distance)} meters\n` +
+      `Check-in ${isWithinRadius ? 'allowed' : 'simulated'} for demo purposes`
+    );
+    
+    return;
+  }
+  
+  // KODE ASLI untuk mode non-demo
+  navigator.geolocation.getCurrentPosition(
+    (position) => {
+      const { latitude, longitude } = position.coords;
+      const distance = calculateDistance(
+        latitude,
+        longitude,
+        COMPANY_COORDINATES.latitude,
+        COMPANY_COORDINATES.longitude
+      );
+      const isWithinRadius = distance <= ALLOWED_RADIUS_METERS;
+      
+      const locationString = `Lat: ${latitude.toFixed(6)}, Long: ${longitude.toFixed(6)}`;
+      const statusMessage = isWithinRadius
+        ? `✓ Within allowed radius (${Math.round(distance)} m from company)`
+        : `✗ Outside allowed radius (${Math.round(distance)} m from company)`;
+      
+      const fullLocationString = `${locationString}\n${statusMessage}`;
+      
+      if (isCheckOut) {
+        setCurrentLocationCheckOut(fullLocationString);
+        setLocationCapturedCheckOut(isWithinRadius);
+      } else {
+        setCurrentLocation(fullLocationString);
+        setLocationCaptured(isWithinRadius);
+      }
+    },
+    (error) => {
+      console.error("Error getting location:", error);
+      let errorMessage = "Unknown error occurred";
+      switch (error.code) {
+        case error.PERMISSION_DENIED:
+          errorMessage = "Location access denied by user";
+          break;
+        case error.POSITION_UNAVAILABLE:
+          errorMessage = "Location information unavailable";
+          break;
+        case error.TIMEOUT:
+          errorMessage = "Location request timed out";
+          break;
+      }
+      if (isCheckOut) {
+        setCurrentLocationCheckOut("Location unavailable");
+        setLocationCapturedCheckOut(false);
+      } else {
+        setCurrentLocation("Location unavailable");
+        setLocationCaptured(false);
+      }
+      alert(`Failed to get location: ${errorMessage}`);
+    },
+    { enableHighAccuracy: true, timeout: 5000, maximumAge: 0 }
+  );
+};
 
   const startCamera = async (isCheckOut = false) => {
     try {

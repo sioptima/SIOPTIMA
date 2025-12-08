@@ -1,4 +1,3 @@
-
 // // ==================================KODINGAN MERGE BEBERAPA MENU ROLE HRD :START=================================================================
 // // ==================================KODINGAN MERGE BEBERAPA MENU ROLE HRD :START=================================================================
 // // ==================================KODINGAN MERGE BEBERAPA MENU ROLE HRD :START=================================================================
@@ -59,7 +58,7 @@
 //   const [hoveredPie, setHoveredPie] = useState(null);
 //   const [isDetailModalOpen, setIsDetailModalOpen] = useState(false);
 //   const [selectedAttendance, setSelectedAttendance] = useState(null);
-  
+
 //   // State baru untuk fitur tambahan
 //   const [showShiftForm, setShowShiftForm] = useState(false);
 //   const [showSiteForm, setShowSiteForm] = useState(false);
@@ -67,7 +66,7 @@
 //   const [editingShift, setEditingShift] = useState(null);
 //   const [editingSite, setEditingSite] = useState(null);
 //   const [selectedLeave, setSelectedLeave] = useState(null);
-  
+
 //   // Form state untuk shift
 //   const [shiftForm, setShiftForm] = useState({
 //     name: "",
@@ -76,7 +75,7 @@
 //     siteId: "",
 //     maxOperators: 5,
 //   });
-  
+
 //   // Form state untuk site
 //   const [siteForm, setSiteForm] = useState({
 //     name: "",
@@ -86,7 +85,7 @@
 //     supervisor: "",
 //     contact: "",
 //   });
-  
+
 //   const router = useRouter();
 //   const dropdownRef = useRef(null);
 //   const notificationRef = useRef(null);
@@ -448,7 +447,7 @@
 //         shift.id === editingShift.id ? { ...shift, ...shiftForm, id: editingShift.id } : shift
 //       );
 //       setShifts(updatedShifts);
-      
+
 //       const newNotification = {
 //         id: Date.now(),
 //         title: "Shift Updated",
@@ -465,7 +464,7 @@
 //         ...shiftForm,
 //       };
 //       setShifts([...shifts, newShift]);
-      
+
 //       const newNotification = {
 //         id: Date.now(),
 //         title: "New Shift Added",
@@ -498,7 +497,7 @@
 //     if (window.confirm("Are you sure you want to delete this shift?")) {
 //       const shiftToDelete = shifts.find(shift => shift.id === id);
 //       setShifts(shifts.filter(shift => shift.id !== id));
-      
+
 //       const newNotification = {
 //         id: Date.now(),
 //         title: "Shift Deleted",
@@ -537,7 +536,7 @@
 //         site.id === editingSite.id ? { ...site, ...siteForm, id: editingSite.id } : site
 //       );
 //       setSites(updatedSites);
-      
+
 //       const newNotification = {
 //         id: Date.now(),
 //         title: "Site Updated",
@@ -554,7 +553,7 @@
 //         ...siteForm,
 //       };
 //       setSites([...sites, newSite]);
-      
+
 //       const newNotification = {
 //         id: Date.now(),
 //         title: "New Site Added",
@@ -588,7 +587,7 @@
 //     if (window.confirm("Are you sure you want to delete this site?")) {
 //       const siteToDelete = sites.find(site => site.id === id);
 //       setSites(sites.filter(site => site.id !== id));
-      
+
 //       const newNotification = {
 //         id: Date.now(),
 //         title: "Site Deleted",
@@ -1072,8 +1071,8 @@
 //                   <label className="text-sm font-medium text-gray-700">Type</label>
 //                   <p className="mt-1">
 //                     <span className={`inline-flex items-center px-3 py-1 rounded-full text-sm font-medium ${
-//                       selectedLeave.type === 'izin' 
-//                         ? 'bg-blue-100 text-blue-800' 
+//                       selectedLeave.type === 'izin'
+//                         ? 'bg-blue-100 text-blue-800'
 //                         : 'bg-purple-100 text-purple-800'
 //                     }`}>
 //                       {selectedLeave.type === 'izin' ? 'Permission (Izin)' : 'Leave (Libur)'}
@@ -1084,7 +1083,7 @@
 //                   <label className="text-sm font-medium text-gray-700">Status</label>
 //                   <p className="mt-1">
 //                     <span className={`inline-flex items-center px-3 py-1 rounded-full text-sm font-medium ${
-//                       selectedLeave.status === 'approved' 
+//                       selectedLeave.status === 'approved'
 //                         ? 'bg-green-100 text-green-800'
 //                         : selectedLeave.status === 'rejected'
 //                         ? 'bg-red-100 text-red-800'
@@ -2347,7 +2346,7 @@
 //                   <div>
 //                     <p className="text-sm text-gray-600">Avg Operators/Shift</p>
 //                     <p className="text-2xl font-bold text-gray-900 mt-1">
-//                       {shifts.length > 0 
+//                       {shifts.length > 0
 //                         ? Math.round(shifts.reduce((acc, shift) => acc + shift.maxOperators, 0) / shifts.length)
 //                         : 0
 //                       }
@@ -2391,7 +2390,7 @@
 //                               {shift.maxOperators} ops
 //                             </span>
 //                           </div>
-                          
+
 //                           <div className="grid grid-cols-2 gap-4">
 //                             <div>
 //                               <p className="text-gray-500 text-xs uppercase font-medium mb-1">Start Time</p>
@@ -2527,7 +2526,7 @@
 //                             Capacity: {site.capacity}
 //                           </span>
 //                         </div>
-                        
+
 //                         <div>
 //                           <p className="text-gray-500 text-xs uppercase font-medium mb-1">Address</p>
 //                           <p className="text-gray-900 text-sm line-clamp-2">{site.address}</p>
@@ -2681,8 +2680,8 @@
 //                                 {request.type === 'izin' ? 'Permission' : 'Leave'}
 //                               </span>
 //                               <span className={`inline-flex items-center px-2 py-0.5 rounded text-xs font-medium ${
-//                                 request.status === 'approved' ? 'bg-green-100 text-green-800' : 
-//                                 request.status === 'rejected' ? 'bg-red-100 text-red-800' : 
+//                                 request.status === 'approved' ? 'bg-green-100 text-green-800' :
+//                                 request.status === 'rejected' ? 'bg-red-100 text-red-800' :
 //                                 'bg-yellow-100 text-yellow-800'
 //                               }`}>
 //                                 {request.status}
@@ -2690,7 +2689,7 @@
 //                             </div>
 //                           </div>
 //                         </div>
-                        
+
 //                         <div>
 //                           <p className="text-gray-500 text-xs uppercase font-medium mb-1">Date Range</p>
 //                           <p className="text-gray-900 text-sm font-medium">
@@ -2711,7 +2710,7 @@
 //                             <EyeIcon className="w-4 h-4" />
 //                             View Details
 //                           </button>
-                          
+
 //                           {request.status === "pending" && (
 //                             <div className="flex gap-2">
 //                               <button
@@ -2749,8 +2748,8 @@
 //                               {request.type === 'izin' ? 'Permission (Izin)' : 'Leave (Libur)'}
 //                             </span>
 //                             <span className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-medium ${
-//                               request.status === 'approved' ? 'bg-green-100 text-green-800' : 
-//                               request.status === 'rejected' ? 'bg-red-100 text-red-800' : 
+//                               request.status === 'approved' ? 'bg-green-100 text-green-800' :
+//                               request.status === 'rejected' ? 'bg-red-100 text-red-800' :
 //                               'bg-yellow-100 text-yellow-800'
 //                             }`}>
 //                               {request.status}
@@ -2774,7 +2773,7 @@
 //                           >
 //                             <EyeIcon className="w-5 h-5" />
 //                           </button>
-                          
+
 //                           {request.status === "pending" && (
 //                             <>
 //                               <button
@@ -2812,8 +2811,6 @@
 // // ==================================KODINGAN MERGE BEBERAPA MENU ROLE HRD :END=================================================================
 // // ==================================KODINGAN MERGE BEBERAPA MENU ROLE HRD :END=================================================================
 // // ==================================KODINGAN MERGE BEBERAPA MENU ROLE HRD :END=================================================================
-
-
 
 "use client";
 import dynamic from "next/dynamic";
@@ -2869,7 +2866,7 @@ export default function HRD() {
   const [hoveredPie, setHoveredPie] = useState(null);
   const [isDetailModalOpen, setIsDetailModalOpen] = useState(false);
   const [selectedAttendance, setSelectedAttendance] = useState(null);
-  
+
   // State baru untuk fitur tambahan
   const [showShiftForm, setShowShiftForm] = useState(false);
   const [showSiteForm, setShowSiteForm] = useState(false);
@@ -2877,7 +2874,7 @@ export default function HRD() {
   const [editingShift, setEditingShift] = useState(null);
   const [editingSite, setEditingSite] = useState(null);
   const [selectedLeave, setSelectedLeave] = useState(null);
-  
+
   // Form state untuk shift
   const [shiftForm, setShiftForm] = useState({
     name: "Morning Shift", // Default value
@@ -2886,7 +2883,7 @@ export default function HRD() {
     siteId: "",
     maxOperators: 5,
   });
-  
+
   // Form state untuk site
   const [siteForm, setSiteForm] = useState({
     name: "",
@@ -2896,7 +2893,7 @@ export default function HRD() {
     supervisor: "",
     contact: "",
   });
-  
+
   const router = useRouter();
   const dropdownRef = useRef(null);
   const notificationRef = useRef(null);
@@ -3089,34 +3086,107 @@ export default function HRD() {
       totalOperators: 127,
       presentToday: 118,
       attendanceRate: 96.5,
-      pendingValidation: getSynchronizedData(STORAGE_KEYS.ATTENDANCE, []).filter(
-        (item) => item.status === "pending"
-      ).length,
+      pendingValidation: getSynchronizedData(
+        STORAGE_KEYS.ATTENDANCE,
+        []
+      ).filter((item) => item.status === "pending").length,
     })
   );
 
   // DATA BARU UNTUK FITUR TAMBAHAN
   const [shifts, setShifts] = useState(() =>
     getSynchronizedData(STORAGE_KEYS.SHIFTS, [
-      { id: 1, name: "Morning Shift", startTime: "07:00", endTime: "15:00", siteId: "1", maxOperators: 8 },
-      { id: 2, name: "Afternoon Shift", startTime: "15:00", endTime: "23:00", siteId: "2", maxOperators: 6 },
-      { id: 3, name: "Night Shift", startTime: "23:00", endTime: "07:00", siteId: "3", maxOperators: 4 },
+      {
+        id: 1,
+        name: "Morning Shift",
+        startTime: "07:00",
+        endTime: "15:00",
+        siteId: "1",
+        maxOperators: 8,
+      },
+      {
+        id: 2,
+        name: "Afternoon Shift",
+        startTime: "15:00",
+        endTime: "23:00",
+        siteId: "2",
+        maxOperators: 6,
+      },
+      {
+        id: 3,
+        name: "Night Shift",
+        startTime: "23:00",
+        endTime: "07:00",
+        siteId: "3",
+        maxOperators: 4,
+      },
     ])
   );
 
   const [sites, setSites] = useState(() =>
     getSynchronizedData(STORAGE_KEYS.SITES, [
-      { id: 1, name: "Site A", location: "Jakarta Utara", address: "Jl. Raya Jakarta No. 123", capacity: 15, supervisor: "Budi Santoso", contact: "0812-3456-7890" },
-      { id: 2, name: "Site B", location: "Bandung", address: "Jl. Raya Bandung No. 456", capacity: 12, supervisor: "Siti Nurhaliza", contact: "0813-4567-8901" },
-      { id: 3, name: "Site C", location: "Surabaya", address: "Jl. Raya Surabaya No. 789", capacity: 10, supervisor: "Ahmad Hidayat", contact: "0814-5678-9012" },
+      {
+        id: 1,
+        name: "Site A",
+        location: "Jakarta Utara",
+        address: "Jl. Raya Jakarta No. 123",
+        capacity: 15,
+        supervisor: "Budi Santoso",
+        contact: "0812-3456-7890",
+      },
+      {
+        id: 2,
+        name: "Site B",
+        location: "Bandung",
+        address: "Jl. Raya Bandung No. 456",
+        capacity: 12,
+        supervisor: "Siti Nurhaliza",
+        contact: "0813-4567-8901",
+      },
+      {
+        id: 3,
+        name: "Site C",
+        location: "Surabaya",
+        address: "Jl. Raya Surabaya No. 789",
+        capacity: 10,
+        supervisor: "Ahmad Hidayat",
+        contact: "0814-5678-9012",
+      },
     ])
   );
 
   const [leaveRequests, setLeaveRequests] = useState(() =>
     getSynchronizedData(STORAGE_KEYS.LEAVE_REQUESTS, [
-      { id: 1, operator: "Budi Santoso", type: "izin", startDate: "2024-12-01", endDate: "2024-12-01", reason: "Sakit", status: "pending", submittedDate: "2024-11-28" },
-      { id: 2, operator: "Siti Nurhaliza", type: "libur", startDate: "2024-12-10", endDate: "2024-12-12", reason: "Cuti tahunan", status: "pending", submittedDate: "2024-11-29" },
-      { id: 3, operator: "Ahmad Hidayat", type: "izin", startDate: "2024-12-05", endDate: "2024-12-05", reason: "Keperluan keluarga", status: "approved", submittedDate: "2024-11-27" },
+      {
+        id: 1,
+        operator: "Budi Santoso",
+        type: "izin",
+        startDate: "2024-12-01",
+        endDate: "2024-12-01",
+        reason: "Sakit",
+        status: "pending",
+        submittedDate: "2024-11-28",
+      },
+      {
+        id: 2,
+        operator: "Siti Nurhaliza",
+        type: "libur",
+        startDate: "2024-12-10",
+        endDate: "2024-12-12",
+        reason: "Cuti tahunan",
+        status: "pending",
+        submittedDate: "2024-11-29",
+      },
+      {
+        id: 3,
+        operator: "Ahmad Hidayat",
+        type: "izin",
+        startDate: "2024-12-05",
+        endDate: "2024-12-05",
+        reason: "Keperluan keluarga",
+        status: "approved",
+        submittedDate: "2024-11-27",
+      },
     ])
   );
 
@@ -3135,15 +3205,26 @@ export default function HRD() {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
         setDropdownOpen(false);
       }
-      if (notificationRef.current && !notificationRef.current.contains(event.target)) {
+      if (
+        notificationRef.current &&
+        !notificationRef.current.contains(event.target)
+      ) {
         setNotificationOpen(false);
       }
-      if (shiftFormRef.current && !shiftFormRef.current.contains(event.target) && showShiftForm) {
+      if (
+        shiftFormRef.current &&
+        !shiftFormRef.current.contains(event.target) &&
+        showShiftForm
+      ) {
         setShowShiftForm(false);
         setEditingShift(null);
         resetShiftForm();
       }
-      if (siteFormRef.current && !siteFormRef.current.contains(event.target) && showSiteForm) {
+      if (
+        siteFormRef.current &&
+        !siteFormRef.current.contains(event.target) &&
+        showSiteForm
+      ) {
         setShowSiteForm(false);
         setEditingSite(null);
         resetSiteForm();
@@ -3185,13 +3266,13 @@ export default function HRD() {
 
   // ==================== FUNGSI UTAMA ====================
 
-const menuItems = [
-  { id: "dashboard", name: "Dashboard", icon: ChartBarIcon },
-  { id: "attendance", name: "Attendance", icon: DocumentTextIcon },
-  { id: "shiftManagement", name: "Shift Management", icon: ClockIcon },
-  { id: "siteManagement", name: "Site Management", icon: BuildingOfficeIcon },
-  { id: "leaveManagement", name: "Leave Management", icon: CalendarIcon },
-];
+  const menuItems = [
+    { id: "dashboard", name: "Dashboard", icon: ChartBarIcon },
+    { id: "attendance", name: "Attendance", icon: DocumentTextIcon },
+    { id: "shiftManagement", name: "Shift Management", icon: ClockIcon },
+    { id: "siteManagement", name: "Site Management", icon: BuildingOfficeIcon },
+    { id: "leaveManagement", name: "Leave Management", icon: CalendarIcon },
+  ];
 
   // Fungsi untuk handle approve attendance
   const handleApprove = (id) => {
@@ -3253,11 +3334,13 @@ const menuItems = [
     }
 
     if (editingShift) {
-      const updatedShifts = shifts.map(shift =>
-        shift.id === editingShift.id ? { ...shift, ...shiftForm, id: editingShift.id } : shift
+      const updatedShifts = shifts.map((shift) =>
+        shift.id === editingShift.id
+          ? { ...shift, ...shiftForm, id: editingShift.id }
+          : shift
       );
       setShifts(updatedShifts);
-      
+
       const newNotification = {
         id: Date.now(),
         title: "Shift Updated",
@@ -3270,11 +3353,11 @@ const menuItems = [
       setNotifications((prev) => [newNotification, ...prev]);
     } else {
       const newShift = {
-        id: shifts.length > 0 ? Math.max(...shifts.map(s => s.id)) + 1 : 1,
+        id: shifts.length > 0 ? Math.max(...shifts.map((s) => s.id)) + 1 : 1,
         ...shiftForm,
       };
       setShifts([...shifts, newShift]);
-      
+
       const newNotification = {
         id: Date.now(),
         title: "New Shift Added",
@@ -3305,9 +3388,9 @@ const menuItems = [
 
   const handleDeleteShift = (id) => {
     if (window.confirm("Are you sure you want to delete this shift?")) {
-      const shiftToDelete = shifts.find(shift => shift.id === id);
-      setShifts(shifts.filter(shift => shift.id !== id));
-      
+      const shiftToDelete = shifts.find((shift) => shift.id === id);
+      setShifts(shifts.filter((shift) => shift.id !== id));
+
       const newNotification = {
         id: Date.now(),
         title: "Shift Deleted",
@@ -3342,11 +3425,13 @@ const menuItems = [
     }
 
     if (editingSite) {
-      const updatedSites = sites.map(site =>
-        site.id === editingSite.id ? { ...site, ...siteForm, id: editingSite.id } : site
+      const updatedSites = sites.map((site) =>
+        site.id === editingSite.id
+          ? { ...site, ...siteForm, id: editingSite.id }
+          : site
       );
       setSites(updatedSites);
-      
+
       const newNotification = {
         id: Date.now(),
         title: "Site Updated",
@@ -3359,11 +3444,11 @@ const menuItems = [
       setNotifications((prev) => [newNotification, ...prev]);
     } else {
       const newSite = {
-        id: sites.length > 0 ? Math.max(...sites.map(s => s.id)) + 1 : 1,
+        id: sites.length > 0 ? Math.max(...sites.map((s) => s.id)) + 1 : 1,
         ...siteForm,
       };
       setSites([...sites, newSite]);
-      
+
       const newNotification = {
         id: Date.now(),
         title: "New Site Added",
@@ -3395,9 +3480,9 @@ const menuItems = [
 
   const handleDeleteSite = (id) => {
     if (window.confirm("Are you sure you want to delete this site?")) {
-      const siteToDelete = sites.find(site => site.id === id);
-      setSites(sites.filter(site => site.id !== id));
-      
+      const siteToDelete = sites.find((site) => site.id === id);
+      setSites(sites.filter((site) => site.id !== id));
+
       const newNotification = {
         id: Date.now(),
         title: "Site Deleted",
@@ -3414,12 +3499,12 @@ const menuItems = [
   // ==================== FUNGSI LEAVE MANAGEMENT ====================
 
   const handleApproveLeave = (id) => {
-    const updatedLeaveRequests = leaveRequests.map(request =>
+    const updatedLeaveRequests = leaveRequests.map((request) =>
       request.id === id ? { ...request, status: "approved" } : request
     );
     setLeaveRequests(updatedLeaveRequests);
 
-    const approvedLeave = leaveRequests.find(request => request.id === id);
+    const approvedLeave = leaveRequests.find((request) => request.id === id);
     const newNotification = {
       id: Date.now(),
       title: "Leave Request Approved",
@@ -3433,12 +3518,12 @@ const menuItems = [
   };
 
   const handleRejectLeave = (id) => {
-    const updatedLeaveRequests = leaveRequests.map(request =>
+    const updatedLeaveRequests = leaveRequests.map((request) =>
       request.id === id ? { ...request, status: "rejected" } : request
     );
     setLeaveRequests(updatedLeaveRequests);
 
-    const rejectedLeave = leaveRequests.find(request => request.id === id);
+    const rejectedLeave = leaveRequests.find((request) => request.id === id);
     const newNotification = {
       id: Date.now(),
       title: "Leave Request Rejected",
@@ -3490,7 +3575,9 @@ const menuItems = [
     setNotifications((prev) => prev.map((notif) => ({ ...notif, read: true })));
   };
 
-  const unreadNotifications = notifications.filter((notif) => !notif.read).length;
+  const unreadNotifications = notifications.filter(
+    (notif) => !notif.read
+  ).length;
 
   // ==================== DATA VISUALISASI ====================
 
@@ -3593,15 +3680,20 @@ const menuItems = [
   const stats = {
     total: attendanceData.length,
     pending: attendanceData.filter((item) => item.status === "pending").length,
-    approved: attendanceData.filter((item) => item.status === "approved").length,
-    rejected: attendanceData.filter((item) => item.status === "rejected").length,
+    approved: attendanceData.filter((item) => item.status === "approved")
+      .length,
+    rejected: attendanceData.filter((item) => item.status === "rejected")
+      .length,
   };
 
   // ==================== MODAL SHIFT FORM ====================
 
   const ShiftFormModal = () => (
     <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
-      <div ref={shiftFormRef} className="bg-white rounded-2xl shadow-xl max-w-md w-full max-h-[90vh] overflow-y-auto">
+      <div
+        ref={shiftFormRef}
+        className="bg-white rounded-2xl shadow-xl max-w-md w-full max-h-[90vh] overflow-y-auto"
+      >
         <div className="p-6">
           <div className="flex justify-between items-center mb-6">
             <h3 className="text-xl font-bold text-gray-900">
@@ -3626,7 +3718,9 @@ const menuItems = [
               <div className="relative">
                 <select
                   value={shiftForm.name}
-                  onChange={(e) => setShiftForm({ ...shiftForm, name: e.target.value })}
+                  onChange={(e) =>
+                    setShiftForm({ ...shiftForm, name: e.target.value })
+                  }
                   className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 appearance-none bg-white"
                 >
                   <option value="Morning Shift">Morning Shift</option>
@@ -3645,7 +3739,9 @@ const menuItems = [
                 <input
                   type="time"
                   value={shiftForm.startTime}
-                  onChange={(e) => setShiftForm({ ...shiftForm, startTime: e.target.value })}
+                  onChange={(e) =>
+                    setShiftForm({ ...shiftForm, startTime: e.target.value })
+                  }
                   className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                 />
               </div>
@@ -3656,7 +3752,9 @@ const menuItems = [
                 <input
                   type="time"
                   value={shiftForm.endTime}
-                  onChange={(e) => setShiftForm({ ...shiftForm, endTime: e.target.value })}
+                  onChange={(e) =>
+                    setShiftForm({ ...shiftForm, endTime: e.target.value })
+                  }
                   className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                 />
               </div>
@@ -3669,7 +3767,9 @@ const menuItems = [
               <div className="relative">
                 <select
                   value={shiftForm.siteId}
-                  onChange={(e) => setShiftForm({ ...shiftForm, siteId: e.target.value })}
+                  onChange={(e) =>
+                    setShiftForm({ ...shiftForm, siteId: e.target.value })
+                  }
                   className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 appearance-none bg-white"
                 >
                   <option value="">Select Opsi</option>
@@ -3690,11 +3790,21 @@ const menuItems = [
               <div className="relative">
                 <select
                   value={shiftForm.maxOperators}
-                  onChange={(e) => setShiftForm({ ...shiftForm, maxOperators: parseInt(e.target.value) })}
+                  onChange={(e) =>
+                    setShiftForm({
+                      ...shiftForm,
+                      maxOperators: parseInt(e.target.value),
+                    })
+                  }
                   className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 appearance-none bg-white"
                 >
-                  {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20].map(num => (
-                    <option key={num} value={num}>{num} operator{num !== 1 ? 's' : ''}</option>
+                  {[
+                    1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17,
+                    18, 19, 20,
+                  ].map((num) => (
+                    <option key={num} value={num}>
+                      {num} operator{num !== 1 ? "s" : ""}
+                    </option>
                   ))}
                 </select>
                 <ChevronDownIcon className="w-5 h-5 text-gray-400 absolute right-3 top-1/2 transform -translate-y-1/2 pointer-events-none" />
@@ -3728,7 +3838,10 @@ const menuItems = [
 
   const SiteFormModal = () => (
     <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
-      <div ref={siteFormRef} className="bg-white rounded-2xl shadow-xl max-w-md w-full max-h-[90vh] overflow-y-auto">
+      <div
+        ref={siteFormRef}
+        className="bg-white rounded-2xl shadow-xl max-w-md w-full max-h-[90vh] overflow-y-auto"
+      >
         <div className="p-6">
           <div className="flex justify-between items-center mb-6">
             <h3 className="text-xl font-bold text-gray-900">
@@ -3753,7 +3866,9 @@ const menuItems = [
               <input
                 type="text"
                 value={siteForm.name}
-                onChange={(e) => setSiteForm({ ...siteForm, name: e.target.value })}
+                onChange={(e) =>
+                  setSiteForm({ ...siteForm, name: e.target.value })
+                }
                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                 placeholder="e.g., Site A"
               />
@@ -3766,7 +3881,9 @@ const menuItems = [
               <input
                 type="text"
                 value={siteForm.location}
-                onChange={(e) => setSiteForm({ ...siteForm, location: e.target.value })}
+                onChange={(e) =>
+                  setSiteForm({ ...siteForm, location: e.target.value })
+                }
                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                 placeholder="e.g., Jakarta Utara"
               />
@@ -3778,7 +3895,9 @@ const menuItems = [
               </label>
               <textarea
                 value={siteForm.address}
-                onChange={(e) => setSiteForm({ ...siteForm, address: e.target.value })}
+                onChange={(e) =>
+                  setSiteForm({ ...siteForm, address: e.target.value })
+                }
                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                 rows="3"
                 placeholder="Full address"
@@ -3793,11 +3912,18 @@ const menuItems = [
                 <div className="relative">
                   <select
                     value={siteForm.capacity}
-                    onChange={(e) => setSiteForm({ ...siteForm, capacity: parseInt(e.target.value) })}
+                    onChange={(e) =>
+                      setSiteForm({
+                        ...siteForm,
+                        capacity: parseInt(e.target.value),
+                      })
+                    }
                     className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 appearance-none bg-white"
                   >
-                    {[5, 10, 15, 20, 25, 30, 35, 40, 45, 50].map(num => (
-                      <option key={num} value={num}>{num} operators</option>
+                    {[5, 10, 15, 20, 25, 30, 35, 40, 45, 50].map((num) => (
+                      <option key={num} value={num}>
+                        {num} operators
+                      </option>
                     ))}
                   </select>
                   <ChevronDownIcon className="w-5 h-5 text-gray-400 absolute right-3 top-1/2 transform -translate-y-1/2 pointer-events-none" />
@@ -3810,7 +3936,9 @@ const menuItems = [
                 <input
                   type="text"
                   value={siteForm.supervisor}
-                  onChange={(e) => setSiteForm({ ...siteForm, supervisor: e.target.value })}
+                  onChange={(e) =>
+                    setSiteForm({ ...siteForm, supervisor: e.target.value })
+                  }
                   className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                   placeholder="Supervisor name"
                 />
@@ -3824,7 +3952,9 @@ const menuItems = [
               <input
                 type="tel"
                 value={siteForm.contact}
-                onChange={(e) => setSiteForm({ ...siteForm, contact: e.target.value })}
+                onChange={(e) =>
+                  setSiteForm({ ...siteForm, contact: e.target.value })
+                }
                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                 placeholder="0812-3456-7890"
               />
@@ -3877,33 +4007,47 @@ const menuItems = [
           {selectedLeave && (
             <div className="space-y-4">
               <div>
-                <label className="text-sm font-medium text-gray-700">Operator</label>
-                <p className="mt-1 text-lg font-semibold text-gray-900">{selectedLeave.operator}</p>
+                <label className="text-sm font-medium text-gray-700">
+                  Operator
+                </label>
+                <p className="mt-1 text-lg font-semibold text-gray-900">
+                  {selectedLeave.operator}
+                </p>
               </div>
 
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="text-sm font-medium text-gray-700">Type</label>
+                  <label className="text-sm font-medium text-gray-700">
+                    Type
+                  </label>
                   <p className="mt-1">
-                    <span className={`inline-flex items-center px-3 py-1 rounded-full text-sm font-medium ${
-                      selectedLeave.type === 'izin' 
-                        ? 'bg-blue-100 text-blue-800' 
-                        : 'bg-purple-100 text-purple-800'
-                    }`}>
-                      {selectedLeave.type === 'izin' ? 'Permission (Izin)' : 'Leave (Libur)'}
+                    <span
+                      className={`inline-flex items-center px-3 py-1 rounded-full text-sm font-medium ${
+                        selectedLeave.type === "izin"
+                          ? "bg-blue-100 text-blue-800"
+                          : "bg-purple-100 text-purple-800"
+                      }`}
+                    >
+                      {selectedLeave.type === "izin"
+                        ? "Permission (Izin)"
+                        : "Leave (Libur)"}
                     </span>
                   </p>
                 </div>
                 <div>
-                  <label className="text-sm font-medium text-gray-700">Status</label>
+                  <label className="text-sm font-medium text-gray-700">
+                    Status
+                  </label>
                   <p className="mt-1">
-                    <span className={`inline-flex items-center px-3 py-1 rounded-full text-sm font-medium ${
-                      selectedLeave.status === 'approved' 
-                        ? 'bg-green-100 text-green-800'
-                        : selectedLeave.status === 'rejected'
-                        ? 'bg-red-100 text-red-800'
-                        : 'bg-yellow-100 text-yellow-800'
-                    }`}>
+                    <span
+                      className={`inline-flex items-center px-3 py-1 rounded-full text-sm font-medium ${
+                        selectedLeave.status === "approved"
+                          ? "bg-green-100 text-green-800"
+                          : selectedLeave.status === "rejected"
+                            ? "bg-red-100 text-red-800"
+                            : "bg-yellow-100 text-yellow-800"
+                      }`}
+                    >
                       {selectedLeave.status}
                     </span>
                   </p>
@@ -3912,23 +4056,37 @@ const menuItems = [
 
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="text-sm font-medium text-gray-700">Start Date</label>
-                  <p className="mt-1 text-gray-900">{selectedLeave.startDate}</p>
+                  <label className="text-sm font-medium text-gray-700">
+                    Start Date
+                  </label>
+                  <p className="mt-1 text-gray-900">
+                    {selectedLeave.startDate}
+                  </p>
                 </div>
                 <div>
-                  <label className="text-sm font-medium text-gray-700">End Date</label>
+                  <label className="text-sm font-medium text-gray-700">
+                    End Date
+                  </label>
                   <p className="mt-1 text-gray-900">{selectedLeave.endDate}</p>
                 </div>
               </div>
 
               <div>
-                <label className="text-sm font-medium text-gray-700">Reason</label>
-                <p className="mt-1 text-gray-900 p-3 bg-gray-50 rounded-lg">{selectedLeave.reason}</p>
+                <label className="text-sm font-medium text-gray-700">
+                  Reason
+                </label>
+                <p className="mt-1 text-gray-900 p-3 bg-gray-50 rounded-lg">
+                  {selectedLeave.reason}
+                </p>
               </div>
 
               <div>
-                <label className="text-sm font-medium text-gray-700">Submitted Date</label>
-                <p className="mt-1 text-gray-900">{selectedLeave.submittedDate}</p>
+                <label className="text-sm font-medium text-gray-700">
+                  Submitted Date
+                </label>
+                <p className="mt-1 text-gray-900">
+                  {selectedLeave.submittedDate}
+                </p>
               </div>
 
               {selectedLeave.status === "pending" && (
@@ -4029,8 +4187,8 @@ const menuItems = [
                         selectedAttendance.status === "approved"
                           ? "bg-green-100 text-green-800"
                           : selectedAttendance.status === "rejected"
-                          ? "bg-red-100 text-red-800"
-                          : "bg-yellow-100 text-yellow-800"
+                            ? "bg-red-100 text-red-800"
+                            : "bg-yellow-100 text-yellow-800"
                       }`}
                     >
                       {selectedAttendance.status}
@@ -4192,10 +4350,14 @@ const menuItems = [
                           : "text-gray-800 hover:bg-gray-100 hover:shadow-sm"
                       }`}
                   >
-                    <Icon className={`w-5 h-5 ${
-                      activeMenu === item.id ? "text-white" : "text-gray-500"
-                    }`} />
-                    <span className="whitespace-nowrap font-medium">{item.name}</span>
+                    <Icon
+                      className={`w-5 h-5 ${
+                        activeMenu === item.id ? "text-white" : "text-gray-500"
+                      }`}
+                    />
+                    <span className="whitespace-nowrap font-medium">
+                      {item.name}
+                    </span>
                   </button>
                 </li>
               );
@@ -4283,9 +4445,7 @@ const menuItems = [
                 </button>
 
                 {notificationOpen && (
-                  <div
-                    className="absolute right-0 top-full mt-2 w-80 bg-white rounded-lg shadow-xl border border-gray-200 shadow-md py-2 z-[9999] transition-transform origin-top"
-                  >
+                  <div className="absolute right-0 top-full mt-2 w-80 bg-white rounded-lg shadow-xl border border-gray-200 shadow-md py-2 z-[9999] transition-transform origin-top">
                     <div className="px-4 py-2 border-b border-gray-200 flex justify-between items-center">
                       <h3 className="font-semibold text-gray-900">
                         Notifications
@@ -4362,9 +4522,7 @@ const menuItems = [
                   }}
                   className="flex items-center gap-2 cursor-pointer"
                 >
-                  <div
-                    className="w-10 h-10 bg-gradient-to-r from-emerald-800 to-green-800 rounded-full flex items-center justify-center text-white font-bold"
-                  >
+                  <div className="w-10 h-10 bg-gradient-to-r from-emerald-800 to-green-800 rounded-full flex items-center justify-center text-white font-bold">
                     {hrdUser.initial}
                   </div>
 
@@ -4386,14 +4544,10 @@ const menuItems = [
                 </button>
 
                 {dropdownOpen && (
-                  <div
-                    className="absolute right-0 top-full mt-2 w-64 bg-white rounded-lg shadow-xl border border-gray-200 shadow-md py-2 z-[9999] transition-transform origin-top"
-                  >
+                  <div className="absolute right-0 top-full mt-2 w-64 bg-white rounded-lg shadow-xl border border-gray-200 shadow-md py-2 z-[9999] transition-transform origin-top">
                     <div className="px-4 py-3 border-b border-gray-200">
                       <div className="flex items-center gap-3">
-                        <div
-                          className="w-10 h-10 bg-gradient-to-r from-emerald-800 to-green-800 rounded-full flex items-center justify-center text-white font-bold"
-                        >
+                        <div className="w-10 h-10 bg-gradient-to-r from-emerald-800 to-green-800 rounded-full flex items-center justify-center text-white font-bold">
                           {hrdUser.initial}
                         </div>
                         <div className="flex-1 min-w-0">
@@ -4451,7 +4605,7 @@ const menuItems = [
                   icon: UsersIcon,
                   bgColor: "bg-blue-50",
                   iconColor: "text-blue-600",
-                  menu: "attendance"
+                  menu: "attendance",
                 },
                 {
                   label: "Pending Validation",
@@ -4463,7 +4617,7 @@ const menuItems = [
                   icon: ClockIcon,
                   bgColor: "bg-yellow-50",
                   iconColor: "text-yellow-600",
-                  menu: "attendance"
+                  menu: "attendance",
                 },
                 {
                   label: "Attendance Rate",
@@ -4472,7 +4626,7 @@ const menuItems = [
                   icon: ChartBarIcon,
                   bgColor: "bg-green-50",
                   iconColor: "text-green-600",
-                  menu: "attendance"
+                  menu: "attendance",
                 },
                 {
                   label: "Present Today",
@@ -4481,7 +4635,7 @@ const menuItems = [
                   icon: CheckCircleIcon,
                   bgColor: "bg-emerald-50",
                   iconColor: "text-emerald-600",
-                  menu: "attendance"
+                  menu: "attendance",
                 },
               ].map((item, i) => {
                 const Icon = item.icon;
@@ -4496,7 +4650,9 @@ const menuItems = [
                         {item.label}
                       </p>
                       <div className={`p-1 sm:p-2 rounded-lg ${item.bgColor}`}>
-                        <Icon className={`w-3 h-3 sm:w-4 sm:h-4 lg:w-5 lg:h-5 ${item.iconColor}`} />
+                        <Icon
+                          className={`w-3 h-3 sm:w-4 sm:h-4 lg:w-5 lg:h-5 ${item.iconColor}`}
+                        />
                       </div>
                     </div>
                     <p className="text-lg sm:text-xl lg:text-2xl xl:text-3xl font-bold text-gray-900">
@@ -4507,8 +4663,8 @@ const menuItems = [
                         item.percent.startsWith("+")
                           ? "text-green-600"
                           : item.percent.startsWith("No")
-                          ? "text-gray-500"
-                          : "text-red-600"
+                            ? "text-gray-500"
+                            : "text-red-600"
                       }`}
                     >
                       {item.percent}{" "}
@@ -4517,7 +4673,9 @@ const menuItems = [
                         : "vs last month"}
                     </p>
                     <div className="mt-2 text-right">
-                      <span className="text-xs text-blue-600 font-medium">View →</span>
+                      <span className="text-xs text-blue-600 font-medium">
+                        View →
+                      </span>
                     </div>
                   </div>
                 );
@@ -4527,7 +4685,7 @@ const menuItems = [
             {/* SECOND ROW - OTHER MENU SUMMARIES */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-3 sm:gap-4 mb-4 sm:mb-6">
               {/* Shift Management Summary */}
-              <div 
+              <div
                 className="bg-white p-3 sm:p-4 lg:p-6 rounded-lg sm:rounded-xl border border-gray-200 shadow-sm sm:shadow-md hover:shadow-md transition-shadow cursor-pointer"
                 onClick={() => setActiveMenu("shiftManagement")}
               >
@@ -4536,7 +4694,9 @@ const menuItems = [
                     <h3 className="font-semibold text-base sm:text-lg text-gray-800 mb-1">
                       Shift Management
                     </h3>
-                    <p className="text-xs sm:text-sm text-gray-600">Total shifts: {shifts.length}</p>
+                    <p className="text-xs sm:text-sm text-gray-600">
+                      Total shifts: {shifts.length}
+                    </p>
                   </div>
                   <div className="p-2 bg-blue-50 rounded-lg">
                     <ClockIcon className="w-5 h-5 sm:w-6 sm:h-6 text-blue-600" />
@@ -4544,15 +4704,22 @@ const menuItems = [
                 </div>
                 <div className="space-y-2">
                   {shifts.slice(0, 3).map((shift, index) => {
-                    const site = sites.find(s => s.id === shift.siteId);
+                    const site = sites.find((s) => s.id === shift.siteId);
                     return (
-                      <div key={index} className="flex items-center justify-between p-2 bg-gray-50 rounded">
+                      <div
+                        key={index}
+                        className="flex items-center justify-between p-2 bg-gray-50 rounded"
+                      >
                         <div>
-                          <p className="text-sm font-medium text-gray-900">{shift.name}</p>
-                          <p className="text-xs text-gray-600">{shift.startTime} - {shift.endTime}</p>
+                          <p className="text-sm font-medium text-gray-900">
+                            {shift.name}
+                          </p>
+                          <p className="text-xs text-gray-600">
+                            {shift.startTime} - {shift.endTime}
+                          </p>
                         </div>
                         <span className="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded">
-                          {site ? site.name : 'Unknown'}
+                          {site ? site.name : "Unknown"}
                         </span>
                       </div>
                     );
@@ -4566,7 +4733,7 @@ const menuItems = [
               </div>
 
               {/* Site Management Summary */}
-              <div 
+              <div
                 className="bg-white p-3 sm:p-4 lg:p-6 rounded-lg sm:rounded-xl border border-gray-200 shadow-sm sm:shadow-md hover:shadow-md transition-shadow cursor-pointer"
                 onClick={() => setActiveMenu("siteManagement")}
               >
@@ -4575,7 +4742,9 @@ const menuItems = [
                     <h3 className="font-semibold text-base sm:text-lg text-gray-800 mb-1">
                       Site Management
                     </h3>
-                    <p className="text-xs sm:text-sm text-gray-600">Total sites: {sites.length}</p>
+                    <p className="text-xs sm:text-sm text-gray-600">
+                      Total sites: {sites.length}
+                    </p>
                   </div>
                   <div className="p-2 bg-green-50 rounded-lg">
                     <BuildingOfficeIcon className="w-5 h-5 sm:w-6 sm:h-6 text-green-600" />
@@ -4583,9 +4752,14 @@ const menuItems = [
                 </div>
                 <div className="space-y-2">
                   {sites.slice(0, 3).map((site, index) => (
-                    <div key={index} className="flex items-center justify-between p-2 bg-gray-50 rounded">
+                    <div
+                      key={index}
+                      className="flex items-center justify-between p-2 bg-gray-50 rounded"
+                    >
                       <div>
-                        <p className="text-sm font-medium text-gray-900">{site.name}</p>
+                        <p className="text-sm font-medium text-gray-900">
+                          {site.name}
+                        </p>
                         <p className="text-xs text-gray-600">{site.location}</p>
                       </div>
                       <span className="text-xs bg-green-100 text-green-800 px-2 py-1 rounded">
@@ -4602,7 +4776,7 @@ const menuItems = [
               </div>
 
               {/* Leave Management Summary */}
-              <div 
+              <div
                 className="bg-white p-3 sm:p-4 lg:p-6 rounded-lg sm:rounded-xl border border-gray-200 shadow-sm sm:shadow-md hover:shadow-md transition-shadow cursor-pointer"
                 onClick={() => setActiveMenu("leaveManagement")}
               >
@@ -4611,7 +4785,13 @@ const menuItems = [
                     <h3 className="font-semibold text-base sm:text-lg text-gray-800 mb-1">
                       Leave Management
                     </h3>
-                    <p className="text-xs sm:text-sm text-gray-600">Pending: {leaveRequests.filter(r => r.status === 'pending').length}</p>
+                    <p className="text-xs sm:text-sm text-gray-600">
+                      Pending:{" "}
+                      {
+                        leaveRequests.filter((r) => r.status === "pending")
+                          .length
+                      }
+                    </p>
                   </div>
                   <div className="p-2 bg-purple-50 rounded-lg">
                     <CalendarIcon className="w-5 h-5 sm:w-6 sm:h-6 text-purple-600" />
@@ -4619,16 +4799,27 @@ const menuItems = [
                 </div>
                 <div className="space-y-2">
                   {leaveRequests.slice(0, 3).map((request, index) => (
-                    <div key={index} className="flex items-center justify-between p-2 bg-gray-50 rounded">
+                    <div
+                      key={index}
+                      className="flex items-center justify-between p-2 bg-gray-50 rounded"
+                    >
                       <div>
-                        <p className="text-sm font-medium text-gray-900">{request.operator}</p>
-                        <p className="text-xs text-gray-600">{request.type} • {request.startDate}</p>
+                        <p className="text-sm font-medium text-gray-900">
+                          {request.operator}
+                        </p>
+                        <p className="text-xs text-gray-600">
+                          {request.type} • {request.startDate}
+                        </p>
                       </div>
-                      <span className={`text-xs px-2 py-1 rounded ${
-                        request.status === 'approved' ? 'bg-green-100 text-green-800' : 
-                        request.status === 'rejected' ? 'bg-red-100 text-red-800' : 
-                        'bg-yellow-100 text-yellow-800'
-                      }`}>
+                      <span
+                        className={`text-xs px-2 py-1 rounded ${
+                          request.status === "approved"
+                            ? "bg-green-100 text-green-800"
+                            : request.status === "rejected"
+                              ? "bg-red-100 text-red-800"
+                              : "bg-yellow-100 text-yellow-800"
+                        }`}
+                      >
                         {request.status}
                       </span>
                     </div>
@@ -4650,7 +4841,7 @@ const menuItems = [
                   <h3 className="font-semibold text-base sm:text-lg text-gray-800">
                     Weekly Attendance Trends
                   </h3>
-                  <button 
+                  <button
                     onClick={() => setActiveMenu("attendance")}
                     className="text-xs sm:text-sm text-blue-600 hover:text-blue-800 font-medium"
                   >
@@ -4680,28 +4871,45 @@ const menuItems = [
                         const maxValue = 150;
                         const chartHeight = 120;
                         return (
-                          <div key={index} className="flex flex-col items-center flex-1 relative overflow-visible">
+                          <div
+                            key={index}
+                            className="flex flex-col items-center flex-1 relative overflow-visible"
+                          >
                             <div className="flex items-end justify-center gap-0.5 sm:gap-1.5 w-full overflow-visible">
-                              <div className="w-1.5 sm:w-2 lg:w-2.5 bg-green-500 rounded-t transition-all duration-300 hover:bg-green-600 cursor-pointer relative group"
-                                style={{ height: `${(data.present / maxValue) * chartHeight}px` }}>
+                              <div
+                                className="w-1.5 sm:w-2 lg:w-2.5 bg-green-500 rounded-t transition-all duration-300 hover:bg-green-600 cursor-pointer relative group"
+                                style={{
+                                  height: `${(data.present / maxValue) * chartHeight}px`,
+                                }}
+                              >
                                 <div className="absolute -top-6 sm:-top-7 left-1/2 transform -translate-x-1/2 opacity-0 group-hover:opacity-100 transition bg-gray-800 text-white px-1 sm:px-2 py-0.5 sm:py-1 rounded text-xs whitespace-nowrap z-50 pointer-events-none">
                                   Present: {data.present}
                                 </div>
                               </div>
-                              <div className="w-1.5 sm:w-2 lg:w-2.5 bg-yellow-400 rounded-t transition-all duration-300 hover:bg-yellow-500 cursor-pointer relative group"
-                                style={{ height: `${(data.late / maxValue) * chartHeight}px` }}>
+                              <div
+                                className="w-1.5 sm:w-2 lg:w-2.5 bg-yellow-400 rounded-t transition-all duration-300 hover:bg-yellow-500 cursor-pointer relative group"
+                                style={{
+                                  height: `${(data.late / maxValue) * chartHeight}px`,
+                                }}
+                              >
                                 <div className="absolute -top-6 sm:-top-7 left-1/2 transform -translate-x-1/2 opacity-0 group-hover:opacity-100 transition bg-gray-800 text-white px-1 sm:px-2 py-0.5 sm:py-1 rounded text-xs whitespace-nowrap z-50 pointer-events-none">
                                   Late: {data.late}
                                 </div>
                               </div>
-                              <div className="w-1.5 sm:w-2 lg:w-2.5 bg-red-500 rounded-t transition-all duration-300 hover:bg-red-600 cursor-pointer relative group"
-                                style={{ height: `${(data.absent / maxValue) * chartHeight}px` }}>
+                              <div
+                                className="w-1.5 sm:w-2 lg:w-2.5 bg-red-500 rounded-t transition-all duration-300 hover:bg-red-600 cursor-pointer relative group"
+                                style={{
+                                  height: `${(data.absent / maxValue) * chartHeight}px`,
+                                }}
+                              >
                                 <div className="absolute -top-6 sm:-top-7 left-1/2 transform -translate-x-1/2 opacity-0 group-hover:opacity-100 transition bg-gray-800 text-white px-1 sm:px-2 py-0.5 sm:py-1 rounded text-xs whitespace-nowrap z-50 pointer-events-none">
                                   Absent: {data.absent}
                                 </div>
                               </div>
                             </div>
-                            <span className="text-xs text-gray-600 mt-1 sm:mt-2 font-medium">{data.day}</span>
+                            <span className="text-xs text-gray-600 mt-1 sm:mt-2 font-medium">
+                              {data.day}
+                            </span>
                           </div>
                         );
                       })}
@@ -4709,15 +4917,21 @@ const menuItems = [
                     <div className="flex justify-center gap-2 sm:gap-3 lg:gap-4 mt-2 sm:mt-3 text-xs">
                       <div className="flex items-center gap-1 sm:gap-1.5">
                         <div className="w-2 h-2 sm:w-3 sm:h-3 bg-green-500 rounded"></div>
-                        <span className="text-gray-700 text-xs sm:text-sm">Present</span>
+                        <span className="text-gray-700 text-xs sm:text-sm">
+                          Present
+                        </span>
                       </div>
                       <div className="flex items-center gap-1 sm:gap-1.5">
                         <div className="w-2 h-2 sm:w-3 sm:h-3 bg-yellow-400 rounded"></div>
-                        <span className="text-gray-700 text-xs sm:text-sm">Late</span>
+                        <span className="text-gray-700 text-xs sm:text-sm">
+                          Late
+                        </span>
                       </div>
                       <div className="flex items-center gap-1 sm:gap-1.5">
                         <div className="w-2 h-2 sm:w-3 sm:h-3 bg-red-500 rounded"></div>
-                        <span className="text-gray-700 text-xs sm:text-sm">Absent</span>
+                        <span className="text-gray-700 text-xs sm:text-sm">
+                          Absent
+                        </span>
                       </div>
                     </div>
                   </div>
@@ -4747,32 +4961,68 @@ const menuItems = [
                 </div>
                 <div className="flex flex-col lg:flex-row items-center gap-4 sm:gap-6 lg:gap-8">
                   <div className="relative flex flex-col items-center">
-                    <svg width="120" height="120" viewBox="0 0 100 100" className="cursor-pointer sm:w-32 sm:h-32 lg:w-36 lg:h-36">
+                    <svg
+                      width="120"
+                      height="120"
+                      viewBox="0 0 100 100"
+                      className="cursor-pointer sm:w-32 sm:h-32 lg:w-36 lg:h-36"
+                    >
                       {pieChartData.map((item, index) => (
-                        <path key={item.status} d={item.path} fill={item.color} className={`transition-all duration-300 ${hoveredPie === index ? "opacity-80 scale-105" : "opacity-100"}`} stroke="white" strokeWidth="2" onMouseEnter={() => setHoveredPie(index)} onMouseLeave={() => setHoveredPie(null)} />
+                        <path
+                          key={item.status}
+                          d={item.path}
+                          fill={item.color}
+                          className={`transition-all duration-300 ${hoveredPie === index ? "opacity-80 scale-105" : "opacity-100"}`}
+                          stroke="white"
+                          strokeWidth="2"
+                          onMouseEnter={() => setHoveredPie(index)}
+                          onMouseLeave={() => setHoveredPie(null)}
+                        />
                       ))}
                     </svg>
                     <div className="text-center mt-2 sm:mt-3">
-                      <div className="text-lg sm:text-xl lg:text-2xl font-bold text-gray-800">85%</div>
+                      <div className="text-lg sm:text-xl lg:text-2xl font-bold text-gray-800">
+                        85%
+                      </div>
                       <div className="text-sm text-gray-600">Present</div>
                     </div>
                     {hoveredPie !== null && (
                       <div className="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-full bg-gray-800 text-white px-2 sm:px-3 py-1 sm:py-2 rounded text-xs sm:text-sm z-10 shadow-lg">
                         <div className="flex items-center gap-1 sm:gap-2">
-                          <div className="w-2 h-2 sm:w-3 sm:h-3 rounded" style={{ backgroundColor: pieChartData[hoveredPie].color }}></div>
-                          <span>{pieChartData[hoveredPie].status}: {pieChartData[hoveredPie].value}%</span>
+                          <div
+                            className="w-2 h-2 sm:w-3 sm:h-3 rounded"
+                            style={{
+                              backgroundColor: pieChartData[hoveredPie].color,
+                            }}
+                          ></div>
+                          <span>
+                            {pieChartData[hoveredPie].status}:{" "}
+                            {pieChartData[hoveredPie].value}%
+                          </span>
                         </div>
                       </div>
                     )}
                   </div>
                   <div className="space-y-2 sm:space-y-3 lg:space-y-4 flex-1 w-full">
                     {todayStatusData.map((item, index) => (
-                      <div key={item.status} className={`flex items-center justify-between p-2 sm:p-3 rounded-lg transition-all duration-200 cursor-pointer ${hoveredPie === index ? "bg-gray-50 transform scale-105" : ""}`} onMouseEnter={() => setHoveredPie(index)} onMouseLeave={() => setHoveredPie(null)}>
+                      <div
+                        key={item.status}
+                        className={`flex items-center justify-between p-2 sm:p-3 rounded-lg transition-all duration-200 cursor-pointer ${hoveredPie === index ? "bg-gray-50 transform scale-105" : ""}`}
+                        onMouseEnter={() => setHoveredPie(index)}
+                        onMouseLeave={() => setHoveredPie(null)}
+                      >
                         <div className="flex items-center gap-2 sm:gap-3">
-                          <div className="w-3 h-3 rounded transition-transform duration-200" style={{ backgroundColor: item.color }}></div>
-                          <span className="text-sm text-gray-700 font-medium">{item.status}</span>
+                          <div
+                            className="w-3 h-3 rounded transition-transform duration-200"
+                            style={{ backgroundColor: item.color }}
+                          ></div>
+                          <span className="text-sm text-gray-700 font-medium">
+                            {item.status}
+                          </span>
                         </div>
-                        <span className="text-base sm:text-lg font-bold text-gray-900">{item.value}%</span>
+                        <span className="text-base sm:text-lg font-bold text-gray-900">
+                          {item.value}%
+                        </span>
                       </div>
                     ))}
                   </div>
@@ -4781,26 +5031,48 @@ const menuItems = [
             </div>
 
             {/* RECENT ACTIVITIES SECTION */}
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-3 sm:gap-4 lg:gap-6">
+            <div className="grid grid-cols-1 lg:grid-cols-1 gap-3 sm:gap-4 lg:gap-6">
               {/* Recent Attendance */}
               <div className="bg-white p-3 sm:p-4 lg:p-6 rounded-lg sm:rounded-xl border border-gray-200 shadow-sm sm:shadow-md">
                 <div className="flex justify-between items-center mb-3 sm:mb-4 lg:mb-5">
-                  <h3 className="font-semibold text-base sm:text-lg text-gray-800">Recent Attendance</h3>
-                  <button onClick={() => setActiveMenu("attendance")} className="text-blue-600 text-xs sm:text-sm font-medium hover:underline">
+                  <h3 className="font-semibold text-base sm:text-lg text-gray-800">
+                    Recent Attendance
+                  </h3>
+                  <button
+                    onClick={() => setActiveMenu("attendance")}
+                    className="text-blue-600 text-xs sm:text-sm font-medium hover:underline"
+                  >
                     View All →
                   </button>
                 </div>
                 <div className="space-y-2 sm:space-y-3 lg:space-y-4">
                   {recentAttendanceData.map((attendance, index) => (
-                    <div key={index} className="flex items-center justify-between p-2 sm:p-3 border-b border-gray-100 last:border-0 hover:bg-gray-50 transition-colors cursor-pointer"
-                      onClick={() => openDetailModal(attendanceData.find(a => a.id === attendance.id))}>
+                    <div
+                      key={index}
+                      className="flex items-center justify-between p-2 sm:p-3 border-b border-gray-100 last:border-0 hover:bg-gray-50 transition-colors cursor-pointer"
+                      onClick={() =>
+                        openDetailModal(
+                          attendanceData.find((a) => a.id === attendance.id)
+                        )
+                      }
+                    >
                       <div className="min-w-0 flex-1">
-                        <p className="font-semibold text-gray-900 truncate text-sm sm:text-base">{attendance.name}</p>
-                        <p className="text-gray-600 truncate text-xs sm:text-sm">{attendance.location} • {attendance.time}</p>
+                        <p className="font-semibold text-gray-900 truncate text-sm sm:text-base">
+                          {attendance.name}
+                        </p>
+                        <p className="text-gray-600 truncate text-xs sm:text-sm">
+                          {attendance.location} • {attendance.time}
+                        </p>
                       </div>
                       <div className="flex items-center gap-1 sm:gap-2 flex-shrink-0 ml-2">
-                        {attendance.status === "approved" ? <CheckCircleIcon className="w-4 h-4 text-green-500" /> : <ExclamationTriangleIcon className="w-4 h-4 text-yellow-500" />}
-                        <span className={`px-2 py-1 rounded-full text-xs font-medium ${attendance.status === "approved" ? "bg-green-100 text-green-800" : "bg-yellow-100 text-yellow-800"}`}>
+                        {attendance.status === "approved" ? (
+                          <CheckCircleIcon className="w-4 h-4 text-green-500" />
+                        ) : (
+                          <ExclamationTriangleIcon className="w-4 h-4 text-yellow-500" />
+                        )}
+                        <span
+                          className={`px-2 py-1 rounded-full text-xs font-medium ${attendance.status === "approved" ? "bg-green-100 text-green-800" : "bg-yellow-100 text-yellow-800"}`}
+                        >
                           {attendance.status}
                         </span>
                       </div>
@@ -4810,30 +5082,6 @@ const menuItems = [
               </div>
 
               {/* Top Performers */}
-              <div className="bg-white p-3 sm:p-4 lg:p-6 rounded-lg sm:rounded-xl border border-gray-200 shadow-sm sm:shadow-md">
-                <h3 className="font-semibold text-base sm:text-lg text-gray-800 mb-3 sm:mb-4 lg:mb-5">
-                  Top Performers (This Month)
-                </h3>
-                <div className="space-y-2 sm:space-y-3 lg:space-y-4">
-                  {topPerformersData.map((performer, index) => (
-                    <div key={index} className="flex items-center justify-between p-2 sm:p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors">
-                      <div className="flex items-center gap-2 sm:gap-3">
-                        <div className="w-6 h-6 sm:w-8 sm:h-8 bg-blue-500 rounded-full flex items-center justify-center text-white font-bold text-xs sm:text-sm">
-                          {index + 1}
-                        </div>
-                        <div className="min-w-0 flex-1">
-                          <p className="font-semibold text-gray-900 truncate text-sm sm:text-base">{performer.name}</p>
-                          <p className="text-gray-600 truncate text-xs sm:text-sm">{performer.location}</p>
-                        </div>
-                      </div>
-                      <div className="text-right flex-shrink-0 ml-2">
-                        <p className="font-bold text-gray-900 text-sm sm:text-base">{performer.performance}</p>
-                        <p className="text-blue-600 font-medium text-xs">excellent</p>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
             </div>
           </div>
         )}
@@ -4886,16 +5134,27 @@ const menuItems = [
               ].map((item, i) => {
                 const Icon = item.icon;
                 return (
-                  <div key={i} className="bg-white p-4 sm:p-5 rounded-xl shadow-sm border border-gray-200 hover:shadow-md transition-shadow">
+                  <div
+                    key={i}
+                    className="bg-white p-4 sm:p-5 rounded-xl shadow-sm border border-gray-200 hover:shadow-md transition-shadow"
+                  >
                     <div className="flex items-center justify-between mb-3">
-                      <p className="text-gray-700 font-medium text-sm sm:text-base">{item.label}</p>
+                      <p className="text-gray-700 font-medium text-sm sm:text-base">
+                        {item.label}
+                      </p>
                       <div className={`p-2 rounded-lg ${item.bgColor}`}>
                         <Icon className={`w-5 h-5 ${item.iconColor}`} />
                       </div>
                     </div>
-                    <p className="text-2xl sm:text-3xl font-bold text-gray-900 mb-1">{item.value}</p>
+                    <p className="text-2xl sm:text-3xl font-bold text-gray-900 mb-1">
+                      {item.value}
+                    </p>
                     <p className="text-xs sm:text-sm text-gray-500">
-                      {item.label === "Total Today" ? `Pending: ${stats.pending}` : item.label === "Pending Review" ? "Awaiting validation" : "Validated records"}
+                      {item.label === "Total Today"
+                        ? `Pending: ${stats.pending}`
+                        : item.label === "Pending Review"
+                          ? "Awaiting validation"
+                          : "Validated records"}
                     </p>
                   </div>
                 );
@@ -4906,11 +5165,21 @@ const menuItems = [
               <div className="flex flex-col sm:flex-row gap-4 justify-between items-stretch sm:items-center">
                 <div className="relative flex-1">
                   <MagnifyingGlassIcon className="w-4 h-4 text-gray-400 absolute left-3 top-1/2 transform -translate-y-1/2" />
-                  <input type="text" placeholder="Search operator or site..." value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} className="w-full pl-10 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-900 placeholder-gray-500 text-sm transition" />
+                  <input
+                    type="text"
+                    placeholder="Search operator or site..."
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    className="w-full pl-10 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-900 placeholder-gray-500 text-sm transition"
+                  />
                 </div>
                 <div className="flex gap-2 bg-gray-100 rounded-lg p-1">
                   {["All", "Pending", "Approved", "Rejected"].map((filter) => (
-                    <button key={filter} onClick={() => setSelectedFilter(filter)} className={`px-3 sm:px-4 py-2 rounded-md text-xs sm:text-sm font-medium transition flex-1 text-center min-w-[60px] sm:min-w-[80px] ${selectedFilter === filter ? "bg-blue-600 text-white shadow-sm" : "text-gray-700 hover:bg-gray-200"}`}>
+                    <button
+                      key={filter}
+                      onClick={() => setSelectedFilter(filter)}
+                      className={`px-3 sm:px-4 py-2 rounded-md text-xs sm:text-sm font-medium transition flex-1 text-center min-w-[60px] sm:min-w-[80px] ${selectedFilter === filter ? "bg-blue-600 text-white shadow-sm" : "text-gray-700 hover:bg-gray-200"}`}
+                    >
                       {filter}
                     </button>
                   ))}
@@ -4932,30 +5201,51 @@ const menuItems = [
                 {filteredData.length === 0 ? (
                   <div className="text-center py-12 text-gray-500">
                     <DocumentTextIcon className="w-12 h-12 text-gray-300 mx-auto mb-4" />
-                    <p className="text-lg font-medium text-gray-900 mb-2">No attendance records found</p>
-                    <p className="text-gray-600">Try adjusting your search or filter criteria</p>
+                    <p className="text-lg font-medium text-gray-900 mb-2">
+                      No attendance records found
+                    </p>
+                    <p className="text-gray-600">
+                      Try adjusting your search or filter criteria
+                    </p>
                   </div>
                 ) : (
                   filteredData.map((item) => (
-                    <div key={item.id} className="block lg:grid lg:grid-cols-12 lg:gap-4 px-4 sm:px-6 py-4 hover:bg-gray-50 transition-colors">
+                    <div
+                      key={item.id}
+                      className="block lg:grid lg:grid-cols-12 lg:gap-4 px-4 sm:px-6 py-4 hover:bg-gray-50 transition-colors"
+                    >
                       <div className="lg:hidden space-y-4">
                         <div className="flex justify-between items-start">
                           <div className="flex-1 min-w-0">
-                            <h3 className="font-semibold text-gray-900 text-base sm:text-lg truncate">{item.operator}</h3>
-                            <p className="text-gray-500 text-sm mt-1 truncate">{item.site}</p>
+                            <h3 className="font-semibold text-gray-900 text-base sm:text-lg truncate">
+                              {item.operator}
+                            </h3>
+                            <p className="text-gray-500 text-sm mt-1 truncate">
+                              {item.site}
+                            </p>
                           </div>
-                          <span className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-medium ml-3 flex-shrink-0 ${item.status === "approved" ? "bg-green-100 text-green-800" : item.status === "rejected" ? "bg-red-100 text-red-800" : "bg-yellow-100 text-yellow-800"}`}>
+                          <span
+                            className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-medium ml-3 flex-shrink-0 ${item.status === "approved" ? "bg-green-100 text-green-800" : item.status === "rejected" ? "bg-red-100 text-red-800" : "bg-yellow-100 text-yellow-800"}`}
+                          >
                             {item.status}
                           </span>
                         </div>
                         <div className="grid grid-cols-2 gap-4">
                           <div>
-                            <p className="text-gray-500 text-xs uppercase font-medium mb-1">Date</p>
-                            <p className="text-gray-900 text-sm font-medium">{item.date}</p>
+                            <p className="text-gray-500 text-xs uppercase font-medium mb-1">
+                              Date
+                            </p>
+                            <p className="text-gray-900 text-sm font-medium">
+                              {item.date}
+                            </p>
                           </div>
                           <div>
-                            <p className="text-gray-500 text-xs uppercase font-medium mb-1">Submitted By</p>
-                            <p className="text-gray-900 text-sm font-medium capitalize">{item.submittedBy}</p>
+                            <p className="text-gray-500 text-xs uppercase font-medium mb-1">
+                              Submitted By
+                            </p>
+                            <p className="text-gray-900 text-sm font-medium capitalize">
+                              {item.submittedBy}
+                            </p>
                           </div>
                         </div>
                         <div className="flex items-center justify-between bg-gray-50 rounded-lg p-3">
@@ -4963,8 +5253,12 @@ const menuItems = [
                             <div className="flex items-center gap-2">
                               <ClockIcon className="w-4 h-4 text-green-600 flex-shrink-0" />
                               <div>
-                                <p className="text-gray-500 text-xs">Check-In</p>
-                                <p className="text-gray-900 text-sm font-medium">{item.checkIn}</p>
+                                <p className="text-gray-500 text-xs">
+                                  Check-In
+                                </p>
+                                <p className="text-gray-900 text-sm font-medium">
+                                  {item.checkIn}
+                                </p>
                               </div>
                             </div>
                           </div>
@@ -4972,22 +5266,35 @@ const menuItems = [
                             <div className="flex items-center gap-2">
                               <ClockIcon className="w-4 h-4 text-red-600 flex-shrink-0" />
                               <div>
-                                <p className="text-gray-500 text-xs">Check-Out</p>
-                                <p className="text-gray-900 text-sm font-medium">{item.checkOut}</p>
+                                <p className="text-gray-500 text-xs">
+                                  Check-Out
+                                </p>
+                                <p className="text-gray-900 text-sm font-medium">
+                                  {item.checkOut}
+                                </p>
                               </div>
                             </div>
                           </div>
                         </div>
                         <div className="flex justify-between items-center pt-3 border-t border-gray-200">
-                          <button onClick={() => openDetailModal(item)} className="flex items-center gap-2 text-blue-600 hover:text-blue-800 transition px-3 py-2 rounded-lg hover:bg-blue-50 text-sm font-medium">
+                          <button
+                            onClick={() => openDetailModal(item)}
+                            className="flex items-center gap-2 text-blue-600 hover:text-blue-800 transition px-3 py-2 rounded-lg hover:bg-blue-50 text-sm font-medium"
+                          >
                             <EyeIcon className="w-4 h-4" /> View Details
                           </button>
                           {item.status === "pending" && (
                             <div className="flex gap-2">
-                              <button onClick={() => handleApprove(item.id)} className="flex items-center gap-2 text-green-600 hover:text-green-800 transition px-3 py-2 rounded-lg hover:bg-green-50 text-sm font-medium">
+                              <button
+                                onClick={() => handleApprove(item.id)}
+                                className="flex items-center gap-2 text-green-600 hover:text-green-800 transition px-3 py-2 rounded-lg hover:bg-green-50 text-sm font-medium"
+                              >
                                 <CheckCircleIcon className="w-4 h-4" /> Approve
                               </button>
-                              <button onClick={() => handleReject(item.id)} className="flex items-center gap-2 text-red-600 hover:text-red-800 transition px-3 py-2 rounded-lg hover:bg-red-50 text-sm font-medium">
+                              <button
+                                onClick={() => handleReject(item.id)}
+                                className="flex items-center gap-2 text-red-600 hover:text-red-800 transition px-3 py-2 rounded-lg hover:bg-red-50 text-sm font-medium"
+                              >
                                 <XCircleIcon className="w-4 h-4" /> Reject
                               </button>
                             </div>
@@ -4997,30 +5304,64 @@ const menuItems = [
                       <div className="hidden lg:contents">
                         <div className="col-span-3 flex items-center">
                           <div>
-                            <p className="font-medium text-gray-900">{item.operator}</p>
-                            <p className="text-sm text-gray-500 mt-0.5">Submitted by: {item.submittedBy}</p>
+                            <p className="font-medium text-gray-900">
+                              {item.operator}
+                            </p>
+                            <p className="text-sm text-gray-500 mt-0.5">
+                              Submitted by: {item.submittedBy}
+                            </p>
                           </div>
                         </div>
-                        <div className="col-span-2 flex items-center"><p className="text-gray-700 truncate">{item.site}</p></div>
-                        <div className="col-span-2 flex items-center"><p className="text-gray-700">{item.date}</p></div>
-                        <div className="col-span-1 flex items-center">
-                          <div className="flex items-center gap-2 text-gray-700"><ClockIcon className="w-4 h-4 text-green-600" /><span className="font-medium">{item.checkIn}</span></div>
+                        <div className="col-span-2 flex items-center">
+                          <p className="text-gray-700 truncate">{item.site}</p>
+                        </div>
+                        <div className="col-span-2 flex items-center">
+                          <p className="text-gray-700">{item.date}</p>
                         </div>
                         <div className="col-span-1 flex items-center">
-                          <div className="flex items-center gap-2 text-gray-700"><ClockIcon className="w-4 h-4 text-red-600" /><span className="font-medium">{item.checkOut}</span></div>
+                          <div className="flex items-center gap-2 text-gray-700">
+                            <ClockIcon className="w-4 h-4 text-green-600" />
+                            <span className="font-medium">{item.checkIn}</span>
+                          </div>
+                        </div>
+                        <div className="col-span-1 flex items-center">
+                          <div className="flex items-center gap-2 text-gray-700">
+                            <ClockIcon className="w-4 h-4 text-red-600" />
+                            <span className="font-medium">{item.checkOut}</span>
+                          </div>
                         </div>
                         <div className="col-span-2 flex items-center justify-center">
-                          <span className={`inline-flex items-center px-3 py-1 rounded-full text-sm font-medium ${item.status === "approved" ? "bg-green-100 text-green-800" : item.status === "rejected" ? "bg-red-100 text-red-800" : "bg-yellow-100 text-yellow-800"}`}>
+                          <span
+                            className={`inline-flex items-center px-3 py-1 rounded-full text-sm font-medium ${item.status === "approved" ? "bg-green-100 text-green-800" : item.status === "rejected" ? "bg-red-100 text-red-800" : "bg-yellow-100 text-yellow-800"}`}
+                          >
                             {item.status}
                           </span>
                         </div>
                         <div className="col-span-1 flex items-center justify-center">
                           <div className="flex gap-2">
-                            <button onClick={() => openDetailModal(item)} className="text-blue-600 hover:text-blue-800 transition p-2 rounded-lg hover:bg-blue-50" title="View Details"><EyeIcon className="w-5 h-5" /></button>
+                            <button
+                              onClick={() => openDetailModal(item)}
+                              className="text-blue-600 hover:text-blue-800 transition p-2 rounded-lg hover:bg-blue-50"
+                              title="View Details"
+                            >
+                              <EyeIcon className="w-5 h-5" />
+                            </button>
                             {item.status === "pending" && (
                               <>
-                                <button onClick={() => handleApprove(item.id)} className="text-green-600 hover:text-green-800 transition p-2 rounded-lg hover:bg-green-50" title="Approve"><CheckCircleIcon className="w-5 h-5" /></button>
-                                <button onClick={() => handleReject(item.id)} className="text-red-600 hover:text-red-800 transition p-2 rounded-lg hover:bg-red-50" title="Reject"><XCircleIcon className="w-5 h-5" /></button>
+                                <button
+                                  onClick={() => handleApprove(item.id)}
+                                  className="text-green-600 hover:text-green-800 transition p-2 rounded-lg hover:bg-green-50"
+                                  title="Approve"
+                                >
+                                  <CheckCircleIcon className="w-5 h-5" />
+                                </button>
+                                <button
+                                  onClick={() => handleReject(item.id)}
+                                  className="text-red-600 hover:text-red-800 transition p-2 rounded-lg hover:bg-red-50"
+                                  title="Reject"
+                                >
+                                  <XCircleIcon className="w-5 h-5" />
+                                </button>
                               </>
                             )}
                           </div>
@@ -5037,9 +5378,20 @@ const menuItems = [
                   <div className="w-24 h-24 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-6">
                     <DocumentTextIcon className="w-12 h-12 text-gray-400" />
                   </div>
-                  <h3 className="text-lg font-medium text-gray-900 mb-2">No matching records</h3>
-                  <p className="text-gray-600 mb-6">Try adjusting your search terms or filters to find what you're looking for.</p>
-                  <button onClick={() => { setSearchQuery(""); setSelectedFilter("All"); }} className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition font-medium">
+                  <h3 className="text-lg font-medium text-gray-900 mb-2">
+                    No matching records
+                  </h3>
+                  <p className="text-gray-600 mb-6">
+                    Try adjusting your search terms or filters to find what
+                    you're looking for.
+                  </p>
+                  <button
+                    onClick={() => {
+                      setSearchQuery("");
+                      setSelectedFilter("All");
+                    }}
+                    className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition font-medium"
+                  >
                     Clear Filters
                   </button>
                 </div>
@@ -5080,7 +5432,9 @@ const menuItems = [
                 <div className="flex items-center justify-between">
                   <div>
                     <p className="text-sm text-gray-600">Total Shifts</p>
-                    <p className="text-2xl font-bold text-gray-900 mt-1">{shifts.length}</p>
+                    <p className="text-2xl font-bold text-gray-900 mt-1">
+                      {shifts.length}
+                    </p>
                   </div>
                   <div className="p-3 bg-blue-50 rounded-lg">
                     <ClockIcon className="w-6 h-6 text-blue-600" />
@@ -5092,7 +5446,7 @@ const menuItems = [
                   <div>
                     <p className="text-sm text-gray-600">Active Sites</p>
                     <p className="text-2xl font-bold text-gray-900 mt-1">
-                      {[...new Set(shifts.map(s => s.siteId))].length}
+                      {[...new Set(shifts.map((s) => s.siteId))].length}
                     </p>
                   </div>
                   <div className="p-3 bg-green-50 rounded-lg">
@@ -5105,10 +5459,14 @@ const menuItems = [
                   <div>
                     <p className="text-sm text-gray-600">Avg Operators/Shift</p>
                     <p className="text-2xl font-bold text-gray-900 mt-1">
-                      {shifts.length > 0 
-                        ? Math.round(shifts.reduce((acc, shift) => acc + shift.maxOperators, 0) / shifts.length)
-                        : 0
-                      }
+                      {shifts.length > 0
+                        ? Math.round(
+                            shifts.reduce(
+                              (acc, shift) => acc + shift.maxOperators,
+                              0
+                            ) / shifts.length
+                          )
+                        : 0}
                     </p>
                   </div>
                   <div className="p-3 bg-purple-50 rounded-lg">
@@ -5131,33 +5489,54 @@ const menuItems = [
                 {shifts.length === 0 ? (
                   <div className="text-center py-12 text-gray-500">
                     <ClockIcon className="w-12 h-12 text-gray-300 mx-auto mb-4" />
-                    <p className="text-lg font-medium text-gray-900 mb-2">No shifts found</p>
-                    <p className="text-gray-600">Add your first shift schedule</p>
+                    <p className="text-lg font-medium text-gray-900 mb-2">
+                      No shifts found
+                    </p>
+                    <p className="text-gray-600">
+                      Add your first shift schedule
+                    </p>
                   </div>
                 ) : (
                   shifts.map((shift) => {
-                    const site = sites.find(s => s.id === shift.siteId);
+                    const site = sites.find((s) => s.id === shift.siteId);
                     return (
-                      <div key={shift.id} className="block lg:grid lg:grid-cols-12 lg:gap-4 px-4 sm:px-6 py-4 hover:bg-gray-50 transition-colors">
+                      <div
+                        key={shift.id}
+                        className="block lg:grid lg:grid-cols-12 lg:gap-4 px-4 sm:px-6 py-4 hover:bg-gray-50 transition-colors"
+                      >
                         <div className="lg:hidden space-y-4">
                           <div className="flex justify-between items-start">
                             <div className="flex-1 min-w-0">
-                              <h3 className="font-semibold text-gray-900 text-base sm:text-lg truncate">{shift.name}</h3>
-                              <p className="text-gray-500 text-sm mt-1 truncate">{site ? `${site.name} - ${site.location}` : 'Unknown Opsi'}</p>
+                              <h3 className="font-semibold text-gray-900 text-base sm:text-lg truncate">
+                                {shift.name}
+                              </h3>
+                              <p className="text-gray-500 text-sm mt-1 truncate">
+                                {site
+                                  ? `${site.name} - ${site.location}`
+                                  : "Unknown Opsi"}
+                              </p>
                             </div>
                             <span className="bg-blue-100 text-blue-800 text-xs font-medium px-2 py-1 rounded flex-shrink-0">
                               {shift.maxOperators} ops
                             </span>
                           </div>
-                          
+
                           <div className="grid grid-cols-2 gap-4">
                             <div>
-                              <p className="text-gray-500 text-xs uppercase font-medium mb-1">Start Time</p>
-                              <p className="text-gray-900 text-sm font-medium">{shift.startTime}</p>
+                              <p className="text-gray-500 text-xs uppercase font-medium mb-1">
+                                Start Time
+                              </p>
+                              <p className="text-gray-900 text-sm font-medium">
+                                {shift.startTime}
+                              </p>
                             </div>
                             <div>
-                              <p className="text-gray-500 text-xs uppercase font-medium mb-1">End Time</p>
-                              <p className="text-gray-900 text-sm font-medium">{shift.endTime}</p>
+                              <p className="text-gray-500 text-xs uppercase font-medium mb-1">
+                                End Time
+                              </p>
+                              <p className="text-gray-900 text-sm font-medium">
+                                {shift.endTime}
+                              </p>
                             </div>
                           </div>
 
@@ -5185,8 +5564,12 @@ const menuItems = [
                         <div className="hidden lg:contents">
                           <div className="col-span-3 flex items-center">
                             <div>
-                              <p className="font-medium text-gray-900">{shift.name}</p>
-                              <p className="text-sm text-gray-500 mt-0.5">{shift.startTime} - {shift.endTime}</p>
+                              <p className="font-medium text-gray-900">
+                                {shift.name}
+                              </p>
+                              <p className="text-sm text-gray-500 mt-0.5">
+                                {shift.startTime} - {shift.endTime}
+                              </p>
                             </div>
                           </div>
                           <div className="col-span-2 flex items-center">
@@ -5196,7 +5579,9 @@ const menuItems = [
                           </div>
                           <div className="col-span-2 flex items-center">
                             <div className="bg-gray-100 px-3 py-1 rounded-full">
-                              <p className="text-gray-700 truncate text-sm">{site ? site.name : 'Unknown'}</p>
+                              <p className="text-gray-700 truncate text-sm">
+                                {site ? site.name : "Unknown"}
+                              </p>
                             </div>
                           </div>
                           <div className="col-span-2 flex items-center">
@@ -5269,36 +5654,57 @@ const menuItems = [
                 {sites.length === 0 ? (
                   <div className="text-center py-12 text-gray-500">
                     <BuildingOfficeIcon className="w-12 h-12 text-gray-300 mx-auto mb-4" />
-                    <p className="text-lg font-medium text-gray-900 mb-2">No sites found</p>
+                    <p className="text-lg font-medium text-gray-900 mb-2">
+                      No sites found
+                    </p>
                     <p className="text-gray-600">Add your first IPAL site</p>
                   </div>
                 ) : (
                   sites.map((site) => (
-                    <div key={site.id} className="block lg:grid lg:grid-cols-12 lg:gap-4 px-4 sm:px-6 py-4 hover:bg-gray-50 transition-colors">
+                    <div
+                      key={site.id}
+                      className="block lg:grid lg:grid-cols-12 lg:gap-4 px-4 sm:px-6 py-4 hover:bg-gray-50 transition-colors"
+                    >
                       <div className="lg:hidden space-y-4">
                         <div className="flex justify-between items-start">
                           <div className="flex-1 min-w-0">
-                            <h3 className="font-semibold text-gray-900 text-base sm:text-lg truncate">{site.name}</h3>
-                            <p className="text-gray-500 text-sm mt-1 truncate">{site.location}</p>
+                            <h3 className="font-semibold text-gray-900 text-base sm:text-lg truncate">
+                              {site.name}
+                            </h3>
+                            <p className="text-gray-500 text-sm mt-1 truncate">
+                              {site.location}
+                            </p>
                           </div>
                           <span className="bg-green-100 text-green-800 text-xs font-medium px-2 py-1 rounded flex-shrink-0">
                             Capacity: {site.capacity}
                           </span>
                         </div>
-                        
+
                         <div>
-                          <p className="text-gray-500 text-xs uppercase font-medium mb-1">Address</p>
-                          <p className="text-gray-900 text-sm line-clamp-2">{site.address}</p>
+                          <p className="text-gray-500 text-xs uppercase font-medium mb-1">
+                            Address
+                          </p>
+                          <p className="text-gray-900 text-sm line-clamp-2">
+                            {site.address}
+                          </p>
                         </div>
 
                         <div className="grid grid-cols-2 gap-4">
                           <div>
-                            <p className="text-gray-500 text-xs uppercase font-medium mb-1">Supervisor</p>
-                            <p className="text-gray-900 text-sm font-medium">{site.supervisor}</p>
+                            <p className="text-gray-500 text-xs uppercase font-medium mb-1">
+                              Supervisor
+                            </p>
+                            <p className="text-gray-900 text-sm font-medium">
+                              {site.supervisor}
+                            </p>
                           </div>
                           <div>
-                            <p className="text-gray-500 text-xs uppercase font-medium mb-1">Contact</p>
-                            <p className="text-gray-900 text-sm font-medium">{site.contact}</p>
+                            <p className="text-gray-500 text-xs uppercase font-medium mb-1">
+                              Contact
+                            </p>
+                            <p className="text-gray-900 text-sm font-medium">
+                              {site.contact}
+                            </p>
                           </div>
                         </div>
 
@@ -5326,20 +5732,30 @@ const menuItems = [
                       <div className="hidden lg:contents">
                         <div className="col-span-3 flex items-center">
                           <div>
-                            <p className="font-medium text-gray-900">{site.name}</p>
-                            <p className="text-sm text-gray-500 mt-0.5">Capacity: {site.capacity} operators</p>
+                            <p className="font-medium text-gray-900">
+                              {site.name}
+                            </p>
+                            <p className="text-sm text-gray-500 mt-0.5">
+                              Capacity: {site.capacity} operators
+                            </p>
                           </div>
                         </div>
                         <div className="col-span-2 flex items-center">
                           <p className="text-gray-700">{site.location}</p>
                         </div>
                         <div className="col-span-3 flex items-center">
-                          <p className="text-gray-700 truncate">{site.address}</p>
+                          <p className="text-gray-700 truncate">
+                            {site.address}
+                          </p>
                         </div>
                         <div className="col-span-2 flex items-center">
                           <div>
-                            <p className="font-medium text-gray-900">{site.supervisor}</p>
-                            <p className="text-sm text-gray-500">{site.contact}</p>
+                            <p className="font-medium text-gray-900">
+                              {site.supervisor}
+                            </p>
+                            <p className="text-sm text-gray-500">
+                              {site.contact}
+                            </p>
                           </div>
                         </div>
                         <div className="col-span-2 flex items-center justify-center gap-2">
@@ -5382,30 +5798,46 @@ const menuItems = [
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
               <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-200">
                 <div className="flex items-center justify-between mb-4">
-                  <h3 className="font-semibold text-lg text-gray-800">Pending Requests</h3>
+                  <h3 className="font-semibold text-lg text-gray-800">
+                    Pending Requests
+                  </h3>
                   <span className="bg-yellow-100 text-yellow-800 text-sm font-medium px-3 py-1 rounded-full">
-                    {leaveRequests.filter(r => r.status === 'pending').length}
+                    {leaveRequests.filter((r) => r.status === "pending").length}
                   </span>
                 </div>
                 <p className="text-gray-600">Requests awaiting your approval</p>
               </div>
               <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-200">
                 <div className="flex items-center justify-between mb-4">
-                  <h3 className="font-semibold text-lg text-gray-800">Approved</h3>
+                  <h3 className="font-semibold text-lg text-gray-800">
+                    Approved
+                  </h3>
                   <span className="bg-green-100 text-green-800 text-sm font-medium px-3 py-1 rounded-full">
-                    {leaveRequests.filter(r => r.status === 'approved').length}
+                    {
+                      leaveRequests.filter((r) => r.status === "approved")
+                        .length
+                    }
                   </span>
                 </div>
-                <p className="text-gray-600">Requests that have been approved</p>
+                <p className="text-gray-600">
+                  Requests that have been approved
+                </p>
               </div>
               <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-200">
                 <div className="flex items-center justify-between mb-4">
-                  <h3 className="font-semibold text-lg text-gray-800">Rejected</h3>
+                  <h3 className="font-semibold text-lg text-gray-800">
+                    Rejected
+                  </h3>
                   <span className="bg-red-100 text-red-800 text-sm font-medium px-3 py-1 rounded-full">
-                    {leaveRequests.filter(r => r.status === 'rejected').length}
+                    {
+                      leaveRequests.filter((r) => r.status === "rejected")
+                        .length
+                    }
                   </span>
                 </div>
-                <p className="text-gray-600">Requests that have been rejected</p>
+                <p className="text-gray-600">
+                  Requests that have been rejected
+                </p>
               </div>
             </div>
 
@@ -5422,43 +5854,68 @@ const menuItems = [
                 {leaveRequests.length === 0 ? (
                   <div className="text-center py-12 text-gray-500">
                     <CalendarIcon className="w-12 h-12 text-gray-300 mx-auto mb-4" />
-                    <p className="text-lg font-medium text-gray-900 mb-2">No leave requests found</p>
-                    <p className="text-gray-600">All requests have been processed</p>
+                    <p className="text-lg font-medium text-gray-900 mb-2">
+                      No leave requests found
+                    </p>
+                    <p className="text-gray-600">
+                      All requests have been processed
+                    </p>
                   </div>
                 ) : (
                   leaveRequests.map((request) => (
-                    <div key={request.id} className="block lg:grid lg:grid-cols-12 lg:gap-4 px-4 sm:px-6 py-4 hover:bg-gray-50 transition-colors">
+                    <div
+                      key={request.id}
+                      className="block lg:grid lg:grid-cols-12 lg:gap-4 px-4 sm:px-6 py-4 hover:bg-gray-50 transition-colors"
+                    >
                       <div className="lg:hidden space-y-4">
                         <div className="flex justify-between items-start">
                           <div className="flex-1 min-w-0">
-                            <h3 className="font-semibold text-gray-900 text-base sm:text-lg truncate">{request.operator}</h3>
+                            <h3 className="font-semibold text-gray-900 text-base sm:text-lg truncate">
+                              {request.operator}
+                            </h3>
                             <div className="flex items-center gap-2 mt-1">
-                              <span className={`inline-flex items-center px-2 py-0.5 rounded text-xs font-medium ${
-                                request.type === 'izin' ? 'bg-blue-100 text-blue-800' : 'bg-purple-100 text-purple-800'
-                              }`}>
-                                {request.type === 'izin' ? 'Permission' : 'Leave'}
+                              <span
+                                className={`inline-flex items-center px-2 py-0.5 rounded text-xs font-medium ${
+                                  request.type === "izin"
+                                    ? "bg-blue-100 text-blue-800"
+                                    : "bg-purple-100 text-purple-800"
+                                }`}
+                              >
+                                {request.type === "izin"
+                                  ? "Permission"
+                                  : "Leave"}
                               </span>
-                              <span className={`inline-flex items-center px-2 py-0.5 rounded text-xs font-medium ${
-                                request.status === 'approved' ? 'bg-green-100 text-green-800' : 
-                                request.status === 'rejected' ? 'bg-red-100 text-red-800' : 
-                                'bg-yellow-100 text-yellow-800'
-                              }`}>
+                              <span
+                                className={`inline-flex items-center px-2 py-0.5 rounded text-xs font-medium ${
+                                  request.status === "approved"
+                                    ? "bg-green-100 text-green-800"
+                                    : request.status === "rejected"
+                                      ? "bg-red-100 text-red-800"
+                                      : "bg-yellow-100 text-yellow-800"
+                                }`}
+                              >
                                 {request.status}
                               </span>
                             </div>
                           </div>
                         </div>
-                        
+
                         <div>
-                          <p className="text-gray-500 text-xs uppercase font-medium mb-1">Date Range</p>
+                          <p className="text-gray-500 text-xs uppercase font-medium mb-1">
+                            Date Range
+                          </p>
                           <p className="text-gray-900 text-sm font-medium">
                             {request.startDate} to {request.endDate}
                           </p>
                         </div>
 
                         <div>
-                          <p className="text-gray-500 text-xs uppercase font-medium mb-1">Reason</p>
-                          <p className="text-gray-900 text-sm line-clamp-2">{request.reason}</p>
+                          <p className="text-gray-500 text-xs uppercase font-medium mb-1">
+                            Reason
+                          </p>
+                          <p className="text-gray-900 text-sm line-clamp-2">
+                            {request.reason}
+                          </p>
                         </div>
 
                         <div className="flex justify-between items-center pt-3 border-t border-gray-200">
@@ -5469,7 +5926,7 @@ const menuItems = [
                             <EyeIcon className="w-4 h-4" />
                             View Details
                           </button>
-                          
+
                           {request.status === "pending" && (
                             <div className="flex gap-2">
                               <button
@@ -5495,34 +5952,51 @@ const menuItems = [
                       <div className="hidden lg:contents">
                         <div className="col-span-3 flex items-center">
                           <div>
-                            <p className="font-medium text-gray-900">{request.operator}</p>
-                            <p className="text-sm text-gray-500 mt-0.5">Submitted: {request.submittedDate}</p>
+                            <p className="font-medium text-gray-900">
+                              {request.operator}
+                            </p>
+                            <p className="text-sm text-gray-500 mt-0.5">
+                              Submitted: {request.submittedDate}
+                            </p>
                           </div>
                         </div>
                         <div className="col-span-2 flex items-center">
                           <div className="flex flex-col gap-1">
-                            <span className={`inline-flex items-center px-3 py-1 rounded-full text-sm font-medium ${
-                              request.type === 'izin' ? 'bg-blue-100 text-blue-800' : 'bg-purple-100 text-purple-800'
-                            }`}>
-                              {request.type === 'izin' ? 'Permission (Izin)' : 'Leave (Libur)'}
+                            <span
+                              className={`inline-flex items-center px-3 py-1 rounded-full text-sm font-medium ${
+                                request.type === "izin"
+                                  ? "bg-blue-100 text-blue-800"
+                                  : "bg-purple-100 text-purple-800"
+                              }`}
+                            >
+                              {request.type === "izin"
+                                ? "Permission (Izin)"
+                                : "Leave (Libur)"}
                             </span>
-                            <span className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-medium ${
-                              request.status === 'approved' ? 'bg-green-100 text-green-800' : 
-                              request.status === 'rejected' ? 'bg-red-100 text-red-800' : 
-                              'bg-yellow-100 text-yellow-800'
-                            }`}>
+                            <span
+                              className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-medium ${
+                                request.status === "approved"
+                                  ? "bg-green-100 text-green-800"
+                                  : request.status === "rejected"
+                                    ? "bg-red-100 text-red-800"
+                                    : "bg-yellow-100 text-yellow-800"
+                              }`}
+                            >
                               {request.status}
                             </span>
                           </div>
                         </div>
                         <div className="col-span-2 flex items-center">
                           <p className="text-gray-700">
-                            {request.startDate}<br/>
+                            {request.startDate}
+                            <br />
                             to {request.endDate}
                           </p>
                         </div>
                         <div className="col-span-3 flex items-center">
-                          <p className="text-gray-700 truncate">{request.reason}</p>
+                          <p className="text-gray-700 truncate">
+                            {request.reason}
+                          </p>
                         </div>
                         <div className="col-span-2 flex items-center justify-center gap-2">
                           <button
@@ -5532,7 +6006,7 @@ const menuItems = [
                           >
                             <EyeIcon className="w-5 h-5" />
                           </button>
-                          
+
                           {request.status === "pending" && (
                             <>
                               <button
