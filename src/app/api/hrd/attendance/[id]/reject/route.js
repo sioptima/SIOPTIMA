@@ -6,10 +6,10 @@ export async function PATCH(request, {params}) {
       await requireRole("HRD");
       const { id } = await params;//grab query parameter(/:id)
       const data = await request.json()
-      const result = await PresensiService.approve({id: id, data: data});
+      const result = await PresensiService.reject({id: id, data: data});
       return Response.json({
          success: true, 
-         message: "Attendance approved successfully" ,
+         message: "Attendance rejected successfully" ,
          data: result
         },
         { status: 200 }

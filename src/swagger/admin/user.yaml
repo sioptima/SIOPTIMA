@@ -46,13 +46,43 @@ paths:
                         username:
                           type: string
                           example: hrd
+                        name:
+                          type: string
+                          example: "Hamood"
+                        email:
+                          type: string
+                          example: "email@email.com"
                         role:
-                          type: object
-                          properties:
-                            role:
-                              type: string
-                              enum: ["ADMIN", "HRD", "OPERATOR"]
-                              example: "HRD"
+                          type: string
+                          enum: ["ADMIN", "HRD", "OPERATOR"]
+                          example: "HRD"
+                        site:
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              name:
+                                type: string
+                                example: Site A
+                        status:
+                          type: string
+                          enum: ["ACTIVE", "INACTIVE"]
+                          example: "ACTIVE"
+                        lastActive:
+                          type: string
+                          example: 1 hour ago
+                        initial:
+                          type: string
+                          maxLength: 1
+                          example: H
+                        createdAt:
+                          type: string
+                          format: date-time
+                          example: "2025-12-04T22:15:26.250Z"
+                        updatedAt:
+                          type: string
+                          format: date-time
+                          example: "2025-12-04T22:15:26.250Z"
                   pagination:
                     type: object
                     properties:
@@ -70,64 +100,178 @@ paths:
                         example: 1
   
   /api/admin/user/{id}:
-   get:
-     parameters:
-       - in: path
-         name: id
-         schema:
-           type: integer
-           description: Users's id to search
-     summary: Get a specific user information
-     tags:
-       - Users
-     responses:
-       '200':
-         description: User information
-         content:
-           application/json:
-             schema:
-               type: object
-               properties:
-                 success:
-                   type: boolean
-                   example: true
-                 message:
-                   type: string
-                   example: User retrieved
-                 data:
-                   type: object
-                   properties:
-                     id:
-                       type: integer
-                       example: 1
-                     name:
-                       type: string
-                       string: "Budi Santoso"
-                     email:
-                       type: string
-                       example: "budisantoso@gmail.com"
-                     role:
-                       type: string
-                       enum: ["ADMIN", "OPERATOR", "HRD"]
-                       example: "OPERATOR"
-                     site:
-                       type: string
-                       example: "Jakarta Utara - Site A"
-                     status:
-                       type: string
-                       enum: ["ACTIVE", "INACTIVE"]
-                       example: ACTIVE
-                     lastActive:
-                       type: string
-                       example: "2 hours ago" 
-                     initial:
-                       type: string
-                       example: "B"
-                     createdAt:
-                       type: string
-                       format: date-time
-                       example: "2024-01-01T00:00:00Z"
-                     updatedAt:
-                       type: string
-                       format: date-time
-                       example: "2024-01-27T08:30:00Z"
+    get:
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+            description: Users's id to search
+          required: true
+      summary: Get a specific user information
+      tags:
+        - Users
+      responses:
+        '200':
+          description: User information
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: User retrieved
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                        example: 1
+                      name:
+                        type: string
+                        string: "Budi Santoso"
+                      email:
+                        type: string
+                        example: "budisantoso@gmail.com"
+                      role:
+                        type: string
+                        enum: ["ADMIN", "OPERATOR", "HRD"]
+                        example: "OPERATOR"
+                      site:
+                        type: array
+                        items:
+                           type: object
+                           properties:
+                             name:
+                               type: string
+                               example: "Jakarta Utara - Site A"
+                      status:
+                        type: string
+                        enum: ["ACTIVE", "INACTIVE"]
+                        example: ACTIVE
+                      lastActive:
+                        type: string
+                        example: "2 hours ago" 
+                      initial:
+                        type: string
+                        example: "B"
+                      createdAt:
+                        type: string
+                        format: date-time
+                        example: "2024-01-01T00:00:00Z"
+                      updatedAt:
+                        type: string
+                        format: date-time
+                        example: "2024-01-27T08:30:00Z"
+
+    patch:
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+            description: User's id to update
+          required: true
+      summary: Update a user
+      tags:
+        - Users
+
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  example: Messi
+                email:
+                  type: string
+                  example: email@email.com
+                role:
+                  type: string
+                  enum: ["ADMIN", "HRD", "OPERATOR"]
+                  example: ADMIN
+                site:
+                  type: string
+                  example: Site B
+                status:
+                  type: string
+                  enum: ["ACTIVE", "INACTIVE"]
+                  example: INACTIVE
+      responses:
+        '200':
+          description: Request confirmation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: User updated successfully
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                        example: 1
+                      name:
+                        type: string
+                        example: Budi Updated
+                      email:
+                        type: string
+                        example: Budi.updated@email.com
+                      role:
+                        type: string
+                        enum: ["ADMIN", "HRD", "OPERATOR"]
+                        example: ADMIN
+                      site:
+                        type: string
+                        example: Jakarta Utara - Site A
+                      status:
+                        type: string
+                        enum: ["ACTIVE", "INACTIVE"]
+                        example: ACTIVE
+                      lastActive:
+                        type: string
+                        example: 2 hours ago
+                      intial:
+                        type: string
+                        maxLength: 1
+                        example: B
+
+    delete:
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+            description: User's id to delete
+          required: true
+      summary: Hard delete a user
+      tags:
+        - Users
+
+      responses:
+        '200':
+          description: Request confirmation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: User deleted successfully

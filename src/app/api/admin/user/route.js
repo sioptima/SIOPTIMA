@@ -14,11 +14,11 @@ export async function GET(request) {
           {
            success: true, 
            message: "Users retrieved" ,
-           data: result.data.users,
+           data: result.data,
            pagination: {
             page: result.paging.current_page,
             limit: result.paging.size,
-            total: result.data.total,
+            total: result.paging.total,
             totalPages: result.paging.total_page,
            }
           },

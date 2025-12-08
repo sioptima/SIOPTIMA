@@ -203,7 +203,7 @@ paths:
                       total:
                         type: number
                         example: 5
-                      total_page:
+                      totalPage:
                         type: number
                         example: 1
 

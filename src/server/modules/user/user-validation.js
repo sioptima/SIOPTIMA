@@ -1,5 +1,5 @@
+import { data } from "autoprefixer"
 import { z } from "zod"
-
 
 export class UserValidation {
 
@@ -32,14 +32,15 @@ export class UserValidation {
     static UPDATE = z.object({
         id: z.coerce.number().int(),
         data: z.object({
+            name: z.string().max(35).optional(),
+            email: z.string().max(30).email().optional(),
             role: z.string().toUpperCase()
                 .pipe(z.enum(["ADMIN", "OPERATOR", "HRD"], "Invalid query")),
-            email: z.string().max(30).email().optional(),
+            //siteId: z.coerce.number().int().optional(),
             site: z.string().max(100).optional(),
             status: z.string().max(20).toUpperCase()
                     .pipe(z.enum(["ACTIVE", "INACTIVE"]))
                     .optional(),
-            name: z.string().max(35).optional()
         })
     })
 
@@ -49,6 +50,10 @@ export class UserValidation {
     })
 
     static GETBYID = z.object({
+        id: z.coerce.number().int()
+    })
+
+    static HARDDELETE = z.object({
         id: z.coerce.number().int()
     })
 

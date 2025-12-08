@@ -57,7 +57,8 @@ export class SiteRepository {
     static async findAll(data){
         try {
             const skip = (data.page - 1) * data.size;
-            const sites = await PrismaClient.site.findMany({
+
+            const query = {
                 select:{
                     id: true,
                     name: true,
@@ -75,9 +76,13 @@ export class SiteRepository {
                 },
                 take: data.size,
                 skip: skip
-            })
+            }
+
+            const [sites, count] = await PrismaClient.$transaction([
+                await PrismaClient.site.findMany(query),
+                await PrismaClient.site.count()
+            ]) 
     
-            const count = await PrismaClient.site.count()
             return {count, sites};
             
         } catch (error) {

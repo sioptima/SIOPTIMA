@@ -1,16 +1,14 @@
-import { PresensiService } from "@/src/server/modules/presensi/presensi-service";
+import { ProfileService } from "@/src/server/modules/profile/profile-service";
 import { requireRole } from "@/src/server/utils/auth";
 
-export async function PATCH(request, {params}) {
+export async function GET(request) {
     try {
       await requireRole("HRD");
-      const { id } = await params;//grab query parameter(/:id)
-      const data = await request.json()
-      const result = await PresensiService.approve({id: id, data: data});
+      const result = await ProfileService.getCurrent();
       return Response.json({
          success: true, 
-         message: "Attendance approved successfully" ,
-         data: result
+         message: "Profile retrieved successfully" ,
+         data: result,
         },
         { status: 200 }
       );

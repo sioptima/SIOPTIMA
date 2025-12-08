@@ -21,6 +21,11 @@ export class UserService {
         if (!role) {
             throw new ResponseError (200, "Role not found")
         }
+
+        let site;
+        if (registerRequest.site){
+            site = await SiteRepository.findByName(registerRequest.site)
+        }
         
         const checkUsername = await UserRepository.findByUsername(registerRequest.username);
         if (checkUsername) {
@@ -28,13 +33,13 @@ export class UserService {
         }
         
         const hashedPassword = await hashPassword(registerRequest.password);
-        
+
         const newUser = await UserRepository.create({
             username: registerRequest.username,
             password: hashedPassword,
             role: role.id,
             email: (registerRequest.email) ? registerRequest.email : undefined,
-            siteName: (site) ? site : undefined,
+            siteName: (site?.name) ? site.name : undefined,
             status: (registerRequest.status) ? registerRequest.status : undefined,
             name: (registerRequest.name) ? registerRequest.name : undefined, 
         });
@@ -44,16 +49,17 @@ export class UserService {
 
         const resultTransform = {
             id: newUser.id,
-            name: (newUser.profile?.name) ? newUser.profile.name : undefined,
-            email: (newUser.profile?.email) ? newUser.profile.email : undefined,
+            username: newUser.username,
+            name: (newUser.profile?.name) ? newUser.profile.name : "-",
+            email: (newUser.profile?.email) ? newUser.profile.email : "-",
             role: newUser.role.name,
-            site: (newUser.sites.length !== 0) ? newUser.sites[0].name : undefined,
+            site: (newUser.sites.length !== 0) ? newUser.sites[0].name : "-",
             status: newUser.status,
-            lastActive: (newUser.activity[0].createdAt) ? timeSince(newUser.activity[0].createdAt) : "-",
+            lastActive: (newUser.activity.length !== 0) ? timeSince(newUser.activity[0].createdAt) : "-",
             initial: (newUser.profile?.name) ? newUser.profile.name.slice(0,1).toUpperCase() : newUser.username.slice(0,1).toUpperCase(),
         }
 
-        if(!site) {
+        if(!site && registerRequest.site) {
             throw new ResponseError(200, "Created user but the site you entered does not exist", true, resultTransform)
         }
         return resultTransform;
@@ -106,14 +112,14 @@ export class UserService {
         //format result
         const usersTransform = users.users.map(user => ({
             id: user.id,
-            username: user.id,
+            username: user.username,
             name: (user.profile?.name) ? user.profile.name : "-",
             email: (user.profile?.email) ? user.profile.email : "-",
             role: user.role.name,
-            site: user.sites,
-            status: (!user.deletedAt) ? "active" : "inactive",
-            lastActive: (user.activity[0].createdAt) ? timeSince(user.activity[0].createdAt) : "-",
-            initial: (user.profile?.name) ? user.profile.name.slice(0,1) : user.username.slice(0,1),
+            site: (user.sites.length !== 0) ? user.sites : "-",
+            status: (user.status) ? user.status : "-",
+            lastActive: (user.activity.length !== 0) ? timeSince(user.activity[0].createdAt) : "-",
+            initial: (user.profile?.name) ? user.profile.name.slice(0,1).toUpperCase() : user.username.slice(0,1).toUpperCase(),
             createdAt: user.createdAt,
             updatedAt: user.updatedAt,
         })
@@ -125,6 +131,7 @@ export class UserService {
                 size: size,
                 total_page: Math.ceil(users.total / size),
                 current_page: page,
+                total: users.total
             }
         }
     }
@@ -132,6 +139,54 @@ export class UserService {
     static async update(request){
         //validate
         const validatedRequest = UserValidation.UPDATE.parse(request)
+
+        //check if user exist
+        const user = await UserRepository.findById({userId: validatedRequest.id});
+        if(!user){
+            throw new ResponseError(200, "No user found")
+        }
+
+        //check if site is in request then check if it exist in db
+        let site;
+        if(validatedRequest.data.site){ 
+            site = await SiteRepository.findByName(validatedRequest.data.site)
+        }
+
+        const updatedUser = await UserRepository.update({
+            userId: validatedRequest.id, 
+            name: (validatedRequest.data.name) ? validatedRequest.data.name : undefined,
+            email: (validatedRequest.data.email) ? validatedRequest.data.email : undefined,
+            role: (validatedRequest.data.role) ? validatedRequest.data.role : undefined,
+            //siteId: (validatedRequest.data.siteId && validatedRequest.data.site) ? validatedRequest.data.siteId :undefined,
+            site: (validatedRequest.data.site && site) ? validatedRequest.data.site : undefined,
+            status: (validatedRequest.data.status) ? validatedRequest.data.status : undefined,
+        })
+
+        const profile = updatedUser.profile;
+        const sites = updatedUser.sites;
+        const role = updatedUser.role;
+
+        //format result
+        const result = {
+            id: updatedUser.id,
+            name: (profile?.name) ? profile.name : "-",
+            email: (profile?.email) ? profile.email : "-",
+            role: (role.name) ? role.name : "-",
+            site: (sites.length !== 0) ? sites[0].name : "-",
+            status: (updatedUser.status) ? updatedUser.status : "-",
+            lastActive: (updatedUser.activity.length !== 0) ? timeSince(updatedUser.activity[0].createdAt) : "-",
+            initial: (profile?.name) ? profile.name.slice(0,1).toUpperCase() : updatedUser.username.slice(0,1).toUpperCase()
+        };
+
+        if(!site && validatedRequest.data.site){
+            throw new ResponseError(200, "User updated but failed to update site information as it does not exist", true, result)
+        };
+
+        if(!image && validatedRequest.data.image){
+            throw new ResponseError(200, "User updated but failed to upload image", true, result)
+        };
+
+        return result;
     }
 
     static async assignUserToSite(request) {
@@ -193,18 +248,31 @@ export class UserService {
 
         const transformUser= {
             id: user.id,
-            username: user.id,
+            username: user.username,
             name: (user.profile?.name) ? user.profile.name : "-",
             email: (user.profile?.email) ? user.profile.email : "-",
             role: user.role.name,
-            site: user.sites,
-            status: (!user.deletedAt) ? "active" : "inactive",
-            lastActive: (user.activity[0].createdAt) ? timeSince(user.activity[0].createdAt) : "-",
-            initial: (user.profile?.name) ? user.profile.name.slice(0,1) : user.username.slice(0,1),
+            site: (user.sites.length !== 0) ? user.sites : "-",
+            status: (user.status) ? user.status : "-",
+            lastActive: (user.activity.length !== 0) ? timeSince(user.activity[0].createdAt) : "-",
+            initial: (user.profile?.name) ? user.profile.name.slice(0,1).toUpperCase() : user.username.slice(0,1).toUpperCase(),
             createdAt: user.createdAt,
             updatedAt: user.updatedAt,
         }
 
         return transformUser
+    }
+
+    static async hardDelete(request) {
+        const currentUser = await getUser();
+        const validatedReq = UserValidation.HARDDELETE.parse(request);
+
+        //check if user to delete exist first
+        const user = await UserRepository.findById({userId: validatedReq.id});
+        if(!user){throw new ResponseError(200, "User you are trying to delete does not exist")}
+
+        await UserRepository.hardDelete({userId: validatedReq.id});
+
+        return;
     }
 }

@@ -1,15 +1,14 @@
-import { PresensiService } from "@/src/server/modules/presensi/presensi-service";
+import { ReportService } from "@/src/server/modules/report/report-service";
 import { requireRole } from "@/src/server/utils/auth";
 
 export async function PATCH(request, {params}) {
     try {
-      await requireRole("HRD");
+      await requireRole("ADMIN");
       const { id } = await params;//grab query parameter(/:id)
-      const data = await request.json()
-      const result = await PresensiService.approve({id: id, data: data});
+      const result = await ReportService.approve({id: id});
       return Response.json({
          success: true, 
-         message: "Attendance approved successfully" ,
+         message: "Report approved successfully" ,
          data: result
         },
         { status: 200 }

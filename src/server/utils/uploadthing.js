@@ -13,12 +13,12 @@ export async function uploadImage(images){
   if (images.constructor === Array){
     response.forEach((element) => {
       if (element.error !== null) {
-          throw new ResponseError(200, `Created report in database but failed to upload images \n code: ${element.error.code} \n message: ${element.error.message}`)
+          throw new ResponseError(500, `Created report in database but failed to upload images \n code: ${element.error.code} \n message: ${element.error.message}`)
       }
     })
   } else {
     if (response.error !== null) {
-      throw new ResponseError(200, `Created report in database but failed to upload images \n code: ${element.error.code} \n message: ${element.error.message}`)
+      throw new ResponseError(500, `Created report in database but failed to upload images \n code: ${element.error.code} \n message: ${element.error.message}`)
     }
   }
   return response; 

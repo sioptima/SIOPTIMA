@@ -3,9 +3,9 @@ import { ReportValidation } from "./report-validation";
 import { getUser } from "../../utils/auth";
 import { uploadImage } from "../../utils/uploadthing";
 import { ResponseError } from "@/src/lib/response-error";
-import { SiteRepository } from "../site/site-repository";
 import { PresensiRepository } from "../presensi/presensi-repository";
-import { ShiftRepository } from "../shift/shift-repository";
+import { transformFormData } from "../../utils/helper";
+import { trackActivity } from "../../utils/trackUser";
 
 export class ReportService {
     
@@ -13,22 +13,7 @@ export class ReportService {
         const user = await getUser();
 
         //transform request from formdata into validable object for zod
-        // Source - https://stackoverflow.com/questions/41431322/how-to-convert-formdata-html5-object-to-json
-        // Posted by Wilt, modified by community. See post 'Timeline' for change history
-        // Retrieved 2025-11-25, License - CC BY-SA 4.0
-
-        var object = {};
-        request.forEach((value, key) => {
-            // Reflect.has in favor of: object.hasOwnProperty(key)
-            if(!Reflect.has(object, key)){
-                object[key] = value;
-                return;
-            }
-            if(!Array.isArray(object[key])){
-                object[key] = [object[key]];    
-            }
-            object[key].push(value);
-        });
+        const object = transformFormData(request)
         
         //turn request's images properties to array for zod to validate
         if(object.images.constructor !== Array) {
@@ -66,6 +51,13 @@ export class ReportService {
             userId: user.userId
         });
 
+        //track activity
+        await trackActivity(user.userId, "Create report", "report", "Daily report submitted", {
+            reportId: report.id,
+            time: report.laporanDate,
+            status: "submitted"
+        })
+
         //upload image to uploadthing and retrieve image link from uploadthing response
         const uploadImageData = await uploadImage(createRequest.images)
         const imageLink = uploadImageData.map((obj) => obj.data.ufsUrl)
@@ -82,6 +74,41 @@ export class ReportService {
     }
 
     static async getAll(parameter){
+        const getRequest = ReportValidation.GET.parse(parameter);
+        if(!getRequest){
+            throw new ResponseError(400, "Invalid request data");
+        }
+
+        const {page, size} = getRequest;
+
+        const reports = await ReportRepository.findAll(getRequest);
+        if (!reports) {
+            throw new ResponseError (200, "No report found")
+        }
+
+        const reportTransform = reports.result.map((report) => ({
+            id: report.id,
+            date: report.laporanDate.toLocaleDateString(),
+            time: report.laporanDate.toLocaleTimeString(),
+            site: report.siteName,
+            operator: (report.user.profile?.name) ? report.user.profile.name : report.user.username,
+            pH: report.pH,
+            flowRate: report.flowRate,
+            status: report.laporanStatus
+        }))
+
+        return {
+            result: reportTransform,
+            paging: {
+                size: size,
+                total: reports.count,
+                total_page: Math.ceil(reports.count / size),
+                current_page: page,
+            }
+        }
+    }
+
+    static async getAllByUserId(parameter){
         const user = await getUser()
 
         const getRequest = ReportValidation.GET.parse(parameter);
@@ -91,7 +118,7 @@ export class ReportService {
 
         const {page, size} = getRequest;
 
-        const reports = await ReportRepository.findAll(getRequest, user.userId);
+        const reports = await ReportRepository.findAllByUserId(getRequest, user.userId);
         if (!reports) {
             throw new ResponseError (200, "No report found")
         }
@@ -128,7 +155,7 @@ export class ReportService {
     }
 
     static async getById(parameter){
-        const userId = await getUser();
+        const user = await getUser();
 
         const getRequest = ReportValidation.GETBYID.parse(parameter);
         if(!getRequest){
@@ -139,25 +166,33 @@ export class ReportService {
         if(!report){
             throw new ResponseError(200, "No report found")
         }
+        
+        if (user.role !== "ADMIN"){
+            if(user.role !== "HRD"){
+                if (report.userId === user.userId){throw new ResponseError(403, "This resource belong to someone else")}
+            }
+        }
 
         const reportTransform = {
             id: report.id,
             date: report.laporanDate.toLocaleDateString(),
             time: report.laporanDate.toLocaleTimeString(),
-            site: report.siteName,
-            operator: report.user.username,
+            site: (report.siteName) ? report.siteName : "-",
+            operator: (report.user?.profile?.name) ? report.user.profile.name : report.user?.username || "-",
             pH: report.pH,
             flowRate: report.flowRate,
-            volt: report.volt,
-            ampere: report.ampere,
-            tds: report.TDS,
-            ec: report.EC,
-            agitatorStatus: report.agitatorStatus,
-            settleStatus: report.settleStatus,
-            outFilterStatus: report.outFilterStatus,
-            additionalNotes: report.notes,
-            status: "submitted",
-            images: report.fotoSampel,
+            status: report.laporanStatus,
+            details: {
+                tds: report.TDS,
+                volt: report.volt,
+                ampere: report.ampere,
+                ec: report.EC,
+                agitatorStatus: report.agitatorStatus,
+                settleStatus: report.settleStatus,
+                outFilterStatus: report.outFilterStatus,
+                notes: report.notes,
+                images: report.fotoSampel,
+            },
             createdAt: report.createdAt
         }
 
@@ -178,4 +213,31 @@ export class ReportService {
         
     }
 
+    static async approve(parameter){
+        const validatedParam = ReportValidation.APPROVE.parse(parameter)
+
+        const report = await ReportRepository.findById(validatedParam.id);
+        if(!report){throw new ResponseError(200, "Report does not exist")}        
+
+        const approvedReport = await ReportRepository.approve(validatedParam.id)
+
+        return {
+            id: approvedReport.id,
+            status: approvedReport.laporanStatus
+        }
+    }
+
+    static async reject(parameter){
+        const validatedParam = ReportValidation.APPROVE.parse(parameter)
+
+        const report = await ReportRepository.findById(validatedParam.id);
+        if(!report){throw new ResponseError(200, "Report does not exist")}        
+
+        const approvedReport = await ReportRepository.reject(validatedParam.id)
+
+        return {
+            id: approvedReport.id,
+            status: approvedReport.laporanStatus
+        }
+    }
 }

@@ -31,6 +31,7 @@ export class ReportRepository {
                 },
                 select: {
                     id: true,
+                    laporanDate: true,
                 }
             });
         } catch (error) {
@@ -58,10 +59,50 @@ export class ReportRepository {
         }
     }
 
-    static async findAll(data, userId){
+    static async findAll(data){
         try {
             const skip = (data.page - 1) * data.size;
-            const reports = await PrismaClient.laporan.findMany({
+            
+            const [reports, count] = await PrismaClient.$transaction([
+                PrismaClient.laporan.findMany({  
+                    select:{
+                        id: true,
+                        laporanDate: true,
+                        siteName: true,
+                        pH: true,
+                        flowRate: true,
+                        laporanStatus: true,
+                        user: {
+                            select: {
+                                username: true,
+                                profile: {
+                                    select: {
+                                        name: true
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    orderBy: {
+                            createdAt: 'desc',
+                    },
+                    take: data.size,
+                    skip: skip
+                }),
+                PrismaClient.laporan.count()
+            ])
+            
+            return {result: reports, count: count};
+            
+        } catch (error) {
+            throw new ResponseError(500, "Failed when querying in database")
+        }
+    }
+
+    static async findAllByUserId(data, userId){
+        try {
+            const skip = (data.page - 1) * data.size;
+            const query = {
                 where: {
                     userId
                 },
@@ -77,14 +118,14 @@ export class ReportRepository {
                 },
                 take: data.size,
                 skip: skip
-            })
-            
-            const count = await PrismaClient.laporan.count({
-                where: {
-                    userId
-                }
-            })
-            return {result: reports, count};
+            }
+
+            const [reports, count] = await PrismaClient.$transaction([
+                PrismaClient.laporan.findMany(query),
+                PrismaClient.laporan.count({where: query.where})
+            ]);
+
+            return {result: reports, count: count};
             
         } catch (error) {
             throw new ResponseError(500, "Failed when querying in database")
@@ -116,13 +157,56 @@ export class ReportRepository {
                 include: {
                     user: {
                         select: {
-                            username: true
+                            username: true,
+                            profile: {
+                                select: {
+                                    name: true,
+                                }
+                            }
                         }
                     }
                 }
             })
 
             return report;
+        } catch (error) {
+            throw new ResponseError(500, "Failed when querying in database")
+        }
+    }
+
+    static async approve(reportId){
+        try {
+            return await PrismaClient.laporan.update({
+                where: {
+                    id: reportId,
+                },
+                data: {
+                    laporanStatus: "APPROVED"
+                },
+                select: {
+                    id: true,
+                    laporanStatus: true,
+                }
+            })
+        } catch (error) {
+            throw new ResponseError(500, "Failed when querying in database")
+        }
+    }
+
+    static async reject(reportId){
+        try {
+            return await PrismaClient.laporan.update({
+                where: {
+                    id: reportId,
+                },
+                data: {
+                    laporanStatus: "REJECTED"
+                },
+                select: {
+                    id: true,
+                    laporanStatus: true,
+                }
+            })
         } catch (error) {
             throw new ResponseError(500, "Failed when querying in database")
         }

@@ -135,6 +135,7 @@ paths:
           schema:
             type: integer
             description: Site's id to search
+          required: true
       summary: Get a specific site information
       tags:
         - Sites
@@ -197,6 +198,7 @@ paths:
           schema:
             type: integer
             description: Site's id to update
+          required: true
       summary: Update a site
       tags:
         - Sites

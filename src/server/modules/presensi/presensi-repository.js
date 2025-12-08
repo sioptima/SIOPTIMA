@@ -157,7 +157,8 @@ export class PresensiRepository {
             const startOfMonth = new Date(data.month) 
             const endOfMonth = new Date(startOfMonth.getFullYear(), startOfMonth.getMonth()+1)
             const skip = (data.page - 1) * data.size;
-            const records = await PrismaClient.presensi.findMany({
+
+            const query = {
                 where: {
                     userId,
                     presensiDate: {
@@ -191,17 +192,13 @@ export class PresensiRepository {
                 },
                 take: data.size,
                 skip: skip
-            })
+            }
+
+            const [records, count] = await PrismaClient.$transaction([
+                PrismaClient.presensi.findMany(query),
+                PrismaClient.presensi.count({where: query.where})
+            ]);
             
-            const count = await PrismaClient.presensi.count({
-                where: {
-                    userId,
-                    presensiDate: {
-                        gte: data.month != null ? startOfMonth : undefined,
-                        lt: data.month != null ? endOfMonth : undefined
-                    }
-                }
-            })
             return {result: records, count: count};
             
         } catch (error) {
@@ -318,6 +315,62 @@ export class PresensiRepository {
             })
         } catch (error) {
             throw new ResponseError(500, "Failed when finding record by id in database")
+        }
+    }
+
+    static async approve(data){
+        try {
+            return await PrismaClient.presensi.update({
+                where: {
+                    id: data.presensiId,
+                },
+                data: {
+                    approver: {
+                        connect: {
+                            id: data.approverId
+                        }
+                    },
+                    statusApproval: "APPROVED",
+                    ...(data.notes && {notes: data.notes})
+                },
+                select: {
+                    id: true,
+                    statusApproval: true,
+                    approver: true,
+                    updatedAt: true,
+                    notes: true
+                }
+            })
+        } catch (error) {
+            throw new ResponseError(500, "Failed when trying to approve record in database")
+        }
+    }
+
+    static async reject(data){
+        try {
+            return await PrismaClient.presensi.update({
+                where: {
+                    id: data.presensiId,
+                },
+                data: {
+                    approver: {
+                        connect: {
+                            id: data.approverId
+                        }
+                    },
+                    statusApproval: "REJECTED",
+                    ...(data.notes && {notes: data.notes})
+                },
+                select: {
+                    id: true,
+                    statusApproval: true,
+                    approver: true,
+                    updatedAt: true,
+                    notes: true,
+                }
+            })
+        } catch (error) {
+            throw new ResponseError(500, "Failed when trying to reject record in database")
         }
     }
 }

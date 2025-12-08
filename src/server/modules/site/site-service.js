@@ -73,7 +73,7 @@ export class SiteService {
             province: site.address.province,
             operators: site._count.users,
             status: site.status,
-            lastReport: (site.report?.length !== 0 ) ? `${timeSince(site.report[0].laporanDate)} ago` : "No report yet",
+            lastReport: (site.report?.length !== 0 ) ? timeSince(site.report[0].laporanDate) : "No report yet",
             createdAt: site.createdAt,
             updatedAt: site.updatedAt,
         }
@@ -110,7 +110,7 @@ export class SiteService {
             province: updatedSite.address.province,
             operators: updatedSite._count,
             status: updatedSite.status,
-            lastReport: (site.report?.length !== 0 ) ? `${timeSince(site.report[0].laporanDate)} ago` : "No report yet",
+            lastReport: (site.report?.length !== 0 ) ? timeSince(site.report[0].laporanDate) : "No report yet",
         }
 
         return  siteTransform;

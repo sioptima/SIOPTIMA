@@ -44,10 +44,13 @@ export class ReportValidation {
     })
 
     static GET = z.object({
-      page: z.coerce.number("Invalid parameter"),
-      size: z.coerce.number("Invalid parameter")
+      page: z.coerce.number("Invalid parameter").int(),
+      size: z.coerce.number("Invalid parameter").int()
     })
 
     static GETBYID = z.coerce.number("Invalid parameter")
-
+    
+    static APPROVE = z.object({
+      id: z.coerce.number().int()
+    })
 }

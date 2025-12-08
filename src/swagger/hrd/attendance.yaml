@@ -1,0 +1,114 @@
+paths: 
+  /api/hrd/attendance/{id}/approve:
+    patch:
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+          description: Attendance's id to approve
+      summary: Approve an attendance
+      tags:
+        - Attendance
+
+      requestBody:
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  notes:
+                    type: string
+                    example: OK
+
+      responses:
+        '200':
+          description: Request confirmation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: Attendance approved successfully
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: int
+                        example: 1
+                      status:
+                        type: string
+                        enum: ["APPROVED", "PENDING", "REJECTED"]
+                        example: APPROVED
+                      approvedAt:
+                        type: string
+                        format: date-time
+                        example: 2024-01-15T10:30:00Z
+                      approveddBy:
+                        type: string
+                        example: HRD1
+                      notes:
+                        type: string
+                        example: OK
+
+  /api/hrd/attendance/{id}/reject:
+    patch:
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+          description: Attendance's id to reject
+      summary: Reject an attendance
+      tags:
+        - Attendance
+
+      requestBody:
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  notes:
+                    type: string
+                    example: Location too far
+
+      responses:
+        '200':
+          description: Request confirmation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: Attendance rejected successfully
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: int
+                        example: 1
+                      status:
+                        type: string
+                        enum: ["APPROVED", "PENDING", "REJECTED"]
+                        example: REJECTED
+                      rejectedAt:
+                        type: string
+                        format: date-time
+                        example: 2024-01-15T10:30:00Z
+                      rejectedBy:
+                        type: string
+                        example: HRD1
+                      notes:
+                        type: string
+                        example: Location too far

@@ -1,0 +1,250 @@
+paths:
+  /api/admin/report:
+    get:
+      parameters:
+      - in: query
+        name: page
+        schema:
+          type: integer
+          description: Which page to show
+      - in: query
+        name: limit
+        schema:
+          type: integer
+          description: Number of report to return
+      summary: Get all report information
+      tags:
+        - Report
+
+      responses:
+        '200':
+          description: List of reports
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: Reports retrieved
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: number
+                          example: 1
+                        date:
+                          type: string
+                          format: date
+                          example: "2024-01-27"
+                        time:
+                          type: string
+                          example: "08:30"
+                        site:
+                          type: string
+                          example: "Jakarta Utara - Site A"
+                        operator:
+                          type: string
+                          example: "Budi Santoso"
+                        pH:
+                          type: number
+                          format: double
+                          example: 7.2
+                        flowRate:
+                          type: number
+                          format: double
+                          example: 450
+                        status:
+                          type: string
+                          enum: ["APPROVED", "PENDING", "REJECTED"]
+                          example: PENDING
+                  pagination:
+                    type: object
+                    properties:
+                      page:
+                        type: number
+                        example: 1
+                      limit:
+                        type: number
+                        example: 10
+                      total:
+                        type: number
+                        example: 5
+                      totalPage:
+                        type: number
+                        example: 1
+
+  /api/admin/report/{id}:
+    get:
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+          description: Report's id to search
+      summary: Get a report by id
+      tags:
+        - Report
+
+      responses:
+        '200':
+          description: Report information
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: Report retrieved
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: number
+                        example: 1
+                      date:
+                        type: string
+                        format: date
+                        example: "2024-01-27"
+                      time:
+                        type: string
+                        example: "08:30"
+                      site:
+                        type: string
+                        example: "Jakarta Utara - Site A"
+                      operator:
+                        type: string
+                        example: "Budi Santoso"
+                      pH:
+                        type: number
+                        format: double
+                        example: 7.2
+                      flowRate:
+                        type: number
+                        format: double
+                        example: 450
+                      status:
+                        type: string
+                        enum: ["APPROVED", "PENDING", "REJECTED"]
+                        example: APPROVED
+                      details:
+                        type: object
+                        properties:
+                          volt:
+                            type: number
+                            format: double
+                            example: 220
+                          ampere:
+                            type: number
+                            example: 15
+                          tds:
+                            type: number
+                            example: 480
+                          ec:
+                            type: number
+                            example: 720
+                          agitatorStatus:
+                            type: string
+                            enum: ["Normal", "Broken", "Maintenance"]
+                            example: "Normal"
+                          settleStatus:
+                            type: string
+                            enum: ["Normal", "Broken", "Maintenance"]
+                            example: "Normal"
+                          outFilterStatus:
+                            type: string
+                            enum: ["Normal", "Broken", "Maintenance"]
+                            example: "Normal"
+                          additionalNotes:
+                            type: string
+                            example: "OK"
+                          images:
+                            type: array
+                            items:
+                              type: string
+                            example: ["link", "link"]
+                      createdAt:
+                        type: string
+                        format: date-time
+                        example: "2024-01-27T08:30:00Z"
+            
+  /api/admin/report/{id}/approve:
+    patch:
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+          description: Report's id to approve
+      summary: Approve a report
+      tags:
+        - Report
+
+      responses:
+        '200':
+          description: Request confirmation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: Report approved successfully
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: int
+                        example: 1
+                      status:
+                        type: string
+                        enum: ["APPROVED", "PENDING", "REJECTED"]
+
+  /api/admin/report/{id}/reject:
+    patch:
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+          description: Report's id to reject
+      summary: Reject a report
+      tags:
+        - Report
+
+      responses:
+        '200':
+          description: Request confirmation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: Report rejected successfully
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: int
+                        example: 1
+                      status:
+                        type: string
+                        enum: ["APPROVED", "PENDING", "REJECTED"]

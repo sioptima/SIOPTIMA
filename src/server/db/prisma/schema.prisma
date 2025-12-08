@@ -81,10 +81,10 @@ model JadwalShift {
   updatedAt         DateTime        @updatedAt
   deletedAt         DateTime?
 
-  user              User            @relation(fields: [userId], references: [id])
+  user              User            @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId            Int
 
-  site              Site            @relation(fields: [siteId], references: [id])
+  site              Site            @relation(fields: [siteId], references: [id], onDelete: Cascade)
   siteId            Int
 
   presensi          Presensi?
@@ -105,8 +105,7 @@ model Site {
   updatedAt         DateTime        @updatedAt
   deletedAt         DateTime?
 
-  address           SiteAddress     @relation(fields: [addressId], references: [id])
-  addressId         Int             @unique
+  address           SiteAddress?
 
   users             User[]
 
@@ -126,7 +125,8 @@ model SiteAddress {
   updatedAt         DateTime        @updatedAt
   deletedAt         DateTime?
 
-  site              Site?
+  site              Site            @relation(fields: [siteId], references: [id], onDelete: Cascade)
+  siteId            Int             @unique
 }
 
 model Profile {
@@ -135,11 +135,12 @@ model Profile {
   email             String?
   name              String?
   image             String?
+  phone             String?
   createdAt         DateTime        @default(now())
   updatedAt         DateTime        @updatedAt
   deletedAt         DateTime?
 
-  user              User            @relation(fields: [userId], references: [id])
+  user              User            @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId            Int             @unique
 
   address           UserAddress?
@@ -154,7 +155,7 @@ model UserAddress {
   updatedAt         DateTime        @updatedAt
   deletedAt         DateTime?
 
-  profile           Profile         @relation(fields: [profileId], references: [id])
+  profile           Profile         @relation(fields: [profileId], references: [id], onDelete: Cascade)
   profileId         Int             @unique
 }
 
@@ -181,14 +182,15 @@ model Presensi {
   createdAt         DateTime        @default(now())
   updatedAt         DateTime        @updatedAt
   deletedAt         DateTime?
+  notes             String?         @db.Text 
 
-  shift             JadwalShift?    @relation(fields: [shiftid], references: [id])
+  shift             JadwalShift?    @relation(fields: [shiftid], references: [id], onDelete: SetNull)
   shiftid           Int?            @unique 
 
-  user              User            @relation(fields: [userId], references: [id], name: "holder")
+  user              User            @relation(fields: [userId], references: [id], name: "holder", onDelete: Cascade)
   userId            Int
 
-  approver          User?           @relation(fields: [approverId], references: [id], name: "approver")   
+  approver          User?           @relation(fields: [approverId], references: [id], name: "approver", onDelete: SetNull)   
   approverId        Int?
 
   checkOut          CheckOut?
@@ -205,11 +207,10 @@ model CheckOut {
   updatedAt         DateTime        @updatedAt
   deletedAt         DateTime?
 
-
-  user              User            @relation(fields: [userId], references: [id])
+  user              User            @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId            Int
 
-  checkIn           Presensi        @relation(fields: [checkInId], references: [id])
+  checkIn           Presensi        @relation(fields: [checkInId], references: [id], onDelete: Cascade)
   checkInId         Int             @unique
 }
 
@@ -238,11 +239,11 @@ model Laporan {
   updatedAt         DateTime        @updatedAt
   deletedAt         DateTime?
   
-  site              Site            @relation(fields: [siteName], references: [name])
-  siteName          String
+  site              Site?            @relation(fields: [siteName], references: [name], onDelete: SetNull)
+  siteName          String?
 
-  user              User            @relation(fields: [userId], references: [id])
-  userId            Int
+  user              User?            @relation(fields: [userId], references: [id], onDelete: SetNull)
+  userId            Int?
 }
 
 model Ijin {
@@ -253,7 +254,7 @@ model Ijin {
   updatedAt         DateTime        @updatedAt
   deletedAt         DateTime?
 
-  user              User            @relation(fields: [userId], references: [id])
+  user              User            @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId            Int
 }
 
@@ -265,7 +266,7 @@ model Libur {
   updatedAt         DateTime        @updatedAt
   deletedAt         DateTime?
 
-  user              User            @relation(fields: [userId], references: [id])
+  user              User            @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId            Int
 }
 
@@ -278,7 +279,7 @@ model Help {
   updatedAt         DateTime        @updatedAt
   deletedAt         DateTime?
 
-  user              User            @relation(fields: [userId], references: [id])
+  user              User            @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId            Int
 }
 
@@ -291,16 +292,18 @@ model Ticket {
   updatedAt         DateTime        @updatedAt
   deletedAt         DateTime?
 
-  user              User            @relation(fields: [userId], references: [id])
+  user              User            @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId            Int
 }
 
 model Activity {
   id                Int             @id @default(autoincrement())
   action            String
+  type              String
+  title             String
   metadata          Json?
   createdAt         DateTime        @default(now())
 
-  user              User            @relation(fields: [userId], references: [id])
+  user              User            @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId            Int
 }

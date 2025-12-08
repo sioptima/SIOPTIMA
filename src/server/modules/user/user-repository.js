@@ -61,6 +61,11 @@ export class UserRepository {
                     username: data.username,
                     password: data.password,
                     roleId: data.role,
+                    activity: {
+                        create: {
+                            action: "Account register"
+                        }
+                    },
                     ...(data.status && {status: data.status}), //register with optional field
                     ...(data.siteName && {
                         sites: {
@@ -68,6 +73,7 @@ export class UserRepository {
                                 name: data.siteName
                             }
                         },
+                    }),
                     ...(data.email || data.name 
                         ?
                         {
@@ -79,12 +85,6 @@ export class UserRepository {
                             }
                         }
                         : {}),
-                    activity: {
-                        create: {
-                            action: "Account register"
-                        }
-                    }
-                    })
                 },
                 include: {
                     profile: {
@@ -115,7 +115,7 @@ export class UserRepository {
                 }
             });
         } catch (error) {
-            throw new ResponseError(500, "Failed when writing in database")
+            throw new ResponseError(500, error.message)
         }
     }
 
@@ -147,12 +147,12 @@ export class UserRepository {
     static async findAll(data){
         try {
             const skip = (data.page - 1) * data.size;
-            const users = await PrismaClient.user.findMany({
+
+            const query = {
                 include: {
                     profile: {
                         select: {
                             name: true,
-                            email: true,
                         }
                     },
                     role: {
@@ -173,19 +173,23 @@ export class UserRepository {
                         select:{
                             createdAt: true,
                         }
-                    }
+                    },
                 },
                 orderBy: {
                         createdAt: 'desc',
                 },
                 take: data.size,
                 skip: skip
-            })
+            }
+
+            const [users, total] = await PrismaClient.$transaction([
+                PrismaClient.user.findMany(query),
+                PrismaClient.user.count()
+            ]);
     
-            const total = await PrismaClient.user.count()
             return {total, users};
         } catch (error) {
-            throw new ResponseError(500, "Failed when querying in database")
+            throw new ResponseError(500, error.message)
         }
     }
 
@@ -317,6 +321,91 @@ export class UserRepository {
             })
         } catch (error) {
             throw new ResponseError(500, "Failed when querying in database")
+        }
+    }
+
+    static async update(data){
+        try {
+            return await PrismaClient.user.update({
+                where: {
+                    id: data.userId
+                },
+                data: {
+                    ...(data.name || data.email //if any of these data exist then update profile
+                        ? 
+                        {
+                            profile: {
+                                upsert: {
+                                    create: {
+                                        ...(data.name && {name: data.name}),
+                                        ...(data.email && {email: data.email}),
+                                    },
+                                    update: {
+                                        ...(data.name && {name: data.name}),
+                                        ...(data.email && {email: data.email}),
+                                    },
+                                },
+                            },
+                        } : {} // do nothing if data doesnt exist
+                    ),
+                    ...(data.role && {
+                        role: {
+                            connect: {
+                                name: data.role
+                            }
+                        },
+                    }),
+                    ...(data.site && {
+                        sites: {
+                            connect: {
+                                name: data.site
+                            }
+                        },
+                    }),
+                    ...(data.status && {status: data.status})
+                },
+                include: {
+                    profile: {
+                        select: {
+                            name: true,
+                            email: true,
+                        },
+                    },
+                    role: {
+                        select: {
+                            name: true,
+                        }
+                    },
+                    sites: {
+                        select: {
+                            name: true,
+                        }
+                    },
+                    activity: {
+                        take: 1,
+                        orderBy: {
+                            createdAt: "desc"
+                        },
+                        select: {
+                            createdAt: true,
+                        }
+                    }
+                }
+            })
+        } catch (error) {
+            throw new ResponseError(500, "Failed when trying to update user in database")
+        }
+    }
+
+    static async hardDelete(data){
+        try {
+            await PrismaClient.user.delete({
+                where: {
+                    id: data.userId
+                }
+            })
+        } catch (error) {
+            throw new ResponseError(500, error.message)
         }
     }
 }

@@ -1,0 +1,124 @@
+paths:
+  /api/hrd/profile/{userId}:
+    patch:
+        parameters:
+          - in: path
+            name: userId
+            schema:
+              type: integer
+              description: User's id to update
+            required: true
+        summary: Update a user - Every field is optional 
+                - only return updated field - 'Send empty value'sends a " " string 
+                ,uncheck if client is not sending any data
+        tags:
+          - Profile
+
+        requestBody:
+          required: true
+          content:
+            multipart/form-data:
+              schema:
+                type: object
+                properties:
+                  role:
+                    type: string
+                    enum: ["ADMIN", "HRD", "OPERATOR"]
+                    example: ADMIN
+                  email:
+                    type: string
+                    example: email@email.com
+                  site:
+                    type: string
+                    example: Site B
+                  status:
+                    type: string
+                    enum: ["ACTIVE", "INACTIVE"]
+                    example: INACTIVE
+                  name:
+                    type: string
+                    example: Messi
+                  birthDate:
+                    type: string
+                    format: date
+                    example: 2000-07-21
+                  image:
+                    type: string
+                    format: binary
+                  address:
+                    type: string
+                    example: Jl. Iskandar No 48, Surabaya
+                  city:
+                    type: string
+                    example: Surabaya
+                  province:
+                    type: string
+                    example: Jawa Timur
+                  phone:
+                    type: string
+                    maxLength: 20
+                    example: 0888888888888
+        responses:
+          '200':
+            description: Request confirmation
+
+  /api/hrd/profile:
+    get:
+        summary: Get current user profile information
+        tags:
+          - Profile
+
+        responses:
+          '200':
+            description: Request confirmation
+            content:
+              application/json:
+                schema:
+                  type: object
+                  properties:
+                    success:
+                      type: boolean
+                      example: true
+                    message:
+                      type: string
+                      example: Profile retrieved successfully
+                    data:
+                      type: object
+                      properties:
+                        userId:
+                          type: integer
+                          example: 1
+                        name:
+                          type: string
+                          example: Kartika
+                        email:
+                          type: string
+                          example: email@email.com
+                        site:
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              name:
+                                type: string
+                                example: Central Office
+                        initial:
+                          type: string
+                          maxLength: 1
+                          example: K
+                        role:
+                          type: string
+                          enum: ["ADMIN", "HRD", "OPERATOR"]
+                          example: HRD
+                        phone:
+                          type: string
+                          maxLength: 20
+                          example: 082372738
+                        status:
+                          type: string
+                          enum: ["ACTIVE", "INACTIVE"]
+                          example: ACTIVE
+                        joinDate:
+                          type: string
+                          format: date
+                          example: 2024-01-01

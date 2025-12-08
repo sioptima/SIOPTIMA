@@ -28,4 +28,11 @@ export class PresensiValidation {
     static GETBYID = z.object({
       id: z.coerce.number().int()
     })
+
+    static APPROVE = z.object({
+      id: z.coerce.number().int(),
+      data: z.object({
+        notes: z.string().max(300).optional()
+      })
+    })
 }

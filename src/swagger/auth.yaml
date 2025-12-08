@@ -116,10 +116,28 @@ paths:
                 role:
                   type: string
                   example: OPERATOR
+                name:
+                  description: optional
+                  type: string
+                  example: "Neymar"
+                email:
+                  description: optional
+                  type: string
+                  format: email
+                  example: asdasdasd@email.com
+                site:
+                  description: optional
+                  type: string
+                  example: Site A
+                status:
+                  description: optional
+                  type: string
+                  enum: ["ACTIVE", "INACTIVE"]
+                  example: ACTIVE
 
       responses:
         '200':
-          description: Information about the current user
+          description: Information about the registered user
           content:
             application/json:
               schema:
@@ -134,9 +152,33 @@ paths:
                   data:
                     type: object
                     properties:
-                      userId:
+                      id:
                         type: integer
                         example: 6
+                      username: 
+                        type: string
+                        example: operator  
                       role:
                         type: string
+                        enum: ["OPERATOR", "ADMIN", "HRD"]
                         example: OPERATOR
+                      name:
+                        type: string
+                        example: John
+                      email:
+                        type: string
+                        example: emial@email.com
+                      site:
+                        type: string
+                        example: Site A
+                      status:
+                        type: string
+                        enum: ["ACTIVE", "INACTIVE"]
+                        example: ACTIVE
+                      lastActive:
+                        type: string
+                        example: "1 second ago"
+                      initial:
+                        type: string
+                        maxLength: 1
+                        example: O

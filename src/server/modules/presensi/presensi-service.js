@@ -4,6 +4,8 @@ import { PresensiRepository } from "./presensi-repository";
 import { uploadImage } from "../../utils/uploadthing";
 import { getUser } from "../../utils/auth";
 import { ShiftRepository } from "../shift/shift-repository";
+import { transformFormData } from "../../utils/helper";
+import { trackActivity } from "../../utils/trackUser";
 
 export class PresensiService{
 
@@ -11,18 +13,7 @@ export class PresensiService{
         const user = await getUser();
 
         //turn formdata to object
-        var object = {};
-        request.forEach((value, key) => {
-            // Reflect.has in favor of: object.hasOwnProperty(key)
-            if(!Reflect.has(object, key)){
-                object[key] = value;
-                return;
-            }
-            if(!Array.isArray(object[key])){
-                object[key] = [object[key]];    
-            }
-            object[key].push(value);
-        });
+        const object = transformFormData(request)
 
         //validate
         const checkInRequest = PresensiValidation.CHECKIN.parse(object);
@@ -56,6 +47,14 @@ export class PresensiService{
             isLate: isLate(), 
             shiftId: (shift) ? shift.id : null
         });
+
+        //track activity
+        await trackActivity(user.userId, "Check In", "attendance", "Check-in completed", {
+            id: checkIn.id,
+            checkInTime: checkIn.presensiDate,
+            status: checkIn.statusPresensi,
+        })
+
         //upload image
         const uploadImageData = await uploadImage(checkInRequest.selfie)
         if(!uploadImageData.data.ufsUrl){
@@ -87,18 +86,7 @@ export class PresensiService{
         const user = await getUser();
 
         //turn formdata to object
-        var object = {};
-        request.forEach((value, key) => {
-            // Reflect.has in favor of: object.hasOwnProperty(key)
-            if(!Reflect.has(object, key)){
-                object[key] = value;
-                return;
-            }
-            if(!Array.isArray(object[key])){
-                object[key] = [object[key]];    
-            }
-            object[key].push(value);
-        });
+        const object = transformFormData(request)
 
         //validate
         const checkOutRequest = PresensiValidation.CHECKIN.parse(object);
@@ -115,6 +103,13 @@ export class PresensiService{
             userId: user.userId,
             checkInId: checkIn.id
         });
+
+        //track activity
+        await trackActivity(user.userId, "Check Out", "attendance", "Check-out completed", {
+            id: checkOut.id,
+            checkOutTime: checkOut.checkOutDate,
+        })
+
         //upload image
         const uploadImageData = await uploadImage(checkOutRequest.selfie)
         if(!uploadImageData.data.ufsUrl){
@@ -243,5 +238,61 @@ export class PresensiService{
         }
 
         return recordTransform;
+    }
+
+    static async approve(request){
+        const user = await getUser();
+        const validatedRequest = PresensiValidation.APPROVE.parse(request)
+
+        const record = await PresensiRepository.findById({presensiId: validatedRequest.id});
+        if(!record){throw new ResponseError(200, "Attendance record does not exist")}        
+
+        const approvedRecord = await PresensiRepository.approve({
+            presensiId: validatedRequest.id, 
+            approverId: user.userId,
+            notes: validatedRequest.data.notes
+        })
+
+        //track activity
+        await trackActivity(user.userId, "Approve", "attendance", "Approved an attendance", {
+            id: approvedRecord.id,
+            approvedAt: approvedRecord.updatedAt,
+        })
+
+        return {
+            id: approvedRecord.id,
+            status: approvedRecord.statusApproval,
+            approvedAt: approvedRecord.updatedAt,
+            approvedBy: approvedRecord.approver.username,
+            notes: approvedRecord.notes,
+        }
+    }
+
+    static async reject(request){
+        const user = await getUser();
+        const validatedRequest = PresensiValidation.APPROVE.parse(request)
+
+        const record = await PresensiRepository.findById({presensiId: validatedRequest.id});
+        if(!record){throw new ResponseError(200, "Attendance record does not exist")}        
+
+        const rejectedRecord = await PresensiRepository.reject({
+            presensiId: validatedRequest.id, 
+            approverId: user.userId,
+            notes: validatedRequest.data.notes
+        })
+
+        //track activity
+        await trackActivity(user.userId, "Reject", "attendance", "Rejected an attendance", {
+            id: rejectedRecord.id,
+            approvedAt: rejectedRecord.updatedAt,
+        })
+
+        return {
+            id: rejectedRecord.id,
+            status: rejectedRecord.statusApproval,
+            rejectedAt: rejectedRecord.updatedAt,
+            rejectedBy: rejectedRecord.approver.username,
+            notes: (rejectedRecord.notes) ? approvedRecord.notes : undefined,
+        }
     }
 }

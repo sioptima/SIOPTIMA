@@ -1,0 +1,113 @@
+  /api/operator/profile:
+    get:
+        summary: Get current user profile information
+        tags:
+          - Profile
+
+        responses:
+          '200':
+            description: Request confirmation
+            content:
+              application/json:
+                schema:
+                  type: object
+                  properties:
+                    success:
+                      type: boolean
+                      example: true
+                    message:
+                      type: string
+                      example: Profile retrieved successfully
+                    data:
+                      type: object
+                      properties:
+                        userId:
+                          type: integer
+                          example: 1
+                        name:
+                          type: string
+                          example: Kartika
+                        email:
+                          type: string
+                          example: email@email.com
+                        site:
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              name:
+                                type: string
+                                example: Site B
+                        initial:
+                          type: string
+                          maxLength: 1
+                          example: K
+                        role:
+                          type: string
+                          enum: ["ADMIN", "HRD", "OPERATOR"]
+                          example: HRD
+                        phone:
+                          type: string
+                          maxLength: 20
+                          example: 082372738
+                        status:
+                          type: string
+                          enum: ["ACTIVE", "INACTIVE"]
+                          example: ACTIVE
+                        joinDate:
+                          type: string
+                          format: date
+                          example: 2024-01-01
+
+    patch:
+        summary: Update own profile - Every field is optional
+        tags:
+          - Profile
+
+        requestBody:
+          required: true
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  email:
+                    type: string
+                    example: email@email.com
+                  name:
+                    type: string
+                    example: Messi
+                  phone:
+                    type: string
+                    maxLength: 20
+                    example: 0888888888888
+        responses:
+          '200':
+            description: Request confirmation
+            content:
+              application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  message: 
+                    type: string
+                    example: Profile updated successfully
+                  data:
+                    type: object
+                    properties:
+                      id: 
+                        type: integer
+                        example: 1
+                      name:
+                        type: string
+                        example: Neymar
+                      email:
+                        type: string
+                        example: email@email.com
+                      phone:
+                        type: string
+                        maxLength: 20
+                        example: 081828282
