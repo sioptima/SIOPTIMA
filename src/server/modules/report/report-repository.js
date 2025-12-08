@@ -1,5 +1,6 @@
 import { ResponseError } from "@/src/lib/response-error.js";
 import PrismaClient from "../../db/db.js"
+import { daysOfWeek } from "../../utils/helper.js";
 
 export class ReportRepository {
 
@@ -132,17 +133,23 @@ export class ReportRepository {
         }
     }
 
-    static async findAllNoPaging(userId){
+    static async findAllByUserIdNoPaging(userId){
         try {
-            const reports = await PrismaClient.laporan.findMany({
+            const query = {
                 where: {
                     userId
                 },
                 orderBy: {
                         createdAt: 'desc',
                 },
-            })
-            return reports
+            }
+
+            const [reports, count] = await PrismaClient.$transaction([
+                PrismaClient.laporan.findMany(query),
+                PrismaClient.laporan.count({where: query.where})
+            ]);
+
+            return {result: reports, count: count};
         } catch (error){
             throw new ResponseError (500, "Failed when querying in database")
         }
@@ -211,4 +218,5 @@ export class ReportRepository {
             throw new ResponseError(500, "Failed when querying in database")
         }
     }
+
 }

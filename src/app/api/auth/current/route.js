@@ -9,7 +9,7 @@ export async function GET() {
          message: "User retrieved" ,
          data: {
           userId: session?.userId,
-          role: session?.role
+          role: session?.role,
          }
         },
         { status: 200 }

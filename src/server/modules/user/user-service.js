@@ -264,7 +264,6 @@ export class UserService {
     }
 
     static async hardDelete(request) {
-        const currentUser = await getUser();
         const validatedReq = UserValidation.HARDDELETE.parse(request);
 
         //check if user to delete exist first
@@ -274,5 +273,23 @@ export class UserService {
         await UserRepository.hardDelete({userId: validatedReq.id});
 
         return;
+    }
+
+    static async getAssignedSites(){
+        const user = await getUser();
+
+        const assignedSites = await UserRepository.getAssignedSites({userId: user.userId});
+        if(assignedSites.length === 0){throw new ResponseError(200, "No assigned site yet")}
+        
+        const result = assignedSites.map((site) => ({
+            id: site.id,
+            name: site.name,
+            city: site.address.city,
+            address: site.address.address,
+            province: site.address.province,
+            status: site.status
+        }))
+
+        return result
     }
 }

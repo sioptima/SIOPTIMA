@@ -45,6 +45,10 @@ export class SiteRepository {
                         },
                         select: {
                             laporanDate: true,
+                            pH: true,
+                            flowRate: true,
+                            TDS: true,
+                            EC: true,
                         }
                     }
                 },
@@ -72,7 +76,7 @@ export class SiteRepository {
                     }
                 },
                 orderBy: {
-                        createdAt: 'desc',
+                        createdAt: 'asc',
                 },
                 take: data.size,
                 skip: skip

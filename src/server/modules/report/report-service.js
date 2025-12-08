@@ -54,7 +54,7 @@ export class ReportService {
         //track activity
         await trackActivity(user.userId, "Create report", "report", "Daily report submitted", {
             reportId: report.id,
-            time: report.laporanDate,
+            laporanTime: report.laporanDate,
             status: "submitted"
         })
 
@@ -207,7 +207,7 @@ export class ReportService {
 
         //get current user report
         const { userId } = await getUser();
-        const reports = await ReportRepository.findAllNoPaging(userId)
+        const reports = await ReportRepository.findAllByUserIdNoPaging(userId)
 
         //export to pdf
         

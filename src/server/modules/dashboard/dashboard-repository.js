@@ -1,0 +1,254 @@
+import PrismaClient from "../../db/db.js"
+import { ResponseError } from "@/src/lib/response-error.js";
+import { daysOfWeek } from "../../utils/helper.js";
+
+export class DashboardRepository {
+    static async countAssignedSite(data){
+        try {
+            return await PrismaClient.site.count({
+                where:{
+                    users: {
+                        every: {
+                            id: data.userId
+                        }
+                    }
+                }
+            })
+        } catch (error) {
+            throw new ResponseError(500, "Failed when querying for assigned sites")
+        }
+    }
+
+    static async reportSummary(data){
+        try {
+            const userId = data.userId;
+            const [approved, pending, rejected, total] = await PrismaClient.$transaction([
+                PrismaClient.laporan.count({where: {
+                    userId,
+                    laporanStatus: "APPROVED",
+                },
+                }),
+                PrismaClient.laporan.count({where: {
+                    userId,
+                    laporanStatus: "PENDING",
+                },
+                }),
+                PrismaClient.laporan.count({where: {
+                    userId,
+                    laporanStatus: "REJECTED",
+                },
+                }),
+                PrismaClient.laporan.count({where: {userId}})
+            ]);
+
+            return {approved, pending, rejected, total};
+        } catch (error){
+            throw new ResponseError (500, "Failed when querying in database")
+        }
+    }
+
+    //may need to redo logic
+    //find a report for each day of users current site 
+    static async findThisWeekByUserId(data){
+        try {
+            const date = new Date()
+            const weekDates = daysOfWeek(new Date(date.getFullYear(), date.getMonth(), date.getDate())); // array of 7 days
+
+            const endOfWeek = new Date(
+                weekDates[6].getFullYear(),
+                weekDates[6].getMonth(),
+                weekDates[6].getDate() + 1
+            );
+
+            const ranges = weekDates.map((d, i) => ({
+                start: d,
+                end: i === 6 ? endOfWeek : weekDates[i + 1]
+            }));
+
+            const results = await Promise.all(
+                ranges.map(r => 
+                    PrismaClient.laporan.findFirst({
+                        where: {
+                            laporanDate: { gte: r.start, lt: r.end },
+                            userId: data.userId,
+                            site: {id: data.siteId}
+                        },
+                        select: {
+                            EC: true,
+                            TDS: true,
+                            pH: true,
+                        },
+                        orderBy: { laporanDate: "desc" }
+                    })
+                )
+            );
+
+            const [Mon, Tue, Wed, Thu, Fri, Sat, Sun] = results;
+
+            return { Mon, Tue, Wed, Thu, Fri, Sat, Sun };
+        } catch (error) {
+            throw new ResponseError(500, error.message)
+        }
+    }
+
+    //find upcoming shift and their count(used for counting attendance rate)
+    static async shiftSummary(data){
+        try {
+            const date = new Date()
+            const startOfDay = new Date(date.getFullYear(), date.getMonth(), date.getDate())
+
+            const userId = data.userId
+            // find shift that has active check in or upcoming shift
+            // find shift that has active check in
+            const queryActive = {
+                where: {
+                    userId,
+                    presensi: {
+                        checkOut: null,
+                    } 
+                },
+                select: {
+                    shiftDate:true,
+                    site: {
+                        select: {
+                            name: true,
+                            id: true,
+                        }
+                    },
+                    id: true,
+                },
+                orderBy: {
+                    shiftDate: 'asc'
+                }
+            }
+
+            //find upcoming shift
+            const queryUpcoming = {
+                    where: { 
+                        userId,
+                        shiftDate: {
+                            gte: startOfDay, 
+                        },
+                        presensi: null, 
+                    },
+                    select: {
+                        shiftDate:true,
+                        site: {
+                            select: {
+                                name: true
+                            }
+                        },
+                        id: true,
+                    },
+                    orderBy: {
+                        shiftDate: 'asc'
+                    }
+                }
+            
+
+            const [activeshift, upcomingShift, checkedInShift, missedShift] = await PrismaClient.$transaction([
+                PrismaClient.jadwalShift.findFirst(queryActive),
+                PrismaClient.jadwalShift.findFirst(queryUpcoming),
+                PrismaClient.jadwalShift.count({
+                    where: {
+                        userId,
+                        presensi: { isNot: null },
+                        shiftDate: {
+                            lte: date
+                        }
+                    }
+                }),
+                PrismaClient.jadwalShift.count({
+                    where: {
+                        userId,
+                        presensi: null,
+                        shiftDate: {
+                            lte: date
+                        } 
+                    }
+                }),
+            ])
+
+            let nextShift;
+            if(!activeshift){
+                nextShift = upcomingShift;
+            } else {
+                nextShift = activeshift;
+            }
+
+            return {nextShift, checkedInShift, missedShift}
+        } catch (error) {
+            throw new ResponseError(500, error.message)
+        }
+    }
+
+    static async getActivity(data) {
+        try {
+            return await PrismaClient.activity.findMany({
+                where: {
+                    userId: data.userId
+                },
+                orderBy: {
+                    createdAt: "desc"
+                }
+            })
+        } catch (error) {
+            throw new ResponseError(500, "Failed when querying for activity in database")
+        }
+    }
+
+    static async attendancesSummary(){
+        try {
+            const date = new Date()
+            const weekDates = daysOfWeek(new Date(date.getFullYear(), date.getMonth(), date.getDate())); // array of 7 days
+
+            const endOfWeek = new Date(
+                weekDates[6].getFullYear(),
+                weekDates[6].getMonth(),
+                weekDates[6].getDate() + 1
+            );
+
+            const ranges = weekDates.map((d, i) => ({
+                start: d,
+                end: i === 6 ? endOfWeek : weekDates[i + 1]
+            }));
+
+            const onTime = await Promise.all(
+                ranges.map(r => 
+                    PrismaClient.presensi.count({
+                        where: {
+                            presensiDate: { gte: r.start, lt: r.end },
+                            statusPresensi: "ONTIME",
+                        }
+                    })
+                )
+            );
+
+            const late = await Promise.all(
+                ranges.map(r => 
+                    PrismaClient.presensi.count({
+                        where: {
+                            presensiDate: { gte: r.start, lt: r.end },
+                            statusPresensi: "LATE",
+                        }
+                    })
+                )
+            );
+
+            const noShow = await Promise.all(
+                ranges.map(r => 
+                    PrismaClient.jadwalShift.count({
+                        where: {
+                            shiftDate: { gte: r.start, lt: date },
+                            presensi: null,
+                        }
+                    })
+                )
+            );
+
+            return { onTime, late, noShow,  };
+        } catch (error) {
+            throw new ResponseError(500, "Failed when querying for attendances information")
+        }
+    }
+}

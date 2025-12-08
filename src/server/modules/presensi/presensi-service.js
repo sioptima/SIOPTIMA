@@ -31,20 +31,18 @@ export class PresensiService{
         //if multiple grab oldest that is 'open'(no check in associated yet)
         const shift = await ShiftRepository.findToday({start: startOfDay, end: endOfDay, userId: user.userId})
         //check ontime/late status
-        const isLate = () => {
-            if(!shift){
-                return true; // if no shift found default to late
-            }
-            if(checkInDateUTC <= shift.shiftDate) {
-                return false;
-            }
+        let isLate; 
+        if(!shift){
+            isLate = true; // if no shift found default to late
+        } else if (checkInDateUTC >= shift.shiftDate) {
+            isLate = true;
         }
 
         //write to db without image link
         const checkIn = await PresensiRepository.checkIn({
             request: checkInRequest, 
             userId: user.userId, 
-            isLate: isLate(), 
+            isLate: isLate, 
             shiftId: (shift) ? shift.id : null
         });
 
