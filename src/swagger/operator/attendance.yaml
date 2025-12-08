@@ -236,7 +236,7 @@ paths:
 
   /api/operator/attendance/today:
     get:
-      summary: Get current user today's attendance record - latest if multiple record in a day
+      summary: Get current user today's attendance record - if multiple, grab active check in or most recent 
       tags:
         - Attendance
 

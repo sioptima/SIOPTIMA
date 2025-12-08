@@ -206,7 +206,7 @@ export class PresensiRepository {
         }
     }
 
-    static async findToday(data){ //find oldest and active check in record for today
+    static async findToday(data){ //find active check in record for today or most recent
         const today = new Date();
         const startOfDay = new Date(today.getFullYear(), today.getMonth(), today.getDate())
         const endOfDay = new Date(today.getFullYear(), today.getMonth(), today.getDate() + 1)

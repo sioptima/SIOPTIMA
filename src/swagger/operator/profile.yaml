@@ -86,28 +86,28 @@
             description: Request confirmation
             content:
               application/json:
-              schema:
-                type: object
-                properties:
-                  success:
-                    type: boolean
-                    example: true
-                  message: 
-                    type: string
-                    example: Profile updated successfully
-                  data:
-                    type: object
-                    properties:
-                      id: 
-                        type: integer
-                        example: 1
-                      name:
-                        type: string
-                        example: Neymar
-                      email:
-                        type: string
-                        example: email@email.com
-                      phone:
-                        type: string
-                        maxLength: 20
-                        example: 081828282
+                schema:
+                  type: object
+                  properties:
+                    success:
+                      type: boolean
+                      example: true
+                    message: 
+                      type: string
+                      example: Profile updated successfully
+                    data:
+                      type: object
+                      properties:
+                        id: 
+                          type: integer
+                          example: 1
+                        name:
+                          type: string
+                          example: Neymar
+                        email:
+                          type: string
+                          example: email@email.com
+                        phone:
+                          type: string
+                          maxLength: 20
+                          example: 081828282

@@ -63,7 +63,9 @@ export class UserRepository {
                     roleId: data.role,
                     activity: {
                         create: {
-                            action: "Account register"
+                            action: "-",
+                            type: "auth",
+                            title: "Account registered"
                         }
                     },
                     ...(data.status && {status: data.status}), //register with optional field

@@ -3,13 +3,13 @@ import { requireRole } from "@/src/server/utils/auth";
 
 export async function GET(request, {params}) {
     try {
-      await requireRole("OPERATOR");
+      await requireRole("ADMIN");
       const { id } = await params;//grab query parameter(/:id)
       const result = await ReportService.getById({id: id});
       return Response.json({
          success: true, 
          message: "Report retrieved" ,
-         data: result.reportTransform
+         data: result
         },
         { status: 200 }
       );

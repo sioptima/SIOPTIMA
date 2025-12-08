@@ -82,7 +82,7 @@ export class ReportService {
         const {page, size} = getRequest;
 
         const reports = await ReportRepository.findAll(getRequest);
-        if (!reports) {
+        if (reports.count === 0) {
             throw new ResponseError (200, "No report found")
         }
 
@@ -119,7 +119,7 @@ export class ReportService {
         const {page, size} = getRequest;
 
         const reports = await ReportRepository.findAllByUserId(getRequest, user.userId);
-        if (!reports) {
+        if (reports.count === 0) {
             throw new ResponseError (200, "No report found")
         }
 
@@ -162,7 +162,7 @@ export class ReportService {
             throw new ResponseError(400, "Invalid request data");
         }
 
-        const report = await ReportRepository.findById(getRequest);
+        const report = await ReportRepository.findById(getRequest.id);
         if(!report){
             throw new ResponseError(200, "No report found")
         }

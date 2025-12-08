@@ -184,13 +184,14 @@ export class PresensiService{
         const user = await getUser()
         
         const record = await PresensiRepository.findToday({userId: user.Id});
+        if (!record){throw new ResponseError (200, "No attendance record for today")};
         return {
             checkInTime: (record) ? record.presensiDate.toLocaleTimeString() : "--:--",
             checkOutTime: (record?.checkOut) ? record.checkOut.checkOutDate.toLocaleTimeString() : "--:--",
-            location: (record.shift) ? record.shift.site.name : null,
+            location: (record.shift?.site.name) ? record.shift.site.name : null,
             status: (record) ? record.statusPresensi : null,
             isCheckedIn: (record.presensiDate) ? true : false,
-            isCheckedOut: (record?.checkOut) ? true : false
+            isCheckedOut: (record.checkOut) ? true : false
         }
     }
 
@@ -292,7 +293,7 @@ export class PresensiService{
             status: rejectedRecord.statusApproval,
             rejectedAt: rejectedRecord.updatedAt,
             rejectedBy: rejectedRecord.approver.username,
-            notes: (rejectedRecord.notes) ? approvedRecord.notes : undefined,
+            notes: (rejectedRecord.notes) ? rejectedRecord.notes : undefined,
         }
     }
 }

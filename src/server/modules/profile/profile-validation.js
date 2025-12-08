@@ -8,7 +8,8 @@ export class ProfileValidation {
         id: z.coerce.number().int(),
         data: z.object({
             role: z.string().toUpperCase()
-                .pipe(z.enum(["ADMIN", "OPERATOR", "HRD"], "Invalid query")),
+                .pipe(z.enum(["ADMIN", "OPERATOR", "HRD"], "Invalid query"))
+                .optional(),
             email: z.string().max(30).email().optional(),
             //siteId: z.coerce.number().int().optional(),
             site: z.string().max(100).optional(),

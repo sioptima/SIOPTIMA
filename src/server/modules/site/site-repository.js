@@ -79,8 +79,8 @@ export class SiteRepository {
             }
 
             const [sites, count] = await PrismaClient.$transaction([
-                await PrismaClient.site.findMany(query),
-                await PrismaClient.site.count()
+                PrismaClient.site.findMany(query),
+                PrismaClient.site.count()
             ]) 
     
             return {count, sites};
