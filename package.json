@@ -35,10 +35,14 @@
     "lucide-react": "^0.436.0",
     "next": "^16.0.1",
     "next-themes": "^0.3.0",
+<<<<<<< HEAD
     "pg": "^8.16.3",
     "react": "^18.3.1",
+=======
+    "react": "^19.0.0-rc.1",
+>>>>>>> 7a6e8f41932157dd9921fa16275990620c51475c
     "react-countup": "^6.5.3",
-    "react-dom": "^18.3.1",
+    "react-dom": "^19.0.0-rc.1",
     "react-fast-marquee": "^1.6.5",
     "react-hook-form": "^7.53.0",
     "react-icons": "^5.3.0",
@@ -54,8 +58,12 @@
     "zod": "^3.25.76"
   },
   "devDependencies": {
+<<<<<<< HEAD
     "@types/node": "^24.10.2",
     "@types/pg": "^8.15.6",
+=======
+    "@types/leaflet": "^1.9.21",
+>>>>>>> 7a6e8f41932157dd9921fa16275990620c51475c
     "autoprefixer": "^10.4.21",
     "baseline-browser-mapping": "^2.9.2",
     "gh-pages": "^6.3.0",
