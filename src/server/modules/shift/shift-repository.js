@@ -59,7 +59,7 @@ export class ShiftRepository {
                 }
             })
         } catch (error) {
-            throw new ResponseError(500, error.message)
+            throw new ResponseError(500, "Failed when querying shift in database")
         }
     }
 }

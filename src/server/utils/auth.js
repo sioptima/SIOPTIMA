@@ -27,4 +27,8 @@ export async function requireRole(role) {
       throw new ResponseError(403, "Invalid Credential")
     }
     return session;
+    //session = {
+    // userId: int
+    // role: string; contain user's role name(admin/operator/hrd)
+    //} see session.js for more information
   }

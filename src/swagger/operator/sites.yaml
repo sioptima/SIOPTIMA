@@ -1,0 +1,36 @@
+  /api/operator/sites:
+    get:
+        summary: Get current user assigned sites
+        tags:
+          - Profile
+
+        responses:
+          '200':
+            description: Assigned sites information
+            content:
+              application/json:
+                schema:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                        example: 1
+                      name:
+                        type: string
+                        example: Site A
+                      city:
+                        type: string
+                        example: Surabaya
+                      address:
+                        type: string
+                        example: Jl Iskandar no 64, San Andreas
+                      province:
+                        type: string
+                        example: Surabaya
+                      status:
+                        type: string
+                        enum: ["ACTIVE", "MAINTENANCE", "INACTIVE"]
+                        example: ACTIVE
+                  

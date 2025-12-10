@@ -1,0 +1,148 @@
+paths:
+  /api/operator/dashboard/summary:
+    get:
+      summary: Get dashboard information
+      tags:
+        - Dashboard
+      
+      responses:
+        '200':
+          description: Dashboard information
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  message: 
+                    type: string
+                    example: Summary retrieved
+                  data:
+                    type: object
+                    properties:
+                      reportsSubmitted:
+                        type: integer
+                        example: 5
+                      attendanceRate:
+                        type: string
+                        example: 98%
+                      nextShift:
+                        type: string
+                        example: Tomorrow
+                      currentSite:
+                        type: string
+                        example: Site A
+                      pHLevel:
+                        type: number
+                        format: double
+                        example: 7.2
+                      flowRate:
+                        type: string
+                        example: "450 L/h"
+                      tds: 
+                        type: string
+                        example: "480 ppm"
+                      ec:
+                        type: string
+                        example: "720 μS/cm"
+                      activeSites:
+                        type: integer
+                        example: 1
+                      pendingReports:
+                        type: integer
+                        example: 2
+                      approvedReports:
+                        type: integer
+                        example: 3
+                      rejectedReports:
+                        type: integer
+                        example: 4
+
+  /api/operator/dashboard/water-quality:
+    get:
+      summary: Get water trends information
+      tags:
+        - Dashboard
+      
+      responses:
+        '200':
+          description: Water trends information
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  message: 
+                    type: string
+                    example: Summary retrieved
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        day:
+                          type: string
+                          example: Mon
+                        ec:
+                          type: number
+                          format: double
+                          example: 670
+                        tds:
+                          type: number
+                          format: double
+                          example: 440
+                        pH:
+                          type: number
+                          format: double
+                          example: 7.0
+  
+  /api/operator/dashboard/recent-activities:
+    get:
+      summary: Get recent activity information - db only store 10 recent activities
+      tags:
+        - Dashboard
+      
+      responses:
+        '200':
+          description: Recent activity information
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  message: 
+                    type: string
+                    example: Activities retrieved
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                          example: 1
+                        type:
+                          type: string
+                          example: report
+                        title:
+                          type: string
+                          example: Daily report submitted
+                        time:
+                          type: string
+                          format: date-time
+                          example: 2024-01-27T08:30:00Z
+                        detail:
+                          type: object
+                          properties:
+                            status:
+                              type: string
+                              enum: ["APPROVED", "REJECTED", "PENDING"]
+                              example: APPROVED

@@ -5777,6 +5777,7 @@ export default function Operator() {
 
       updateDashboardData();
 
+
       await createReport(newReport);
 
       setNotifications((prev) => [

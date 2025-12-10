@@ -407,7 +407,49 @@ export class UserRepository {
                 }
             })
         } catch (error) {
-            throw new ResponseError(500, error.message)
+            throw new ResponseError(500, "Failed when trying to delete user")
+        }
+    }
+
+    static async getAssignedSites(data){
+        try {
+            return await PrismaClient.site.findMany({
+                where: {
+                    users: {
+                        every: {
+                            id: data.userId
+                        }
+                    }
+                },
+                select: {
+                    address: {
+                        select: {
+                            city: true,
+                            address: true,
+                            province: true,
+                        }
+                    },
+                    status: true,
+                    name: true,
+                    id: true,
+                }
+            })
+        } catch (error) {
+            throw new ResponseError(500, "Failed when querying for assigned sites in db")
+        }
+    }
+
+    static async countOperator(){
+        try {
+            return await PrismaClient.user.count({
+                where: {
+                    role: {
+                        name: "OPERATOR"
+                    }
+                }
+            })
+        } catch (error) {
+            throw new ResponseError(500, "Failed when querying for total operator")
         }
     }
 }
