@@ -15,6 +15,21 @@ export class UserRepository {
         }
     }
 
+    static async findMultiple(data){
+        try {
+            return await PrismaClient.user.findMany({
+                where: { 
+                    id: { in: data.userId }
+                },
+                select: {
+                    id: true,
+                }
+            });
+        } catch (error) {
+            throw new ResponseError(500, error.message)
+        }
+    }
+
     static async findById(data){
         try {
             return await PrismaClient.user.findUnique({

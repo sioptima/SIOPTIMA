@@ -1,7 +1,7 @@
 paths:
   /api/admin/assign:
     patch:
-      summary: Assign a user to a site
+      summary: Assign a user to a site - deprecated
       tags:
         - Assign
 
@@ -49,7 +49,7 @@ paths:
                               example: Surabaya - Site A
 
     delete:
-      summary: Unassign a user from a site
+      summary: Unassign a user from a site - deprecated
       tags:
         - Assign
 

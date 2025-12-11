@@ -3,7 +3,7 @@ import PrismaClient from "../../db/db.js"
 
 export class ShiftRepository {
 
-    static async create(data){
+    static async create(data, users){
         try {
             const {date, time, end} = data
             const shiftDate = new Date(date+","+time)
@@ -18,9 +18,9 @@ export class ShiftRepository {
                         }
                     },
                     user: {
-                        connect: {
-                            id: data.userId
-                        }
+                        connect: users.map(user => ({
+                            id: user.id
+                        }))
                     }
                 },
                 include: {

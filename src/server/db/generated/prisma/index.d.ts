@@ -29,6 +29,11 @@ export type Role = $Result.DefaultSelection<Prisma.$RolePayload>
  */
 export type JadwalShift = $Result.DefaultSelection<Prisma.$JadwalShiftPayload>
 /**
+ * Model JamKerja
+ * 
+ */
+export type JamKerja = $Result.DefaultSelection<Prisma.$JamKerjaPayload>
+/**
  * Model Site
  * 
  */
@@ -366,6 +371,16 @@ export class PrismaClient<
     * ```
     */
   get jadwalShift(): Prisma.JadwalShiftDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.jamKerja`: Exposes CRUD operations for the **JamKerja** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more JamKerjas
+    * const jamKerjas = await prisma.jamKerja.findMany()
+    * ```
+    */
+  get jamKerja(): Prisma.JamKerjaDelegate<ExtArgs, ClientOptions>;
 
   /**
    * `prisma.site`: Exposes CRUD operations for the **Site** model.
@@ -940,6 +955,7 @@ export namespace Prisma {
     User: 'User',
     Role: 'Role',
     JadwalShift: 'JadwalShift',
+    JamKerja: 'JamKerja',
     Site: 'Site',
     SiteAddress: 'SiteAddress',
     Profile: 'Profile',
@@ -971,7 +987,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "user" | "role" | "jadwalShift" | "site" | "siteAddress" | "profile" | "userAddress" | "presensi" | "checkOut" | "laporan" | "ijin" | "libur" | "help" | "ticket" | "feedback" | "activity"
+      modelProps: "user" | "role" | "jadwalShift" | "jamKerja" | "site" | "siteAddress" | "profile" | "userAddress" | "presensi" | "checkOut" | "laporan" | "ijin" | "libur" | "help" | "ticket" | "feedback" | "activity"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -1194,6 +1210,80 @@ export namespace Prisma {
           count: {
             args: Prisma.JadwalShiftCountArgs<ExtArgs>
             result: $Utils.Optional<JadwalShiftCountAggregateOutputType> | number
+          }
+        }
+      }
+      JamKerja: {
+        payload: Prisma.$JamKerjaPayload<ExtArgs>
+        fields: Prisma.JamKerjaFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.JamKerjaFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$JamKerjaPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.JamKerjaFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$JamKerjaPayload>
+          }
+          findFirst: {
+            args: Prisma.JamKerjaFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$JamKerjaPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.JamKerjaFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$JamKerjaPayload>
+          }
+          findMany: {
+            args: Prisma.JamKerjaFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$JamKerjaPayload>[]
+          }
+          create: {
+            args: Prisma.JamKerjaCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$JamKerjaPayload>
+          }
+          createMany: {
+            args: Prisma.JamKerjaCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.JamKerjaCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$JamKerjaPayload>[]
+          }
+          delete: {
+            args: Prisma.JamKerjaDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$JamKerjaPayload>
+          }
+          update: {
+            args: Prisma.JamKerjaUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$JamKerjaPayload>
+          }
+          deleteMany: {
+            args: Prisma.JamKerjaDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.JamKerjaUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.JamKerjaUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$JamKerjaPayload>[]
+          }
+          upsert: {
+            args: Prisma.JamKerjaUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$JamKerjaPayload>
+          }
+          aggregate: {
+            args: Prisma.JamKerjaAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateJamKerja>
+          }
+          groupBy: {
+            args: Prisma.JamKerjaGroupByArgs<ExtArgs>
+            result: $Utils.Optional<JamKerjaGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.JamKerjaCountArgs<ExtArgs>
+            result: $Utils.Optional<JamKerjaCountAggregateOutputType> | number
           }
         }
       }
@@ -2258,6 +2348,7 @@ export namespace Prisma {
     user?: UserOmit
     role?: RoleOmit
     jadwalShift?: JadwalShiftOmit
+    jamKerja?: JamKerjaOmit
     site?: SiteOmit
     siteAddress?: SiteAddressOmit
     profile?: ProfileOmit
@@ -2363,6 +2454,7 @@ export namespace Prisma {
     ticket: number
     activity: number
     feedback: number
+    jamKerja: number
   }
 
   export type UserCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -2378,6 +2470,7 @@ export namespace Prisma {
     ticket?: boolean | UserCountOutputTypeCountTicketArgs
     activity?: boolean | UserCountOutputTypeCountActivityArgs
     feedback?: boolean | UserCountOutputTypeCountFeedbackArgs
+    jamKerja?: boolean | UserCountOutputTypeCountJamKerjaArgs
   }
 
   // Custom InputTypes
@@ -2473,6 +2566,13 @@ export namespace Prisma {
    */
   export type UserCountOutputTypeCountFeedbackArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: FeedbackWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountJamKerjaArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: JamKerjaWhereInput
   }
 
 
@@ -2871,6 +2971,7 @@ export namespace Prisma {
     ticket?: boolean | User$ticketArgs<ExtArgs>
     activity?: boolean | User$activityArgs<ExtArgs>
     feedback?: boolean | User$feedbackArgs<ExtArgs>
+    jamKerja?: boolean | User$jamKerjaArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["user"]>
 
@@ -2925,6 +3026,7 @@ export namespace Prisma {
     ticket?: boolean | User$ticketArgs<ExtArgs>
     activity?: boolean | User$activityArgs<ExtArgs>
     feedback?: boolean | User$feedbackArgs<ExtArgs>
+    jamKerja?: boolean | User$jamKerjaArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type UserIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -2951,6 +3053,7 @@ export namespace Prisma {
       ticket: Prisma.$TicketPayload<ExtArgs>[]
       activity: Prisma.$ActivityPayload<ExtArgs>[]
       feedback: Prisma.$FeedbackPayload<ExtArgs>[]
+      jamKerja: Prisma.$JamKerjaPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: number
@@ -3369,6 +3472,7 @@ export namespace Prisma {
     ticket<T extends User$ticketArgs<ExtArgs> = {}>(args?: Subset<T, User$ticketArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TicketPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     activity<T extends User$activityArgs<ExtArgs> = {}>(args?: Subset<T, User$activityArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ActivityPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     feedback<T extends User$feedbackArgs<ExtArgs> = {}>(args?: Subset<T, User$feedbackArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$FeedbackPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    jamKerja<T extends User$jamKerjaArgs<ExtArgs> = {}>(args?: Subset<T, User$jamKerjaArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$JamKerjaPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -4106,6 +4210,30 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: FeedbackScalarFieldEnum | FeedbackScalarFieldEnum[]
+  }
+
+  /**
+   * User.jamKerja
+   */
+  export type User$jamKerjaArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the JamKerja
+     */
+    select?: JamKerjaSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the JamKerja
+     */
+    omit?: JamKerjaOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: JamKerjaInclude<ExtArgs> | null
+    where?: JamKerjaWhereInput
+    orderBy?: JamKerjaOrderByWithRelationInput | JamKerjaOrderByWithRelationInput[]
+    cursor?: JamKerjaWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: JamKerjaScalarFieldEnum | JamKerjaScalarFieldEnum[]
   }
 
   /**
@@ -6403,6 +6531,1132 @@ export namespace Prisma {
      * Choose, which related nodes to fetch as well
      */
     include?: JadwalShiftInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model JamKerja
+   */
+
+  export type AggregateJamKerja = {
+    _count: JamKerjaCountAggregateOutputType | null
+    _avg: JamKerjaAvgAggregateOutputType | null
+    _sum: JamKerjaSumAggregateOutputType | null
+    _min: JamKerjaMinAggregateOutputType | null
+    _max: JamKerjaMaxAggregateOutputType | null
+  }
+
+  export type JamKerjaAvgAggregateOutputType = {
+    id: number | null
+    totalHours: number | null
+    userId: number | null
+  }
+
+  export type JamKerjaSumAggregateOutputType = {
+    id: number | null
+    totalHours: number | null
+    userId: number | null
+  }
+
+  export type JamKerjaMinAggregateOutputType = {
+    id: number | null
+    weekStart: Date | null
+    weekEnd: Date | null
+    totalHours: number | null
+    createdAt: Date | null
+    updatedAt: Date | null
+    userId: number | null
+  }
+
+  export type JamKerjaMaxAggregateOutputType = {
+    id: number | null
+    weekStart: Date | null
+    weekEnd: Date | null
+    totalHours: number | null
+    createdAt: Date | null
+    updatedAt: Date | null
+    userId: number | null
+  }
+
+  export type JamKerjaCountAggregateOutputType = {
+    id: number
+    weekStart: number
+    weekEnd: number
+    totalHours: number
+    createdAt: number
+    updatedAt: number
+    userId: number
+    _all: number
+  }
+
+
+  export type JamKerjaAvgAggregateInputType = {
+    id?: true
+    totalHours?: true
+    userId?: true
+  }
+
+  export type JamKerjaSumAggregateInputType = {
+    id?: true
+    totalHours?: true
+    userId?: true
+  }
+
+  export type JamKerjaMinAggregateInputType = {
+    id?: true
+    weekStart?: true
+    weekEnd?: true
+    totalHours?: true
+    createdAt?: true
+    updatedAt?: true
+    userId?: true
+  }
+
+  export type JamKerjaMaxAggregateInputType = {
+    id?: true
+    weekStart?: true
+    weekEnd?: true
+    totalHours?: true
+    createdAt?: true
+    updatedAt?: true
+    userId?: true
+  }
+
+  export type JamKerjaCountAggregateInputType = {
+    id?: true
+    weekStart?: true
+    weekEnd?: true
+    totalHours?: true
+    createdAt?: true
+    updatedAt?: true
+    userId?: true
+    _all?: true
+  }
+
+  export type JamKerjaAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which JamKerja to aggregate.
+     */
+    where?: JamKerjaWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of JamKerjas to fetch.
+     */
+    orderBy?: JamKerjaOrderByWithRelationInput | JamKerjaOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: JamKerjaWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` JamKerjas from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` JamKerjas.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned JamKerjas
+    **/
+    _count?: true | JamKerjaCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: JamKerjaAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: JamKerjaSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: JamKerjaMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: JamKerjaMaxAggregateInputType
+  }
+
+  export type GetJamKerjaAggregateType<T extends JamKerjaAggregateArgs> = {
+        [P in keyof T & keyof AggregateJamKerja]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateJamKerja[P]>
+      : GetScalarType<T[P], AggregateJamKerja[P]>
+  }
+
+
+
+
+  export type JamKerjaGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: JamKerjaWhereInput
+    orderBy?: JamKerjaOrderByWithAggregationInput | JamKerjaOrderByWithAggregationInput[]
+    by: JamKerjaScalarFieldEnum[] | JamKerjaScalarFieldEnum
+    having?: JamKerjaScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: JamKerjaCountAggregateInputType | true
+    _avg?: JamKerjaAvgAggregateInputType
+    _sum?: JamKerjaSumAggregateInputType
+    _min?: JamKerjaMinAggregateInputType
+    _max?: JamKerjaMaxAggregateInputType
+  }
+
+  export type JamKerjaGroupByOutputType = {
+    id: number
+    weekStart: Date
+    weekEnd: Date
+    totalHours: number
+    createdAt: Date
+    updatedAt: Date
+    userId: number
+    _count: JamKerjaCountAggregateOutputType | null
+    _avg: JamKerjaAvgAggregateOutputType | null
+    _sum: JamKerjaSumAggregateOutputType | null
+    _min: JamKerjaMinAggregateOutputType | null
+    _max: JamKerjaMaxAggregateOutputType | null
+  }
+
+  type GetJamKerjaGroupByPayload<T extends JamKerjaGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<JamKerjaGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof JamKerjaGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], JamKerjaGroupByOutputType[P]>
+            : GetScalarType<T[P], JamKerjaGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type JamKerjaSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    weekStart?: boolean
+    weekEnd?: boolean
+    totalHours?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    userId?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["jamKerja"]>
+
+  export type JamKerjaSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    weekStart?: boolean
+    weekEnd?: boolean
+    totalHours?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    userId?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["jamKerja"]>
+
+  export type JamKerjaSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    weekStart?: boolean
+    weekEnd?: boolean
+    totalHours?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    userId?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["jamKerja"]>
+
+  export type JamKerjaSelectScalar = {
+    id?: boolean
+    weekStart?: boolean
+    weekEnd?: boolean
+    totalHours?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    userId?: boolean
+  }
+
+  export type JamKerjaOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "weekStart" | "weekEnd" | "totalHours" | "createdAt" | "updatedAt" | "userId", ExtArgs["result"]["jamKerja"]>
+  export type JamKerjaInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type JamKerjaIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type JamKerjaIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+
+  export type $JamKerjaPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "JamKerja"
+    objects: {
+      user: Prisma.$UserPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: number
+      weekStart: Date
+      weekEnd: Date
+      totalHours: number
+      createdAt: Date
+      updatedAt: Date
+      userId: number
+    }, ExtArgs["result"]["jamKerja"]>
+    composites: {}
+  }
+
+  type JamKerjaGetPayload<S extends boolean | null | undefined | JamKerjaDefaultArgs> = $Result.GetResult<Prisma.$JamKerjaPayload, S>
+
+  type JamKerjaCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<JamKerjaFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: JamKerjaCountAggregateInputType | true
+    }
+
+  export interface JamKerjaDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['JamKerja'], meta: { name: 'JamKerja' } }
+    /**
+     * Find zero or one JamKerja that matches the filter.
+     * @param {JamKerjaFindUniqueArgs} args - Arguments to find a JamKerja
+     * @example
+     * // Get one JamKerja
+     * const jamKerja = await prisma.jamKerja.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends JamKerjaFindUniqueArgs>(args: SelectSubset<T, JamKerjaFindUniqueArgs<ExtArgs>>): Prisma__JamKerjaClient<$Result.GetResult<Prisma.$JamKerjaPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one JamKerja that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {JamKerjaFindUniqueOrThrowArgs} args - Arguments to find a JamKerja
+     * @example
+     * // Get one JamKerja
+     * const jamKerja = await prisma.jamKerja.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends JamKerjaFindUniqueOrThrowArgs>(args: SelectSubset<T, JamKerjaFindUniqueOrThrowArgs<ExtArgs>>): Prisma__JamKerjaClient<$Result.GetResult<Prisma.$JamKerjaPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first JamKerja that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {JamKerjaFindFirstArgs} args - Arguments to find a JamKerja
+     * @example
+     * // Get one JamKerja
+     * const jamKerja = await prisma.jamKerja.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends JamKerjaFindFirstArgs>(args?: SelectSubset<T, JamKerjaFindFirstArgs<ExtArgs>>): Prisma__JamKerjaClient<$Result.GetResult<Prisma.$JamKerjaPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first JamKerja that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {JamKerjaFindFirstOrThrowArgs} args - Arguments to find a JamKerja
+     * @example
+     * // Get one JamKerja
+     * const jamKerja = await prisma.jamKerja.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends JamKerjaFindFirstOrThrowArgs>(args?: SelectSubset<T, JamKerjaFindFirstOrThrowArgs<ExtArgs>>): Prisma__JamKerjaClient<$Result.GetResult<Prisma.$JamKerjaPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more JamKerjas that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {JamKerjaFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all JamKerjas
+     * const jamKerjas = await prisma.jamKerja.findMany()
+     * 
+     * // Get first 10 JamKerjas
+     * const jamKerjas = await prisma.jamKerja.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const jamKerjaWithIdOnly = await prisma.jamKerja.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends JamKerjaFindManyArgs>(args?: SelectSubset<T, JamKerjaFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$JamKerjaPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a JamKerja.
+     * @param {JamKerjaCreateArgs} args - Arguments to create a JamKerja.
+     * @example
+     * // Create one JamKerja
+     * const JamKerja = await prisma.jamKerja.create({
+     *   data: {
+     *     // ... data to create a JamKerja
+     *   }
+     * })
+     * 
+     */
+    create<T extends JamKerjaCreateArgs>(args: SelectSubset<T, JamKerjaCreateArgs<ExtArgs>>): Prisma__JamKerjaClient<$Result.GetResult<Prisma.$JamKerjaPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many JamKerjas.
+     * @param {JamKerjaCreateManyArgs} args - Arguments to create many JamKerjas.
+     * @example
+     * // Create many JamKerjas
+     * const jamKerja = await prisma.jamKerja.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends JamKerjaCreateManyArgs>(args?: SelectSubset<T, JamKerjaCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many JamKerjas and returns the data saved in the database.
+     * @param {JamKerjaCreateManyAndReturnArgs} args - Arguments to create many JamKerjas.
+     * @example
+     * // Create many JamKerjas
+     * const jamKerja = await prisma.jamKerja.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many JamKerjas and only return the `id`
+     * const jamKerjaWithIdOnly = await prisma.jamKerja.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends JamKerjaCreateManyAndReturnArgs>(args?: SelectSubset<T, JamKerjaCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$JamKerjaPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a JamKerja.
+     * @param {JamKerjaDeleteArgs} args - Arguments to delete one JamKerja.
+     * @example
+     * // Delete one JamKerja
+     * const JamKerja = await prisma.jamKerja.delete({
+     *   where: {
+     *     // ... filter to delete one JamKerja
+     *   }
+     * })
+     * 
+     */
+    delete<T extends JamKerjaDeleteArgs>(args: SelectSubset<T, JamKerjaDeleteArgs<ExtArgs>>): Prisma__JamKerjaClient<$Result.GetResult<Prisma.$JamKerjaPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one JamKerja.
+     * @param {JamKerjaUpdateArgs} args - Arguments to update one JamKerja.
+     * @example
+     * // Update one JamKerja
+     * const jamKerja = await prisma.jamKerja.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends JamKerjaUpdateArgs>(args: SelectSubset<T, JamKerjaUpdateArgs<ExtArgs>>): Prisma__JamKerjaClient<$Result.GetResult<Prisma.$JamKerjaPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more JamKerjas.
+     * @param {JamKerjaDeleteManyArgs} args - Arguments to filter JamKerjas to delete.
+     * @example
+     * // Delete a few JamKerjas
+     * const { count } = await prisma.jamKerja.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends JamKerjaDeleteManyArgs>(args?: SelectSubset<T, JamKerjaDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more JamKerjas.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {JamKerjaUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many JamKerjas
+     * const jamKerja = await prisma.jamKerja.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends JamKerjaUpdateManyArgs>(args: SelectSubset<T, JamKerjaUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more JamKerjas and returns the data updated in the database.
+     * @param {JamKerjaUpdateManyAndReturnArgs} args - Arguments to update many JamKerjas.
+     * @example
+     * // Update many JamKerjas
+     * const jamKerja = await prisma.jamKerja.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more JamKerjas and only return the `id`
+     * const jamKerjaWithIdOnly = await prisma.jamKerja.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends JamKerjaUpdateManyAndReturnArgs>(args: SelectSubset<T, JamKerjaUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$JamKerjaPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one JamKerja.
+     * @param {JamKerjaUpsertArgs} args - Arguments to update or create a JamKerja.
+     * @example
+     * // Update or create a JamKerja
+     * const jamKerja = await prisma.jamKerja.upsert({
+     *   create: {
+     *     // ... data to create a JamKerja
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the JamKerja we want to update
+     *   }
+     * })
+     */
+    upsert<T extends JamKerjaUpsertArgs>(args: SelectSubset<T, JamKerjaUpsertArgs<ExtArgs>>): Prisma__JamKerjaClient<$Result.GetResult<Prisma.$JamKerjaPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of JamKerjas.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {JamKerjaCountArgs} args - Arguments to filter JamKerjas to count.
+     * @example
+     * // Count the number of JamKerjas
+     * const count = await prisma.jamKerja.count({
+     *   where: {
+     *     // ... the filter for the JamKerjas we want to count
+     *   }
+     * })
+    **/
+    count<T extends JamKerjaCountArgs>(
+      args?: Subset<T, JamKerjaCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], JamKerjaCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a JamKerja.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {JamKerjaAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends JamKerjaAggregateArgs>(args: Subset<T, JamKerjaAggregateArgs>): Prisma.PrismaPromise<GetJamKerjaAggregateType<T>>
+
+    /**
+     * Group by JamKerja.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {JamKerjaGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends JamKerjaGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: JamKerjaGroupByArgs['orderBy'] }
+        : { orderBy?: JamKerjaGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, JamKerjaGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetJamKerjaGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the JamKerja model
+   */
+  readonly fields: JamKerjaFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for JamKerja.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__JamKerjaClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the JamKerja model
+   */
+  interface JamKerjaFieldRefs {
+    readonly id: FieldRef<"JamKerja", 'Int'>
+    readonly weekStart: FieldRef<"JamKerja", 'DateTime'>
+    readonly weekEnd: FieldRef<"JamKerja", 'DateTime'>
+    readonly totalHours: FieldRef<"JamKerja", 'Int'>
+    readonly createdAt: FieldRef<"JamKerja", 'DateTime'>
+    readonly updatedAt: FieldRef<"JamKerja", 'DateTime'>
+    readonly userId: FieldRef<"JamKerja", 'Int'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * JamKerja findUnique
+   */
+  export type JamKerjaFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the JamKerja
+     */
+    select?: JamKerjaSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the JamKerja
+     */
+    omit?: JamKerjaOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: JamKerjaInclude<ExtArgs> | null
+    /**
+     * Filter, which JamKerja to fetch.
+     */
+    where: JamKerjaWhereUniqueInput
+  }
+
+  /**
+   * JamKerja findUniqueOrThrow
+   */
+  export type JamKerjaFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the JamKerja
+     */
+    select?: JamKerjaSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the JamKerja
+     */
+    omit?: JamKerjaOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: JamKerjaInclude<ExtArgs> | null
+    /**
+     * Filter, which JamKerja to fetch.
+     */
+    where: JamKerjaWhereUniqueInput
+  }
+
+  /**
+   * JamKerja findFirst
+   */
+  export type JamKerjaFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the JamKerja
+     */
+    select?: JamKerjaSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the JamKerja
+     */
+    omit?: JamKerjaOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: JamKerjaInclude<ExtArgs> | null
+    /**
+     * Filter, which JamKerja to fetch.
+     */
+    where?: JamKerjaWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of JamKerjas to fetch.
+     */
+    orderBy?: JamKerjaOrderByWithRelationInput | JamKerjaOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for JamKerjas.
+     */
+    cursor?: JamKerjaWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` JamKerjas from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` JamKerjas.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of JamKerjas.
+     */
+    distinct?: JamKerjaScalarFieldEnum | JamKerjaScalarFieldEnum[]
+  }
+
+  /**
+   * JamKerja findFirstOrThrow
+   */
+  export type JamKerjaFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the JamKerja
+     */
+    select?: JamKerjaSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the JamKerja
+     */
+    omit?: JamKerjaOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: JamKerjaInclude<ExtArgs> | null
+    /**
+     * Filter, which JamKerja to fetch.
+     */
+    where?: JamKerjaWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of JamKerjas to fetch.
+     */
+    orderBy?: JamKerjaOrderByWithRelationInput | JamKerjaOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for JamKerjas.
+     */
+    cursor?: JamKerjaWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` JamKerjas from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` JamKerjas.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of JamKerjas.
+     */
+    distinct?: JamKerjaScalarFieldEnum | JamKerjaScalarFieldEnum[]
+  }
+
+  /**
+   * JamKerja findMany
+   */
+  export type JamKerjaFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the JamKerja
+     */
+    select?: JamKerjaSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the JamKerja
+     */
+    omit?: JamKerjaOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: JamKerjaInclude<ExtArgs> | null
+    /**
+     * Filter, which JamKerjas to fetch.
+     */
+    where?: JamKerjaWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of JamKerjas to fetch.
+     */
+    orderBy?: JamKerjaOrderByWithRelationInput | JamKerjaOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing JamKerjas.
+     */
+    cursor?: JamKerjaWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` JamKerjas from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` JamKerjas.
+     */
+    skip?: number
+    distinct?: JamKerjaScalarFieldEnum | JamKerjaScalarFieldEnum[]
+  }
+
+  /**
+   * JamKerja create
+   */
+  export type JamKerjaCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the JamKerja
+     */
+    select?: JamKerjaSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the JamKerja
+     */
+    omit?: JamKerjaOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: JamKerjaInclude<ExtArgs> | null
+    /**
+     * The data needed to create a JamKerja.
+     */
+    data: XOR<JamKerjaCreateInput, JamKerjaUncheckedCreateInput>
+  }
+
+  /**
+   * JamKerja createMany
+   */
+  export type JamKerjaCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many JamKerjas.
+     */
+    data: JamKerjaCreateManyInput | JamKerjaCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * JamKerja createManyAndReturn
+   */
+  export type JamKerjaCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the JamKerja
+     */
+    select?: JamKerjaSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the JamKerja
+     */
+    omit?: JamKerjaOmit<ExtArgs> | null
+    /**
+     * The data used to create many JamKerjas.
+     */
+    data: JamKerjaCreateManyInput | JamKerjaCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: JamKerjaIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * JamKerja update
+   */
+  export type JamKerjaUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the JamKerja
+     */
+    select?: JamKerjaSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the JamKerja
+     */
+    omit?: JamKerjaOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: JamKerjaInclude<ExtArgs> | null
+    /**
+     * The data needed to update a JamKerja.
+     */
+    data: XOR<JamKerjaUpdateInput, JamKerjaUncheckedUpdateInput>
+    /**
+     * Choose, which JamKerja to update.
+     */
+    where: JamKerjaWhereUniqueInput
+  }
+
+  /**
+   * JamKerja updateMany
+   */
+  export type JamKerjaUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update JamKerjas.
+     */
+    data: XOR<JamKerjaUpdateManyMutationInput, JamKerjaUncheckedUpdateManyInput>
+    /**
+     * Filter which JamKerjas to update
+     */
+    where?: JamKerjaWhereInput
+    /**
+     * Limit how many JamKerjas to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * JamKerja updateManyAndReturn
+   */
+  export type JamKerjaUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the JamKerja
+     */
+    select?: JamKerjaSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the JamKerja
+     */
+    omit?: JamKerjaOmit<ExtArgs> | null
+    /**
+     * The data used to update JamKerjas.
+     */
+    data: XOR<JamKerjaUpdateManyMutationInput, JamKerjaUncheckedUpdateManyInput>
+    /**
+     * Filter which JamKerjas to update
+     */
+    where?: JamKerjaWhereInput
+    /**
+     * Limit how many JamKerjas to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: JamKerjaIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * JamKerja upsert
+   */
+  export type JamKerjaUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the JamKerja
+     */
+    select?: JamKerjaSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the JamKerja
+     */
+    omit?: JamKerjaOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: JamKerjaInclude<ExtArgs> | null
+    /**
+     * The filter to search for the JamKerja to update in case it exists.
+     */
+    where: JamKerjaWhereUniqueInput
+    /**
+     * In case the JamKerja found by the `where` argument doesn't exist, create a new JamKerja with this data.
+     */
+    create: XOR<JamKerjaCreateInput, JamKerjaUncheckedCreateInput>
+    /**
+     * In case the JamKerja was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<JamKerjaUpdateInput, JamKerjaUncheckedUpdateInput>
+  }
+
+  /**
+   * JamKerja delete
+   */
+  export type JamKerjaDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the JamKerja
+     */
+    select?: JamKerjaSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the JamKerja
+     */
+    omit?: JamKerjaOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: JamKerjaInclude<ExtArgs> | null
+    /**
+     * Filter which JamKerja to delete.
+     */
+    where: JamKerjaWhereUniqueInput
+  }
+
+  /**
+   * JamKerja deleteMany
+   */
+  export type JamKerjaDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which JamKerjas to delete
+     */
+    where?: JamKerjaWhereInput
+    /**
+     * Limit how many JamKerjas to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * JamKerja without action
+   */
+  export type JamKerjaDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the JamKerja
+     */
+    select?: JamKerjaSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the JamKerja
+     */
+    omit?: JamKerjaOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: JamKerjaInclude<ExtArgs> | null
   }
 
 
@@ -21930,6 +23184,19 @@ export namespace Prisma {
   export type JadwalShiftScalarFieldEnum = (typeof JadwalShiftScalarFieldEnum)[keyof typeof JadwalShiftScalarFieldEnum]
 
 
+  export const JamKerjaScalarFieldEnum: {
+    id: 'id',
+    weekStart: 'weekStart',
+    weekEnd: 'weekEnd',
+    totalHours: 'totalHours',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt',
+    userId: 'userId'
+  };
+
+  export type JamKerjaScalarFieldEnum = (typeof JamKerjaScalarFieldEnum)[keyof typeof JamKerjaScalarFieldEnum]
+
+
   export const SiteScalarFieldEnum: {
     id: 'id',
     name: 'name',
@@ -22409,6 +23676,7 @@ export namespace Prisma {
     ticket?: TicketListRelationFilter
     activity?: ActivityListRelationFilter
     feedback?: FeedbackListRelationFilter
+    jamKerja?: JamKerjaListRelationFilter
   }
 
   export type UserOrderByWithRelationInput = {
@@ -22434,6 +23702,7 @@ export namespace Prisma {
     ticket?: TicketOrderByRelationAggregateInput
     activity?: ActivityOrderByRelationAggregateInput
     feedback?: FeedbackOrderByRelationAggregateInput
+    jamKerja?: JamKerjaOrderByRelationAggregateInput
   }
 
   export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -22462,6 +23731,7 @@ export namespace Prisma {
     ticket?: TicketListRelationFilter
     activity?: ActivityListRelationFilter
     feedback?: FeedbackListRelationFilter
+    jamKerja?: JamKerjaListRelationFilter
   }, "id" | "username">
 
   export type UserOrderByWithAggregationInput = {
@@ -22622,6 +23892,73 @@ export namespace Prisma {
     updatedAt?: DateTimeWithAggregatesFilter<"JadwalShift"> | Date | string
     deletedAt?: DateTimeNullableWithAggregatesFilter<"JadwalShift"> | Date | string | null
     siteId?: IntWithAggregatesFilter<"JadwalShift"> | number
+  }
+
+  export type JamKerjaWhereInput = {
+    AND?: JamKerjaWhereInput | JamKerjaWhereInput[]
+    OR?: JamKerjaWhereInput[]
+    NOT?: JamKerjaWhereInput | JamKerjaWhereInput[]
+    id?: IntFilter<"JamKerja"> | number
+    weekStart?: DateTimeFilter<"JamKerja"> | Date | string
+    weekEnd?: DateTimeFilter<"JamKerja"> | Date | string
+    totalHours?: IntFilter<"JamKerja"> | number
+    createdAt?: DateTimeFilter<"JamKerja"> | Date | string
+    updatedAt?: DateTimeFilter<"JamKerja"> | Date | string
+    userId?: IntFilter<"JamKerja"> | number
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+  }
+
+  export type JamKerjaOrderByWithRelationInput = {
+    id?: SortOrder
+    weekStart?: SortOrder
+    weekEnd?: SortOrder
+    totalHours?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    userId?: SortOrder
+    user?: UserOrderByWithRelationInput
+  }
+
+  export type JamKerjaWhereUniqueInput = Prisma.AtLeast<{
+    id?: number
+    AND?: JamKerjaWhereInput | JamKerjaWhereInput[]
+    OR?: JamKerjaWhereInput[]
+    NOT?: JamKerjaWhereInput | JamKerjaWhereInput[]
+    weekStart?: DateTimeFilter<"JamKerja"> | Date | string
+    weekEnd?: DateTimeFilter<"JamKerja"> | Date | string
+    totalHours?: IntFilter<"JamKerja"> | number
+    createdAt?: DateTimeFilter<"JamKerja"> | Date | string
+    updatedAt?: DateTimeFilter<"JamKerja"> | Date | string
+    userId?: IntFilter<"JamKerja"> | number
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+  }, "id">
+
+  export type JamKerjaOrderByWithAggregationInput = {
+    id?: SortOrder
+    weekStart?: SortOrder
+    weekEnd?: SortOrder
+    totalHours?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    userId?: SortOrder
+    _count?: JamKerjaCountOrderByAggregateInput
+    _avg?: JamKerjaAvgOrderByAggregateInput
+    _max?: JamKerjaMaxOrderByAggregateInput
+    _min?: JamKerjaMinOrderByAggregateInput
+    _sum?: JamKerjaSumOrderByAggregateInput
+  }
+
+  export type JamKerjaScalarWhereWithAggregatesInput = {
+    AND?: JamKerjaScalarWhereWithAggregatesInput | JamKerjaScalarWhereWithAggregatesInput[]
+    OR?: JamKerjaScalarWhereWithAggregatesInput[]
+    NOT?: JamKerjaScalarWhereWithAggregatesInput | JamKerjaScalarWhereWithAggregatesInput[]
+    id?: IntWithAggregatesFilter<"JamKerja"> | number
+    weekStart?: DateTimeWithAggregatesFilter<"JamKerja"> | Date | string
+    weekEnd?: DateTimeWithAggregatesFilter<"JamKerja"> | Date | string
+    totalHours?: IntWithAggregatesFilter<"JamKerja"> | number
+    createdAt?: DateTimeWithAggregatesFilter<"JamKerja"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"JamKerja"> | Date | string
+    userId?: IntWithAggregatesFilter<"JamKerja"> | number
   }
 
   export type SiteWhereInput = {
@@ -23750,6 +25087,7 @@ export namespace Prisma {
     ticket?: TicketCreateNestedManyWithoutUserInput
     activity?: ActivityCreateNestedManyWithoutUserInput
     feedback?: FeedbackCreateNestedManyWithoutUserInput
+    jamKerja?: JamKerjaCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateInput = {
@@ -23774,6 +25112,7 @@ export namespace Prisma {
     ticket?: TicketUncheckedCreateNestedManyWithoutUserInput
     activity?: ActivityUncheckedCreateNestedManyWithoutUserInput
     feedback?: FeedbackUncheckedCreateNestedManyWithoutUserInput
+    jamKerja?: JamKerjaUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserUpdateInput = {
@@ -23797,6 +25136,7 @@ export namespace Prisma {
     ticket?: TicketUpdateManyWithoutUserNestedInput
     activity?: ActivityUpdateManyWithoutUserNestedInput
     feedback?: FeedbackUpdateManyWithoutUserNestedInput
+    jamKerja?: JamKerjaUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateInput = {
@@ -23821,6 +25161,7 @@ export namespace Prisma {
     ticket?: TicketUncheckedUpdateManyWithoutUserNestedInput
     activity?: ActivityUncheckedUpdateManyWithoutUserNestedInput
     feedback?: FeedbackUncheckedUpdateManyWithoutUserNestedInput
+    jamKerja?: JamKerjaUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateManyInput = {
@@ -23983,6 +25324,72 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     siteId?: IntFieldUpdateOperationsInput | number
+  }
+
+  export type JamKerjaCreateInput = {
+    weekStart: Date | string
+    weekEnd: Date | string
+    totalHours: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    user: UserCreateNestedOneWithoutJamKerjaInput
+  }
+
+  export type JamKerjaUncheckedCreateInput = {
+    id?: number
+    weekStart: Date | string
+    weekEnd: Date | string
+    totalHours: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    userId: number
+  }
+
+  export type JamKerjaUpdateInput = {
+    weekStart?: DateTimeFieldUpdateOperationsInput | Date | string
+    weekEnd?: DateTimeFieldUpdateOperationsInput | Date | string
+    totalHours?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneRequiredWithoutJamKerjaNestedInput
+  }
+
+  export type JamKerjaUncheckedUpdateInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    weekStart?: DateTimeFieldUpdateOperationsInput | Date | string
+    weekEnd?: DateTimeFieldUpdateOperationsInput | Date | string
+    totalHours?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    userId?: IntFieldUpdateOperationsInput | number
+  }
+
+  export type JamKerjaCreateManyInput = {
+    id?: number
+    weekStart: Date | string
+    weekEnd: Date | string
+    totalHours: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    userId: number
+  }
+
+  export type JamKerjaUpdateManyMutationInput = {
+    weekStart?: DateTimeFieldUpdateOperationsInput | Date | string
+    weekEnd?: DateTimeFieldUpdateOperationsInput | Date | string
+    totalHours?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type JamKerjaUncheckedUpdateManyInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    weekStart?: DateTimeFieldUpdateOperationsInput | Date | string
+    weekEnd?: DateTimeFieldUpdateOperationsInput | Date | string
+    totalHours?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    userId?: IntFieldUpdateOperationsInput | number
   }
 
   export type SiteCreateInput = {
@@ -25274,6 +26681,12 @@ export namespace Prisma {
     none?: FeedbackWhereInput
   }
 
+  export type JamKerjaListRelationFilter = {
+    every?: JamKerjaWhereInput
+    some?: JamKerjaWhereInput
+    none?: JamKerjaWhereInput
+  }
+
   export type SortOrderInput = {
     sort: SortOrder
     nulls?: NullsOrder
@@ -25320,6 +26733,10 @@ export namespace Prisma {
   }
 
   export type FeedbackOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type JamKerjaOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -25547,6 +26964,53 @@ export namespace Prisma {
     siteId?: SortOrder
   }
 
+  export type UserScalarRelationFilter = {
+    is?: UserWhereInput
+    isNot?: UserWhereInput
+  }
+
+  export type JamKerjaCountOrderByAggregateInput = {
+    id?: SortOrder
+    weekStart?: SortOrder
+    weekEnd?: SortOrder
+    totalHours?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    userId?: SortOrder
+  }
+
+  export type JamKerjaAvgOrderByAggregateInput = {
+    id?: SortOrder
+    totalHours?: SortOrder
+    userId?: SortOrder
+  }
+
+  export type JamKerjaMaxOrderByAggregateInput = {
+    id?: SortOrder
+    weekStart?: SortOrder
+    weekEnd?: SortOrder
+    totalHours?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    userId?: SortOrder
+  }
+
+  export type JamKerjaMinOrderByAggregateInput = {
+    id?: SortOrder
+    weekStart?: SortOrder
+    weekEnd?: SortOrder
+    totalHours?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    userId?: SortOrder
+  }
+
+  export type JamKerjaSumOrderByAggregateInput = {
+    id?: SortOrder
+    totalHours?: SortOrder
+    userId?: SortOrder
+  }
+
   export type StringNullableFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel> | null
     in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
@@ -25723,11 +27187,6 @@ export namespace Prisma {
     _sum?: NestedFloatFilter<$PrismaModel>
     _min?: NestedFloatFilter<$PrismaModel>
     _max?: NestedFloatFilter<$PrismaModel>
-  }
-
-  export type UserScalarRelationFilter = {
-    is?: UserWhereInput
-    isNot?: UserWhereInput
   }
 
   export type UserAddressNullableScalarRelationFilter = {
@@ -26621,6 +28080,13 @@ export namespace Prisma {
     connect?: FeedbackWhereUniqueInput | FeedbackWhereUniqueInput[]
   }
 
+  export type JamKerjaCreateNestedManyWithoutUserInput = {
+    create?: XOR<JamKerjaCreateWithoutUserInput, JamKerjaUncheckedCreateWithoutUserInput> | JamKerjaCreateWithoutUserInput[] | JamKerjaUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: JamKerjaCreateOrConnectWithoutUserInput | JamKerjaCreateOrConnectWithoutUserInput[]
+    createMany?: JamKerjaCreateManyUserInputEnvelope
+    connect?: JamKerjaWhereUniqueInput | JamKerjaWhereUniqueInput[]
+  }
+
   export type ProfileUncheckedCreateNestedOneWithoutUserInput = {
     create?: XOR<ProfileCreateWithoutUserInput, ProfileUncheckedCreateWithoutUserInput>
     connectOrCreate?: ProfileCreateOrConnectWithoutUserInput
@@ -26707,6 +28173,13 @@ export namespace Prisma {
     connectOrCreate?: FeedbackCreateOrConnectWithoutUserInput | FeedbackCreateOrConnectWithoutUserInput[]
     createMany?: FeedbackCreateManyUserInputEnvelope
     connect?: FeedbackWhereUniqueInput | FeedbackWhereUniqueInput[]
+  }
+
+  export type JamKerjaUncheckedCreateNestedManyWithoutUserInput = {
+    create?: XOR<JamKerjaCreateWithoutUserInput, JamKerjaUncheckedCreateWithoutUserInput> | JamKerjaCreateWithoutUserInput[] | JamKerjaUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: JamKerjaCreateOrConnectWithoutUserInput | JamKerjaCreateOrConnectWithoutUserInput[]
+    createMany?: JamKerjaCreateManyUserInputEnvelope
+    connect?: JamKerjaWhereUniqueInput | JamKerjaWhereUniqueInput[]
   }
 
   export type StringFieldUpdateOperationsInput = {
@@ -26909,6 +28382,20 @@ export namespace Prisma {
     deleteMany?: FeedbackScalarWhereInput | FeedbackScalarWhereInput[]
   }
 
+  export type JamKerjaUpdateManyWithoutUserNestedInput = {
+    create?: XOR<JamKerjaCreateWithoutUserInput, JamKerjaUncheckedCreateWithoutUserInput> | JamKerjaCreateWithoutUserInput[] | JamKerjaUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: JamKerjaCreateOrConnectWithoutUserInput | JamKerjaCreateOrConnectWithoutUserInput[]
+    upsert?: JamKerjaUpsertWithWhereUniqueWithoutUserInput | JamKerjaUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: JamKerjaCreateManyUserInputEnvelope
+    set?: JamKerjaWhereUniqueInput | JamKerjaWhereUniqueInput[]
+    disconnect?: JamKerjaWhereUniqueInput | JamKerjaWhereUniqueInput[]
+    delete?: JamKerjaWhereUniqueInput | JamKerjaWhereUniqueInput[]
+    connect?: JamKerjaWhereUniqueInput | JamKerjaWhereUniqueInput[]
+    update?: JamKerjaUpdateWithWhereUniqueWithoutUserInput | JamKerjaUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: JamKerjaUpdateManyWithWhereWithoutUserInput | JamKerjaUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: JamKerjaScalarWhereInput | JamKerjaScalarWhereInput[]
+  }
+
   export type IntFieldUpdateOperationsInput = {
     set?: number
     increment?: number
@@ -27093,6 +28580,20 @@ export namespace Prisma {
     deleteMany?: FeedbackScalarWhereInput | FeedbackScalarWhereInput[]
   }
 
+  export type JamKerjaUncheckedUpdateManyWithoutUserNestedInput = {
+    create?: XOR<JamKerjaCreateWithoutUserInput, JamKerjaUncheckedCreateWithoutUserInput> | JamKerjaCreateWithoutUserInput[] | JamKerjaUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: JamKerjaCreateOrConnectWithoutUserInput | JamKerjaCreateOrConnectWithoutUserInput[]
+    upsert?: JamKerjaUpsertWithWhereUniqueWithoutUserInput | JamKerjaUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: JamKerjaCreateManyUserInputEnvelope
+    set?: JamKerjaWhereUniqueInput | JamKerjaWhereUniqueInput[]
+    disconnect?: JamKerjaWhereUniqueInput | JamKerjaWhereUniqueInput[]
+    delete?: JamKerjaWhereUniqueInput | JamKerjaWhereUniqueInput[]
+    connect?: JamKerjaWhereUniqueInput | JamKerjaWhereUniqueInput[]
+    update?: JamKerjaUpdateWithWhereUniqueWithoutUserInput | JamKerjaUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: JamKerjaUpdateManyWithWhereWithoutUserInput | JamKerjaUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: JamKerjaScalarWhereInput | JamKerjaScalarWhereInput[]
+  }
+
   export type UserCreateNestedManyWithoutRoleInput = {
     create?: XOR<UserCreateWithoutRoleInput, UserUncheckedCreateWithoutRoleInput> | UserCreateWithoutRoleInput[] | UserUncheckedCreateWithoutRoleInput[]
     connectOrCreate?: UserCreateOrConnectWithoutRoleInput | UserCreateOrConnectWithoutRoleInput[]
@@ -27221,6 +28722,20 @@ export namespace Prisma {
     delete?: PresensiWhereInput | boolean
     connect?: PresensiWhereUniqueInput
     update?: XOR<XOR<PresensiUpdateToOneWithWhereWithoutShiftInput, PresensiUpdateWithoutShiftInput>, PresensiUncheckedUpdateWithoutShiftInput>
+  }
+
+  export type UserCreateNestedOneWithoutJamKerjaInput = {
+    create?: XOR<UserCreateWithoutJamKerjaInput, UserUncheckedCreateWithoutJamKerjaInput>
+    connectOrCreate?: UserCreateOrConnectWithoutJamKerjaInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type UserUpdateOneRequiredWithoutJamKerjaNestedInput = {
+    create?: XOR<UserCreateWithoutJamKerjaInput, UserUncheckedCreateWithoutJamKerjaInput>
+    connectOrCreate?: UserCreateOrConnectWithoutJamKerjaInput
+    upsert?: UserUpsertWithoutJamKerjaInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutJamKerjaInput, UserUpdateWithoutJamKerjaInput>, UserUncheckedUpdateWithoutJamKerjaInput>
   }
 
   export type SiteAddressCreateNestedOneWithoutSiteInput = {
@@ -28686,6 +30201,33 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type JamKerjaCreateWithoutUserInput = {
+    weekStart: Date | string
+    weekEnd: Date | string
+    totalHours: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type JamKerjaUncheckedCreateWithoutUserInput = {
+    id?: number
+    weekStart: Date | string
+    weekEnd: Date | string
+    totalHours: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type JamKerjaCreateOrConnectWithoutUserInput = {
+    where: JamKerjaWhereUniqueInput
+    create: XOR<JamKerjaCreateWithoutUserInput, JamKerjaUncheckedCreateWithoutUserInput>
+  }
+
+  export type JamKerjaCreateManyUserInputEnvelope = {
+    data: JamKerjaCreateManyUserInput | JamKerjaCreateManyUserInput[]
+    skipDuplicates?: boolean
+  }
+
   export type RoleUpsertWithoutUsersInput = {
     update: XOR<RoleUpdateWithoutUsersInput, RoleUncheckedUpdateWithoutUsersInput>
     create: XOR<RoleCreateWithoutUsersInput, RoleUncheckedCreateWithoutUsersInput>
@@ -29115,6 +30657,35 @@ export namespace Prisma {
     userId?: IntFilter<"Feedback"> | number
   }
 
+  export type JamKerjaUpsertWithWhereUniqueWithoutUserInput = {
+    where: JamKerjaWhereUniqueInput
+    update: XOR<JamKerjaUpdateWithoutUserInput, JamKerjaUncheckedUpdateWithoutUserInput>
+    create: XOR<JamKerjaCreateWithoutUserInput, JamKerjaUncheckedCreateWithoutUserInput>
+  }
+
+  export type JamKerjaUpdateWithWhereUniqueWithoutUserInput = {
+    where: JamKerjaWhereUniqueInput
+    data: XOR<JamKerjaUpdateWithoutUserInput, JamKerjaUncheckedUpdateWithoutUserInput>
+  }
+
+  export type JamKerjaUpdateManyWithWhereWithoutUserInput = {
+    where: JamKerjaScalarWhereInput
+    data: XOR<JamKerjaUpdateManyMutationInput, JamKerjaUncheckedUpdateManyWithoutUserInput>
+  }
+
+  export type JamKerjaScalarWhereInput = {
+    AND?: JamKerjaScalarWhereInput | JamKerjaScalarWhereInput[]
+    OR?: JamKerjaScalarWhereInput[]
+    NOT?: JamKerjaScalarWhereInput | JamKerjaScalarWhereInput[]
+    id?: IntFilter<"JamKerja"> | number
+    weekStart?: DateTimeFilter<"JamKerja"> | Date | string
+    weekEnd?: DateTimeFilter<"JamKerja"> | Date | string
+    totalHours?: IntFilter<"JamKerja"> | number
+    createdAt?: DateTimeFilter<"JamKerja"> | Date | string
+    updatedAt?: DateTimeFilter<"JamKerja"> | Date | string
+    userId?: IntFilter<"JamKerja"> | number
+  }
+
   export type UserCreateWithoutRoleInput = {
     username: string
     password: string
@@ -29135,6 +30706,7 @@ export namespace Prisma {
     ticket?: TicketCreateNestedManyWithoutUserInput
     activity?: ActivityCreateNestedManyWithoutUserInput
     feedback?: FeedbackCreateNestedManyWithoutUserInput
+    jamKerja?: JamKerjaCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutRoleInput = {
@@ -29158,6 +30730,7 @@ export namespace Prisma {
     ticket?: TicketUncheckedCreateNestedManyWithoutUserInput
     activity?: ActivityUncheckedCreateNestedManyWithoutUserInput
     feedback?: FeedbackUncheckedCreateNestedManyWithoutUserInput
+    jamKerja?: JamKerjaUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutRoleInput = {
@@ -29220,6 +30793,7 @@ export namespace Prisma {
     ticket?: TicketCreateNestedManyWithoutUserInput
     activity?: ActivityCreateNestedManyWithoutUserInput
     feedback?: FeedbackCreateNestedManyWithoutUserInput
+    jamKerja?: JamKerjaCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutShiftInput = {
@@ -29243,6 +30817,7 @@ export namespace Prisma {
     ticket?: TicketUncheckedCreateNestedManyWithoutUserInput
     activity?: ActivityUncheckedCreateNestedManyWithoutUserInput
     feedback?: FeedbackUncheckedCreateNestedManyWithoutUserInput
+    jamKerja?: JamKerjaUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutShiftInput = {
@@ -29426,6 +31001,116 @@ export namespace Prisma {
     checkOut?: CheckOutUncheckedUpdateOneWithoutCheckInNestedInput
   }
 
+  export type UserCreateWithoutJamKerjaInput = {
+    username: string
+    password: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+    status?: $Enums.UserStatus
+    role: RoleCreateNestedOneWithoutUsersInput
+    profile?: ProfileCreateNestedOneWithoutUserInput
+    sites?: SiteCreateNestedManyWithoutUsersInput
+    shift?: JadwalShiftCreateNestedManyWithoutUserInput
+    presensi?: PresensiCreateNestedManyWithoutUserInput
+    checkOut?: CheckOutCreateNestedManyWithoutUserInput
+    approved?: PresensiCreateNestedManyWithoutApproverInput
+    laporan?: LaporanCreateNestedManyWithoutUserInput
+    ijin?: IjinCreateNestedManyWithoutUserInput
+    libur?: LiburCreateNestedManyWithoutUserInput
+    help?: HelpCreateNestedManyWithoutUserInput
+    ticket?: TicketCreateNestedManyWithoutUserInput
+    activity?: ActivityCreateNestedManyWithoutUserInput
+    feedback?: FeedbackCreateNestedManyWithoutUserInput
+  }
+
+  export type UserUncheckedCreateWithoutJamKerjaInput = {
+    id?: number
+    username: string
+    password: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+    status?: $Enums.UserStatus
+    roleId: number
+    profile?: ProfileUncheckedCreateNestedOneWithoutUserInput
+    sites?: SiteUncheckedCreateNestedManyWithoutUsersInput
+    shift?: JadwalShiftUncheckedCreateNestedManyWithoutUserInput
+    presensi?: PresensiUncheckedCreateNestedManyWithoutUserInput
+    checkOut?: CheckOutUncheckedCreateNestedManyWithoutUserInput
+    approved?: PresensiUncheckedCreateNestedManyWithoutApproverInput
+    laporan?: LaporanUncheckedCreateNestedManyWithoutUserInput
+    ijin?: IjinUncheckedCreateNestedManyWithoutUserInput
+    libur?: LiburUncheckedCreateNestedManyWithoutUserInput
+    help?: HelpUncheckedCreateNestedManyWithoutUserInput
+    ticket?: TicketUncheckedCreateNestedManyWithoutUserInput
+    activity?: ActivityUncheckedCreateNestedManyWithoutUserInput
+    feedback?: FeedbackUncheckedCreateNestedManyWithoutUserInput
+  }
+
+  export type UserCreateOrConnectWithoutJamKerjaInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutJamKerjaInput, UserUncheckedCreateWithoutJamKerjaInput>
+  }
+
+  export type UserUpsertWithoutJamKerjaInput = {
+    update: XOR<UserUpdateWithoutJamKerjaInput, UserUncheckedUpdateWithoutJamKerjaInput>
+    create: XOR<UserCreateWithoutJamKerjaInput, UserUncheckedCreateWithoutJamKerjaInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutJamKerjaInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutJamKerjaInput, UserUncheckedUpdateWithoutJamKerjaInput>
+  }
+
+  export type UserUpdateWithoutJamKerjaInput = {
+    username?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    status?: EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+    role?: RoleUpdateOneRequiredWithoutUsersNestedInput
+    profile?: ProfileUpdateOneWithoutUserNestedInput
+    sites?: SiteUpdateManyWithoutUsersNestedInput
+    shift?: JadwalShiftUpdateManyWithoutUserNestedInput
+    presensi?: PresensiUpdateManyWithoutUserNestedInput
+    checkOut?: CheckOutUpdateManyWithoutUserNestedInput
+    approved?: PresensiUpdateManyWithoutApproverNestedInput
+    laporan?: LaporanUpdateManyWithoutUserNestedInput
+    ijin?: IjinUpdateManyWithoutUserNestedInput
+    libur?: LiburUpdateManyWithoutUserNestedInput
+    help?: HelpUpdateManyWithoutUserNestedInput
+    ticket?: TicketUpdateManyWithoutUserNestedInput
+    activity?: ActivityUpdateManyWithoutUserNestedInput
+    feedback?: FeedbackUpdateManyWithoutUserNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutJamKerjaInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    username?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    status?: EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+    roleId?: IntFieldUpdateOperationsInput | number
+    profile?: ProfileUncheckedUpdateOneWithoutUserNestedInput
+    sites?: SiteUncheckedUpdateManyWithoutUsersNestedInput
+    shift?: JadwalShiftUncheckedUpdateManyWithoutUserNestedInput
+    presensi?: PresensiUncheckedUpdateManyWithoutUserNestedInput
+    checkOut?: CheckOutUncheckedUpdateManyWithoutUserNestedInput
+    approved?: PresensiUncheckedUpdateManyWithoutApproverNestedInput
+    laporan?: LaporanUncheckedUpdateManyWithoutUserNestedInput
+    ijin?: IjinUncheckedUpdateManyWithoutUserNestedInput
+    libur?: LiburUncheckedUpdateManyWithoutUserNestedInput
+    help?: HelpUncheckedUpdateManyWithoutUserNestedInput
+    ticket?: TicketUncheckedUpdateManyWithoutUserNestedInput
+    activity?: ActivityUncheckedUpdateManyWithoutUserNestedInput
+    feedback?: FeedbackUncheckedUpdateManyWithoutUserNestedInput
+  }
+
   export type SiteAddressCreateWithoutSiteInput = {
     address: string
     city: string
@@ -29474,6 +31159,7 @@ export namespace Prisma {
     ticket?: TicketCreateNestedManyWithoutUserInput
     activity?: ActivityCreateNestedManyWithoutUserInput
     feedback?: FeedbackCreateNestedManyWithoutUserInput
+    jamKerja?: JamKerjaCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutSitesInput = {
@@ -29497,6 +31183,7 @@ export namespace Prisma {
     ticket?: TicketUncheckedCreateNestedManyWithoutUserInput
     activity?: ActivityUncheckedCreateNestedManyWithoutUserInput
     feedback?: FeedbackUncheckedCreateNestedManyWithoutUserInput
+    jamKerja?: JamKerjaUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutSitesInput = {
@@ -29819,6 +31506,7 @@ export namespace Prisma {
     ticket?: TicketCreateNestedManyWithoutUserInput
     activity?: ActivityCreateNestedManyWithoutUserInput
     feedback?: FeedbackCreateNestedManyWithoutUserInput
+    jamKerja?: JamKerjaCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutProfileInput = {
@@ -29842,6 +31530,7 @@ export namespace Prisma {
     ticket?: TicketUncheckedCreateNestedManyWithoutUserInput
     activity?: ActivityUncheckedCreateNestedManyWithoutUserInput
     feedback?: FeedbackUncheckedCreateNestedManyWithoutUserInput
+    jamKerja?: JamKerjaUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutProfileInput = {
@@ -29904,6 +31593,7 @@ export namespace Prisma {
     ticket?: TicketUpdateManyWithoutUserNestedInput
     activity?: ActivityUpdateManyWithoutUserNestedInput
     feedback?: FeedbackUpdateManyWithoutUserNestedInput
+    jamKerja?: JamKerjaUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutProfileInput = {
@@ -29927,6 +31617,7 @@ export namespace Prisma {
     ticket?: TicketUncheckedUpdateManyWithoutUserNestedInput
     activity?: ActivityUncheckedUpdateManyWithoutUserNestedInput
     feedback?: FeedbackUncheckedUpdateManyWithoutUserNestedInput
+    jamKerja?: JamKerjaUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserAddressUpsertWithoutProfileInput = {
@@ -30071,6 +31762,7 @@ export namespace Prisma {
     ticket?: TicketCreateNestedManyWithoutUserInput
     activity?: ActivityCreateNestedManyWithoutUserInput
     feedback?: FeedbackCreateNestedManyWithoutUserInput
+    jamKerja?: JamKerjaCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutPresensiInput = {
@@ -30094,6 +31786,7 @@ export namespace Prisma {
     ticket?: TicketUncheckedCreateNestedManyWithoutUserInput
     activity?: ActivityUncheckedCreateNestedManyWithoutUserInput
     feedback?: FeedbackUncheckedCreateNestedManyWithoutUserInput
+    jamKerja?: JamKerjaUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutPresensiInput = {
@@ -30121,6 +31814,7 @@ export namespace Prisma {
     ticket?: TicketCreateNestedManyWithoutUserInput
     activity?: ActivityCreateNestedManyWithoutUserInput
     feedback?: FeedbackCreateNestedManyWithoutUserInput
+    jamKerja?: JamKerjaCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutApprovedInput = {
@@ -30144,6 +31838,7 @@ export namespace Prisma {
     ticket?: TicketUncheckedCreateNestedManyWithoutUserInput
     activity?: ActivityUncheckedCreateNestedManyWithoutUserInput
     feedback?: FeedbackUncheckedCreateNestedManyWithoutUserInput
+    jamKerja?: JamKerjaUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutApprovedInput = {
@@ -30244,6 +31939,7 @@ export namespace Prisma {
     ticket?: TicketUpdateManyWithoutUserNestedInput
     activity?: ActivityUpdateManyWithoutUserNestedInput
     feedback?: FeedbackUpdateManyWithoutUserNestedInput
+    jamKerja?: JamKerjaUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutPresensiInput = {
@@ -30267,6 +31963,7 @@ export namespace Prisma {
     ticket?: TicketUncheckedUpdateManyWithoutUserNestedInput
     activity?: ActivityUncheckedUpdateManyWithoutUserNestedInput
     feedback?: FeedbackUncheckedUpdateManyWithoutUserNestedInput
+    jamKerja?: JamKerjaUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserUpsertWithoutApprovedInput = {
@@ -30300,6 +31997,7 @@ export namespace Prisma {
     ticket?: TicketUpdateManyWithoutUserNestedInput
     activity?: ActivityUpdateManyWithoutUserNestedInput
     feedback?: FeedbackUpdateManyWithoutUserNestedInput
+    jamKerja?: JamKerjaUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutApprovedInput = {
@@ -30323,6 +32021,7 @@ export namespace Prisma {
     ticket?: TicketUncheckedUpdateManyWithoutUserNestedInput
     activity?: ActivityUncheckedUpdateManyWithoutUserNestedInput
     feedback?: FeedbackUncheckedUpdateManyWithoutUserNestedInput
+    jamKerja?: JamKerjaUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type CheckOutUpsertWithoutCheckInInput = {
@@ -30381,6 +32080,7 @@ export namespace Prisma {
     ticket?: TicketCreateNestedManyWithoutUserInput
     activity?: ActivityCreateNestedManyWithoutUserInput
     feedback?: FeedbackCreateNestedManyWithoutUserInput
+    jamKerja?: JamKerjaCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutCheckOutInput = {
@@ -30404,6 +32104,7 @@ export namespace Prisma {
     ticket?: TicketUncheckedCreateNestedManyWithoutUserInput
     activity?: ActivityUncheckedCreateNestedManyWithoutUserInput
     feedback?: FeedbackUncheckedCreateNestedManyWithoutUserInput
+    jamKerja?: JamKerjaUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutCheckOutInput = {
@@ -30482,6 +32183,7 @@ export namespace Prisma {
     ticket?: TicketUpdateManyWithoutUserNestedInput
     activity?: ActivityUpdateManyWithoutUserNestedInput
     feedback?: FeedbackUpdateManyWithoutUserNestedInput
+    jamKerja?: JamKerjaUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutCheckOutInput = {
@@ -30505,6 +32207,7 @@ export namespace Prisma {
     ticket?: TicketUncheckedUpdateManyWithoutUserNestedInput
     activity?: ActivityUncheckedUpdateManyWithoutUserNestedInput
     feedback?: FeedbackUncheckedUpdateManyWithoutUserNestedInput
+    jamKerja?: JamKerjaUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type PresensiUpsertWithoutCheckOutInput = {
@@ -30607,6 +32310,7 @@ export namespace Prisma {
     ticket?: TicketCreateNestedManyWithoutUserInput
     activity?: ActivityCreateNestedManyWithoutUserInput
     feedback?: FeedbackCreateNestedManyWithoutUserInput
+    jamKerja?: JamKerjaCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutLaporanInput = {
@@ -30630,6 +32334,7 @@ export namespace Prisma {
     ticket?: TicketUncheckedCreateNestedManyWithoutUserInput
     activity?: ActivityUncheckedCreateNestedManyWithoutUserInput
     feedback?: FeedbackUncheckedCreateNestedManyWithoutUserInput
+    jamKerja?: JamKerjaUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutLaporanInput = {
@@ -30708,6 +32413,7 @@ export namespace Prisma {
     ticket?: TicketUpdateManyWithoutUserNestedInput
     activity?: ActivityUpdateManyWithoutUserNestedInput
     feedback?: FeedbackUpdateManyWithoutUserNestedInput
+    jamKerja?: JamKerjaUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutLaporanInput = {
@@ -30731,6 +32437,7 @@ export namespace Prisma {
     ticket?: TicketUncheckedUpdateManyWithoutUserNestedInput
     activity?: ActivityUncheckedUpdateManyWithoutUserNestedInput
     feedback?: FeedbackUncheckedUpdateManyWithoutUserNestedInput
+    jamKerja?: JamKerjaUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateWithoutIjinInput = {
@@ -30753,6 +32460,7 @@ export namespace Prisma {
     ticket?: TicketCreateNestedManyWithoutUserInput
     activity?: ActivityCreateNestedManyWithoutUserInput
     feedback?: FeedbackCreateNestedManyWithoutUserInput
+    jamKerja?: JamKerjaCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutIjinInput = {
@@ -30776,6 +32484,7 @@ export namespace Prisma {
     ticket?: TicketUncheckedCreateNestedManyWithoutUserInput
     activity?: ActivityUncheckedCreateNestedManyWithoutUserInput
     feedback?: FeedbackUncheckedCreateNestedManyWithoutUserInput
+    jamKerja?: JamKerjaUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutIjinInput = {
@@ -30814,6 +32523,7 @@ export namespace Prisma {
     ticket?: TicketUpdateManyWithoutUserNestedInput
     activity?: ActivityUpdateManyWithoutUserNestedInput
     feedback?: FeedbackUpdateManyWithoutUserNestedInput
+    jamKerja?: JamKerjaUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutIjinInput = {
@@ -30837,6 +32547,7 @@ export namespace Prisma {
     ticket?: TicketUncheckedUpdateManyWithoutUserNestedInput
     activity?: ActivityUncheckedUpdateManyWithoutUserNestedInput
     feedback?: FeedbackUncheckedUpdateManyWithoutUserNestedInput
+    jamKerja?: JamKerjaUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateWithoutLiburInput = {
@@ -30859,6 +32570,7 @@ export namespace Prisma {
     ticket?: TicketCreateNestedManyWithoutUserInput
     activity?: ActivityCreateNestedManyWithoutUserInput
     feedback?: FeedbackCreateNestedManyWithoutUserInput
+    jamKerja?: JamKerjaCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutLiburInput = {
@@ -30882,6 +32594,7 @@ export namespace Prisma {
     ticket?: TicketUncheckedCreateNestedManyWithoutUserInput
     activity?: ActivityUncheckedCreateNestedManyWithoutUserInput
     feedback?: FeedbackUncheckedCreateNestedManyWithoutUserInput
+    jamKerja?: JamKerjaUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutLiburInput = {
@@ -30920,6 +32633,7 @@ export namespace Prisma {
     ticket?: TicketUpdateManyWithoutUserNestedInput
     activity?: ActivityUpdateManyWithoutUserNestedInput
     feedback?: FeedbackUpdateManyWithoutUserNestedInput
+    jamKerja?: JamKerjaUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutLiburInput = {
@@ -30943,6 +32657,7 @@ export namespace Prisma {
     ticket?: TicketUncheckedUpdateManyWithoutUserNestedInput
     activity?: ActivityUncheckedUpdateManyWithoutUserNestedInput
     feedback?: FeedbackUncheckedUpdateManyWithoutUserNestedInput
+    jamKerja?: JamKerjaUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateWithoutHelpInput = {
@@ -30965,6 +32680,7 @@ export namespace Prisma {
     ticket?: TicketCreateNestedManyWithoutUserInput
     activity?: ActivityCreateNestedManyWithoutUserInput
     feedback?: FeedbackCreateNestedManyWithoutUserInput
+    jamKerja?: JamKerjaCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutHelpInput = {
@@ -30988,6 +32704,7 @@ export namespace Prisma {
     ticket?: TicketUncheckedCreateNestedManyWithoutUserInput
     activity?: ActivityUncheckedCreateNestedManyWithoutUserInput
     feedback?: FeedbackUncheckedCreateNestedManyWithoutUserInput
+    jamKerja?: JamKerjaUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutHelpInput = {
@@ -31026,6 +32743,7 @@ export namespace Prisma {
     ticket?: TicketUpdateManyWithoutUserNestedInput
     activity?: ActivityUpdateManyWithoutUserNestedInput
     feedback?: FeedbackUpdateManyWithoutUserNestedInput
+    jamKerja?: JamKerjaUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutHelpInput = {
@@ -31049,6 +32767,7 @@ export namespace Prisma {
     ticket?: TicketUncheckedUpdateManyWithoutUserNestedInput
     activity?: ActivityUncheckedUpdateManyWithoutUserNestedInput
     feedback?: FeedbackUncheckedUpdateManyWithoutUserNestedInput
+    jamKerja?: JamKerjaUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateWithoutTicketInput = {
@@ -31071,6 +32790,7 @@ export namespace Prisma {
     help?: HelpCreateNestedManyWithoutUserInput
     activity?: ActivityCreateNestedManyWithoutUserInput
     feedback?: FeedbackCreateNestedManyWithoutUserInput
+    jamKerja?: JamKerjaCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutTicketInput = {
@@ -31094,6 +32814,7 @@ export namespace Prisma {
     help?: HelpUncheckedCreateNestedManyWithoutUserInput
     activity?: ActivityUncheckedCreateNestedManyWithoutUserInput
     feedback?: FeedbackUncheckedCreateNestedManyWithoutUserInput
+    jamKerja?: JamKerjaUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutTicketInput = {
@@ -31193,6 +32914,7 @@ export namespace Prisma {
     help?: HelpUpdateManyWithoutUserNestedInput
     activity?: ActivityUpdateManyWithoutUserNestedInput
     feedback?: FeedbackUpdateManyWithoutUserNestedInput
+    jamKerja?: JamKerjaUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutTicketInput = {
@@ -31216,6 +32938,7 @@ export namespace Prisma {
     help?: HelpUncheckedUpdateManyWithoutUserNestedInput
     activity?: ActivityUncheckedUpdateManyWithoutUserNestedInput
     feedback?: FeedbackUncheckedUpdateManyWithoutUserNestedInput
+    jamKerja?: JamKerjaUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type SiteUpsertWithoutTicketInput = {
@@ -31330,6 +33053,7 @@ export namespace Prisma {
     help?: HelpCreateNestedManyWithoutUserInput
     ticket?: TicketCreateNestedManyWithoutUserInput
     activity?: ActivityCreateNestedManyWithoutUserInput
+    jamKerja?: JamKerjaCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutFeedbackInput = {
@@ -31353,6 +33077,7 @@ export namespace Prisma {
     help?: HelpUncheckedCreateNestedManyWithoutUserInput
     ticket?: TicketUncheckedCreateNestedManyWithoutUserInput
     activity?: ActivityUncheckedCreateNestedManyWithoutUserInput
+    jamKerja?: JamKerjaUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutFeedbackInput = {
@@ -31433,6 +33158,7 @@ export namespace Prisma {
     help?: HelpUpdateManyWithoutUserNestedInput
     ticket?: TicketUpdateManyWithoutUserNestedInput
     activity?: ActivityUpdateManyWithoutUserNestedInput
+    jamKerja?: JamKerjaUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutFeedbackInput = {
@@ -31456,6 +33182,7 @@ export namespace Prisma {
     help?: HelpUncheckedUpdateManyWithoutUserNestedInput
     ticket?: TicketUncheckedUpdateManyWithoutUserNestedInput
     activity?: ActivityUncheckedUpdateManyWithoutUserNestedInput
+    jamKerja?: JamKerjaUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateWithoutActivityInput = {
@@ -31478,6 +33205,7 @@ export namespace Prisma {
     help?: HelpCreateNestedManyWithoutUserInput
     ticket?: TicketCreateNestedManyWithoutUserInput
     feedback?: FeedbackCreateNestedManyWithoutUserInput
+    jamKerja?: JamKerjaCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutActivityInput = {
@@ -31501,6 +33229,7 @@ export namespace Prisma {
     help?: HelpUncheckedCreateNestedManyWithoutUserInput
     ticket?: TicketUncheckedCreateNestedManyWithoutUserInput
     feedback?: FeedbackUncheckedCreateNestedManyWithoutUserInput
+    jamKerja?: JamKerjaUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutActivityInput = {
@@ -31539,6 +33268,7 @@ export namespace Prisma {
     help?: HelpUpdateManyWithoutUserNestedInput
     ticket?: TicketUpdateManyWithoutUserNestedInput
     feedback?: FeedbackUpdateManyWithoutUserNestedInput
+    jamKerja?: JamKerjaUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutActivityInput = {
@@ -31562,6 +33292,7 @@ export namespace Prisma {
     help?: HelpUncheckedUpdateManyWithoutUserNestedInput
     ticket?: TicketUncheckedUpdateManyWithoutUserNestedInput
     feedback?: FeedbackUncheckedUpdateManyWithoutUserNestedInput
+    jamKerja?: JamKerjaUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type PresensiCreateManyUserInput = {
@@ -31691,6 +33422,15 @@ export namespace Prisma {
     updatedAt?: Date | string
     deletedAt?: Date | string | null
     ticketId: number
+  }
+
+  export type JamKerjaCreateManyUserInput = {
+    id?: number
+    weekStart: Date | string
+    weekEnd: Date | string
+    totalHours: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
   }
 
   export type SiteUpdateWithoutUsersInput = {
@@ -32147,6 +33887,32 @@ export namespace Prisma {
     ticketId?: IntFieldUpdateOperationsInput | number
   }
 
+  export type JamKerjaUpdateWithoutUserInput = {
+    weekStart?: DateTimeFieldUpdateOperationsInput | Date | string
+    weekEnd?: DateTimeFieldUpdateOperationsInput | Date | string
+    totalHours?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type JamKerjaUncheckedUpdateWithoutUserInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    weekStart?: DateTimeFieldUpdateOperationsInput | Date | string
+    weekEnd?: DateTimeFieldUpdateOperationsInput | Date | string
+    totalHours?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type JamKerjaUncheckedUpdateManyWithoutUserInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    weekStart?: DateTimeFieldUpdateOperationsInput | Date | string
+    weekEnd?: DateTimeFieldUpdateOperationsInput | Date | string
+    totalHours?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type UserCreateManyRoleInput = {
     id?: number
     username: string
@@ -32177,6 +33943,7 @@ export namespace Prisma {
     ticket?: TicketUpdateManyWithoutUserNestedInput
     activity?: ActivityUpdateManyWithoutUserNestedInput
     feedback?: FeedbackUpdateManyWithoutUserNestedInput
+    jamKerja?: JamKerjaUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutRoleInput = {
@@ -32200,6 +33967,7 @@ export namespace Prisma {
     ticket?: TicketUncheckedUpdateManyWithoutUserNestedInput
     activity?: ActivityUncheckedUpdateManyWithoutUserNestedInput
     feedback?: FeedbackUncheckedUpdateManyWithoutUserNestedInput
+    jamKerja?: JamKerjaUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateManyWithoutRoleInput = {
@@ -32232,6 +34000,7 @@ export namespace Prisma {
     ticket?: TicketUpdateManyWithoutUserNestedInput
     activity?: ActivityUpdateManyWithoutUserNestedInput
     feedback?: FeedbackUpdateManyWithoutUserNestedInput
+    jamKerja?: JamKerjaUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutShiftInput = {
@@ -32255,6 +34024,7 @@ export namespace Prisma {
     ticket?: TicketUncheckedUpdateManyWithoutUserNestedInput
     activity?: ActivityUncheckedUpdateManyWithoutUserNestedInput
     feedback?: FeedbackUncheckedUpdateManyWithoutUserNestedInput
+    jamKerja?: JamKerjaUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateManyWithoutShiftInput = {
@@ -32333,6 +34103,7 @@ export namespace Prisma {
     ticket?: TicketUpdateManyWithoutUserNestedInput
     activity?: ActivityUpdateManyWithoutUserNestedInput
     feedback?: FeedbackUpdateManyWithoutUserNestedInput
+    jamKerja?: JamKerjaUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutSitesInput = {
@@ -32356,6 +34127,7 @@ export namespace Prisma {
     ticket?: TicketUncheckedUpdateManyWithoutUserNestedInput
     activity?: ActivityUncheckedUpdateManyWithoutUserNestedInput
     feedback?: FeedbackUncheckedUpdateManyWithoutUserNestedInput
+    jamKerja?: JamKerjaUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateManyWithoutSitesInput = {

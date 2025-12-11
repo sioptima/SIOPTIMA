@@ -150,6 +150,16 @@ exports.Prisma.JadwalShiftScalarFieldEnum = {
   siteId: 'siteId'
 };
 
+exports.Prisma.JamKerjaScalarFieldEnum = {
+  id: 'id',
+  weekStart: 'weekStart',
+  weekEnd: 'weekEnd',
+  totalHours: 'totalHours',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  userId: 'userId'
+};
+
 exports.Prisma.SiteScalarFieldEnum = {
   id: 'id',
   name: 'name',
@@ -405,6 +415,7 @@ exports.Prisma.ModelName = {
   User: 'User',
   Role: 'Role',
   JadwalShift: 'JadwalShift',
+  JamKerja: 'JamKerja',
   Site: 'Site',
   SiteAddress: 'SiteAddress',
   Profile: 'Profile',

@@ -10,24 +10,16 @@ export class ShiftService {
         // validate request
         const createRequest = ShiftValidation.CREATE.parse(request);
 
-        const user = await UserRepository.findById({userId: createRequest.userId});
-        if (!user) {
-            throw new ResponseError(200, `User by id ${createRequest.userId} does not exist`)
-        }
+        //check if each user exist
+        const users = await UserRepository.findMultiple({userId: createRequest.userId})
 
         const site = await SiteRepository.findById({siteId: createRequest.siteId});
         if (!site) {
             throw new ResponseError(200, `Site by id ${createRequest.siteId} does not exist`)
         }
 
-        //check if user is assigned to the requested site
-        const isAssigned = await UserRepository.isAssigned(createRequest)
-        if (isAssigned.sites.length === 0){
-            throw new ResponseError(200, `User ${user.username} (id:${createRequest.userId}) is not assigned to site ${site.name} (id:${createRequest.siteId})`)
-        }
-
-        // create shift
-        const shift = await ShiftRepository.create(createRequest);
+        // create shift -  only create for user that exist
+        const shift = await ShiftRepository.create(createRequest, users);
         if (!shift) {
             throw new ResponseError(500, "Failed to create shift");
         }
@@ -35,7 +27,9 @@ export class ShiftService {
         return {
             date: shift.shiftDate.toLocaleDateString(),
             time: shift.shiftDate.toLocaleTimeString(),
-            user: shift.user.username,
+            user: shift.user.map(user => ({
+                username: user.username
+            })),
             site: shift.site.name,
         }
     }
