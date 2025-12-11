@@ -1,13 +1,14 @@
+import { TicketService } from "@/src/server/modules/ticket/ticket-service";
 import { requireRole } from "@/src/server/utils/auth";
 
-export async function POST(request) {
+export async function GET(request, {params}) {
     try {
       await requireRole("OPERATOR");
-      const data = await request.json();
-      const result = await TicketService.create(data);
+      const { id } = await params;//grab query parameter(/:id)
+      const result = await TicketService.getById({id: id});
       return Response.json({
          success: true, 
-         message: "Report created" ,
+         message: "Report retrieved" ,
          data: result
         },
         { status: 200 }
@@ -15,10 +16,10 @@ export async function POST(request) {
     } catch (error) {
       return Response.json(
         { 
-          success: error.success || false,
+          success: error.success,
           code: error.status || 500,
           message: error.issues || error.message || "Internal Server Error" },
         { status: error.status || 500 }
         );
-      }
+    }
 }

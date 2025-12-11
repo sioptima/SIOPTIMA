@@ -1,0 +1,144 @@
+paths:
+  /api/operator/tickets:
+    post:
+      summary: create a new ticket
+      tags:
+        - Ticket
+
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                site:
+                  type: string
+                  example: Site A
+                category:
+                  type: string
+                  enum: ["TECHNICAL", "OPERATIONAL", "MAINTENANCE", "EQUIPMENT", "INSTRUMENT", "SUPPLY", "SOFTWARE", "OTHER"]
+                  example: TECHNICAL
+                title:
+                  type: string
+                  example: Title here
+                description:
+                  type: string
+                  example: Description here
+                priority:
+                  type: string
+                  enum: ["HIGH", "MEDIUM", "LOW"]
+                  example: LOW
+                image:
+                  type: string
+                  format: binary
+                  
+      responses:
+        '200':
+          description: Request confirmation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: Ticket created successfully
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                        example: 1
+                      title:
+                        type: string
+                        example: Title here
+                      priority:
+                        type: string
+                        enum: ["HIGH", "MEDIUM", "LOW"]
+                        example: LOW
+                      status:
+                        type: string
+                        enum: ["OPEN", "PENDING", "RESOLVED"]
+                        example: OPEN
+                
+    get:
+      parameters:
+      - in: query
+        name: page
+        schema:
+          type: integer
+          description: Which page to show
+      - in: query
+        name: limit
+        schema:
+          type: integer
+          description: Number of records to return
+      - in: query
+        name: status
+        schema:
+          type: string
+          enum: ["OPEN", "PENDING", "RESOLVED"]
+          description: case insensitive    
+      - in: query
+        name: priority
+        schema:
+          type: string
+          enum: ["HIGH", "MEDIUM", "LOW"]
+          description: case insensitive
+          
+      summary: Get current user tickets history - ordered by latest - all query field is optional&case-insensitive
+      tags:
+        - Ticket
+      responses:
+        '200':
+          description: List of ticket history
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: Records retrieved
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+  
+  /api/operator/tickets/{id}:  
+    get:
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+          description: Ticket id to search
+          
+      summary: Get ticket by its id
+      tags:
+        - Ticket
+      responses:
+        '200':
+          description: List of ticket history
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  message:
+                    type: string
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:

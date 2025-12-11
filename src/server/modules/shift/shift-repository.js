@@ -5,11 +5,13 @@ export class ShiftRepository {
 
     static async create(data){
         try {
-            const {date, time} = data
+            const {date, time, end} = data
             const shiftDate = new Date(date+","+time)
+            const shiftEnd = new Date(date+","+end)
             return await PrismaClient.jadwalShift.create({
                 data: {
                     shiftDate,
+                    shiftEnd,
                     site: {
                         connect: {
                             id: data.siteId

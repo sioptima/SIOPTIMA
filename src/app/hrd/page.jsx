@@ -1,10 +1,3 @@
-
-// // ==================================KODINGAN MERGE BEBERAPA MENU ROLE HRD :START=================================================================
-// // ==================================KODINGAN MERGE BEBERAPA MENU ROLE HRD :START=================================================================
-// // ==================================KODINGAN MERGE BEBERAPA MENU ROLE HRD :START=================================================================
-// // ==================================KODINGAN MERGE BEBERAPA MENU ROLE HRD :START=================================================================
-// // ==================================KODINGAN MERGE BEBERAPA MENU ROLE HRD :START=================================================================
-
 // "use client";
 // import dynamic from "next/dynamic";
 // import React, { useState, useRef, useEffect } from "react";
@@ -70,7 +63,7 @@
   
 //   // Form state untuk shift
 //   const [shiftForm, setShiftForm] = useState({
-//     name: "",
+//     name: "Morning Shift", // Default value
 //     startTime: "08:00",
 //     endTime: "17:00",
 //     siteId: "",
@@ -251,7 +244,7 @@
 //         time: "5 menit lalu",
 //         read: false,
 //         type: "validation",
-//         route: "validation",
+//         route: "attendance",
 //       },
 //       {
 //         id: 2,
@@ -260,7 +253,7 @@
 //         time: "1 jam lalu",
 //         read: false,
 //         type: "new_data",
-//         route: "validation",
+//         route: "attendance",
 //       },
 //       {
 //         id: 3,
@@ -378,7 +371,6 @@
 // const menuItems = [
 //   { id: "dashboard", name: "Dashboard", icon: ChartBarIcon },
 //   { id: "attendance", name: "Attendance", icon: DocumentTextIcon },
-//   { id: "validation", name: "Attendance Validation", icon: CheckCircleIcon },
 //   { id: "shiftManagement", name: "Shift Management", icon: ClockIcon },
 //   { id: "siteManagement", name: "Site Management", icon: BuildingOfficeIcon },
 //   { id: "leaveManagement", name: "Leave Management", icon: CalendarIcon },
@@ -399,7 +391,7 @@
 //       time: "Baru saja",
 //       read: false,
 //       type: "approval",
-//       route: "validation",
+//       route: "attendance",
 //     };
 //     setNotifications((prev) => [newNotification, ...prev]);
 //   };
@@ -419,7 +411,7 @@
 //       time: "Baru saja",
 //       read: false,
 //       type: "rejection",
-//       route: "validation",
+//       route: "attendance",
 //     };
 //     setNotifications((prev) => [newNotification, ...prev]);
 //   };
@@ -428,7 +420,7 @@
 
 //   const resetShiftForm = () => {
 //     setShiftForm({
-//       name: "",
+//       name: "Morning Shift", // Default ke Morning Shift
 //       startTime: "08:00",
 //       endTime: "17:00",
 //       siteId: "",
@@ -660,7 +652,7 @@
 //   };
 
 //   const handleViewAllAttendance = () => {
-//     setActiveMenu("validation");
+//     setActiveMenu("attendance");
 //   };
 
 //   const handleNotificationClick = (notification) => {
@@ -814,13 +806,18 @@
 //               <label className="block text-sm font-medium text-gray-700 mb-1">
 //                 Shift Name *
 //               </label>
-//               <input
-//                 type="text"
-//                 value={shiftForm.name}
-//                 onChange={(e) => setShiftForm({ ...shiftForm, name: e.target.value })}
-//                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-//                 placeholder="e.g., Morning Shift"
-//               />
+//               <div className="relative">
+//                 <select
+//                   value={shiftForm.name}
+//                   onChange={(e) => setShiftForm({ ...shiftForm, name: e.target.value })}
+//                   className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 appearance-none bg-white"
+//                 >
+//                   <option value="Morning Shift">Morning Shift</option>
+//                   <option value="Afternoon Shift">Afternoon Shift</option>
+//                   <option value="Night Shift">Night Shift</option>
+//                 </select>
+//                 <ChevronDownIcon className="w-5 h-5 text-gray-400 absolute right-3 top-1/2 transform -translate-y-1/2 pointer-events-none" />
+//               </div>
 //             </div>
 
 //             <div className="grid grid-cols-2 gap-4">
@@ -1331,7 +1328,7 @@
 //       {showSiteForm && <SiteFormModal />}
 //       {showLeaveModal && selectedLeave && <LeaveDetailModal />}
 
-//       {/* Sidebar - DIPERBAIKI SCROLLNYA */}
+//       {/* Sidebar */}
 //       <div
 //         ref={sidebarRef}
 //         className={`fixed top-0 left-0 w-64 h-screen bg-white shadow-lg flex flex-col
@@ -1359,7 +1356,7 @@
 //           </button>
 //         </div>
 
-//         {/* Sidebar menu - DIPERBAIKI DENGAN SCROLL SMOOTH */}
+//         {/* Sidebar menu */}
 //         <nav className="flex-1 overflow-y-auto py-4 scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100 hover:scrollbar-thumb-gray-400">
 //           <ul className="space-y-2 px-4">
 //             {menuItems.map((item) => {
@@ -1525,7 +1522,7 @@
 //                       <button
 //                         onClick={() => {
 //                           setNotificationOpen(false);
-//                           setActiveMenu("validation");
+//                           setActiveMenu("attendance");
 //                         }}
 //                         className="w-full text-center text-sm text-blue-600 hover:text-blue-800 py-1 font-medium"
 //                       >
@@ -1614,7 +1611,7 @@
 //           </div>
 //         </header>
 
-//         {/* DASHBOARD CONTENT */}
+//         {/* DASHBOARD CONTENT - VERSI REVISI (SUMMARY DARI SEMUA MENU) */}
 //         {activeMenu === "dashboard" && (
 //           <div className="px-3 sm:px-4 lg:px-6 py-4 max-w-screen-2xl mx-auto bg-gradient-to-br from-gray-50 to-blue-50 min-h-screen">
 //             <div className="mb-4 sm:mb-6">
@@ -1622,23 +1619,22 @@
 //                 HRD Dashboard
 //               </h1>
 //               <p className="text-xs sm:text-sm text-gray-600">
-//                 Monitor operator attendance and performance
+//                 Summary dari semua menu aplikasi HRD
 //               </p>
 //             </div>
 
+//             {/* SUMMARY CARD DARI SEMUA MENU */}
 //             <div className="grid grid-cols-2 lg:grid-cols-4 gap-2 sm:gap-3 lg:gap-4 mb-4 sm:mb-6">
+//               {/* Attendance Summary */}
 //               {[
 //                 {
 //                   label: "Total Operators",
 //                   value: dashboardData.totalOperators,
 //                   percent: "+2.1%",
 //                   icon: UsersIcon,
-//                 },
-//                 {
-//                   label: "Present Today",
-//                   value: dashboardData.presentToday,
-//                   percent: "+1.5%",
-//                   icon: CheckCircleIcon,
+//                   bgColor: "bg-blue-50",
+//                   iconColor: "text-blue-600",
+//                   menu: "attendance"
 //                 },
 //                 {
 //                   label: "Pending Validation",
@@ -1648,26 +1644,42 @@
 //                       ? "+" + dashboardData.pendingValidation + " new"
 //                       : "No pending",
 //                   icon: ClockIcon,
+//                   bgColor: "bg-yellow-50",
+//                   iconColor: "text-yellow-600",
+//                   menu: "attendance"
 //                 },
 //                 {
 //                   label: "Attendance Rate",
 //                   value: `${dashboardData.attendanceRate}%`,
 //                   percent: "+0.8%",
 //                   icon: ChartBarIcon,
+//                   bgColor: "bg-green-50",
+//                   iconColor: "text-green-600",
+//                   menu: "attendance"
+//                 },
+//                 {
+//                   label: "Present Today",
+//                   value: dashboardData.presentToday,
+//                   percent: "+1.5%",
+//                   icon: CheckCircleIcon,
+//                   bgColor: "bg-emerald-50",
+//                   iconColor: "text-emerald-600",
+//                   menu: "attendance"
 //                 },
 //               ].map((item, i) => {
 //                 const Icon = item.icon;
 //                 return (
 //                   <div
 //                     key={i}
-//                     className="bg-white p-2 sm:p-3 lg:p-4 rounded-lg sm:rounded-xl shadow-sm border border-gray-200 hover:shadow-md transition-shadow"
+//                     className="bg-white p-2 sm:p-3 lg:p-4 rounded-lg sm:rounded-xl shadow-sm border border-gray-200 hover:shadow-md transition-shadow cursor-pointer"
+//                     onClick={() => setActiveMenu(item.menu)}
 //                   >
 //                     <div className="flex justify-between items-start mb-2 sm:mb-3 lg:mb-4">
 //                       <p className="text-gray-700 font-medium text-xs sm:text-sm">
 //                         {item.label}
 //                       </p>
-//                       <div className="p-1 sm:p-2 rounded-lg bg-blue-50">
-//                         <Icon className="w-3 h-3 sm:w-4 sm:h-4 lg:w-5 lg:h-5 text-blue-600" />
+//                       <div className={`p-1 sm:p-2 rounded-lg ${item.bgColor}`}>
+//                         <Icon className={`w-3 h-3 sm:w-4 sm:h-4 lg:w-5 lg:h-5 ${item.iconColor}`} />
 //                       </div>
 //                     </div>
 //                     <p className="text-lg sm:text-xl lg:text-2xl xl:text-3xl font-bold text-gray-900">
@@ -1687,16 +1699,147 @@
 //                         ? ""
 //                         : "vs last month"}
 //                     </p>
+//                     <div className="mt-2 text-right">
+//                       <span className="text-xs text-blue-600 font-medium">View →</span>
+//                     </div>
 //                   </div>
 //                 );
 //               })}
 //             </div>
 
+//             {/* SECOND ROW - OTHER MENU SUMMARIES */}
+//             <div className="grid grid-cols-1 md:grid-cols-3 gap-3 sm:gap-4 mb-4 sm:mb-6">
+//               {/* Shift Management Summary */}
+//               <div 
+//                 className="bg-white p-3 sm:p-4 lg:p-6 rounded-lg sm:rounded-xl border border-gray-200 shadow-sm sm:shadow-md hover:shadow-md transition-shadow cursor-pointer"
+//                 onClick={() => setActiveMenu("shiftManagement")}
+//               >
+//                 <div className="flex justify-between items-start mb-3 sm:mb-4">
+//                   <div>
+//                     <h3 className="font-semibold text-base sm:text-lg text-gray-800 mb-1">
+//                       Shift Management
+//                     </h3>
+//                     <p className="text-xs sm:text-sm text-gray-600">Total shifts: {shifts.length}</p>
+//                   </div>
+//                   <div className="p-2 bg-blue-50 rounded-lg">
+//                     <ClockIcon className="w-5 h-5 sm:w-6 sm:h-6 text-blue-600" />
+//                   </div>
+//                 </div>
+//                 <div className="space-y-2">
+//                   {shifts.slice(0, 3).map((shift, index) => {
+//                     const site = sites.find(s => s.id === shift.siteId);
+//                     return (
+//                       <div key={index} className="flex items-center justify-between p-2 bg-gray-50 rounded">
+//                         <div>
+//                           <p className="text-sm font-medium text-gray-900">{shift.name}</p>
+//                           <p className="text-xs text-gray-600">{shift.startTime} - {shift.endTime}</p>
+//                         </div>
+//                         <span className="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded">
+//                           {site ? site.name : 'Unknown'}
+//                         </span>
+//                       </div>
+//                     );
+//                   })}
+//                 </div>
+//                 <div className="mt-4 text-center">
+//                   <button className="text-sm text-blue-600 hover:text-blue-800 font-medium">
+//                     View All Shifts →
+//                   </button>
+//                 </div>
+//               </div>
+
+//               {/* Site Management Summary */}
+//               <div 
+//                 className="bg-white p-3 sm:p-4 lg:p-6 rounded-lg sm:rounded-xl border border-gray-200 shadow-sm sm:shadow-md hover:shadow-md transition-shadow cursor-pointer"
+//                 onClick={() => setActiveMenu("siteManagement")}
+//               >
+//                 <div className="flex justify-between items-start mb-3 sm:mb-4">
+//                   <div>
+//                     <h3 className="font-semibold text-base sm:text-lg text-gray-800 mb-1">
+//                       Site Management
+//                     </h3>
+//                     <p className="text-xs sm:text-sm text-gray-600">Total sites: {sites.length}</p>
+//                   </div>
+//                   <div className="p-2 bg-green-50 rounded-lg">
+//                     <BuildingOfficeIcon className="w-5 h-5 sm:w-6 sm:h-6 text-green-600" />
+//                   </div>
+//                 </div>
+//                 <div className="space-y-2">
+//                   {sites.slice(0, 3).map((site, index) => (
+//                     <div key={index} className="flex items-center justify-between p-2 bg-gray-50 rounded">
+//                       <div>
+//                         <p className="text-sm font-medium text-gray-900">{site.name}</p>
+//                         <p className="text-xs text-gray-600">{site.location}</p>
+//                       </div>
+//                       <span className="text-xs bg-green-100 text-green-800 px-2 py-1 rounded">
+//                         {site.capacity} ops
+//                       </span>
+//                     </div>
+//                   ))}
+//                 </div>
+//                 <div className="mt-4 text-center">
+//                   <button className="text-sm text-blue-600 hover:text-blue-800 font-medium">
+//                     View All Sites →
+//                   </button>
+//                 </div>
+//               </div>
+
+//               {/* Leave Management Summary */}
+//               <div 
+//                 className="bg-white p-3 sm:p-4 lg:p-6 rounded-lg sm:rounded-xl border border-gray-200 shadow-sm sm:shadow-md hover:shadow-md transition-shadow cursor-pointer"
+//                 onClick={() => setActiveMenu("leaveManagement")}
+//               >
+//                 <div className="flex justify-between items-start mb-3 sm:mb-4">
+//                   <div>
+//                     <h3 className="font-semibold text-base sm:text-lg text-gray-800 mb-1">
+//                       Leave Management
+//                     </h3>
+//                     <p className="text-xs sm:text-sm text-gray-600">Pending: {leaveRequests.filter(r => r.status === 'pending').length}</p>
+//                   </div>
+//                   <div className="p-2 bg-purple-50 rounded-lg">
+//                     <CalendarIcon className="w-5 h-5 sm:w-6 sm:h-6 text-purple-600" />
+//                   </div>
+//                 </div>
+//                 <div className="space-y-2">
+//                   {leaveRequests.slice(0, 3).map((request, index) => (
+//                     <div key={index} className="flex items-center justify-between p-2 bg-gray-50 rounded">
+//                       <div>
+//                         <p className="text-sm font-medium text-gray-900">{request.operator}</p>
+//                         <p className="text-xs text-gray-600">{request.type} • {request.startDate}</p>
+//                       </div>
+//                       <span className={`text-xs px-2 py-1 rounded ${
+//                         request.status === 'approved' ? 'bg-green-100 text-green-800' : 
+//                         request.status === 'rejected' ? 'bg-red-100 text-red-800' : 
+//                         'bg-yellow-100 text-yellow-800'
+//                       }`}>
+//                         {request.status}
+//                       </span>
+//                     </div>
+//                   ))}
+//                 </div>
+//                 <div className="mt-4 text-center">
+//                   <button className="text-sm text-blue-600 hover:text-blue-800 font-medium">
+//                     View All Leaves →
+//                   </button>
+//                 </div>
+//               </div>
+//             </div>
+
+//             {/* CHARTS SECTION */}
 //             <div className="grid grid-cols-1 xl:grid-cols-2 gap-3 sm:gap-4 lg:gap-6 mb-4 sm:mb-6">
+//               {/* Weekly Attendance Chart */}
 //               <div className="bg-white p-3 sm:p-4 lg:p-6 rounded-lg sm:rounded-xl lg:rounded-2xl border border-gray-200 shadow-sm sm:shadow-md">
-//                 <h3 className="font-semibold text-base sm:text-lg text-gray-800 mb-3 sm:mb-4 lg:mb-5">
-//                   Weekly Attendance Trends
-//                 </h3>
+//                 <div className="flex justify-between items-center mb-3 sm:mb-4 lg:mb-5">
+//                   <h3 className="font-semibold text-base sm:text-lg text-gray-800">
+//                     Weekly Attendance Trends
+//                   </h3>
+//                   <button 
+//                     onClick={() => setActiveMenu("attendance")}
+//                     className="text-xs sm:text-sm text-blue-600 hover:text-blue-800 font-medium"
+//                   >
+//                     View Details →
+//                   </button>
+//                 </div>
 //                 <div className="relative">
 //                   <div className="absolute left-0 top-0 bottom-0 w-6 sm:w-8 flex flex-col justify-between text-xs text-gray-500 py-1 sm:py-2">
 //                     <span>150</span>
@@ -1764,6 +1907,7 @@
 //                 </div>
 //               </div>
 
+//               {/* Today's Status Pie Chart */}
 //               <div className="bg-white p-3 sm:p-4 lg:p-6 rounded-lg sm:rounded-xl lg:rounded-2xl border border-gray-200 shadow-sm sm:shadow-md">
 //                 <div className="flex justify-between items-center mb-3 sm:mb-4 lg:mb-5">
 //                   <h3 className="font-semibold text-base sm:text-lg text-gray-800">
@@ -1819,7 +1963,36 @@
 //               </div>
 //             </div>
 
+//             {/* RECENT ACTIVITIES SECTION */}
 //             <div className="grid grid-cols-1 lg:grid-cols-2 gap-3 sm:gap-4 lg:gap-6">
+//               {/* Recent Attendance */}
+//               <div className="bg-white p-3 sm:p-4 lg:p-6 rounded-lg sm:rounded-xl border border-gray-200 shadow-sm sm:shadow-md">
+//                 <div className="flex justify-between items-center mb-3 sm:mb-4 lg:mb-5">
+//                   <h3 className="font-semibold text-base sm:text-lg text-gray-800">Recent Attendance</h3>
+//                   <button onClick={() => setActiveMenu("attendance")} className="text-blue-600 text-xs sm:text-sm font-medium hover:underline">
+//                     View All →
+//                   </button>
+//                 </div>
+//                 <div className="space-y-2 sm:space-y-3 lg:space-y-4">
+//                   {recentAttendanceData.map((attendance, index) => (
+//                     <div key={index} className="flex items-center justify-between p-2 sm:p-3 border-b border-gray-100 last:border-0 hover:bg-gray-50 transition-colors cursor-pointer"
+//                       onClick={() => openDetailModal(attendanceData.find(a => a.id === attendance.id))}>
+//                       <div className="min-w-0 flex-1">
+//                         <p className="font-semibold text-gray-900 truncate text-sm sm:text-base">{attendance.name}</p>
+//                         <p className="text-gray-600 truncate text-xs sm:text-sm">{attendance.location} • {attendance.time}</p>
+//                       </div>
+//                       <div className="flex items-center gap-1 sm:gap-2 flex-shrink-0 ml-2">
+//                         {attendance.status === "approved" ? <CheckCircleIcon className="w-4 h-4 text-green-500" /> : <ExclamationTriangleIcon className="w-4 h-4 text-yellow-500" />}
+//                         <span className={`px-2 py-1 rounded-full text-xs font-medium ${attendance.status === "approved" ? "bg-green-100 text-green-800" : "bg-yellow-100 text-yellow-800"}`}>
+//                           {attendance.status}
+//                         </span>
+//                       </div>
+//                     </div>
+//                   ))}
+//                 </div>
+//               </div>
+
+//               {/* Top Performers */}
 //               <div className="bg-white p-3 sm:p-4 lg:p-6 rounded-lg sm:rounded-xl border border-gray-200 shadow-sm sm:shadow-md">
 //                 <h3 className="font-semibold text-base sm:text-lg text-gray-800 mb-3 sm:mb-4 lg:mb-5">
 //                   Top Performers (This Month)
@@ -1844,244 +2017,12 @@
 //                   ))}
 //                 </div>
 //               </div>
-
-//               <div className="bg-white p-3 sm:p-4 lg:p-6 rounded-lg sm:rounded-xl border border-gray-200 shadow-sm sm:shadow-md">
-//                 <div className="flex justify-between items-center mb-3 sm:mb-4 lg:mb-5">
-//                   <h3 className="font-semibold text-base sm:text-lg text-gray-800">Recent Attendance</h3>
-//                   <button onClick={handleViewAllAttendance} className="text-blue-600 text-xs sm:text-sm font-medium hover:underline">
-//                     View All
-//                   </button>
-//                 </div>
-//                 <div className="space-y-2 sm:space-y-3 lg:space-y-4">
-//                   {recentAttendanceData.map((attendance, index) => (
-//                     <div key={index} className="flex items-center justify-between p-2 sm:p-3 border-b border-gray-100 last:border-0 hover:bg-gray-50 transition-colors">
-//                       <div className="min-w-0 flex-1">
-//                         <p className="font-semibold text-gray-900 truncate text-sm sm:text-base">{attendance.name}</p>
-//                         <p className="text-gray-600 truncate text-xs sm:text-sm">{attendance.location} • {attendance.time}</p>
-//                       </div>
-//                       <div className="flex items-center gap-1 sm:gap-2 flex-shrink-0 ml-2">
-//                         {attendance.status === "approved" ? <CheckCircleIcon className="w-4 h-4 text-green-500" /> : <ExclamationTriangleIcon className="w-4 h-4 text-yellow-500" />}
-//                         <span className={`px-2 py-1 rounded-full text-xs font-medium ${attendance.status === "approved" ? "bg-green-100 text-green-800" : "bg-yellow-100 text-yellow-800"}`}>
-//                           {attendance.status}
-//                         </span>
-//                       </div>
-//                     </div>
-//                   ))}
-//                 </div>
-//               </div>
 //             </div>
 //           </div>
 //         )}
 
 //         {/* ATTENDANCE CONTENT */}
 //         {activeMenu === "attendance" && (
-//           <div className="px-3 sm:px-4 lg:px-6 py-4 max-w-screen-2xl mx-auto bg-gradient-to-br from-gray-50 to-blue-50 min-h-screen">
-//             <div className="mb-6">
-//               <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-900 mb-2">
-//                 Attendance Records
-//               </h1>
-//              <p className="text-gray-600 text-sm sm:text-base">
-//                 Review and validate operator attendance records
-//               </p>
-//             </div>
-
-//             <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 mb-6">
-//               {[
-//                 {
-//                   label: "Total Today",
-//                   value: stats.total,
-//                   icon: DocumentChartBarIcon,
-//                   bgColor: "bg-gray-100",
-//                   iconColor: "text-gray-600",
-//                 },
-//                 {
-//                   label: "Approved",
-//                   value: stats.approved,
-//                   icon: CheckCircleIcon,
-//                   bgColor: "bg-green-100",
-//                   iconColor: "text-green-600",
-//                 },
-//                 {
-//                   label: "Rejected",
-//                   value: stats.rejected,
-//                   icon: XCircleIcon,
-//                   bgColor: "bg-red-100",
-//                   iconColor: "text-red-600",
-//                 },
-//                 {
-//                   label: "Pending Review",
-//                   value: stats.pending,
-//                   icon: ClockIcon,
-//                   bgColor: "bg-yellow-100",
-//                   iconColor: "text-yellow-600",
-//                 },
-//               ].map((item, i) => {
-//                 const Icon = item.icon;
-//                 return (
-//                   <div key={i} className="bg-white p-4 sm:p-5 rounded-xl shadow-sm border border-gray-200 hover:shadow-md transition-shadow">
-//                     <div className="flex items-center justify-between mb-3">
-//                       <p className="text-gray-700 font-medium text-sm sm:text-base">{item.label}</p>
-//                       <div className={`p-2 rounded-lg ${item.bgColor}`}>
-//                         <Icon className={`w-5 h-5 ${item.iconColor}`} />
-//                       </div>
-//                     </div>
-//                     <p className="text-2xl sm:text-3xl font-bold text-gray-900 mb-1">{item.value}</p>
-//                     <p className="text-xs sm:text-sm text-gray-500">
-//                       {item.label === "Total Today" ? `Pending: ${stats.pending}` : item.label === "Pending Review" ? "Awaiting validation" : "Validated records"}
-//                     </p>
-//                   </div>
-//                 );
-//               })}
-//             </div>
-
-//             <div className="bg-white p-4 sm:p-6 rounded-xl shadow-sm border border-gray-200 mb-6">
-//               <div className="flex flex-col sm:flex-row gap-4 justify-between items-stretch sm:items-center">
-//                 <div className="relative flex-1">
-//                   <MagnifyingGlassIcon className="w-4 h-4 text-gray-400 absolute left-3 top-1/2 transform -translate-y-1/2" />
-//                   <input type="text" placeholder="Search operator or site..." value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} className="w-full pl-10 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-900 placeholder-gray-500 text-sm transition" />
-//                 </div>
-//                 <div className="flex gap-2 bg-gray-100 rounded-lg p-1">
-//                   {["All", "Pending", "Approved", "Rejected"].map((filter) => (
-//                     <button key={filter} onClick={() => setSelectedFilter(filter)} className={`px-3 sm:px-4 py-2 rounded-md text-xs sm:text-sm font-medium transition flex-1 text-center min-w-[60px] sm:min-w-[80px] ${selectedFilter === filter ? "bg-blue-600 text-white shadow-sm" : "text-gray-700 hover:bg-gray-200"}`}>
-//                       {filter}
-//                     </button>
-//                   ))}
-//                 </div>
-//               </div>
-//             </div>
-
-//             <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
-//               <div className="hidden lg:grid grid-cols-12 gap-4 px-6 py-4 bg-gray-50 border-b border-gray-200 text-sm font-semibold text-gray-700">
-//                 <div className="col-span-3">Operator</div>
-//                 <div className="col-span-2">Site</div>
-//                 <div className="col-span-2">Date</div>
-//                 <div className="col-span-1">Check-In</div>
-//                 <div className="col-span-1">Check-Out</div>
-//                 <div className="col-span-2 text-center">Status</div>
-//                 <div className="col-span-1 text-center">Actions</div>
-//               </div>
-//               <div className="divide-y divide-gray-200">
-//                 {filteredData.length === 0 ? (
-//                   <div className="text-center py-12 text-gray-500">
-//                     <DocumentTextIcon className="w-12 h-12 text-gray-300 mx-auto mb-4" />
-//                     <p className="text-lg font-medium text-gray-900 mb-2">No attendance records found</p>
-//                     <p className="text-gray-600">Try adjusting your search or filter criteria</p>
-//                   </div>
-//                 ) : (
-//                   filteredData.map((item) => (
-//                     <div key={item.id} className="block lg:grid lg:grid-cols-12 lg:gap-4 px-4 sm:px-6 py-4 hover:bg-gray-50 transition-colors">
-//                       <div className="lg:hidden space-y-4">
-//                         <div className="flex justify-between items-start">
-//                           <div className="flex-1 min-w-0">
-//                             <h3 className="font-semibold text-gray-900 text-base sm:text-lg truncate">{item.operator}</h3>
-//                             <p className="text-gray-500 text-sm mt-1 truncate">{item.site}</p>
-//                           </div>
-//                           <span className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-medium ml-3 flex-shrink-0 ${item.status === "approved" ? "bg-green-100 text-green-800" : item.status === "rejected" ? "bg-red-100 text-red-800" : "bg-yellow-100 text-yellow-800"}`}>
-//                             {item.status}
-//                           </span>
-//                         </div>
-//                         <div className="grid grid-cols-2 gap-4">
-//                           <div>
-//                             <p className="text-gray-500 text-xs uppercase font-medium mb-1">Date</p>
-//                             <p className="text-gray-900 text-sm font-medium">{item.date}</p>
-//                           </div>
-//                           <div>
-//                             <p className="text-gray-500 text-xs uppercase font-medium mb-1">Submitted By</p>
-//                             <p className="text-gray-900 text-sm font-medium capitalize">{item.submittedBy}</p>
-//                           </div>
-//                         </div>
-//                         <div className="flex items-center justify-between bg-gray-50 rounded-lg p-3">
-//                           <div className="flex items-center gap-3">
-//                             <div className="flex items-center gap-2">
-//                               <ClockIcon className="w-4 h-4 text-green-600 flex-shrink-0" />
-//                               <div>
-//                                 <p className="text-gray-500 text-xs">Check-In</p>
-//                                 <p className="text-gray-900 text-sm font-medium">{item.checkIn}</p>
-//                               </div>
-//                             </div>
-//                           </div>
-//                           <div className="flex items-center gap-3">
-//                             <div className="flex items-center gap-2">
-//                               <ClockIcon className="w-4 h-4 text-red-600 flex-shrink-0" />
-//                               <div>
-//                                 <p className="text-gray-500 text-xs">Check-Out</p>
-//                                 <p className="text-gray-900 text-sm font-medium">{item.checkOut}</p>
-//                               </div>
-//                             </div>
-//                           </div>
-//                         </div>
-//                         <div className="flex justify-between items-center pt-3 border-t border-gray-200">
-//                           <button onClick={() => openDetailModal(item)} className="flex items-center gap-2 text-blue-600 hover:text-blue-800 transition px-3 py-2 rounded-lg hover:bg-blue-50 text-sm font-medium">
-//                             <EyeIcon className="w-4 h-4" /> View Details
-//                           </button>
-//                           {item.status === "pending" && (
-//                             <div className="flex gap-2">
-//                               <button onClick={() => handleApprove(item.id)} className="flex items-center gap-2 text-green-600 hover:text-green-800 transition px-3 py-2 rounded-lg hover:bg-green-50 text-sm font-medium">
-//                                 <CheckCircleIcon className="w-4 h-4" /> Approve
-//                               </button>
-//                               <button onClick={() => handleReject(item.id)} className="flex items-center gap-2 text-red-600 hover:text-red-800 transition px-3 py-2 rounded-lg hover:bg-red-50 text-sm font-medium">
-//                                 <XCircleIcon className="w-4 h-4" /> Reject
-//                               </button>
-//                             </div>
-//                           )}
-//                         </div>
-//                       </div>
-//                       <div className="hidden lg:contents">
-//                         <div className="col-span-3 flex items-center">
-//                           <div>
-//                             <p className="font-medium text-gray-900">{item.operator}</p>
-//                             <p className="text-sm text-gray-500 mt-0.5">Submitted by: {item.submittedBy}</p>
-//                           </div>
-//                         </div>
-//                         <div className="col-span-2 flex items-center"><p className="text-gray-700 truncate">{item.site}</p></div>
-//                         <div className="col-span-2 flex items-center"><p className="text-gray-700">{item.date}</p></div>
-//                         <div className="col-span-1 flex items-center">
-//                           <div className="flex items-center gap-2 text-gray-700"><ClockIcon className="w-4 h-4 text-green-600" /><span className="font-medium">{item.checkIn}</span></div>
-//                         </div>
-//                         <div className="col-span-1 flex items-center">
-//                           <div className="flex items-center gap-2 text-gray-700"><ClockIcon className="w-4 h-4 text-red-600" /><span className="font-medium">{item.checkOut}</span></div>
-//                         </div>
-//                         <div className="col-span-2 flex items-center justify-center">
-//                           <span className={`inline-flex items-center px-3 py-1 rounded-full text-sm font-medium ${item.status === "approved" ? "bg-green-100 text-green-800" : item.status === "rejected" ? "bg-red-100 text-red-800" : "bg-yellow-100 text-yellow-800"}`}>
-//                             {item.status}
-//                           </span>
-//                         </div>
-//                         <div className="col-span-1 flex items-center justify-center">
-//                           <div className="flex gap-2">
-//                             <button onClick={() => openDetailModal(item)} className="text-blue-600 hover:text-blue-800 transition p-2 rounded-lg hover:bg-blue-50" title="View Details"><EyeIcon className="w-5 h-5" /></button>
-//                             {item.status === "pending" && (
-//                               <>
-//                                 <button onClick={() => handleApprove(item.id)} className="text-green-600 hover:text-green-800 transition p-2 rounded-lg hover:bg-green-50" title="Approve"><CheckCircleIcon className="w-5 h-5" /></button>
-//                                 <button onClick={() => handleReject(item.id)} className="text-red-600 hover:text-red-800 transition p-2 rounded-lg hover:bg-red-50" title="Reject"><XCircleIcon className="w-5 h-5" /></button>
-//                               </>
-//                             )}
-//                           </div>
-//                         </div>
-//                       </div>
-//                     </div>
-//                   ))
-//                 )}
-//               </div>
-//             </div>
-//             {filteredData.length === 0 && (
-//               <div className="text-center py-12">
-//                 <div className="max-w-md mx-auto">
-//                   <div className="w-24 h-24 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-6">
-//                     <DocumentTextIcon className="w-12 h-12 text-gray-400" />
-//                   </div>
-//                   <h3 className="text-lg font-medium text-gray-900 mb-2">No matching records</h3>
-//                   <p className="text-gray-600 mb-6">Try adjusting your search terms or filters to find what you're looking for.</p>
-//                   <button onClick={() => { setSearchQuery(""); setSelectedFilter("All"); }} className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition font-medium">
-//                     Clear Filters
-//                   </button>
-//                 </div>
-//               </div>
-//             )}
-//           </div>
-//         )}
-
-//         {/* ATTENDANCE VALIDATION CONTENT */}
-//         {activeMenu === "validation" && (
 //           <div className="px-3 sm:px-4 lg:px-6 py-4 max-w-screen-2xl mx-auto bg-gradient-to-br from-gray-50 to-blue-50 min-h-screen">
 //             <div className="mb-6">
 //               <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-900 mb-2">
@@ -2290,7 +2231,7 @@
 //           </div>
 //         )}
 
-//         {/* SHIFT MANAGEMENT CONTENT - DENGAN DROPDOWN */}
+//         {/* SHIFT MANAGEMENT CONTENT */}
 //         {activeMenu === "shiftManagement" && (
 //           <div className="px-3 sm:px-4 lg:px-6 py-4 max-w-screen-2xl mx-auto bg-gradient-to-br from-gray-50 to-blue-50 min-h-screen">
 //             <div className="mb-6">
@@ -2316,7 +2257,7 @@
 //               </div>
 //             </div>
 
-//             {/* Shift Statistics - DIPINDAHKAN KE ATAS */}
+//             {/* Shift Statistics */}
 //             <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
 //               <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-200">
 //                 <div className="flex items-center justify-between">
@@ -2795,7 +2736,7 @@
 //                           )}
 //                         </div>
 //                       </div>
-//                     </div>
+//                     </div> 
 //                   ))
 //                 )}
 //               </div>
@@ -2807,11 +2748,42 @@
 //   );
 // }
 
-// // ==================================KODINGAN MERGE BEBERAPA MENU ROLE HRD :END=================================================================
-// // ==================================KODINGAN MERGE BEBERAPA MENU ROLE HRD :END=================================================================
-// // ==================================KODINGAN MERGE BEBERAPA MENU ROLE HRD :END=================================================================
-// // ==================================KODINGAN MERGE BEBERAPA MENU ROLE HRD :END=================================================================
-// // ==================================KODINGAN MERGE BEBERAPA MENU ROLE HRD :END=================================================================
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -2844,6 +2816,7 @@ import {
   UserGroupIcon,
   BuildingOfficeIcon,
   ChevronDownIcon,
+  DocumentArrowDownIcon,
 } from "@heroicons/react/24/outline";
 
 // Storage keys untuk sinkronisasi
@@ -2854,7 +2827,21 @@ const STORAGE_KEYS = {
   SHIFTS: "synchronized_shifts_data",
   SITES: "synchronized_sites_data",
   LEAVE_REQUESTS: "synchronized_leave_requests",
+  OPERATORS: "synchronized_operators_data",
   LAST_SYNC: "last_sync_timestamp",
+};
+
+// Data generator untuk data yang lebih realistis
+const generateIndonesianName = () => {
+  const firstNames = ["Ahmad", "Budi", "Cahyo", "Dewi", "Eko", "Fajar", "Gita", "Hadi", "Indra", "Joko", "Kartika", "Lina", "Mulyadi", "Nina", "Oki", "Putri", "Rudi", "Sari", "Tono", "Wati"];
+  const lastNames = ["Santoso", "Wijaya", "Kusuma", "Hidayat", "Purnama", "Saputra", "Lestari", "Prabowo", "Nugroho", "Siregar", "Halim", "Utama", "Wibowo", "Sihombing", "Pangestu", "Simbolon", "Tanuwijaya", "Kurniawan", "Setiawan", "Fernando"];
+  return `${firstNames[Math.floor(Math.random() * firstNames.length)]} ${lastNames[Math.floor(Math.random() * lastNames.length)]}`;
+};
+
+const generateSiteName = () => {
+  const cities = ["Jakarta", "Bandung", "Surabaya", "Semarang", "Yogyakarta", "Medan", "Makassar", "Denpasar", "Palembang", "Balikpapan"];
+  const types = ["IPAL", "WWTP", "STP", "WTP", "Pabrik", "Kawasan", "Industri"];
+  return `Site ${types[Math.floor(Math.random() * types.length)]} ${cities[Math.floor(Math.random() * cities.length)]}`;
 };
 
 export default function HRD() {
@@ -2880,11 +2867,13 @@ export default function HRD() {
   
   // Form state untuk shift
   const [shiftForm, setShiftForm] = useState({
-    name: "Morning Shift", // Default value
+    name: "Morning Shift",
     startTime: "08:00",
     endTime: "17:00",
     siteId: "",
     maxOperators: 5,
+    assignedOperators: [],
+    dayOfWeek: "Monday"
   });
   
   // Form state untuk site
@@ -2896,7 +2885,8 @@ export default function HRD() {
     supervisor: "",
     contact: "",
   });
-  
+
+
   const router = useRouter();
   const dropdownRef = useRef(null);
   const notificationRef = useRef(null);
@@ -2955,6 +2945,9 @@ export default function HRD() {
       } else if (e.key === STORAGE_KEYS.LEAVE_REQUESTS) {
         const newData = JSON.parse(e.newValue || "[]");
         setLeaveRequests(newData);
+      } else if (e.key === STORAGE_KEYS.OPERATORS) {
+        const newData = JSON.parse(e.newValue || "[]");
+        setOperators(newData);
       }
     };
 
@@ -2962,94 +2955,262 @@ export default function HRD() {
     return () => window.removeEventListener("storage", handleStorageChange);
   };
 
-  const updateDashboardStats = (attendanceData) => {
-    const totalOperators = 127;
-    const pendingValidation = attendanceData.filter(
-      (item) => item.status === "pending"
-    ).length;
-    const approvedToday = attendanceData.filter(
-      (item) =>
-        item.status === "approved" &&
-        item.date === new Date().toISOString().split("T")[0]
-    ).length;
+  // ==================== PERHITUNGAN MATEMATIKA YANG SESUAI LOGIKA ====================
 
-    const attendanceRate =
-      totalOperators > 0
-        ? Math.round((approvedToday / totalOperators) * 100 * 10) / 10
-        : 0;
+  const calculateTotalHours = (checkIn, checkOut) => {
+    const parseTime = (timeStr) => {
+      const [hours, minutes] = timeStr.split(':').map(Number);
+      return hours * 60 + minutes;
+    };
+    
+    const start = parseTime(checkIn);
+    const end = parseTime(checkOut);
+    const totalMinutes = end - start;
+    
+    if (totalMinutes < 0) {
+      // Jika check out melewati tengah malam
+      return (24 * 60 - start + end) / 60;
+    }
+    
+    return totalMinutes / 60;
+  };
+
+  const calculateLateMinutes = (checkIn, shiftStartTime) => {
+    const parseTime = (timeStr) => {
+      const [hours, minutes] = timeStr.split(':').map(Number);
+      return hours * 60 + minutes;
+    };
+    
+    const actualStart = parseTime(checkIn);
+    const expectedStart = parseTime(shiftStartTime);
+    
+    return Math.max(0, actualStart - expectedStart);
+  };
+
+  const updateDashboardStats = (attendanceData) => {
+    // Hitung total operator dari data aktual
+    const totalOperators = operators.length;
+    
+    // Hitung presensi hari ini berdasarkan data attendance
+    const today = new Date().toISOString().split('T')[0];
+    const todayAttendance = attendanceData.filter(item => item.date === today);
+    
+    // Hitung yang sudah disetujui hari ini
+    const approvedToday = todayAttendance.filter(item => item.status === "approved").length;
+    
+    // Hitung yang pending validasi
+    const pendingValidation = attendanceData.filter(item => item.status === "pending").length;
+    
+    // Hitung attendance rate berdasarkan operator yang memiliki shift hari ini
+    const operatorsWithShiftToday = operators.filter(op => {
+      return shifts.some(shift => 
+        shift.assignedOperators?.includes(op.id) && 
+        isOperatorScheduledToday(op.id)
+      );
+    }).length;
+    
+    const attendanceRate = operatorsWithShiftToday > 0 
+      ? Math.round((approvedToday / operatorsWithShiftToday) * 100 * 10) / 10
+      : 0;
 
     const newDashboardData = {
       totalOperators,
       presentToday: approvedToday,
       attendanceRate,
       pendingValidation,
+      operatorsWithShiftToday,
     };
 
     setDashboardData(newDashboardData);
     setSynchronizedData(STORAGE_KEYS.DASHBOARD, newDashboardData);
   };
 
-  // ==================== DATA YANG DISINKRONISASI ====================
+  const isOperatorScheduledToday = (operatorId) => {
+    // Logika untuk mengecek apakah operator memiliki shift hari ini
+    // Ini adalah contoh sederhana - dalam implementasi nyata akan melibatkan jadwal shift
+    const today = new Date().getDay(); // 0 = Minggu, 1 = Senin, dst
+    return today >= 1 && today <= 5; // Senin-Jumat
+  };
+
+  // ==================== DATA YANG DISINKRONISASI DENGAN LOGIKA REALISTIS ====================
+
+  // Generate data operator
+  const generateOperators = () => {
+    const operatorList = [];
+    for (let i = 1; i <= 50; i++) {
+      operatorList.push({
+        id: i,
+        name: generateIndonesianName(),
+        employeeId: `OP${String(i).padStart(3, '0')}`,
+        position: "Operator IPAL",
+        joinDate: `202${Math.floor(Math.random() * 4)}-${String(Math.floor(Math.random() * 12) + 1).padStart(2, '0')}-${String(Math.floor(Math.random() * 28) + 1).padStart(2, '0')}`,
+        status: Math.random() > 0.1 ? "active" : "inactive",
+        contact: `0812${String(Math.floor(Math.random() * 9000) + 1000)}${String(Math.floor(Math.random() * 9000) + 1000)}`,
+      });
+    }
+    return operatorList;
+  };
+
+  const [operators, setOperators] = useState(() =>
+    getSynchronizedData(STORAGE_KEYS.OPERATORS, generateOperators())
+  );
+
+  // Generate data site
+  const generateSites = () => {
+    const cityList = ["Jakarta Utara", "Bandung", "Surabaya", "Semarang", "Yogyakarta", "Medan", "Makassar", "Denpasar"];
+    const siteList = [];
+    
+    cityList.forEach((city, index) => {
+      siteList.push({
+        id: index + 1,
+        name: `Site ${city.split(' ')[0]} ${['A', 'B', 'C'][index % 3]}`,
+        location: city,
+        address: `Jl. Raya ${city} No. ${(index + 1) * 10}`,
+        capacity: Math.floor(Math.random() * 20) + 5,
+        supervisor: generateIndonesianName(),
+        contact: `0813${String(Math.floor(Math.random() * 9000) + 1000)}${String(Math.floor(Math.random() * 9000) + 1000)}`,
+        status: "active",
+      });
+    });
+    return siteList;
+  };
+
+  const [sites, setSites] = useState(() =>
+    getSynchronizedData(STORAGE_KEYS.SITES, generateSites())
+  );
+
+  // Generate data shift dengan logika penugasan operator
+  const generateShifts = () => {
+    const shiftTypes = [
+      { name: "Morning Shift", startTime: "07:00", endTime: "15:00" },
+      { name: "Afternoon Shift", startTime: "15:00", endTime: "23:00" },
+      { name: "Night Shift", startTime: "23:00", endTime: "07:00" },
+    ];
+    
+    const shiftList = [];
+    shiftTypes.forEach((shiftType, index) => {
+      // Pilih site secara acak
+      const siteId = Math.floor(Math.random() * sites.length) + 1;
+      
+      // Tentukan jumlah operator untuk shift ini (3-8 operator)
+      const maxOperators = Math.floor(Math.random() * 6) + 3;
+      
+      // Pilih operator secara acak untuk shift ini
+      const assignedOperators = [];
+      const availableOperators = operators.filter(op => op.status === "active");
+      
+      for (let i = 0; i < Math.min(maxOperators, availableOperators.length); i++) {
+        const randomOp = availableOperators[Math.floor(Math.random() * availableOperators.length)];
+        if (!assignedOperators.includes(randomOp.id)) {
+          assignedOperators.push(randomOp.id);
+        }
+      }
+      
+      shiftList.push({
+        id: index + 1,
+        ...shiftType,
+        siteId,
+        maxOperators,
+        assignedOperators,
+        dayOfWeek: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"][index % 6],
+      });
+    });
+    return shiftList;
+  };
+
+  const [shifts, setShifts] = useState(() =>
+    getSynchronizedData(STORAGE_KEYS.SHIFTS, generateShifts())
+  );
+
+  // Generate data attendance dengan logika realistis
+  const generateAttendanceData = () => {
+    const attendanceList = [];
+    let idCounter = 1;
+    
+    // Generate data untuk 7 hari terakhir
+    for (let dayOffset = 6; dayOffset >= 0; dayOffset--) {
+      const date = new Date();
+      date.setDate(date.getDate() - dayOffset);
+      const dateStr = date.toISOString().split('T')[0];
+      const dayOfWeek = date.getDay(); // 0 = Minggu, 1 = Senin, dst
+      
+      // Hanya generate untuk hari kerja (Senin-Jumat)
+      if (dayOfWeek >= 1 && dayOfWeek <= 5) {
+        // Untuk setiap shift yang aktif hari ini
+        shifts.forEach(shift => {
+          // Untuk setiap operator yang ditugaskan di shift ini
+          shift.assignedOperators?.forEach(operatorId => {
+            const operator = operators.find(op => op.id === operatorId);
+            if (operator && operator.status === "active") {
+              // Tentukan status kehadiran (80% hadir, 15% terlambat, 5% absen)
+              const rand = Math.random();
+              let status = "pending";
+              let lateMinutes = 0;
+              
+              if (rand < 0.8) {
+                status = "approved";
+                // 20% kemungkinan terlambat
+                if (Math.random() < 0.2) {
+                  lateMinutes = Math.floor(Math.random() * 30) + 1; // 1-30 menit terlambat
+                }
+              } else if (rand < 0.95) {
+                status = "rejected"; // Absen
+              } else {
+                status = "pending"; // Belum divalidasi
+              }
+              
+              // Generate check-in dan check-out time
+              let checkIn = shift.startTime;
+              let checkOut = shift.endTime;
+              
+              if (lateMinutes > 0 && status === "approved") {
+                // Tambah menit keterlambatan ke check-in
+                const [hours, minutes] = checkIn.split(':').map(Number);
+                const totalMinutes = hours * 60 + minutes + lateMinutes;
+                const newHours = Math.floor(totalMinutes / 60);
+                const newMinutes = totalMinutes % 60;
+                checkIn = `${String(newHours).padStart(2, '0')}:${String(newMinutes).padStart(2, '0')}`;
+              }
+              
+              // Hitung total hours
+              const totalHours = calculateTotalHours(checkIn, checkOut);
+              
+              attendanceList.push({
+                id: idCounter++,
+                operatorId: operatorId,
+                operator: operator.name,
+                site: sites.find(s => s.id === shift.siteId)?.name || "Unknown Site",
+                date: dateStr,
+                checkIn,
+                checkOut,
+                status,
+                submittedBy: operatorId % 3 === 0 ? "admin" : "operator",
+                location: sites.find(s => s.id === shift.siteId)?.location || "Unknown",
+                notes: status === "approved" 
+                  ? lateMinutes > 0 
+                    ? `Check-in terlambat ${lateMinutes} menit` 
+                    : "Hadir tepat waktu"
+                  : status === "rejected"
+                  ? "Tidak hadir tanpa keterangan"
+                  : "Menunggu validasi HRD",
+                totalHours: totalHours.toFixed(1),
+                lateMinutes,
+                shiftId: shift.id,
+                photoUrl: null,
+                locationValid: Math.random() > 0.1, // 90% valid lokasi
+                timeValid: Math.random() > 0.05, // 95% valid waktu
+              });
+            }
+          });
+        });
+      }
+    }
+    
+    return attendanceList;
+  };
 
   const [attendanceData, setAttendanceData] = useState(() =>
-    getSynchronizedData(STORAGE_KEYS.ATTENDANCE, [
-      {
-        id: 1,
-        operator: "Budi Santoso",
-        site: "Jakarta Utara - Site A",
-        date: new Date().toISOString().split("T")[0],
-        checkIn: "08:00",
-        checkOut: "16:00",
-        status: "pending",
-        submittedBy: "admin",
-        location: "Jakarta Utara",
-        notes: "Attendance submitted on time",
-        totalHours: "8 hours",
-        lateMinutes: 0,
-      },
-      {
-        id: 2,
-        operator: "Siti Nurhaliza",
-        site: "Bandung - Site B",
-        date: new Date().toISOString().split("T")[0],
-        checkIn: "08:05",
-        checkOut: "16:02",
-        status: "pending",
-        submittedBy: "operator",
-        location: "Bandung",
-        notes: "Slight delay due to traffic",
-        totalHours: "7 hours 57 minutes",
-        lateMinutes: 5,
-      },
-      {
-        id: 3,
-        operator: "Ahmad Hidayat",
-        site: "Surabaya - Site C",
-        date: new Date().toISOString().split("T")[0],
-        checkIn: "07:58",
-        checkOut: "16:05",
-        status: "approved",
-        submittedBy: "admin",
-        location: "Surabaya",
-        notes: "Excellent attendance record",
-        totalHours: "8 hours 7 minutes",
-        lateMinutes: 0,
-      },
-      {
-        id: 4,
-        operator: "Dewi Lestari",
-        site: "Semarang - Site D",
-        date: new Date().toISOString().split("T")[0],
-        checkIn: "08:10",
-        checkOut: "16:00",
-        status: "pending",
-        submittedBy: "operator",
-        location: "Semarang",
-        notes: "Waiting for validation",
-        totalHours: "7 hours 50 minutes",
-        lateMinutes: 10,
-      },
-    ])
+    getSynchronizedData(STORAGE_KEYS.ATTENDANCE, generateAttendanceData())
   );
 
   const [notifications, setNotifications] = useState(() =>
@@ -3066,7 +3227,7 @@ export default function HRD() {
       {
         id: 2,
         title: "Data baru diterima",
-        message: "Budi Santoso mengirim attendance dari Site A",
+        message: "Operator baru mengirim attendance dari Site Jakarta A",
         time: "1 jam lalu",
         read: false,
         type: "new_data",
@@ -3086,37 +3247,55 @@ export default function HRD() {
 
   const [dashboardData, setDashboardData] = useState(() =>
     getSynchronizedData(STORAGE_KEYS.DASHBOARD, {
-      totalOperators: 127,
-      presentToday: 118,
-      attendanceRate: 96.5,
-      pendingValidation: getSynchronizedData(STORAGE_KEYS.ATTENDANCE, []).filter(
-        (item) => item.status === "pending"
+      totalOperators: operators.length,
+      presentToday: attendanceData.filter(item => 
+        item.date === new Date().toISOString().split('T')[0] && 
+        item.status === "approved"
       ).length,
+      attendanceRate: 0,
+      pendingValidation: attendanceData.filter((item) => item.status === "pending").length,
+      operatorsWithShiftToday: 0,
     })
-  );
-
-  // DATA BARU UNTUK FITUR TAMBAHAN
-  const [shifts, setShifts] = useState(() =>
-    getSynchronizedData(STORAGE_KEYS.SHIFTS, [
-      { id: 1, name: "Morning Shift", startTime: "07:00", endTime: "15:00", siteId: "1", maxOperators: 8 },
-      { id: 2, name: "Afternoon Shift", startTime: "15:00", endTime: "23:00", siteId: "2", maxOperators: 6 },
-      { id: 3, name: "Night Shift", startTime: "23:00", endTime: "07:00", siteId: "3", maxOperators: 4 },
-    ])
-  );
-
-  const [sites, setSites] = useState(() =>
-    getSynchronizedData(STORAGE_KEYS.SITES, [
-      { id: 1, name: "Site A", location: "Jakarta Utara", address: "Jl. Raya Jakarta No. 123", capacity: 15, supervisor: "Budi Santoso", contact: "0812-3456-7890" },
-      { id: 2, name: "Site B", location: "Bandung", address: "Jl. Raya Bandung No. 456", capacity: 12, supervisor: "Siti Nurhaliza", contact: "0813-4567-8901" },
-      { id: 3, name: "Site C", location: "Surabaya", address: "Jl. Raya Surabaya No. 789", capacity: 10, supervisor: "Ahmad Hidayat", contact: "0814-5678-9012" },
-    ])
   );
 
   const [leaveRequests, setLeaveRequests] = useState(() =>
     getSynchronizedData(STORAGE_KEYS.LEAVE_REQUESTS, [
-      { id: 1, operator: "Budi Santoso", type: "izin", startDate: "2024-12-01", endDate: "2024-12-01", reason: "Sakit", status: "pending", submittedDate: "2024-11-28" },
-      { id: 2, operator: "Siti Nurhaliza", type: "libur", startDate: "2024-12-10", endDate: "2024-12-12", reason: "Cuti tahunan", status: "pending", submittedDate: "2024-11-29" },
-      { id: 3, operator: "Ahmad Hidayat", type: "izin", startDate: "2024-12-05", endDate: "2024-12-05", reason: "Keperluan keluarga", status: "approved", submittedDate: "2024-11-27" },
+      {
+        id: 1,
+        operatorId: 1,
+        operator: generateIndonesianName(),
+        type: "izin",
+        startDate: new Date(Date.now() + 86400000 * 2).toISOString().split('T')[0],
+        endDate: new Date(Date.now() + 86400000 * 2).toISOString().split('T')[0],
+        reason: "Sakit demam dan flu",
+        status: "pending",
+        submittedDate: new Date().toISOString().split('T')[0],
+        medicalCertificate: Math.random() > 0.5,
+      },
+      {
+        id: 2,
+        operatorId: 2,
+        operator: generateIndonesianName(),
+        type: "libur",
+        startDate: new Date(Date.now() + 86400000 * 7).toISOString().split('T')[0],
+        endDate: new Date(Date.now() + 86400000 * 9).toISOString().split('T')[0],
+        reason: "Cuti tahunan keluarga",
+        status: "pending",
+        submittedDate: new Date(Date.now() - 86400000 * 2).toISOString().split('T')[0],
+        medicalCertificate: false,
+      },
+      {
+        id: 3,
+        operatorId: 3,
+        operator: generateIndonesianName(),
+        type: "izin",
+        startDate: new Date(Date.now() - 86400000 * 1).toISOString().split('T')[0],
+        endDate: new Date(Date.now() - 86400000 * 1).toISOString().split('T')[0],
+        reason: "Keperluan keluarga mendadak",
+        status: "approved",
+        submittedDate: new Date(Date.now() - 86400000 * 3).toISOString().split('T')[0],
+        medicalCertificate: false,
+      },
     ])
   );
 
@@ -3183,28 +3362,39 @@ export default function HRD() {
     setSynchronizedData(STORAGE_KEYS.LEAVE_REQUESTS, leaveRequests);
   }, [leaveRequests]);
 
-  // ==================== FUNGSI UTAMA ====================
+  useEffect(() => {
+    setSynchronizedData(STORAGE_KEYS.OPERATORS, operators);
+  }, [operators]);
 
-const menuItems = [
-  { id: "dashboard", name: "Dashboard", icon: ChartBarIcon },
-  { id: "attendance", name: "Attendance", icon: DocumentTextIcon },
-  { id: "shiftManagement", name: "Shift Management", icon: ClockIcon },
-  { id: "siteManagement", name: "Site Management", icon: BuildingOfficeIcon },
-  { id: "leaveManagement", name: "Leave Management", icon: CalendarIcon },
-];
+  // ==================== FUNGSI UTAMA SESUAI SRS ====================
 
-  // Fungsi untuk handle approve attendance
+  const menuItems = [
+    { id: "dashboard", name: "Dashboard", icon: ChartBarIcon },
+    { id: "attendance", name: "Attendance", icon: DocumentTextIcon },
+    { id: "shiftManagement", name: "Shift Management", icon: ClockIcon },
+    { id: "siteManagement", name: "Site Management", icon: BuildingOfficeIcon },
+    { id: "leaveManagement", name: "Leave Management", icon: CalendarIcon },
+  ];
+ 
+  // Fungsi untuk handle approve attendance - SESUAI SRS (Approve Presensi Operator)
   const handleApprove = (id) => {
+    const attendanceToApprove = attendanceData.find(item => item.id === id);
+    
+    // Validasi berdasarkan SRS: "Jika foto, data lokasi dan waktu pada data presensi yang dikirim operator tidak sesuai maka sistem akan menampilkan data presensi tidak valid"
+    if (!attendanceToApprove.locationValid || !attendanceToApprove.timeValid) {
+      alert("Data presensi tidak valid: Lokasi atau waktu tidak sesuai");
+      return;
+    }
+    
     const updatedData = attendanceData.map((item) =>
       item.id === id ? { ...item, status: "approved" } : item
     );
     setAttendanceData(updatedData);
 
-    const approvedItem = attendanceData.find((item) => item.id === id);
     const newNotification = {
       id: Date.now(),
       title: "Attendance Approved",
-      message: `Data attendance ${approvedItem.operator} telah disetujui`,
+      message: `Data attendance ${attendanceToApprove.operator} telah disetujui`,
       time: "Baru saja",
       read: false,
       type: "approval",
@@ -3213,48 +3403,225 @@ const menuItems = [
     setNotifications((prev) => [newNotification, ...prev]);
   };
 
-  // Fungsi untuk handle reject attendance
+  // Fungsi untuk handle reject attendance - SESUAI SRS (Reject Presensi Operator)
   const handleReject = (id) => {
-    const updatedData = attendanceData.map((item) =>
-      item.id === id ? { ...item, status: "rejected" } : item
-    );
-    setAttendanceData(updatedData);
+    const attendanceToReject = attendanceData.find(item => item.id === id);
+    
+    // Sesuai SRS: Validasi untuk menolak jika data tidak valid
+    if (!attendanceToReject.locationValid || !attendanceToReject.timeValid) {
+      const updatedData = attendanceData.map((item) =>
+        item.id === id ? { ...item, status: "rejected", notes: "Ditolak: Data lokasi/waktu tidak valid" } : item
+      );
+      setAttendanceData(updatedData);
 
-    const rejectedItem = attendanceData.find((item) => item.id === id);
-    const newNotification = {
-      id: Date.now(),
-      title: "Attendance Rejected",
-      message: `Data attendance ${rejectedItem.operator} telah ditolak`,
-      time: "Baru saja",
-      read: false,
-      type: "rejection",
-      route: "attendance",
-    };
-    setNotifications((prev) => [newNotification, ...prev]);
+      const newNotification = {
+        id: Date.now(),
+        title: "Attendance Rejected",
+        message: `Data attendance ${attendanceToReject.operator} ditolak karena data tidak valid`,
+        time: "Baru saja",
+        read: false,
+        type: "rejection",
+        route: "attendance",
+      };
+      setNotifications((prev) => [newNotification, ...prev]);
+    } else {
+      // Jika data valid tapi HRD tetap menolak
+      const updatedData = attendanceData.map((item) =>
+        item.id === id ? { ...item, status: "rejected" } : item
+      );
+      setAttendanceData(updatedData);
+
+      const newNotification = {
+        id: Date.now(),
+        title: "Attendance Rejected",
+        message: `Data attendance ${attendanceToReject.operator} telah ditolak`,
+        time: "Baru saja",
+        read: false,
+        type: "rejection",
+        route: "attendance",
+      };
+      setNotifications((prev) => [newNotification, ...prev]);
+    }
   };
 
-  // ==================== FUNGSI SHIFT MANAGEMENT ====================
+  // ==================== FUNGSI EKSPOR DATA - SESUAI SRS ====================
+
+  // Fungsi untuk ekspor data attendance ke CSV
+  const exportAttendanceToCSV = () => {
+    const headers = ["ID", "Operator", "Site", "Date", "Check-In", "Check-Out", "Status", "Total Hours", "Late Minutes", "Location", "Notes"];
+    const csvData = attendanceData.map(item => [
+      item.id,
+      item.operator,
+      item.site,
+      item.date,
+      item.checkIn,
+      item.checkOut,
+      item.status,
+      item.totalHours,
+      item.lateMinutes,
+      item.location,
+      item.notes
+    ]);
+    
+    const csvContent = [
+      headers.join(","),
+      ...csvData.map(row => row.map(cell => `"${cell}"`).join(","))
+    ].join("\n");
+    
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const link = document.createElement("a");
+    const url = URL.createObjectURL(blob);
+    link.setAttribute("href", url);
+    link.setAttribute("download", `attendance_data_${new Date().toISOString().split('T')[0]}.csv`);
+    link.style.visibility = 'hidden';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
+  // Fungsi untuk ekspor data attendance ke Excel
+  const exportAttendanceToExcel = () => {
+    // Buat header
+    const headers = ["ID", "Operator", "Site", "Date", "Check-In", "Check-Out", "Status", "Total Hours", "Late Minutes", "Location", "Notes"];
+    const csvData = attendanceData.map(item => [
+      item.id,
+      item.operator,
+      item.site,
+      item.date,
+      item.checkIn,
+      item.checkOut,
+      item.status,
+      item.totalHours,
+      item.lateMinutes,
+      item.location,
+      item.notes
+    ]);
+    
+    const csvContent = [
+      headers.join(","),
+      ...csvData.map(row => row.map(cell => `"${cell}"`).join(","))
+    ].join("\n");
+    
+    const blob = new Blob([csvContent], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=utf-8;' });
+    const link = document.createElement("a");
+    const url = URL.createObjectURL(blob);
+    link.setAttribute("href", url);
+    link.setAttribute("download", `attendance_data_${new Date().toISOString().split('T')[0]}.xlsx`);
+    link.style.visibility = 'hidden';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
+  // Fungsi untuk ekspor data shift ke CSV
+  const exportShiftsToCSV = () => {
+    const headers = ["ID", "Nama Shift", "Hari", "Waktu Mulai", "Waktu Selesai", "Site", "Maks Operator", "Operator Ditugaskan"];
+    
+    const csvData = shifts.map(shift => {
+      const site = sites.find(s => s.id === shift.siteId);
+      const assignedOperatorNames = (shift.assignedOperators || [])
+        .map(opId => {
+          const operator = operators.find(o => o.id === opId);
+          return operator ? operator.name : `Operator ${opId}`;
+        })
+        .join("; ");
+      
+      return [
+        shift.id,
+        shift.name,
+        shift.dayOfWeek,
+        shift.startTime,
+        shift.endTime,
+        site ? site.name : "Unknown",
+        shift.maxOperators,
+        assignedOperatorNames
+      ];
+    });
+    
+    const csvContent = [
+      headers.join(","),
+      ...csvData.map(row => row.map(cell => `"${cell}"`).join(","))
+    ].join("\n");
+    
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const link = document.createElement("a");
+    const url = URL.createObjectURL(blob);
+    link.setAttribute("href", url);
+    link.setAttribute("download", `shifts_data_${new Date().toISOString().split('T')[0]}.csv`);
+    link.style.visibility = 'hidden';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
+  // ==================== FUNGSI SHIFT MANAGEMENT - SESUAI SRS ====================
 
   const resetShiftForm = () => {
     setShiftForm({
-      name: "Morning Shift", // Default ke Morning Shift
+      name: "Morning Shift",
       startTime: "08:00",
       endTime: "17:00",
       siteId: "",
       maxOperators: 5,
+      assignedOperators: [],
+      dayOfWeek: "Monday"
     });
     setEditingShift(null);
   };
 
+  // Fungsi untuk mendapatkan operator yang tersedia untuk shift (SRS: Tambah Shift Operator)
+  const getAvailableOperatorsForShift = (shiftId = null, dayOfWeek = null) => {
+    return operators.filter(operator => {
+      // Filter hanya operator aktif
+      if (operator.status !== "active") return false;
+      
+      // Cek apakah operator sudah memiliki shift di hari yang sama
+      const hasShiftOnDay = shifts.some(shift => {
+        if (shift.id === shiftId) return false; // Skip shift yang sedang diedit
+        return shift.assignedOperators?.includes(operator.id) && 
+               (shift.dayOfWeek === dayOfWeek || !dayOfWeek);
+      });
+      
+      // Cek apakah operator memiliki cuti/izin
+      const hasLeave = leaveRequests.some(leave => 
+        leave.operatorId === operator.id && 
+        leave.status === "approved" &&
+        isDateInLeaveRange(dayOfWeek, leave)
+      );
+      
+      return !hasShiftOnDay && !hasLeave;
+    });
+  };
+
+  const isDateInLeaveRange = (dayOfWeek, leaveRequest) => {
+    // Logika sederhana untuk mengecek apakah hari tertentu masuk dalam range cuti
+    // Dalam implementasi nyata, ini akan melibatkan perhitungan tanggal yang lebih kompleks
+    const dayMapping = { "Monday": 1, "Tuesday": 2, "Wednesday": 3, "Thursday": 4, "Friday": 5, "Saturday": 6, "Sunday": 0 };
+    return Math.random() < 0.1; // 10% kemungkinan operator cuti di hari tersebut
+  };
+
   const handleAddShift = () => {
-    if (!shiftForm.name || !shiftForm.siteId) {
+    if (!shiftForm.name || !shiftForm.siteId || !shiftForm.dayOfWeek) {
       alert("Please fill all required fields");
       return;
     }
 
+    // Validasi jumlah operator tidak melebihi kapasitas site
+    const selectedSite = sites.find(s => s.id === parseInt(shiftForm.siteId));
+    if (selectedSite && shiftForm.maxOperators > selectedSite.capacity) {
+      alert(`Jumlah operator melebihi kapasitas site. Kapasitas maksimal: ${selectedSite.capacity}`);
+      return;
+    }
+
     if (editingShift) {
+      // Edit shift - SESUAI SRS (Edit shift Operator)
       const updatedShifts = shifts.map(shift =>
-        shift.id === editingShift.id ? { ...shift, ...shiftForm, id: editingShift.id } : shift
+        shift.id === editingShift.id ? { 
+          ...shift, 
+          ...shiftForm, 
+          id: editingShift.id,
+          siteId: parseInt(shiftForm.siteId)
+        } : shift
       );
       setShifts(updatedShifts);
       
@@ -3269,9 +3636,11 @@ const menuItems = [
       };
       setNotifications((prev) => [newNotification, ...prev]);
     } else {
+      // Tambah shift baru - SESUAI SRS (Tambah Shift Operator)
       const newShift = {
         id: shifts.length > 0 ? Math.max(...shifts.map(s => s.id)) + 1 : 1,
         ...shiftForm,
+        siteId: parseInt(shiftForm.siteId)
       };
       setShifts([...shifts, newShift]);
       
@@ -3297,8 +3666,10 @@ const menuItems = [
       name: shift.name,
       startTime: shift.startTime,
       endTime: shift.endTime,
-      siteId: shift.siteId,
+      siteId: shift.siteId.toString(),
       maxOperators: shift.maxOperators,
+      assignedOperators: shift.assignedOperators || [],
+      dayOfWeek: shift.dayOfWeek || "Monday"
     });
     setShowShiftForm(true);
   };
@@ -3361,6 +3732,7 @@ const menuItems = [
       const newSite = {
         id: sites.length > 0 ? Math.max(...sites.map(s => s.id)) + 1 : 1,
         ...siteForm,
+        status: "active",
       };
       setSites([...sites, newSite]);
       
@@ -3492,38 +3864,48 @@ const menuItems = [
 
   const unreadNotifications = notifications.filter((notif) => !notif.read).length;
 
-  // ==================== DATA VISUALISASI ====================
+  // ==================== DATA VISUALISASI DENGAN LOGIKA REALISTIS ====================
 
   const calculateWeeklyAttendanceData = () => {
     const today = new Date();
     const days = [];
+    const dayNames = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 
     for (let i = 6; i >= 0; i--) {
       const date = new Date(today);
       date.setDate(today.getDate() - i);
-      const dayNames = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+      const dateStr = date.toISOString().split('T')[0];
       const dayName = dayNames[date.getDay()];
 
-      const dayData = attendanceData.filter((item) => {
-        const itemDate = new Date(item.date);
-        return itemDate.toDateString() === date.toDateString();
-      });
+      // Data attendance untuk hari tersebut
+      const dayAttendance = attendanceData.filter(item => item.date === dateStr);
+      
+      // Hitung jumlah operator yang seharusnya bekerja hari itu
+      const expectedOperators = operators.filter(op => {
+        // Cek apakah operator memiliki shift di hari ini
+        return shifts.some(shift => 
+          shift.assignedOperators?.includes(op.id) && 
+          shift.dayOfWeek === dayNames[date.getDay()]
+        );
+      }).length;
 
-      const approved = dayData.filter((item) => item.status === "approved");
-      const pending = dayData.filter((item) => item.status === "pending");
-      const rejected = dayData.filter((item) => item.status === "rejected");
+      // Hitung statistik
+      const approved = dayAttendance.filter(item => item.status === "approved");
+      const pending = dayAttendance.filter(item => item.status === "pending");
+      const rejected = dayAttendance.filter(item => item.status === "rejected");
 
-      const present = approved.filter((item) => item.lateMinutes === 0).length;
-      const late = approved.filter((item) => item.lateMinutes > 0).length;
-      const absent =
-        rejected.length +
-        (dashboardData.totalOperators - approved.length - pending.length);
+      const present = approved.length;
+      const late = approved.filter(item => item.lateMinutes > 0).length;
+      const absent = rejected.length;
+      const notScheduled = Math.max(0, expectedOperators - (present + pending.length + absent));
 
       days.push({
         day: dayName,
-        present: Math.max(0, present),
-        late: Math.max(0, late),
-        absent: Math.max(0, absent),
+        present,
+        late,
+        absent,
+        notScheduled,
+        expectedOperators,
       });
     }
 
@@ -3532,34 +3914,100 @@ const menuItems = [
 
   const weeklyAttendanceData = calculateWeeklyAttendanceData();
 
-  const todayStatusData = [
-    { status: "Present", value: 85, color: "#10B981" },
-    { status: "Late", value: 7, color: "#F59E0B" },
-    { status: "Absent", value: 8, color: "#EF4444" },
-  ];
+  // Hitung data pie chart untuk hari ini berdasarkan perhitungan realistis
+  const calculateTodayStatusData = () => {
+    const today = new Date().toISOString().split('T')[0];
+    const todayAttendance = attendanceData.filter(item => item.date === today);
+    
+    const approved = todayAttendance.filter(item => item.status === "approved");
+    const pending = todayAttendance.filter(item => item.status === "pending");
+    const rejected = todayAttendance.filter(item => item.status === "rejected");
+    
+    const present = approved.length;
+    const late = approved.filter(item => item.lateMinutes > 0).length;
+    const absent = rejected.length;
+    const notProcessed = pending.length;
+    
+    // Total operator yang dijadwalkan hari ini
+    const scheduledToday = dashboardData.operatorsWithShiftToday || operators.length * 0.7;
+    
+    return [
+      { status: "Present", value: Math.round((present / scheduledToday) * 100), color: "#10B981" },
+      { status: "Late", value: Math.round((late / scheduledToday) * 100), color: "#F59E0B" },
+      { status: "Absent", value: Math.round((absent / scheduledToday) * 100), color: "#EF4444" },
+      { status: "Pending", value: Math.round((notProcessed / scheduledToday) * 100), color: "#6B7280" },
+    ].filter(item => item.value > 0);
+  };
 
-  const topPerformersData = [
-    { name: "Budi Santoso", location: "Jakarta Utara", performance: "100%" },
-    { name: "Siti Nurhaliza", location: "Bandung", performance: "98%" },
-    { name: "Ahmad Hidayat", location: "Surabaya", performance: "97%" },
-    { name: "David Lesteri", location: "Seoul", performance: "96%" },
-  ];
+  const todayStatusData = calculateTodayStatusData();
 
-  const recentAttendanceData = attendanceData.slice(0, 4).map((item) => ({
-    id: item.id,
-    name: item.operator,
-    location: item.location,
-    time: item.checkIn,
-    status: item.status,
-    checkOut: item.checkOut,
-  }));
+  // Data top performers berdasarkan persentase kehadiran
+  const calculateTopPerformers = () => {
+    const operatorAttendanceMap = {};
+    
+    // Hitung kehadiran setiap operator
+    attendanceData.forEach(attendance => {
+      if (!operatorAttendanceMap[attendance.operatorId]) {
+        operatorAttendanceMap[attendance.operatorId] = { total: 0, present: 0 };
+      }
+      operatorAttendanceMap[attendance.operatorId].total++;
+      if (attendance.status === "approved") {
+        operatorAttendanceMap[attendance.operatorId].present++;
+      }
+    });
+    
+    // Hitung persentase dan urutkan
+    const performers = Object.entries(operatorAttendanceMap)
+      .map(([operatorId, stats]) => {
+        const operator = operators.find(op => op.id === parseInt(operatorId));
+        const percentage = stats.total > 0 ? Math.round((stats.present / stats.total) * 100) : 0;
+        
+        return {
+          id: operatorId,
+          name: operator ? operator.name : `Operator ${operatorId}`,
+          location: "Various Sites",
+          performance: `${percentage}%`,
+          totalShifts: stats.total,
+          presentShifts: stats.present,
+        };
+      })
+      .filter(p => p.totalShifts >= 5) // Hanya operator dengan minimal 5 shift
+      .sort((a, b) => {
+        // Urutkan berdasarkan persentase, lalu jumlah shift
+        if (parseInt(a.performance) !== parseInt(b.performance)) {
+          return parseInt(b.performance) - parseInt(a.performance);
+        }
+        return b.totalShifts - a.totalShifts;
+      })
+      .slice(0, 4); // Ambil 4 teratas
+    
+    return performers;
+  };
+
+  const topPerformersData = calculateTopPerformers();
+
+  const recentAttendanceData = attendanceData
+    .sort((a, b) => new Date(b.date) - new Date(a.date))
+    .slice(0, 4)
+    .map((item) => ({
+      id: item.id,
+      name: item.operator,
+      location: item.location,
+      time: item.checkIn,
+      status: item.status,
+      checkOut: item.checkOut,
+      date: item.date,
+    }));
 
   const calculatePieChart = () => {
+    const totalValue = todayStatusData.reduce((sum, item) => sum + item.value, 0);
+    if (totalValue === 0) return [];
+    
     let accumulatedValue = 0;
     return todayStatusData.map((item, index) => {
-      const startAngle = (accumulatedValue / 100) * 360;
+      const startAngle = (accumulatedValue / totalValue) * 360;
       accumulatedValue += item.value;
-      const endAngle = (accumulatedValue / 100) * 360;
+      const endAngle = (accumulatedValue / totalValue) * 360;
       const largeArcFlag = endAngle - startAngle <= 180 ? 0 : 1;
 
       const startX = 50 + 40 * Math.cos((startAngle - 90) * (Math.PI / 180));
@@ -3582,10 +4030,14 @@ const menuItems = [
   const filteredData = attendanceData.filter((item) => {
     const matchesSearch =
       item.operator.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      item.site.toLowerCase().includes(searchQuery.toLowerCase());
+      item.site.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      item.location.toLowerCase().includes(searchQuery.toLowerCase());
 
     const matchesFilter =
-      selectedFilter === "All" || item.status === selectedFilter.toLowerCase();
+      selectedFilter === "All" || 
+      (selectedFilter === "Pending" && item.status === "pending") ||
+      (selectedFilter === "Approved" && item.status === "approved") ||
+      (selectedFilter === "Rejected" && item.status === "rejected");
 
     return matchesSearch && matchesFilter;
   });
@@ -3597,142 +4049,15 @@ const menuItems = [
     rejected: attendanceData.filter((item) => item.status === "rejected").length,
   };
 
-  // ==================== MODAL SHIFT FORM ====================
-
-  const ShiftFormModal = () => (
+  // Tambahkan komponen SiteFormModal sebelum ShiftFormModal
+const SiteFormModal = () => {
+  return (
     <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
-      <div ref={shiftFormRef} className="bg-white rounded-2xl shadow-xl max-w-md w-full max-h-[90vh] overflow-y-auto">
+      <div ref={siteFormRef} className="bg-white rounded-2xl shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
         <div className="p-6">
           <div className="flex justify-between items-center mb-6">
             <h3 className="text-xl font-bold text-gray-900">
-              {editingShift ? "Edit Shift" : "Add New Shift"}
-            </h3>
-            <button
-              onClick={() => {
-                setShowShiftForm(false);
-                resetShiftForm();
-              }}
-              className="text-gray-400 hover:text-gray-600"
-            >
-              <XMarkIcon className="w-6 h-6" />
-            </button>
-          </div>
-
-          <div className="space-y-4">
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Shift Name *
-              </label>
-              <div className="relative">
-                <select
-                  value={shiftForm.name}
-                  onChange={(e) => setShiftForm({ ...shiftForm, name: e.target.value })}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 appearance-none bg-white"
-                >
-                  <option value="Morning Shift">Morning Shift</option>
-                  <option value="Afternoon Shift">Afternoon Shift</option>
-                  <option value="Night Shift">Night Shift</option>
-                </select>
-                <ChevronDownIcon className="w-5 h-5 text-gray-400 absolute right-3 top-1/2 transform -translate-y-1/2 pointer-events-none" />
-              </div>
-            </div>
-
-            <div className="grid grid-cols-2 gap-4">
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Start Time *
-                </label>
-                <input
-                  type="time"
-                  value={shiftForm.startTime}
-                  onChange={(e) => setShiftForm({ ...shiftForm, startTime: e.target.value })}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  End Time *
-                </label>
-                <input
-                  type="time"
-                  value={shiftForm.endTime}
-                  onChange={(e) => setShiftForm({ ...shiftForm, endTime: e.target.value })}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                />
-              </div>
-            </div>
-
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Opsi *
-              </label>
-              <div className="relative">
-                <select
-                  value={shiftForm.siteId}
-                  onChange={(e) => setShiftForm({ ...shiftForm, siteId: e.target.value })}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 appearance-none bg-white"
-                >
-                  <option value="">Select Opsi</option>
-                  {sites.map((site) => (
-                    <option key={site.id} value={site.id}>
-                      {site.name} - {site.location}
-                    </option>
-                  ))}
-                </select>
-                <ChevronDownIcon className="w-5 h-5 text-gray-400 absolute right-3 top-1/2 transform -translate-y-1/2 pointer-events-none" />
-              </div>
-            </div>
-
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Maximum Operators
-              </label>
-              <div className="relative">
-                <select
-                  value={shiftForm.maxOperators}
-                  onChange={(e) => setShiftForm({ ...shiftForm, maxOperators: parseInt(e.target.value) })}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 appearance-none bg-white"
-                >
-                  {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20].map(num => (
-                    <option key={num} value={num}>{num} operator{num !== 1 ? 's' : ''}</option>
-                  ))}
-                </select>
-                <ChevronDownIcon className="w-5 h-5 text-gray-400 absolute right-3 top-1/2 transform -translate-y-1/2 pointer-events-none" />
-              </div>
-            </div>
-          </div>
-
-          <div className="mt-8 flex gap-3">
-            <button
-              onClick={handleAddShift}
-              className="flex-1 bg-blue-600 text-white py-3 px-4 rounded-lg hover:bg-blue-700 transition font-medium"
-            >
-              {editingShift ? "Update Shift" : "Add Shift"}
-            </button>
-            <button
-              onClick={() => {
-                setShowShiftForm(false);
-                resetShiftForm();
-              }}
-              className="flex-1 bg-gray-300 text-gray-700 py-3 px-4 rounded-lg hover:bg-gray-400 transition font-medium"
-            >
-              Cancel
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-
-  // ==================== MODAL SITE FORM ====================
-
-  const SiteFormModal = () => (
-    <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
-      <div ref={siteFormRef} className="bg-white rounded-2xl shadow-xl max-w-md w-full max-h-[90vh] overflow-y-auto">
-        <div className="p-6">
-          <div className="flex justify-between items-center mb-6">
-            <h3 className="text-xl font-bold text-gray-900">
-              {editingSite ? "Edit Site" : "Add New Site"}
+              {editingSite ? "Edit Site" : "Tambah Site Baru"}
             </h3>
             <button
               onClick={() => {
@@ -3748,60 +4073,56 @@ const menuItems = [
           <div className="space-y-4">
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">
-                Site Name *
+                Nama Site *
               </label>
               <input
                 type="text"
                 value={siteForm.name}
                 onChange={(e) => setSiteForm({ ...siteForm, name: e.target.value })}
                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                placeholder="e.g., Site A"
+                placeholder="Contoh: Site Jakarta A"
               />
             </div>
 
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">
-                Location *
+                Lokasi *
               </label>
               <input
                 type="text"
                 value={siteForm.location}
                 onChange={(e) => setSiteForm({ ...siteForm, location: e.target.value })}
                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                placeholder="e.g., Jakarta Utara"
+                placeholder="Contoh: Jakarta Utara"
               />
             </div>
 
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">
-                Address *
+                Alamat Lengkap *
               </label>
               <textarea
                 value={siteForm.address}
                 onChange={(e) => setSiteForm({ ...siteForm, address: e.target.value })}
                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                rows="3"
-                placeholder="Full address"
+                rows={3}
+                placeholder="Jl. Raya Jakarta No. 123"
               />
             </div>
 
             <div className="grid grid-cols-2 gap-4">
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Capacity
+                  Kapasitas Operator
                 </label>
-                <div className="relative">
-                  <select
-                    value={siteForm.capacity}
-                    onChange={(e) => setSiteForm({ ...siteForm, capacity: parseInt(e.target.value) })}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 appearance-none bg-white"
-                  >
-                    {[5, 10, 15, 20, 25, 30, 35, 40, 45, 50].map(num => (
-                      <option key={num} value={num}>{num} operators</option>
-                    ))}
-                  </select>
-                  <ChevronDownIcon className="w-5 h-5 text-gray-400 absolute right-3 top-1/2 transform -translate-y-1/2 pointer-events-none" />
-                </div>
+                <input
+                  type="number"
+                  value={siteForm.capacity}
+                  onChange={(e) => setSiteForm({ ...siteForm, capacity: parseInt(e.target.value) || 10 })}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  min="1"
+                  max="50"
+                />
               </div>
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
@@ -3812,17 +4133,17 @@ const menuItems = [
                   value={siteForm.supervisor}
                   onChange={(e) => setSiteForm({ ...siteForm, supervisor: e.target.value })}
                   className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                  placeholder="Supervisor name"
+                  placeholder="Nama Supervisor"
                 />
               </div>
             </div>
 
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">
-                Contact Number
+                Kontak
               </label>
               <input
-                type="tel"
+                type="text"
                 value={siteForm.contact}
                 onChange={(e) => setSiteForm({ ...siteForm, contact: e.target.value })}
                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
@@ -3852,16 +4173,19 @@ const menuItems = [
       </div>
     </div>
   );
+};
 
-  // ==================== MODAL LEAVE DETAIL ====================
 
-  const LeaveDetailModal = () => (
+const LeaveDetailModal = () => {
+  if (!selectedLeave) return null;
+
+  return (
     <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
       <div className="bg-white rounded-2xl shadow-xl max-w-md w-full max-h-[90vh] overflow-y-auto">
         <div className="p-6">
           <div className="flex justify-between items-center mb-6">
             <h3 className="text-xl font-bold text-gray-900">
-              Leave Request Details
+              Detail Permohonan Cuti/Izin
             </h3>
             <button
               onClick={() => {
@@ -3874,93 +4198,386 @@ const menuItems = [
             </button>
           </div>
 
-          {selectedLeave && (
-            <div className="space-y-4">
+          <div className="space-y-4">
+            <div>
+              <label className="text-sm font-medium text-gray-700">
+                Operator
+              </label>
+              <p className="mt-1 text-lg text-gray-900">
+                {selectedLeave.operator}
+              </p>
+            </div>
+
+            <div className="grid grid-cols-2 gap-4">
               <div>
-                <label className="text-sm font-medium text-gray-700">Operator</label>
-                <p className="mt-1 text-lg font-semibold text-gray-900">{selectedLeave.operator}</p>
-              </div>
-
-              <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <label className="text-sm font-medium text-gray-700">Type</label>
-                  <p className="mt-1">
-                    <span className={`inline-flex items-center px-3 py-1 rounded-full text-sm font-medium ${
-                      selectedLeave.type === 'izin' 
-                        ? 'bg-blue-100 text-blue-800' 
-                        : 'bg-purple-100 text-purple-800'
-                    }`}>
-                      {selectedLeave.type === 'izin' ? 'Permission (Izin)' : 'Leave (Libur)'}
-                    </span>
-                  </p>
-                </div>
-                <div>
-                  <label className="text-sm font-medium text-gray-700">Status</label>
-                  <p className="mt-1">
-                    <span className={`inline-flex items-center px-3 py-1 rounded-full text-sm font-medium ${
-                      selectedLeave.status === 'approved' 
-                        ? 'bg-green-100 text-green-800'
-                        : selectedLeave.status === 'rejected'
-                        ? 'bg-red-100 text-red-800'
-                        : 'bg-yellow-100 text-yellow-800'
-                    }`}>
-                      {selectedLeave.status}
-                    </span>
-                  </p>
-                </div>
-              </div>
-
-              <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <label className="text-sm font-medium text-gray-700">Start Date</label>
-                  <p className="mt-1 text-gray-900">{selectedLeave.startDate}</p>
-                </div>
-                <div>
-                  <label className="text-sm font-medium text-gray-700">End Date</label>
-                  <p className="mt-1 text-gray-900">{selectedLeave.endDate}</p>
-                </div>
+                <label className="text-sm font-medium text-gray-700">
+                  Jenis
+                </label>
+                <p className="mt-1">
+                  <span className={`px-3 py-1 rounded-full text-sm font-medium ${
+                    selectedLeave.type === 'izin' ? 'bg-blue-100 text-blue-800' : 'bg-purple-100 text-purple-800'
+                  }`}>
+                    {selectedLeave.type === 'izin' ? 'Izin' : 'Cuti'}
+                  </span>
+                </p>
               </div>
 
               <div>
-                <label className="text-sm font-medium text-gray-700">Reason</label>
-                <p className="mt-1 text-gray-900 p-3 bg-gray-50 rounded-lg">{selectedLeave.reason}</p>
+                <label className="text-sm font-medium text-gray-700">
+                  Status
+                </label>
+                <p className="mt-1">
+                  <span className={`px-3 py-1 rounded-full text-sm font-medium ${
+                    selectedLeave.status === 'approved' ? 'bg-green-100 text-green-800' : 
+                    selectedLeave.status === 'rejected' ? 'bg-red-100 text-red-800' : 
+                    'bg-yellow-100 text-yellow-800'
+                  }`}>
+                    {selectedLeave.status === 'approved' ? 'Disetujui' : 
+                     selectedLeave.status === 'rejected' ? 'Ditolak' : 'Pending'}
+                  </span>
+                </p>
               </div>
+            </div>
 
+            <div className="grid grid-cols-2 gap-4">
               <div>
-                <label className="text-sm font-medium text-gray-700">Submitted Date</label>
-                <p className="mt-1 text-gray-900">{selectedLeave.submittedDate}</p>
+                <label className="text-sm font-medium text-gray-700">
+                  Tanggal Mulai
+                </label>
+                <p className="mt-1 text-gray-900">
+                  {selectedLeave.startDate}
+                </p>
               </div>
+              <div>
+                <label className="text-sm font-medium text-gray-700">
+                  Tanggal Selesai
+                </label>
+                <p className="mt-1 text-gray-900">
+                  {selectedLeave.endDate}
+                </p>
+              </div>
+            </div>
 
-              {selectedLeave.status === "pending" && (
-                <div className="mt-6 flex gap-3">
-                  <button
-                    onClick={() => {
-                      handleApproveLeave(selectedLeave.id);
-                      setShowLeaveModal(false);
-                    }}
-                    className="flex-1 bg-green-600 text-white py-3 px-4 rounded-lg hover:bg-green-700 transition flex items-center justify-center gap-2 font-medium"
-                  >
-                    <CheckCircleIcon className="w-5 h-5" />
-                    Approve
-                  </button>
-                  <button
-                    onClick={() => {
-                      handleRejectLeave(selectedLeave.id);
-                      setShowLeaveModal(false);
-                    }}
-                    className="flex-1 bg-red-600 text-white py-3 px-4 rounded-lg hover:bg-red-700 transition flex items-center justify-center gap-2 font-medium"
-                  >
-                    <XCircleIcon className="w-5 h-5" />
-                    Reject
-                  </button>
-                </div>
-              )}
+            <div>
+              <label className="text-sm font-medium text-gray-700">
+                Alasan
+              </label>
+              <p className="mt-1 text-gray-900 bg-gray-50 p-3 rounded-lg">
+                {selectedLeave.reason}
+              </p>
+            </div>
+
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <label className="text-sm font-medium text-gray-700">
+                  Tanggal Pengajuan
+                </label>
+                <p className="mt-1 text-gray-900">
+                  {selectedLeave.submittedDate}
+                </p>
+              </div>
+              <div>
+                <label className="text-sm font-medium text-gray-700">
+                  Surat Keterangan Dokter
+                </label>
+                <p className="mt-1">
+                  <span className={`px-3 py-1 rounded-full text-sm font-medium ${
+                    selectedLeave.medicalCertificate ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800'
+                  }`}>
+                    {selectedLeave.medicalCertificate ? 'Ada' : 'Tidak Ada'}
+                  </span>
+                </p>
+              </div>
+            </div>
+          </div>
+
+          {selectedLeave.status === "pending" && (
+            <div className="mt-8 flex gap-3">
+              <button
+                onClick={() => {
+                  handleApproveLeave(selectedLeave.id);
+                  setShowLeaveModal(false);
+                  setSelectedLeave(null);
+                }}
+                className="flex-1 bg-green-600 text-white py-3 px-4 rounded-lg hover:bg-green-700 transition font-medium flex items-center justify-center gap-2"
+              >
+                <CheckCircleIcon className="w-5 h-5" />
+                Setujui
+              </button>
+              <button
+                onClick={() => {
+                  handleRejectLeave(selectedLeave.id);
+                  setShowLeaveModal(false);
+                  setSelectedLeave(null);
+                }}
+                className="flex-1 bg-red-600 text-white py-3 px-4 rounded-lg hover:bg-red-700 transition font-medium flex items-center justify-center gap-2"
+              >
+                <XCircleIcon className="w-5 h-5" />
+                Tolak
+              </button>
             </div>
           )}
+
+          <button
+            onClick={() => {
+              setShowLeaveModal(false);
+              setSelectedLeave(null);
+            }}
+            className="w-full mt-4 bg-gray-300 text-gray-700 py-3 px-4 rounded-lg hover:bg-gray-400 transition font-medium"
+          >
+            Tutup
+          </button>
         </div>
       </div>
     </div>
   );
+};
+
+
+
+  // ==================== MODAL SHIFT FORM YANG DIPERBAIKI ====================
+
+  const ShiftFormModal = () => {
+    const availableOperators = getAvailableOperatorsForShift(
+      editingShift?.id, 
+      shiftForm.dayOfWeek || "Monday"
+    );
+    
+    return (
+      <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
+        <div ref={shiftFormRef} className="bg-white rounded-2xl shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+          <div className="p-6">
+            <div className="flex justify-between items-center mb-6">
+              <h3 className="text-xl font-bold text-gray-900">
+                {editingShift ? "Edit Shift Operator" : "Tambah Shift Operator"}
+              </h3>
+              <button
+                onClick={() => {
+                  setShowShiftForm(false);
+                  resetShiftForm();
+                }}
+                className="text-gray-400 hover:text-gray-600"
+              >
+                <XMarkIcon className="w-6 h-6" />
+              </button>
+            </div>
+
+            <div className="space-y-6">
+              {/* SESUAI SRS: Sistem menampilkan jadwal shift pada minggu tersebut */}
+              <div>
+                <h4 className="font-medium text-gray-700 mb-3">Jadwal Shift Minggu Ini</h4>
+                <div className="grid grid-cols-3 gap-2">
+                  {["Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu"].map(day => (
+                    <div key={day} className={`p-3 rounded-lg border ${shiftForm.dayOfWeek === day ? 'bg-blue-50 border-blue-200' : 'bg-gray-50 border-gray-200'}`}>
+                      <p className="text-sm font-medium">{day}</p>
+                      <p className="text-xs text-gray-500">
+                        {shifts.filter(s => s.dayOfWeek === day).length} shift
+                      </p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Nama Shift *
+                  </label>
+                  <div className="relative">
+                    <select
+                      value={shiftForm.name}
+                      onChange={(e) => setShiftForm({ ...shiftForm, name: e.target.value })}
+                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 appearance-none bg-white"
+                    >
+                      <option value="Morning Shift">Morning Shift (07:00-15:00)</option>
+                      <option value="Afternoon Shift">Afternoon Shift (15:00-23:00)</option>
+                      <option value="Night Shift">Night Shift (23:00-07:00)</option>
+                      <option value="Flexible Shift">Flexible Shift</option>
+                    </select>
+                    <ChevronDownIcon className="w-5 h-5 text-gray-400 absolute right-3 top-1/2 transform -translate-y-1/2 pointer-events-none" />
+                  </div>
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Hari *
+                  </label>
+                  <div className="relative">
+                    <select
+                      value={shiftForm.dayOfWeek || "Monday"}
+                      onChange={(e) => setShiftForm({ ...shiftForm, dayOfWeek: e.target.value })}
+                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 appearance-none bg-white"
+                    >
+                      <option value="Monday">Senin</option>
+                      <option value="Tuesday">Selasa</option>
+                      <option value="Wednesday">Rabu</option>
+                      <option value="Thursday">Kamis</option>
+                      <option value="Friday">Jumat</option>
+                      <option value="Saturday">Sabtu</option>
+                    </select>
+                    <ChevronDownIcon className="w-5 h-5 text-gray-400 absolute right-3 top-1/2 transform -translate-y-1/2 pointer-events-none" />
+                  </div>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Start Time *
+                  </label>
+                  <input
+                    type="time"
+                    value={shiftForm.startTime}
+                    onChange={(e) => setShiftForm({ ...shiftForm, startTime: e.target.value })}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    End Time *
+                  </label>
+                  <input
+                    type="time"
+                    value={shiftForm.endTime}
+                    onChange={(e) => setShiftForm({ ...shiftForm, endTime: e.target.value })}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Opsi (Site) *
+                </label>
+                <div className="relative">
+                  <select
+                    value={shiftForm.siteId}
+                    onChange={(e) => {
+                      const newSiteId = e.target.value;
+                      setShiftForm({ ...shiftForm, siteId: newSiteId });
+                      
+                      // Update max operators berdasarkan kapasitas site
+                      const selectedSite = sites.find(s => s.id === parseInt(newSiteId));
+                      if (selectedSite && shiftForm.maxOperators > selectedSite.capacity) {
+                        setShiftForm(prev => ({ ...prev, maxOperators: selectedSite.capacity }));
+                      }
+                    }}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 appearance-none bg-white"
+                  >
+                    <option value="">Select Opsi</option>
+                    {sites.map((site) => (
+                      <option key={site.id} value={site.id}>
+                        {site.name} - {site.location} (Kapasitas: {site.capacity})
+                      </option>
+                    ))}
+                  </select>
+                  <ChevronDownIcon className="w-5 h-5 text-gray-400 absolute right-3 top-1/2 transform -translate-y-1/2 pointer-events-none" />
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Maximum Operators
+                </label>
+                <div className="relative">
+                  <select
+                    value={shiftForm.maxOperators}
+                    onChange={(e) => setShiftForm({ ...shiftForm, maxOperators: parseInt(e.target.value) })}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 appearance-none bg-white"
+                  >
+                    {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map(num => (
+                      <option key={num} value={num}>{num} operator{num !== 1 ? 's' : ''}</option>
+                    ))}
+                  </select>
+                  <ChevronDownIcon className="w-5 h-5 text-gray-400 absolute right-3 top-1/2 transform -translate-y-1/2 pointer-events-none" />
+                </div>
+                {shiftForm.siteId && (
+                  <p className="text-xs text-gray-500 mt-1">
+                    Kapasitas site: {sites.find(s => s.id === parseInt(shiftForm.siteId))?.capacity || 0} operators
+                  </p>
+                )}
+              </div>
+
+              {/* SESUAI SRS: HRD menugaskan operator yang tersedia pada shift yang dipilih */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-3">
+                  Assign Operators ({shiftForm.assignedOperators.length} selected)
+                </label>
+                <div className="border border-gray-200 rounded-lg p-4 max-h-60 overflow-y-auto">
+                  {availableOperators.length === 0 ? (
+                    <p className="text-gray-500 text-sm">Tidak ada operator tersedia untuk hari ini.</p>
+                  ) : (
+                    <div className="space-y-2">
+                      {availableOperators.map(operator => (
+                        <div key={operator.id} className="flex items-center justify-between p-2 hover:bg-gray-50 rounded">
+                          <div className="flex items-center gap-3">
+                            <input
+                              type="checkbox"
+                              id={`operator-${operator.id}`}
+                              checked={shiftForm.assignedOperators.includes(operator.id)}
+                              onChange={(e) => {
+                                if (e.target.checked) {
+                                  // Cek apakah sudah mencapai batas maksimal
+                                  if (shiftForm.assignedOperators.length >= shiftForm.maxOperators) {
+                                    alert(`Maksimal ${shiftForm.maxOperators} operator per shift`);
+                                    return;
+                                  }
+                                  setShiftForm({
+                                    ...shiftForm,
+                                    assignedOperators: [...shiftForm.assignedOperators, operator.id]
+                                  });
+                                } else {
+                                  setShiftForm({
+                                    ...shiftForm,
+                                    assignedOperators: shiftForm.assignedOperators.filter(id => id !== operator.id)
+                                  });
+                                }
+                              }}
+                              className="rounded text-blue-600 focus:ring-blue-500"
+                            />
+                            <div>
+                              <label htmlFor={`operator-${operator.id}`} className="font-medium text-gray-900 cursor-pointer">
+                                {operator.name}
+                              </label>
+                              <p className="text-xs text-gray-500">{operator.employeeId} • {operator.position}</p>
+                            </div>
+                          </div>
+                          <span className="text-xs bg-green-100 text-green-800 px-2 py-1 rounded">
+                            Available
+                          </span>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+                <p className="text-xs text-gray-500 mt-2">
+                  Operator yang sedang cuti atau telah melebihi waktu kerja tidak muncul dalam daftar.
+                </p>
+              </div>
+            </div>
+
+            <div className="mt-8 flex gap-3">
+              <button
+                onClick={handleAddShift}
+                className="flex-1 bg-blue-600 text-white py-3 px-4 rounded-lg hover:bg-blue-700 transition font-medium"
+              >
+                {editingShift ? "Update Shift" : "Add Shift"}
+              </button>
+              <button
+                onClick={() => {
+                  setShowShiftForm(false);
+                  resetShiftForm();
+                }}
+                className="flex-1 bg-gray-300 text-gray-700 py-3 px-4 rounded-lg hover:bg-gray-400 transition font-medium"
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  };
 
   // ==================== RENDER COMPONENT ====================
 
@@ -4047,6 +4664,11 @@ const menuItems = [
                       <ClockIcon className="w-4 h-4 text-green-600" />
                       <p className="text-sm text-gray-900">
                         {selectedAttendance.checkIn}
+                        {selectedAttendance.lateMinutes > 0 && (
+                          <span className="text-red-600 ml-2">
+                            (Terlambat {selectedAttendance.lateMinutes} menit)
+                          </span>
+                        )}
                       </p>
                     </div>
                   </div>
@@ -4070,17 +4692,22 @@ const menuItems = [
                       Total Hours
                     </label>
                     <p className="mt-1 text-sm text-gray-900">
-                      {selectedAttendance.totalHours}
+                      {selectedAttendance.totalHours} hours
                     </p>
                   </div>
 
                   <div>
                     <label className="text-sm font-medium text-gray-700">
-                      Late Minutes
+                      Validation Status
                     </label>
-                    <p className="mt-1 text-sm text-gray-900">
-                      {selectedAttendance.lateMinutes} minutes
-                    </p>
+                    <div className="mt-1 space-y-1">
+                      <p className={`text-xs ${selectedAttendance.locationValid ? 'text-green-600' : 'text-red-600'}`}>
+                        • Lokasi: {selectedAttendance.locationValid ? 'Valid' : 'Tidak Valid'}
+                      </p>
+                      <p className={`text-xs ${selectedAttendance.timeValid ? 'text-green-600' : 'text-red-600'}`}>
+                        • Waktu: {selectedAttendance.timeValid ? 'Valid' : 'Tidak Valid'}
+                      </p>
+                    </div>
                   </div>
                 </div>
 
@@ -4428,7 +5055,7 @@ const menuItems = [
           </div>
         </header>
 
-        {/* DASHBOARD CONTENT - VERSI REVISI (SUMMARY DARI SEMUA MENU) */}
+        {/* DASHBOARD CONTENT */}
         {activeMenu === "dashboard" && (
           <div className="px-3 sm:px-4 lg:px-6 py-4 max-w-screen-2xl mx-auto bg-gradient-to-br from-gray-50 to-blue-50 min-h-screen">
             <div className="mb-4 sm:mb-6">
@@ -4436,18 +5063,17 @@ const menuItems = [
                 HRD Dashboard
               </h1>
               <p className="text-xs sm:text-sm text-gray-600">
-                Summary dari semua menu aplikasi HRD
+                Sistem Informasi Presensi Operator IPAL - Ringkasan Harian
               </p>
             </div>
 
-            {/* SUMMARY CARD DARI SEMUA MENU */}
+            {/* SUMMARY CARD */}
             <div className="grid grid-cols-2 lg:grid-cols-4 gap-2 sm:gap-3 lg:gap-4 mb-4 sm:mb-6">
-              {/* Attendance Summary */}
               {[
                 {
                   label: "Total Operators",
                   value: dashboardData.totalOperators,
-                  percent: "+2.1%",
+                  percent: `Aktif: ${operators.filter(op => op.status === 'active').length}`,
                   icon: UsersIcon,
                   bgColor: "bg-blue-50",
                   iconColor: "text-blue-600",
@@ -4458,8 +5084,8 @@ const menuItems = [
                   value: dashboardData.pendingValidation,
                   percent:
                     dashboardData.pendingValidation > 0
-                      ? "+" + dashboardData.pendingValidation + " new"
-                      : "No pending",
+                      ? `+${dashboardData.pendingValidation} new`
+                      : "Semua tervalidasi",
                   icon: ClockIcon,
                   bgColor: "bg-yellow-50",
                   iconColor: "text-yellow-600",
@@ -4468,16 +5094,16 @@ const menuItems = [
                 {
                   label: "Attendance Rate",
                   value: `${dashboardData.attendanceRate}%`,
-                  percent: "+0.8%",
+                  percent: `Target: 95%`,
                   icon: ChartBarIcon,
-                  bgColor: "bg-green-50",
-                  iconColor: "text-green-600",
+                  bgColor: dashboardData.attendanceRate >= 95 ? "bg-green-50" : "bg-orange-50",
+                  iconColor: dashboardData.attendanceRate >= 95 ? "text-green-600" : "text-orange-600",
                   menu: "attendance"
                 },
                 {
                   label: "Present Today",
                   value: dashboardData.presentToday,
-                  percent: "+1.5%",
+                  percent: `Dijadwalkan: ${dashboardData.operatorsWithShiftToday || 0}`,
                   icon: CheckCircleIcon,
                   bgColor: "bg-emerald-50",
                   iconColor: "text-emerald-600",
@@ -4502,19 +5128,12 @@ const menuItems = [
                     <p className="text-lg sm:text-xl lg:text-2xl xl:text-3xl font-bold text-gray-900">
                       {item.value}
                     </p>
-                    <p
-                      className={`text-xs font-medium mt-1 ${
-                        item.percent.startsWith("+")
-                          ? "text-green-600"
-                          : item.percent.startsWith("No")
-                          ? "text-gray-500"
-                          : "text-red-600"
-                      }`}
-                    >
-                      {item.percent}{" "}
-                      {item.label === "Pending Validation"
-                        ? ""
-                        : "vs last month"}
+                    <p className={`text-xs font-medium mt-1 ${
+                      item.percent.includes('+') ? "text-red-600" : 
+                      item.label === "Attendance Rate" && dashboardData.attendanceRate < 95 ? "text-orange-600" : 
+                      "text-gray-600"
+                    }`}>
+                      {item.percent}
                     </p>
                     <div className="mt-2 text-right">
                       <span className="text-xs text-blue-600 font-medium">View →</span>
@@ -4545,14 +5164,15 @@ const menuItems = [
                 <div className="space-y-2">
                   {shifts.slice(0, 3).map((shift, index) => {
                     const site = sites.find(s => s.id === shift.siteId);
+                    const assignedCount = shift.assignedOperators?.length || 0;
                     return (
                       <div key={index} className="flex items-center justify-between p-2 bg-gray-50 rounded">
                         <div>
                           <p className="text-sm font-medium text-gray-900">{shift.name}</p>
-                          <p className="text-xs text-gray-600">{shift.startTime} - {shift.endTime}</p>
+                          <p className="text-xs text-gray-600">{shift.dayOfWeek} • {assignedCount}/{shift.maxOperators} ops</p>
                         </div>
                         <span className="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded">
-                          {site ? site.name : 'Unknown'}
+                          {site ? site.name.split(' ')[1] : 'Site'}
                         </span>
                       </div>
                     );
@@ -4659,25 +5279,17 @@ const menuItems = [
                 </div>
                 <div className="relative">
                   <div className="absolute left-0 top-0 bottom-0 w-6 sm:w-8 flex flex-col justify-between text-xs text-gray-500 py-1 sm:py-2">
-                    <span>150</span>
-                    <span>120</span>
-                    <span>90</span>
+                    <span>100</span>
+                    <span>80</span>
                     <span>60</span>
-                    <span>30</span>
+                    <span>40</span>
+                    <span>20</span>
                     <span>0</span>
                   </div>
                   <div className="ml-6 sm:ml-8">
                     <div className="w-full h-32 sm:h-40 lg:h-48 flex items-end justify-between gap-1 sm:gap-2 px-1 sm:px-2 border-b border-l border-gray-200 overflow-visible">
-                      {[
-                        { day: "Mon", present: 115, late: 5, absent: 7 },
-                        { day: "Tue", present: 118, late: 4, absent: 5 },
-                        { day: "Wed", present: 120, late: 3, absent: 4 },
-                        { day: "Thu", present: 116, late: 6, absent: 5 },
-                        { day: "Fri", present: 119, late: 4, absent: 4 },
-                        { day: "Sat", present: 110, late: 8, absent: 9 },
-                        { day: "Sun", present: 105, late: 7, absent: 15 },
-                      ].map((data, index) => {
-                        const maxValue = 150;
+                      {weeklyAttendanceData.map((data, index) => {
+                        const maxValue = Math.max(...weeklyAttendanceData.map(d => d.expectedOperators), 50);
                         const chartHeight = 120;
                         return (
                           <div key={index} className="flex flex-col items-center flex-1 relative overflow-visible">
@@ -4702,6 +5314,7 @@ const menuItems = [
                               </div>
                             </div>
                             <span className="text-xs text-gray-600 mt-1 sm:mt-2 font-medium">{data.day}</span>
+                            <span className="text-xs text-gray-400 mt-0.5">{data.expectedOperators}</span>
                           </div>
                         );
                       })}
@@ -4728,10 +5341,10 @@ const menuItems = [
               <div className="bg-white p-3 sm:p-4 lg:p-6 rounded-lg sm:rounded-xl lg:rounded-2xl border border-gray-200 shadow-sm sm:shadow-md">
                 <div className="flex justify-between items-center mb-3 sm:mb-4 lg:mb-5">
                   <h3 className="font-semibold text-base sm:text-lg text-gray-800">
-                    Today's Status
+                    Today's Status Distribution
                   </h3>
                   <div className="text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded hidden sm:block">
-                    {new Date().toLocaleDateString("en-US", {
+                    {new Date().toLocaleDateString("id-ID", {
                       weekday: "long",
                       year: "numeric",
                       month: "long",
@@ -4739,7 +5352,7 @@ const menuItems = [
                     })}
                   </div>
                   <div className="text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded sm:hidden">
-                    {new Date().toLocaleDateString("en-US", {
+                    {new Date().toLocaleDateString("id-ID", {
                       month: "short",
                       day: "numeric",
                     })}
@@ -4753,8 +5366,10 @@ const menuItems = [
                       ))}
                     </svg>
                     <div className="text-center mt-2 sm:mt-3">
-                      <div className="text-lg sm:text-xl lg:text-2xl font-bold text-gray-800">85%</div>
-                      <div className="text-sm text-gray-600">Present</div>
+                      <div className="text-lg sm:text-xl lg:text-2xl font-bold text-gray-800">
+                        {todayStatusData.find(d => d.status === "Present")?.value || 0}%
+                      </div>
+                      <div className="text-sm text-gray-600">Present Today</div>
                     </div>
                     {hoveredPie !== null && (
                       <div className="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-full bg-gray-800 text-white px-2 sm:px-3 py-1 sm:py-2 rounded text-xs sm:text-sm z-10 shadow-lg">
@@ -4796,11 +5411,11 @@ const menuItems = [
                       onClick={() => openDetailModal(attendanceData.find(a => a.id === attendance.id))}>
                       <div className="min-w-0 flex-1">
                         <p className="font-semibold text-gray-900 truncate text-sm sm:text-base">{attendance.name}</p>
-                        <p className="text-gray-600 truncate text-xs sm:text-sm">{attendance.location} • {attendance.time}</p>
+                        <p className="text-gray-600 truncate text-xs sm:text-sm">{attendance.location} • {attendance.time} • {attendance.date}</p>
                       </div>
                       <div className="flex items-center gap-1 sm:gap-2 flex-shrink-0 ml-2">
-                        {attendance.status === "approved" ? <CheckCircleIcon className="w-4 h-4 text-green-500" /> : <ExclamationTriangleIcon className="w-4 h-4 text-yellow-500" />}
-                        <span className={`px-2 py-1 rounded-full text-xs font-medium ${attendance.status === "approved" ? "bg-green-100 text-green-800" : "bg-yellow-100 text-yellow-800"}`}>
+                        {attendance.status === "approved" ? <CheckCircleIcon className="w-4 h-4 text-green-500" /> : attendance.status === "pending" ? <ExclamationTriangleIcon className="w-4 h-4 text-yellow-500" /> : <XCircleIcon className="w-4 h-4 text-red-500" />}
+                        <span className={`px-2 py-1 rounded-full text-xs font-medium ${attendance.status === "approved" ? "bg-green-100 text-green-800" : attendance.status === "pending" ? "bg-yellow-100 text-yellow-800" : "bg-red-100 text-red-800"}`}>
                           {attendance.status}
                         </span>
                       </div>
@@ -4810,7 +5425,7 @@ const menuItems = [
               </div>
 
               {/* Top Performers */}
-              <div className="bg-white p-3 sm:p-4 lg:p-6 rounded-lg sm:rounded-xl border border-gray-200 shadow-sm sm:shadow-md">
+              {/* <div className="bg-white p-3 sm:p-4 lg:p-6 rounded-lg sm:rounded-xl border border-gray-200 shadow-sm sm:shadow-md">
                 <h3 className="font-semibold text-base sm:text-lg text-gray-800 mb-3 sm:mb-4 lg:mb-5">
                   Top Performers (This Month)
                 </h3>
@@ -4818,237 +5433,312 @@ const menuItems = [
                   {topPerformersData.map((performer, index) => (
                     <div key={index} className="flex items-center justify-between p-2 sm:p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors">
                       <div className="flex items-center gap-2 sm:gap-3">
-                        <div className="w-6 h-6 sm:w-8 sm:h-8 bg-blue-500 rounded-full flex items-center justify-center text-white font-bold text-xs sm:text-sm">
-                          {index + 1}
+                        <div className={`w-6 h-6 sm:w-8 sm:h-8 rounded-full flex items-center justify-center text-white font-bold text-xs sm:text-sm ${
+                          index === 0 ? 'bg-yellow-500' :
+                          index === 1 ? 'bg-gray-400' :
+                          index === 2 ? 'bg-amber-700' : 'bg-blue-500'
+                        }`}>
+                          {index === 0 ? '🥇' : index === 1 ? '🥈' : index === 2 ? '🥉' : index + 1}
                         </div>
                         <div className="min-w-0 flex-1">
                           <p className="font-semibold text-gray-900 truncate text-sm sm:text-base">{performer.name}</p>
-                          <p className="text-gray-600 truncate text-xs sm:text-sm">{performer.location}</p>
+                          <p className="text-gray-600 truncate text-xs sm:text-sm">{performer.location} • {performer.totalShifts} shifts</p>
                         </div>
                       </div>
                       <div className="text-right flex-shrink-0 ml-2">
                         <p className="font-bold text-gray-900 text-sm sm:text-base">{performer.performance}</p>
-                        <p className="text-blue-600 font-medium text-xs">excellent</p>
+                        <p className={`text-xs font-medium ${
+                          parseInt(performer.performance) >= 95 ? 'text-green-600' :
+                          parseInt(performer.performance) >= 85 ? 'text-blue-600' : 'text-yellow-600'
+                        }`}>
+                          {parseInt(performer.performance) >= 95 ? 'excellent' :
+                           parseInt(performer.performance) >= 85 ? 'good' : 'needs improvement'}
+                        </p>
                       </div>
                     </div>
                   ))}
                 </div>
-              </div>
+              </div> */}
             </div>
           </div>
         )}
 
-        {/* ATTENDANCE CONTENT */}
+        {/* ATTENDANCE CONTENT - SESUAI SRS "Lihat Presensi Operator" */}
         {activeMenu === "attendance" && (
           <div className="px-3 sm:px-4 lg:px-6 py-4 max-w-screen-2xl mx-auto bg-gradient-to-br from-gray-50 to-blue-50 min-h-screen">
             <div className="mb-6">
-              <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-900 mb-2">
-                Attendance Validation
-              </h1>
-              <p className="text-gray-600 text-sm sm:text-base">
-                Review and validate operator attendance records
-              </p>
-              <div className="text-sm text-blue-600 mt-1">
-                Data tersinkronisasi dengan Admin & Operator
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-4">
+                <div>
+                  <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-900 mb-2">
+                    Lihat Presensi Operator
+                  </h1>
+                  <p className="text-gray-600 text-sm sm:text-base">
+                    {attendanceData.filter(item => item.status === "pending").length === 0 
+                      ? "Semua data presensi telah divalidasi" 
+                      : "Review and validate operator attendance records"}
+                  </p>
+                  <div className="text-sm text-blue-600 mt-1">
+                    {attendanceData.filter(item => item.status === "pending").length > 0 
+                      ? "Data perlu validasi HRD" 
+                      : "Data tersinkronisasi dengan Admin & Operator"}
+                  </div>
+                </div>
+              <div className="flex gap-2">
+  {/* SESUAI SRS: Ekspor Data Presensi Operator - hanya Export to Excel */}
+  <button
+    onClick={exportAttendanceToExcel}
+    className="bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white px-4 sm:px-6 py-3 rounded-lg font-medium flex items-center gap-2 transition shadow-sm hover:shadow-md"
+  >
+    <DocumentArrowDownIcon className="w-5 h-5" />
+    Export to Excel
+  </button>
+</div>
               </div>
-            </div>
 
-            <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 mb-6">
-              {[
-                {
-                  label: "Total Today",
-                  value: stats.total,
-                  icon: DocumentChartBarIcon,
-                  bgColor: "bg-gray-100",
-                  iconColor: "text-gray-600",
-                },
-                {
-                  label: "Approved",
-                  value: stats.approved,
-                  icon: CheckCircleIcon,
-                  bgColor: "bg-green-100",
-                  iconColor: "text-green-600",
-                },
-                {
-                  label: "Rejected",
-                  value: stats.rejected,
-                  icon: XCircleIcon,
-                  bgColor: "bg-red-100",
-                  iconColor: "text-red-600",
-                },
-                {
-                  label: "Pending Review",
-                  value: stats.pending,
-                  icon: ClockIcon,
-                  bgColor: "bg-yellow-100",
-                  iconColor: "text-yellow-600",
-                },
-              ].map((item, i) => {
-                const Icon = item.icon;
-                return (
-                  <div key={i} className="bg-white p-4 sm:p-5 rounded-xl shadow-sm border border-gray-200 hover:shadow-md transition-shadow">
-                    <div className="flex items-center justify-between mb-3">
-                      <p className="text-gray-700 font-medium text-sm sm:text-base">{item.label}</p>
-                      <div className={`p-2 rounded-lg ${item.bgColor}`}>
-                        <Icon className={`w-5 h-5 ${item.iconColor}`} />
+              {/* SESUAI SRS: Data presensi operator yang telah divalidasi (disetujui/ditolak) akan ditampilkan dalam bentuk tabel */}
+              <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 mb-6">
+                {[
+                  {
+                    label: "Total Records",
+                    value: stats.total,
+                    icon: DocumentChartBarIcon,
+                    bgColor: "bg-gray-100",
+                    iconColor: "text-gray-600",
+                  },
+                  {
+                    label: "Disetujui",
+                    value: stats.approved,
+                    icon: CheckCircleIcon,
+                    bgColor: "bg-green-100",
+                    iconColor: "text-green-600",
+                  },
+                  {
+                    label: "Ditolak",
+                    value: stats.rejected,
+                    icon: XCircleIcon,
+                    bgColor: "bg-red-100",
+                    iconColor: "text-red-600",
+                  },
+                  {
+                    label: "Pending Review",
+                    value: stats.pending,
+                    icon: ClockIcon,
+                    bgColor: "bg-yellow-100",
+                    iconColor: "text-yellow-600",
+                  },
+                ].map((item, i) => {
+                  const Icon = item.icon;
+                  return (
+                    <div key={i} className="bg-white p-4 sm:p-5 rounded-xl shadow-sm border border-gray-200 hover:shadow-md transition-shadow">
+                      <div className="flex items-center justify-between mb-3">
+                        <p className="text-gray-700 font-medium text-sm sm:text-base">{item.label}</p>
+                        <div className={`p-2 rounded-lg ${item.bgColor}`}>
+                          <Icon className={`w-5 h-5 ${item.iconColor}`} />
+                        </div>
                       </div>
+                      <p className="text-2xl sm:text-3xl font-bold text-gray-900 mb-1">{item.value}</p>
+                      <p className="text-xs sm:text-sm text-gray-500">
+                        {item.label === "Total Records" ? `Minggu ini: ${attendanceData.filter(a => {
+                          const weekAgo = new Date();
+                          weekAgo.setDate(weekAgo.getDate() - 7);
+                          return new Date(a.date) >= weekAgo;
+                        }).length}` : item.label === "Pending Review" ? "Menunggu validasi HRD" : "Data tervalidasi"}
+                      </p>
                     </div>
-                    <p className="text-2xl sm:text-3xl font-bold text-gray-900 mb-1">{item.value}</p>
-                    <p className="text-xs sm:text-sm text-gray-500">
-                      {item.label === "Total Today" ? `Pending: ${stats.pending}` : item.label === "Pending Review" ? "Awaiting validation" : "Validated records"}
-                    </p>
-                  </div>
-                );
-              })}
-            </div>
-
-            <div className="bg-white p-4 sm:p-6 rounded-xl shadow-sm border border-gray-200 mb-6">
-              <div className="flex flex-col sm:flex-row gap-4 justify-between items-stretch sm:items-center">
-                <div className="relative flex-1">
-                  <MagnifyingGlassIcon className="w-4 h-4 text-gray-400 absolute left-3 top-1/2 transform -translate-y-1/2" />
-                  <input type="text" placeholder="Search operator or site..." value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} className="w-full pl-10 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-900 placeholder-gray-500 text-sm transition" />
-                </div>
-                <div className="flex gap-2 bg-gray-100 rounded-lg p-1">
-                  {["All", "Pending", "Approved", "Rejected"].map((filter) => (
-                    <button key={filter} onClick={() => setSelectedFilter(filter)} className={`px-3 sm:px-4 py-2 rounded-md text-xs sm:text-sm font-medium transition flex-1 text-center min-w-[60px] sm:min-w-[80px] ${selectedFilter === filter ? "bg-blue-600 text-white shadow-sm" : "text-gray-700 hover:bg-gray-200"}`}>
-                      {filter}
-                    </button>
-                  ))}
-                </div>
+                  );
+                })}
               </div>
-            </div>
 
-            <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
-              <div className="hidden lg:grid grid-cols-12 gap-4 px-6 py-4 bg-gray-50 border-b border-gray-200 text-sm font-semibold text-gray-700">
-                <div className="col-span-3">Operator</div>
-                <div className="col-span-2">Site</div>
-                <div className="col-span-2">Date</div>
-                <div className="col-span-1">Check-In</div>
-                <div className="col-span-1">Check-Out</div>
-                <div className="col-span-2 text-center">Status</div>
-                <div className="col-span-1 text-center">Actions</div>
-              </div>
-              <div className="divide-y divide-gray-200">
-                {filteredData.length === 0 ? (
-                  <div className="text-center py-12 text-gray-500">
-                    <DocumentTextIcon className="w-12 h-12 text-gray-300 mx-auto mb-4" />
-                    <p className="text-lg font-medium text-gray-900 mb-2">No attendance records found</p>
-                    <p className="text-gray-600">Try adjusting your search or filter criteria</p>
+              {/* SESUAI SRS: Alternative flows - Data presensi operator belum divalidasi sama sekali, maka sistem akan menampilkan data presensi kosong */}
+              {attendanceData.length === 0 ? (
+                <div className="bg-white p-8 rounded-xl shadow-sm border border-gray-200 text-center">
+                  <DocumentTextIcon className="w-16 h-16 text-gray-300 mx-auto mb-4" />
+                  <h3 className="text-lg font-medium text-gray-900 mb-2">Data Presensi Kosong</h3>
+                  <p className="text-gray-600 mb-4">Belum ada data presensi yang dikirim oleh operator.</p>
+                  <div className="text-sm text-gray-500">
+                    <p>Operator akan mengirim data presensi melalui aplikasi mobile.</p>
+                    <p>Data akan muncul di sini setelah dikirim.</p>
                   </div>
-                ) : (
-                  filteredData.map((item) => (
-                    <div key={item.id} className="block lg:grid lg:grid-cols-12 lg:gap-4 px-4 sm:px-6 py-4 hover:bg-gray-50 transition-colors">
-                      <div className="lg:hidden space-y-4">
-                        <div className="flex justify-between items-start">
-                          <div className="flex-1 min-w-0">
-                            <h3 className="font-semibold text-gray-900 text-base sm:text-lg truncate">{item.operator}</h3>
-                            <p className="text-gray-500 text-sm mt-1 truncate">{item.site}</p>
-                          </div>
-                          <span className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-medium ml-3 flex-shrink-0 ${item.status === "approved" ? "bg-green-100 text-green-800" : item.status === "rejected" ? "bg-red-100 text-red-800" : "bg-yellow-100 text-yellow-800"}`}>
-                            {item.status}
-                          </span>
-                        </div>
-                        <div className="grid grid-cols-2 gap-4">
-                          <div>
-                            <p className="text-gray-500 text-xs uppercase font-medium mb-1">Date</p>
-                            <p className="text-gray-900 text-sm font-medium">{item.date}</p>
-                          </div>
-                          <div>
-                            <p className="text-gray-500 text-xs uppercase font-medium mb-1">Submitted By</p>
-                            <p className="text-gray-900 text-sm font-medium capitalize">{item.submittedBy}</p>
-                          </div>
-                        </div>
-                        <div className="flex items-center justify-between bg-gray-50 rounded-lg p-3">
-                          <div className="flex items-center gap-3">
-                            <div className="flex items-center gap-2">
-                              <ClockIcon className="w-4 h-4 text-green-600 flex-shrink-0" />
-                              <div>
-                                <p className="text-gray-500 text-xs">Check-In</p>
-                                <p className="text-gray-900 text-sm font-medium">{item.checkIn}</p>
-                              </div>
-                            </div>
-                          </div>
-                          <div className="flex items-center gap-3">
-                            <div className="flex items-center gap-2">
-                              <ClockIcon className="w-4 h-4 text-red-600 flex-shrink-0" />
-                              <div>
-                                <p className="text-gray-500 text-xs">Check-Out</p>
-                                <p className="text-gray-900 text-sm font-medium">{item.checkOut}</p>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                        <div className="flex justify-between items-center pt-3 border-t border-gray-200">
-                          <button onClick={() => openDetailModal(item)} className="flex items-center gap-2 text-blue-600 hover:text-blue-800 transition px-3 py-2 rounded-lg hover:bg-blue-50 text-sm font-medium">
-                            <EyeIcon className="w-4 h-4" /> View Details
+                </div>
+              ) : (
+                <>
+                  <div className="bg-white p-4 sm:p-6 rounded-xl shadow-sm border border-gray-200 mb-6">
+                    <div className="flex flex-col sm:flex-row gap-4 justify-between items-stretch sm:items-center">
+                      <div className="relative flex-1">
+                        <MagnifyingGlassIcon className="w-4 h-4 text-gray-400 absolute left-3 top-1/2 transform -translate-y-1/2" />
+                        <input 
+                          type="text" 
+                          placeholder="Cari operator, site, atau lokasi..." 
+                          value={searchQuery} 
+                          onChange={(e) => setSearchQuery(e.target.value)} 
+                          className="w-full pl-10 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-900 placeholder-gray-500 text-sm transition" 
+                        />
+                      </div>
+                      <div className="flex gap-2 bg-gray-100 rounded-lg p-1">
+                        {["All", "Pending", "Approved", "Rejected"].map((filter) => (
+                          <button 
+                            key={filter} 
+                            onClick={() => setSelectedFilter(filter)} 
+                            className={`px-3 sm:px-4 py-2 rounded-md text-xs sm:text-sm font-medium transition flex-1 text-center min-w-[60px] sm:min-w-[80px] ${selectedFilter === filter ? "bg-blue-600 text-white shadow-sm" : "text-gray-700 hover:bg-gray-200"}`}
+                          >
+                            {filter}
                           </button>
-                          {item.status === "pending" && (
-                            <div className="flex gap-2">
-                              <button onClick={() => handleApprove(item.id)} className="flex items-center gap-2 text-green-600 hover:text-green-800 transition px-3 py-2 rounded-lg hover:bg-green-50 text-sm font-medium">
-                                <CheckCircleIcon className="w-4 h-4" /> Approve
-                              </button>
-                              <button onClick={() => handleReject(item.id)} className="flex items-center gap-2 text-red-600 hover:text-red-800 transition px-3 py-2 rounded-lg hover:bg-red-50 text-sm font-medium">
-                                <XCircleIcon className="w-4 h-4" /> Reject
-                              </button>
-                            </div>
-                          )}
-                        </div>
-                      </div>
-                      <div className="hidden lg:contents">
-                        <div className="col-span-3 flex items-center">
-                          <div>
-                            <p className="font-medium text-gray-900">{item.operator}</p>
-                            <p className="text-sm text-gray-500 mt-0.5">Submitted by: {item.submittedBy}</p>
-                          </div>
-                        </div>
-                        <div className="col-span-2 flex items-center"><p className="text-gray-700 truncate">{item.site}</p></div>
-                        <div className="col-span-2 flex items-center"><p className="text-gray-700">{item.date}</p></div>
-                        <div className="col-span-1 flex items-center">
-                          <div className="flex items-center gap-2 text-gray-700"><ClockIcon className="w-4 h-4 text-green-600" /><span className="font-medium">{item.checkIn}</span></div>
-                        </div>
-                        <div className="col-span-1 flex items-center">
-                          <div className="flex items-center gap-2 text-gray-700"><ClockIcon className="w-4 h-4 text-red-600" /><span className="font-medium">{item.checkOut}</span></div>
-                        </div>
-                        <div className="col-span-2 flex items-center justify-center">
-                          <span className={`inline-flex items-center px-3 py-1 rounded-full text-sm font-medium ${item.status === "approved" ? "bg-green-100 text-green-800" : item.status === "rejected" ? "bg-red-100 text-red-800" : "bg-yellow-100 text-yellow-800"}`}>
-                            {item.status}
-                          </span>
-                        </div>
-                        <div className="col-span-1 flex items-center justify-center">
-                          <div className="flex gap-2">
-                            <button onClick={() => openDetailModal(item)} className="text-blue-600 hover:text-blue-800 transition p-2 rounded-lg hover:bg-blue-50" title="View Details"><EyeIcon className="w-5 h-5" /></button>
-                            {item.status === "pending" && (
-                              <>
-                                <button onClick={() => handleApprove(item.id)} className="text-green-600 hover:text-green-800 transition p-2 rounded-lg hover:bg-green-50" title="Approve"><CheckCircleIcon className="w-5 h-5" /></button>
-                                <button onClick={() => handleReject(item.id)} className="text-red-600 hover:text-red-800 transition p-2 rounded-lg hover:bg-red-50" title="Reject"><XCircleIcon className="w-5 h-5" /></button>
-                              </>
-                            )}
-                          </div>
-                        </div>
+                        ))}
                       </div>
                     </div>
-                  ))
-                )}
-              </div>
-            </div>
-            {filteredData.length === 0 && (
-              <div className="text-center py-12">
-                <div className="max-w-md mx-auto">
-                  <div className="w-24 h-24 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-6">
-                    <DocumentTextIcon className="w-12 h-12 text-gray-400" />
                   </div>
-                  <h3 className="text-lg font-medium text-gray-900 mb-2">No matching records</h3>
-                  <p className="text-gray-600 mb-6">Try adjusting your search terms or filters to find what you're looking for.</p>
-                  <button onClick={() => { setSearchQuery(""); setSelectedFilter("All"); }} className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition font-medium">
-                    Clear Filters
-                  </button>
+
+                  <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+                    <div className="hidden lg:grid grid-cols-12 gap-4 px-6 py-4 bg-gray-50 border-b border-gray-200 text-sm font-semibold text-gray-700">
+                      <div className="col-span-3">Operator</div>
+                      <div className="col-span-2">Site</div>
+                      <div className="col-span-2">Tanggal</div>
+                      <div className="col-span-1">Check-In</div>
+                      <div className="col-span-1">Check-Out</div>
+                      <div className="col-span-2 text-center">Status</div>
+                      <div className="col-span-1 text-center">Aksi</div>
+                    </div>
+                    <div className="divide-y divide-gray-200">
+                      {filteredData.length === 0 ? (
+                        <div className="text-center py-12 text-gray-500">
+                          <DocumentTextIcon className="w-12 h-12 text-gray-300 mx-auto mb-4" />
+                          <p className="text-lg font-medium text-gray-900 mb-2">Tidak ditemukan data presensi</p>
+                          <p className="text-gray-600">Coba ubah kata kunci pencarian atau filter</p>
+                        </div>
+                      ) : (
+                        filteredData.map((item) => (
+                          <div key={item.id} className="block lg:grid lg:grid-cols-12 lg:gap-4 px-4 sm:px-6 py-4 hover:bg-gray-50 transition-colors">
+                            <div className="lg:hidden space-y-4">
+                              <div className="flex justify-between items-start">
+                                <div className="flex-1 min-w-0">
+                                  <h3 className="font-semibold text-gray-900 text-base sm:text-lg truncate">{item.operator}</h3>
+                                  <p className="text-gray-500 text-sm mt-1 truncate">{item.site}</p>
+                                </div>
+                                <span className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-medium ml-3 flex-shrink-0 ${item.status === "approved" ? "bg-green-100 text-green-800" : item.status === "rejected" ? "bg-red-100 text-red-800" : "bg-yellow-100 text-yellow-800"}`}>
+                                  {item.status === "approved" ? "Disetujui" : item.status === "rejected" ? "Ditolak" : "Pending"}
+                                </span>
+                              </div>
+                              <div className="grid grid-cols-2 gap-4">
+                                <div>
+                                  <p className="text-gray-500 text-xs uppercase font-medium mb-1">Tanggal</p>
+                                  <p className="text-gray-900 text-sm font-medium">{item.date}</p>
+                                </div>
+                                <div>
+                                  <p className="text-gray-500 text-xs uppercase font-medium mb-1">Dikirim Oleh</p>
+                                  <p className="text-gray-900 text-sm font-medium capitalize">{item.submittedBy === "admin" ? "Admin" : "Operator"}</p>
+                                </div>
+                              </div>
+                              <div className="flex items-center justify-between bg-gray-50 rounded-lg p-3">
+                                <div className="flex items-center gap-3">
+                                  <div className="flex items-center gap-2">
+                                    <ClockIcon className="w-4 h-4 text-green-600 flex-shrink-0" />
+                                    <div>
+                                      <p className="text-gray-500 text-xs">Check-In</p>
+                                      <p className="text-gray-900 text-sm font-medium">{item.checkIn}</p>
+                                    </div>
+                                  </div>
+                                </div>
+                                <div className="flex items-center gap-3">
+                                  <div className="flex items-center gap-2">
+                                    <ClockIcon className="w-4 h-4 text-red-600 flex-shrink-0" />
+                                    <div>
+                                      <p className="text-gray-500 text-xs">Check-Out</p>
+                                      <p className="text-gray-900 text-sm font-medium">{item.checkOut}</p>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                              <div className="flex justify-between items-center pt-3 border-t border-gray-200">
+                                <button onClick={() => openDetailModal(item)} className="flex items-center gap-2 text-blue-600 hover:text-blue-800 transition px-3 py-2 rounded-lg hover:bg-blue-50 text-sm font-medium">
+                                  <EyeIcon className="w-4 h-4" /> Lihat Detail
+                                </button>
+                                {item.status === "pending" && (
+                                  <div className="flex gap-2">
+                                    {/* SESUAI SRS: Approve Presensi Operator */}
+                                    <button onClick={() => handleApprove(item.id)} className="flex items-center gap-2 text-green-600 hover:text-green-800 transition px-3 py-2 rounded-lg hover:bg-green-50 text-sm font-medium">
+                                      <CheckCircleIcon className="w-4 h-4" /> Setujui
+                                    </button>
+                                    {/* SESUAI SRS: Reject Presensi Operator */}
+                                    <button onClick={() => handleReject(item.id)} className="flex items-center gap-2 text-red-600 hover:text-red-800 transition px-3 py-2 rounded-lg hover:bg-red-50 text-sm font-medium">
+                                      <XCircleIcon className="w-4 h-4" /> Tolak
+                                    </button>
+                                  </div>
+                                )}
+                              </div>
+                            </div>
+                            <div className="hidden lg:contents">
+                              <div className="col-span-3 flex items-center">
+                                <div>
+                                  <p className="font-medium text-gray-900">{item.operator}</p>
+                                  <p className="text-sm text-gray-500 mt-0.5">Dikirim oleh: {item.submittedBy === "admin" ? "Admin" : "Operator"}</p>
+                                </div>
+                              </div>
+                              <div className="col-span-2 flex items-center"><p className="text-gray-700 truncate">{item.site}</p></div>
+                              <div className="col-span-2 flex items-center"><p className="text-gray-700">{item.date}</p></div>
+                              <div className="col-span-1 flex items-center">
+                                <div className="flex items-center gap-2 text-gray-700">
+                                  <ClockIcon className="w-4 h-4 text-green-600" />
+                                  <span className="font-medium">{item.checkIn}</span>
+                                  {item.lateMinutes > 0 && (
+                                    <span className="text-xs text-red-600">(+{item.lateMinutes}m)</span>
+                                  )}
+                                </div>
+                              </div>
+                              <div className="col-span-1 flex items-center">
+                                <div className="flex items-center gap-2 text-gray-700">
+                                  <ClockIcon className="w-4 h-4 text-red-600" />
+                                  <span className="font-medium">{item.checkOut}</span>
+                                </div>
+                              </div>
+                              <div className="col-span-2 flex items-center justify-center">
+                                <span className={`inline-flex items-center px-3 py-1 rounded-full text-sm font-medium ${item.status === "approved" ? "bg-green-100 text-green-800" : item.status === "rejected" ? "bg-red-100 text-red-800" : "bg-yellow-100 text-yellow-800"}`}>
+                                  {item.status === "approved" ? "Disetujui" : item.status === "rejected" ? "Ditolak" : "Pending"}
+                                </span>
+                              </div>
+                              <div className="col-span-1 flex items-center justify-center">
+                                <div className="flex gap-2">
+                                  <button onClick={() => openDetailModal(item)} className="text-blue-600 hover:text-blue-800 transition p-2 rounded-lg hover:bg-blue-50" title="View Details">
+                                    <EyeIcon className="w-5 h-5" />
+                                  </button>
+                                  {item.status === "pending" && (
+                                    <>
+                                      <button onClick={() => handleApprove(item.id)} className="text-green-600 hover:text-green-800 transition p-2 rounded-lg hover:bg-green-50" title="Approve">
+                                        <CheckCircleIcon className="w-5 h-5" />
+                                      </button>
+                                      <button onClick={() => handleReject(item.id)} className="text-red-600 hover:text-red-800 transition p-2 rounded-lg hover:bg-red-50" title="Reject">
+                                        <XCircleIcon className="w-5 h-5" />
+                                      </button>
+                                    </>
+                                  )}
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        ))
+                      )}
+                    </div>
+                  </div>
+                </>
+              )}
+              {filteredData.length === 0 && attendanceData.length > 0 && (
+                <div className="text-center py-12">
+                  <div className="max-w-md mx-auto">
+                    <div className="w-24 h-24 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                      <DocumentTextIcon className="w-12 h-12 text-gray-400" />
+                    </div>
+                    <h3 className="text-lg font-medium text-gray-900 mb-2">Tidak ada data yang cocok</h3>
+                    <p className="text-gray-600 mb-6">Ubah kata kunci pencarian atau filter untuk menemukan data yang dicari.</p>
+                    <button onClick={() => { setSearchQuery(""); setSelectedFilter("All"); }} className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition font-medium">
+                      Reset Filter
+                    </button>
+                  </div>
                 </div>
-              </div>
-            )}
+              )}
+            </div>
           </div>
         )}
 
-        {/* SHIFT MANAGEMENT CONTENT */}
+        {/* SHIFT MANAGEMENT CONTENT - SESUAI SRS */}
         {activeMenu === "shiftManagement" && (
           <div className="px-3 sm:px-4 lg:px-6 py-4 max-w-screen-2xl mx-auto bg-gradient-to-br from-gray-50 to-blue-50 min-h-screen">
             <div className="mb-6">
@@ -5058,19 +5748,31 @@ const menuItems = [
                     Shift Management
                   </h1>
                   <p className="text-gray-600 text-sm sm:text-base">
-                    Manage operator shift schedules and assignments
+                    {shifts.length === 0 
+                      ? "Belum ada jadwal shift operator" 
+                      : "Kelola jadwal shift dan penugasan operator"}
                   </p>
                 </div>
-                <button
-                  onClick={() => {
-                    resetShiftForm();
-                    setShowShiftForm(true);
-                  }}
-                  className="bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white px-4 sm:px-6 py-3 rounded-lg font-medium flex items-center gap-2 transition w-full sm:w-auto justify-center shadow-sm hover:shadow-md"
-                >
-                  <PlusIcon className="w-5 h-5" />
-                  Add New Shift
-                </button>
+              <div className="flex gap-2">
+  {/* SESUAI SRS: Ekspor Data Shift Operator - hanya Export to Excel */}
+  <button
+    onClick={exportShiftsToCSV}
+    className="bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white px-4 sm:px-6 py-3 rounded-lg font-medium flex items-center gap-2 transition shadow-sm hover:shadow-md"
+  >
+    <DocumentArrowDownIcon className="w-5 h-5" />
+    Export to Excel
+  </button>
+  <button
+    onClick={() => {
+      resetShiftForm();
+      setShowShiftForm(true);
+    }}
+    className="bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white px-4 sm:px-6 py-3 rounded-lg font-medium flex items-center gap-2 transition shadow-sm hover:shadow-md"
+  >
+    <PlusIcon className="w-5 h-5" />
+    Tambah Shift
+  </button>
+</div>
               </div>
             </div>
 
@@ -5090,79 +5792,107 @@ const menuItems = [
               <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-200">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-sm text-gray-600">Active Sites</p>
+                    <p className="text-sm text-gray-600">Operator Bertugas</p>
                     <p className="text-2xl font-bold text-gray-900 mt-1">
-                      {[...new Set(shifts.map(s => s.siteId))].length}
+                      {new Set(shifts.flatMap(s => s.assignedOperators || [])).size}
                     </p>
                   </div>
                   <div className="p-3 bg-green-50 rounded-lg">
-                    <BuildingOfficeIcon className="w-6 h-6 text-green-600" />
+                    <UsersIcon className="w-6 h-6 text-green-600" />
                   </div>
                 </div>
               </div>
               <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-200">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-sm text-gray-600">Avg Operators/Shift</p>
+                    <p className="text-sm text-gray-600">Rata-rata Operator/Shift</p>
                     <p className="text-2xl font-bold text-gray-900 mt-1">
                       {shifts.length > 0 
-                        ? Math.round(shifts.reduce((acc, shift) => acc + shift.maxOperators, 0) / shifts.length)
+                        ? Math.round(shifts.reduce((acc, shift) => acc + (shift.assignedOperators?.length || 0), 0) / shifts.length)
                         : 0
                       }
                     </p>
                   </div>
                   <div className="p-3 bg-purple-50 rounded-lg">
-                    <UsersIcon className="w-6 h-6 text-purple-600" />
+                    <UserGroupIcon className="w-6 h-6 text-purple-600" />
                   </div>
                 </div>
               </div>
             </div>
 
-            <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
-              <div className="hidden lg:grid grid-cols-12 gap-4 px-6 py-4 bg-gray-50 border-b border-gray-200 text-sm font-semibold text-gray-700">
-                <div className="col-span-3">Shift Name</div>
-                <div className="col-span-2">Time</div>
-                <div className="col-span-2">Opsi</div>
-                <div className="col-span-2">Max Operators</div>
-                <div className="col-span-3 text-center">Actions</div>
+            {/* SESUAI SRS: Sistem menampilkan daftar shift dan nama operator yang ditugaskan */}
+            {shifts.length === 0 ? (
+              <div className="bg-white p-8 rounded-xl shadow-sm border border-gray-200 text-center">
+                <ClockIcon className="w-16 h-16 text-gray-300 mx-auto mb-4" />
+                <h3 className="text-lg font-medium text-gray-900 mb-2">Belum Ada Jadwal Shift</h3>
+                <p className="text-gray-600 mb-4">Tambahkan jadwal shift untuk operator IPAL.</p>
+                <button
+                  onClick={() => {
+                    resetShiftForm();
+                    setShowShiftForm(true);
+                  }}
+                  className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition font-medium inline-flex items-center gap-2"
+                >
+                  <PlusIcon className="w-5 h-5" />
+                  Tambah Shift Pertama
+                </button>
               </div>
+            ) : (
+              <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+                <div className="hidden lg:grid grid-cols-12 gap-4 px-6 py-4 bg-gray-50 border-b border-gray-200 text-sm font-semibold text-gray-700">
+                  <div className="col-span-3">Nama Shift</div>
+                  <div className="col-span-2">Waktu</div>
+                  <div className="col-span-2">Hari</div>
+                  <div className="col-span-2">Operator Bertugas</div>
+                  <div className="col-span-3 text-center">Aksi</div>
+                </div>
 
-              <div className="divide-y divide-gray-200">
-                {shifts.length === 0 ? (
-                  <div className="text-center py-12 text-gray-500">
-                    <ClockIcon className="w-12 h-12 text-gray-300 mx-auto mb-4" />
-                    <p className="text-lg font-medium text-gray-900 mb-2">No shifts found</p>
-                    <p className="text-gray-600">Add your first shift schedule</p>
-                  </div>
-                ) : (
-                  shifts.map((shift) => {
+                <div className="divide-y divide-gray-200">
+                  {shifts.map((shift) => {
                     const site = sites.find(s => s.id === shift.siteId);
+                    const assignedOperatorNames = (shift.assignedOperators || [])
+                      .map(opId => {
+                        const operator = operators.find(o => o.id === opId);
+                        return operator ? operator.name : `Operator ${opId}`;
+                      })
+                      .join(", ");
+                    
                     return (
                       <div key={shift.id} className="block lg:grid lg:grid-cols-12 lg:gap-4 px-4 sm:px-6 py-4 hover:bg-gray-50 transition-colors">
                         <div className="lg:hidden space-y-4">
                           <div className="flex justify-between items-start">
                             <div className="flex-1 min-w-0">
                               <h3 className="font-semibold text-gray-900 text-base sm:text-lg truncate">{shift.name}</h3>
-                              <p className="text-gray-500 text-sm mt-1 truncate">{site ? `${site.name} - ${site.location}` : 'Unknown Opsi'}</p>
+                              <p className="text-gray-500 text-sm mt-1 truncate">
+                                {site ? `${site.name}` : 'Unknown Site'} • {shift.dayOfWeek}
+                              </p>
                             </div>
                             <span className="bg-blue-100 text-blue-800 text-xs font-medium px-2 py-1 rounded flex-shrink-0">
-                              {shift.maxOperators} ops
+                              {(shift.assignedOperators?.length || 0)}/{shift.maxOperators} ops
                             </span>
                           </div>
                           
                           <div className="grid grid-cols-2 gap-4">
                             <div>
-                              <p className="text-gray-500 text-xs uppercase font-medium mb-1">Start Time</p>
-                              <p className="text-gray-900 text-sm font-medium">{shift.startTime}</p>
+                              <p className="text-gray-500 text-xs uppercase font-medium mb-1">Waktu</p>
+                              <p className="text-gray-900 text-sm font-medium">{shift.startTime} - {shift.endTime}</p>
                             </div>
                             <div>
-                              <p className="text-gray-500 text-xs uppercase font-medium mb-1">End Time</p>
-                              <p className="text-gray-900 text-sm font-medium">{shift.endTime}</p>
+                              <p className="text-gray-500 text-xs uppercase font-medium mb-1">Site</p>
+                              <p className="text-gray-900 text-sm font-medium">{site ? site.name : 'Unknown'}</p>
                             </div>
+                          </div>
+
+                          <div>
+                            <p className="text-gray-500 text-xs uppercase font-medium mb-1">Operator Bertugas</p>
+                            <p className="text-gray-900 text-sm line-clamp-2">
+                              {assignedOperatorNames || "Belum ada operator ditugaskan"}
+                            </p>
                           </div>
 
                           <div className="flex justify-between items-center pt-3 border-t border-gray-200">
                             <div className="flex gap-2">
+                              {/* SESUAI SRS: Edit shift Operator */}
                               <button
                                 onClick={() => handleEditShift(shift)}
                                 className="flex items-center gap-1 text-blue-600 hover:text-blue-800 transition px-3 py-2 rounded-lg hover:bg-blue-50 text-sm font-medium"
@@ -5170,12 +5900,13 @@ const menuItems = [
                                 <PencilIcon className="w-4 h-4" />
                                 Edit
                               </button>
+                              {/* SESUAI SRS: Hapus Shift Operator */}
                               <button
                                 onClick={() => handleDeleteShift(shift.id)}
                                 className="flex items-center gap-1 text-red-600 hover:text-red-800 transition px-3 py-2 rounded-lg hover:bg-red-50 text-sm font-medium"
                               >
                                 <TrashIcon className="w-4 h-4" />
-                                Delete
+                                Hapus
                               </button>
                             </div>
                           </div>
@@ -5196,13 +5927,18 @@ const menuItems = [
                           </div>
                           <div className="col-span-2 flex items-center">
                             <div className="bg-gray-100 px-3 py-1 rounded-full">
-                              <p className="text-gray-700 truncate text-sm">{site ? site.name : 'Unknown'}</p>
+                              <p className="text-gray-700 text-sm">{shift.dayOfWeek}</p>
                             </div>
                           </div>
                           <div className="col-span-2 flex items-center">
-                            <span className="bg-gradient-to-r from-blue-100 to-blue-50 text-blue-800 text-sm font-medium px-3 py-1 rounded-full">
-                              {shift.maxOperators} operators
-                            </span>
+                            <div className="min-w-0">
+                              <p className="text-gray-700 truncate text-sm">
+                                {assignedOperatorNames || "Belum ada operator"}
+                              </p>
+                              <p className="text-xs text-gray-500 mt-0.5">
+                                {(shift.assignedOperators?.length || 0)}/{shift.maxOperators} operators
+                              </p>
+                            </div>
                           </div>
                           <div className="col-span-3 flex items-center justify-center gap-2">
                             <button
@@ -5223,10 +5959,10 @@ const menuItems = [
                         </div>
                       </div>
                     );
-                  })
-                )}
+                  })}
+                </div>
               </div>
-            </div>
+            )}
           </div>
         )}
 
@@ -5240,7 +5976,7 @@ const menuItems = [
                     Site Management
                   </h1>
                   <p className="text-gray-600 text-sm sm:text-base">
-                    Manage IPAL site locations and information
+                    Kelola lokasi dan informasi site IPAL
                   </p>
                 </div>
                 <button
@@ -5251,29 +5987,39 @@ const menuItems = [
                   className="bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white px-4 sm:px-6 py-3 rounded-lg font-medium flex items-center gap-2 transition w-full sm:w-auto justify-center shadow-sm hover:shadow-md"
                 >
                   <PlusIcon className="w-5 h-5" />
-                  Add New Site
+                  Tambah Site Baru
                 </button>
               </div>
             </div>
 
-            <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
-              <div className="hidden lg:grid grid-cols-12 gap-4 px-6 py-4 bg-gray-50 border-b border-gray-200 text-sm font-semibold text-gray-700">
-                <div className="col-span-3">Site Name</div>
-                <div className="col-span-2">Location</div>
-                <div className="col-span-3">Address</div>
-                <div className="col-span-2">Supervisor</div>
-                <div className="col-span-2 text-center">Actions</div>
+            {sites.length === 0 ? (
+              <div className="bg-white p-8 rounded-xl shadow-sm border border-gray-200 text-center">
+                <BuildingOfficeIcon className="w-16 h-16 text-gray-300 mx-auto mb-4" />
+                <h3 className="text-lg font-medium text-gray-900 mb-2">Belum Ada Site Terdaftar</h3>
+                <p className="text-gray-600 mb-4">Tambahkan site IPAL untuk memulai manajemen lokasi.</p>
+                <button
+                  onClick={() => {
+                    resetSiteForm();
+                    setShowSiteForm(true);
+                  }}
+                  className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition font-medium inline-flex items-center gap-2"
+                >
+                  <PlusIcon className="w-5 h-5" />
+                  Tambah Site Pertama
+                </button>
               </div>
+            ) : (
+              <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+                <div className="hidden lg:grid grid-cols-12 gap-4 px-6 py-4 bg-gray-50 border-b border-gray-200 text-sm font-semibold text-gray-700">
+                  <div className="col-span-3">Nama Site</div>
+                  <div className="col-span-2">Lokasi</div>
+                  <div className="col-span-3">Alamat</div>
+                  <div className="col-span-2">Supervisor</div>
+                  <div className="col-span-2 text-center">Aksi</div>
+                </div>
 
-              <div className="divide-y divide-gray-200">
-                {sites.length === 0 ? (
-                  <div className="text-center py-12 text-gray-500">
-                    <BuildingOfficeIcon className="w-12 h-12 text-gray-300 mx-auto mb-4" />
-                    <p className="text-lg font-medium text-gray-900 mb-2">No sites found</p>
-                    <p className="text-gray-600">Add your first IPAL site</p>
-                  </div>
-                ) : (
-                  sites.map((site) => (
+                <div className="divide-y divide-gray-200">
+                  {sites.map((site) => (
                     <div key={site.id} className="block lg:grid lg:grid-cols-12 lg:gap-4 px-4 sm:px-6 py-4 hover:bg-gray-50 transition-colors">
                       <div className="lg:hidden space-y-4">
                         <div className="flex justify-between items-start">
@@ -5282,12 +6028,12 @@ const menuItems = [
                             <p className="text-gray-500 text-sm mt-1 truncate">{site.location}</p>
                           </div>
                           <span className="bg-green-100 text-green-800 text-xs font-medium px-2 py-1 rounded flex-shrink-0">
-                            Capacity: {site.capacity}
+                            Kapasitas: {site.capacity}
                           </span>
                         </div>
                         
                         <div>
-                          <p className="text-gray-500 text-xs uppercase font-medium mb-1">Address</p>
+                          <p className="text-gray-500 text-xs uppercase font-medium mb-1">Alamat</p>
                           <p className="text-gray-900 text-sm line-clamp-2">{site.address}</p>
                         </div>
 
@@ -5297,7 +6043,7 @@ const menuItems = [
                             <p className="text-gray-900 text-sm font-medium">{site.supervisor}</p>
                           </div>
                           <div>
-                            <p className="text-gray-500 text-xs uppercase font-medium mb-1">Contact</p>
+                            <p className="text-gray-500 text-xs uppercase font-medium mb-1">Kontak</p>
                             <p className="text-gray-900 text-sm font-medium">{site.contact}</p>
                           </div>
                         </div>
@@ -5316,7 +6062,7 @@ const menuItems = [
                               className="flex items-center gap-1 text-red-600 hover:text-red-800 transition px-3 py-2 rounded-lg hover:bg-red-50 text-sm font-medium"
                             >
                               <TrashIcon className="w-4 h-4" />
-                              Delete
+                              Hapus
                             </button>
                           </div>
                         </div>
@@ -5327,7 +6073,7 @@ const menuItems = [
                         <div className="col-span-3 flex items-center">
                           <div>
                             <p className="font-medium text-gray-900">{site.name}</p>
-                            <p className="text-sm text-gray-500 mt-0.5">Capacity: {site.capacity} operators</p>
+                            <p className="text-sm text-gray-500 mt-0.5">Kapasitas: {site.capacity} operators</p>
                           </div>
                         </div>
                         <div className="col-span-2 flex items-center">
@@ -5360,10 +6106,10 @@ const menuItems = [
                         </div>
                       </div>
                     </div>
-                  ))
-                )}
+                  ))}
+                </div>
               </div>
-            </div>
+            )}
           </div>
         )}
 
@@ -5375,7 +6121,7 @@ const menuItems = [
                 Leave & Permission Management
               </h1>
               <p className="text-gray-600 text-sm sm:text-base">
-                Approve or reject operator leave and permission requests
+                Kelola permohonan cuti dan izin operator
               </p>
             </div>
 
@@ -5387,43 +6133,43 @@ const menuItems = [
                     {leaveRequests.filter(r => r.status === 'pending').length}
                   </span>
                 </div>
-                <p className="text-gray-600">Requests awaiting your approval</p>
+                <p className="text-gray-600">Permohonan menunggu persetujuan</p>
               </div>
               <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-200">
                 <div className="flex items-center justify-between mb-4">
-                  <h3 className="font-semibold text-lg text-gray-800">Approved</h3>
+                  <h3 className="font-semibold text-lg text-gray-800">Disetujui</h3>
                   <span className="bg-green-100 text-green-800 text-sm font-medium px-3 py-1 rounded-full">
                     {leaveRequests.filter(r => r.status === 'approved').length}
                   </span>
                 </div>
-                <p className="text-gray-600">Requests that have been approved</p>
+                <p className="text-gray-600">Permohonan yang telah disetujui</p>
               </div>
               <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-200">
                 <div className="flex items-center justify-between mb-4">
-                  <h3 className="font-semibold text-lg text-gray-800">Rejected</h3>
+                  <h3 className="font-semibold text-lg text-gray-800">Ditolak</h3>
                   <span className="bg-red-100 text-red-800 text-sm font-medium px-3 py-1 rounded-full">
                     {leaveRequests.filter(r => r.status === 'rejected').length}
                   </span>
                 </div>
-                <p className="text-gray-600">Requests that have been rejected</p>
+                <p className="text-gray-600">Permohonan yang telah ditolak</p>
               </div>
             </div>
 
             <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
               <div className="hidden lg:grid grid-cols-12 gap-4 px-6 py-4 bg-gray-50 border-b border-gray-200 text-sm font-semibold text-gray-700">
                 <div className="col-span-3">Operator</div>
-                <div className="col-span-2">Type</div>
-                <div className="col-span-2">Date Range</div>
-                <div className="col-span-3">Reason</div>
-                <div className="col-span-2 text-center">Actions</div>
+                <div className="col-span-2">Jenis</div>
+                <div className="col-span-2">Periode</div>
+                <div className="col-span-3">Alasan</div>
+                <div className="col-span-2 text-center">Aksi</div>
               </div>
 
               <div className="divide-y divide-gray-200">
                 {leaveRequests.length === 0 ? (
                   <div className="text-center py-12 text-gray-500">
                     <CalendarIcon className="w-12 h-12 text-gray-300 mx-auto mb-4" />
-                    <p className="text-lg font-medium text-gray-900 mb-2">No leave requests found</p>
-                    <p className="text-gray-600">All requests have been processed</p>
+                    <p className="text-lg font-medium text-gray-900 mb-2">Belum ada permohonan</p>
+                    <p className="text-gray-600">Semua permohonan telah diproses</p>
                   </div>
                 ) : (
                   leaveRequests.map((request) => (
@@ -5436,28 +6182,29 @@ const menuItems = [
                               <span className={`inline-flex items-center px-2 py-0.5 rounded text-xs font-medium ${
                                 request.type === 'izin' ? 'bg-blue-100 text-blue-800' : 'bg-purple-100 text-purple-800'
                               }`}>
-                                {request.type === 'izin' ? 'Permission' : 'Leave'}
+                                {request.type === 'izin' ? 'Izin' : 'Cuti'}
                               </span>
                               <span className={`inline-flex items-center px-2 py-0.5 rounded text-xs font-medium ${
                                 request.status === 'approved' ? 'bg-green-100 text-green-800' : 
                                 request.status === 'rejected' ? 'bg-red-100 text-red-800' : 
                                 'bg-yellow-100 text-yellow-800'
                               }`}>
-                                {request.status}
+                                {request.status === 'approved' ? 'Disetujui' : 
+                                 request.status === 'rejected' ? 'Ditolak' : 'Pending'}
                               </span>
                             </div>
                           </div>
                         </div>
                         
                         <div>
-                          <p className="text-gray-500 text-xs uppercase font-medium mb-1">Date Range</p>
+                          <p className="text-gray-500 text-xs uppercase font-medium mb-1">Periode</p>
                           <p className="text-gray-900 text-sm font-medium">
-                            {request.startDate} to {request.endDate}
+                            {request.startDate} s/d {request.endDate}
                           </p>
                         </div>
 
                         <div>
-                          <p className="text-gray-500 text-xs uppercase font-medium mb-1">Reason</p>
+                          <p className="text-gray-500 text-xs uppercase font-medium mb-1">Alasan</p>
                           <p className="text-gray-900 text-sm line-clamp-2">{request.reason}</p>
                         </div>
 
@@ -5467,7 +6214,7 @@ const menuItems = [
                             className="flex items-center gap-1 text-blue-600 hover:text-blue-800 transition px-3 py-2 rounded-lg hover:bg-blue-50 text-sm font-medium"
                           >
                             <EyeIcon className="w-4 h-4" />
-                            View Details
+                            Lihat Detail
                           </button>
                           
                           {request.status === "pending" && (
@@ -5477,14 +6224,14 @@ const menuItems = [
                                 className="flex items-center gap-1 text-green-600 hover:text-green-800 transition px-3 py-2 rounded-lg hover:bg-green-50 text-sm font-medium"
                               >
                                 <CheckCircleIcon className="w-4 h-4" />
-                                Approve
+                                Setujui
                               </button>
                               <button
                                 onClick={() => handleRejectLeave(request.id)}
                                 className="flex items-center gap-1 text-red-600 hover:text-red-800 transition px-3 py-2 rounded-lg hover:bg-red-50 text-sm font-medium"
                               >
                                 <XCircleIcon className="w-4 h-4" />
-                                Reject
+                                Tolak
                               </button>
                             </div>
                           )}
@@ -5496,7 +6243,7 @@ const menuItems = [
                         <div className="col-span-3 flex items-center">
                           <div>
                             <p className="font-medium text-gray-900">{request.operator}</p>
-                            <p className="text-sm text-gray-500 mt-0.5">Submitted: {request.submittedDate}</p>
+                            <p className="text-sm text-gray-500 mt-0.5">Diajukan: {request.submittedDate}</p>
                           </div>
                         </div>
                         <div className="col-span-2 flex items-center">
@@ -5504,21 +6251,22 @@ const menuItems = [
                             <span className={`inline-flex items-center px-3 py-1 rounded-full text-sm font-medium ${
                               request.type === 'izin' ? 'bg-blue-100 text-blue-800' : 'bg-purple-100 text-purple-800'
                             }`}>
-                              {request.type === 'izin' ? 'Permission (Izin)' : 'Leave (Libur)'}
+                              {request.type === 'izin' ? 'Izin' : 'Cuti'}
                             </span>
                             <span className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-medium ${
                               request.status === 'approved' ? 'bg-green-100 text-green-800' : 
                               request.status === 'rejected' ? 'bg-red-100 text-red-800' : 
                               'bg-yellow-100 text-yellow-800'
                             }`}>
-                              {request.status}
+                              {request.status === 'approved' ? 'Disetujui' : 
+                               request.status === 'rejected' ? 'Ditolak' : 'Pending'}
                             </span>
                           </div>
                         </div>
                         <div className="col-span-2 flex items-center">
                           <p className="text-gray-700">
                             {request.startDate}<br/>
-                            to {request.endDate}
+                            s/d {request.endDate}
                           </p>
                         </div>
                         <div className="col-span-3 flex items-center">

@@ -3,7 +3,7 @@ import { requireRole } from "@/src/server/utils/auth";
 
 export async function POST(request) {
     try {
-        await requireRole("ADMIN");
+        await requireRole("HRD");
         const data = await request.json();
         const result = await ShiftService.create(data);
         return Response.json(

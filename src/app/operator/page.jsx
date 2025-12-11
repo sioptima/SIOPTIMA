@@ -1,7 +1,9 @@
-//INI JANGAN DIHAPUS
-//INI JANGAN DIHAPUS
-//INI JANGAN DIHAPUS
-//INI JANGAN DIHAPUS
+// //KODE DENGAN GEOLOKASI DEFAULT
+// //KODE DENGAN GEOLOKASI DEFAULT
+// //KODE DENGAN GEOLOKASI DEFAULT
+// //KODE DENGAN GEOLOKASI DEFAULT
+// //KODE DENGAN GEOLOKASI DEFAULT
+// //KODE DENGAN GEOLOKASI DEFAULT
 // "use client";
 // import React, { useState, useRef, useEffect } from "react";
 // import { useRouter } from "next/navigation";
@@ -756,11 +758,61 @@
 //     setIsDetailModalOpen(true);
 //   };
 
-//   const getCurrentLocation = (isCheckOut = false) => {
-//     if (!navigator.geolocation) {
-//       alert("Geolocation is not supported by this browser.");
-//       return;
+//  const getCurrentLocation = (isCheckOut = false) => {
+//   // Mapping site ke koordinat yang sudah ditentukan
+//   const siteCoordinates = {
+//     "Jakarta Utara - Site A": { 
+//       name: "Jakarta Utara - Site A", 
+//       lat: -6.123456, 
+//       lng: 106.123456 
+//     },
+//     "Jakarta Utara - Site B": { 
+//       name: "Jakarta Utara - Site B", 
+//       lat: -6.234567, 
+//       lng: 106.234567 
+//     },
+//     "Jakarta Utara - Site C": { 
+//       name: "Jakarta Utara - Site C", 
+//       lat: -6.345678, 
+//       lng: 106.345678 
+//     },
+//     "IPAL Jakarta Pusat": { 
+//       name: "IPAL Jakarta Pusat", 
+//       lat: -6.181818, 
+//       lng: 106.818181 
+//     },
+//     "IPAL Jakarta Utara": { 
+//       name: "IPAL Jakarta Utara", 
+//       lat: -6.123456, 
+//       lng: 106.123456 
+//     },
+//     "IPAL Jakarta Selatan": { 
+//       name: "IPAL Jakarta Selatan", 
+//       lat: -6.261626, 
+//       lng: 106.810623 
+//     },
+//     "IPAL Jakarta Barat": { 
+//       name: "IPAL Jakarta Barat", 
+//       lat: -6.167347, 
+//       lng: 106.758987 
+//     },
+//     "IPAL Jakarta Timur": { 
+//       name: "IPAL Jakarta Timur", 
+//       lat: -6.225013, 
+//       lng: 106.900146 
 //     }
+//   };
+
+
+//    // Gunakan site dari user, default ke "Jakarta Utara - Site A" jika tidak ditemukan
+//   const userSite = user.site || "Jakarta Utara - Site A";
+//   const siteData = siteCoordinates[userSite] || siteCoordinates["Jakarta Utara - Site A"];
+  
+//   const locationString = `${siteData.name} (Lat: ${siteData.lat.toFixed(6)}, Long: ${siteData.lng.toFixed(6)})`;
+
+
+
+
 
 //     if (isCheckOut) {
 //       setCurrentLocationCheckOut("Getting location...");
@@ -4175,94 +4227,12 @@
 //     </div>
 //   );
 // }
-//INI JANGAN DIHAPUS
-//INI JANGAN DIHAPUS
-//INI JANGAN DIHAPUS
-//INI JANGAN DIHAPUS
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+// //KODE DENGAN GEOLOKASI DEFAULT
+// //KODE DENGAN GEOLOKASI DEFAULT
+// //KODE DENGAN GEOLOKASI DEFAULT
+// //KODE DENGAN GEOLOKASI DEFAULT
+// //KODE DENGAN GEOLOKASI DEFAULT
+// //KODE DENGAN GEOLOKASI DEFAULT
 
 //KODE DENGAN GEOLOKASI DEFAULT
 //KODE DENGAN GEOLOKASI DEFAULT
@@ -4299,10 +4269,21 @@ import {
   UserIcon,
   ChatBubbleLeftRightIcon,
   ArrowDownTrayIcon,
-  PaperClipIcon,
-  ChevronDownIcon,
+  PencilIcon,
+  TrashIcon,
+  BuildingOfficeIcon,
+  PhoneIcon,
+  IdentificationIcon,
+  ClockIcon as ClockOutlineIcon,
+  UserGroupIcon,
+  CheckBadgeIcon,
+  AcademicCapIcon,
+  BriefcaseIcon,
+  EnvelopeIcon,
+  HomeIcon,
+  DevicePhoneMobileIcon,
+  ChevronRightIcon,
 } from "@heroicons/react/24/outline";
-
 
 // BAGIAN GEOLOKASI OR GEOLOCATION
 //rumus geolokasi
@@ -4367,6 +4348,7 @@ export default function Operator() {
   const [activeMenu, setActiveMenu] = useState("dashboard");
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [hoveredBar, setHoveredBar] = useState(null);
+  const [hoveredPie, setHoveredPie] = useState(null);
   const router = useRouter();
   const dropdownRef = useRef(null);
   const notificationRef = useRef(null);
@@ -4375,9 +4357,14 @@ export default function Operator() {
   const [user, setUser] = useState({
     name: "Budi Santoso",
     email: "budi.santoso@email.com",
-    role: "Operator",
+    role: "Operator IPAL",
     site: "Jakarta Utara - Site A",
     initial: "B",
+    employeeId: "OPR-2024-001",
+    joinDate: "15 Januari 2024",
+    phone: "+62 812-3456-7890",
+    address: "Jl. Merdeka No. 123, Jakarta Utara",
+    shift: "Shift Pagi (08:00 - 16:00)",
   });
 
   // Refs untuk berbagai keperluan
@@ -4389,10 +4376,6 @@ export default function Operator() {
   const canvasRef = useRef(null);
   const statusDropdownRef = useRef(null);
   const priorityDropdownRef = useRef(null);
-  const videoRefCheckIn = useRef(null);
-  const videoRefCheckOut = useRef(null);
-  const canvasRefCheckIn = useRef(null);
-  const canvasRefCheckOut = useRef(null);
 
   // State untuk Notifikasi
   const [isNotificationOpen, setIsNotificationOpen] = useState(false);
@@ -4469,6 +4452,7 @@ export default function Operator() {
   const [isReportDetailModalOpen, setIsReportDetailModalOpen] = useState(false);
   const [selectedImage, setSelectedImage] = useState(null);
   const [isImageModalOpen, setIsImageModalOpen] = useState(false);
+  const [editingReportId, setEditingReportId] = useState(null);
 
   // State untuk Presence
   const [attendanceData, setAttendanceData] = useState({
@@ -4480,24 +4464,7 @@ export default function Operator() {
     isCheckedOut: false,
   });
 
-  const [attendanceHistory, setAttendanceHistory] = useState([
-    {
-      id: 1,
-      date: "2025-01-27",
-      checkIn: "08:00 AM",
-      checkOut: "16:00 PM",
-      location: "Jakarta Utara - Site A",
-      status: "approved",
-      approvalStatus: "approved",
-      checkInStatus: "On Time",
-      checkInLocation: "Lat: -6.123456, Long: 106.123456",
-      checkOutLocation: "Lat: -6.123456, Long: 106.123456",
-      selfieCheckIn: null,
-      selfieCheckOut: null,
-      approvedBy: "Admin",
-      approvedAt: "2025-01-27 08:30 AM",
-    },
-  ]);
+  const [attendanceHistory, setAttendanceHistory] = useState([]);
 
   // State untuk modal check-in/check-out
   const [isCheckInModalOpen, setIsCheckInModalOpen] = useState(false);
@@ -4505,22 +4472,28 @@ export default function Operator() {
   const [isDetailModalOpen, setIsDetailModalOpen] = useState(false);
   const [selectedAttendance, setSelectedAttendance] = useState(null);
 
+  // State untuk Edit Presensi (sesuai SRS)
+  const [isEditPresenceModalOpen, setIsEditPresenceModalOpen] = useState(false);
+  const [editingPresence, setEditingPresence] = useState(null);
+  const [editPresenceForm, setEditPresenceForm] = useState({
+    checkIn: "",
+    checkOut: "",
+    checkInLocation: "",
+    checkOutLocation: "",
+    checkInStatus: "On Time",
+  });
+
   const [locationCaptured, setLocationCaptured] = useState(false);
   const [selfieUploaded, setSelfieUploaded] = useState(false);
   const [selfiePreview, setSelfiePreview] = useState(null);
-  const [currentLocation, setCurrentLocation] = useState(
-    "Click to get location"
-  );
+  const [currentLocation, setCurrentLocation] = useState("Click to get location");
   const [isCameraActive, setIsCameraActive] = useState(false);
   const [stream, setStream] = useState(null);
 
-  const [locationCapturedCheckOut, setLocationCapturedCheckOut] =
-    useState(false);
+  const [locationCapturedCheckOut, setLocationCapturedCheckOut] = useState(false);
   const [selfieUploadedCheckOut, setSelfieUploadedCheckOut] = useState(false);
   const [selfiePreviewCheckOut, setSelfiePreviewCheckOut] = useState(null);
-  const [currentLocationCheckOut, setCurrentLocationCheckOut] = useState(
-    "Click to get location"
-  );
+  const [currentLocationCheckOut, setCurrentLocationCheckOut] = useState("Click to get location");
   const [isCameraActiveCheckOut, setIsCameraActiveCheckOut] = useState(false);
   const [streamCheckOut, setStreamCheckOut] = useState(null);
 
@@ -4528,7 +4501,6 @@ export default function Operator() {
   const [tickets, setTickets] = useState([
     {
       id: 1,
-      ticketId: "#T001",
       title: "Masalah Pompa Filter",
       priority: "High",
       status: "Open",
@@ -4538,37 +4510,15 @@ export default function Operator() {
       createdAt: "2024-01-15",
       category: "Technical",
       resolvedAt: null,
-      attachments: [],
-      solution: "",
-    },
-    {
-      id: 4,
-      ticketId: "#T004",
-      title: "Software monitoring tidak bisa connect ke server",
-      priority: "High",
-      status: "Open",
-      assignee: "Budi Santoso",
-      site: "Jakarta Utara - Site A",
-      description:
-        "Software monitoring tidak bisa connect ke server. Error terjadi sejak pagi hari. Sudah dicoba restart tapi belum berhasil.",
-      createdAt: "2025-01-27",
-      category: "Software",
-      resolvedAt: null,
-      attachments: [
-        { name: "error_screenshot.png", type: "image/png", url: "#" },
-      ],
-      solution: "",
     },
   ]);
 
-  // State untuk Help Desk
   const [newTicket, setNewTicket] = useState({
-    site: user.site,
+    site: "IPAL Jakarta Pusat",
     category: "Technical",
     title: "",
     description: "",
     priority: "Medium",
-    attachments: [],
   });
 
   const [searchTerm, setSearchTerm] = useState("");
@@ -4578,22 +4528,137 @@ export default function Operator() {
   const [isStatusDropdownOpen, setIsStatusDropdownOpen] = useState(false);
   const [isPriorityDropdownOpen, setIsPriorityDropdownOpen] = useState(false);
   const [formErrors, setFormErrors] = useState({});
-  const [attachmentFiles, setAttachmentFiles] = useState([]);
 
-  // State untuk Solution Modal
-  const [isSolutionModalOpen, setIsSolutionModalOpen] = useState(false);
-  const [selectedTicketForSolution, setSelectedTicketForSolution] =
-    useState(null);
-  const [solutionText, setSolutionText] = useState("");
-  const [solutionStatus, setSolutionStatus] = useState("Open");
+
+  // State untuk modal detail pengajuan
+const [isSubmissionDetailModalOpen, setIsSubmissionDetailModalOpen] = useState(false);
+const [selectedSubmission, setSelectedSubmission] = useState(null);
+
+// Fungsi untuk membuka modal detail pengajuan
+const openSubmissionDetailModal = (submission) => {
+  setSelectedSubmission(submission);
+  setIsSubmissionDetailModalOpen(true);
+};
+
+
+  // State untuk Lihat Shift
+  const [shiftData, setShiftData] = useState([
+    {
+      id: 1,
+      date: "2025-01-27",
+      day: "Senin",
+      startTime: "08:00",
+      endTime: "16:00",
+      location: "Jakarta Utara - Site A",
+      type: "Regular",
+      status: "Scheduled",
+    },
+  ]);
+
+  const [isLiburModalOpen, setIsLiburModalOpen] = useState(false);
+  const [isIzinModalOpen, setIsIzinModalOpen] = useState(false);
+  const [liburForm, setLiburForm] = useState({ 
+    startDate: "", 
+    endDate: "", 
+    reason: "" 
+  });
+  const [izinForm, setIzinForm] = useState({ 
+    startDate: "", 
+    endDate: "", 
+    reason: "" 
+  });
+
+  // State untuk riwayat pengajuan shift
+// State untuk riwayat pengajuan shift - UPDATE INI
+const [submissionHistory, setSubmissionHistory] = useState([
+  {
+    id: 1,
+    type: "libur",
+    date: "2025-01-20",
+    startDate: "2025-01-22",
+    endDate: "2025-01-24",
+    reason: "Keperluan keluarga",
+    status: "approved",
+    submittedAt: "2025-01-20 10:30",
+    processedAt: "2025-01-21 09:15", // TAMBAHKAN INI
+    processedBy: "Admin Utama", // TAMBAHKAN INI
+    notes: "Pengajuan disetujui sesuai kebijakan perusahaan", // TAMBAHKAN INI
+  },
+  {
+    id: 2,
+    type: "izin",
+    date: "2025-01-25",
+    startDate: "2025-01-27",
+    endDate: "2025-01-27",
+    reason: "Urusan keluarga mendadak",
+    status: "rejected",
+    submittedAt: "2025-01-25 14:45",
+    processedAt: "2025-01-26 11:20", // TAMBAHKAN INI
+    processedBy: "Admin Utama", // TAMBAHKAN INI
+    notes: "Tidak melampirkan dokumen pendukung", // TAMBAHKAN INI
+  },
+  {
+    id: 3,
+    type: "libur",
+    date: "2025-02-01",
+    startDate: "2025-02-05",
+    endDate: "2025-02-07",
+    reason: "Cuti tahunan",
+    status: "pending",
+    submittedAt: "2025-02-01 08:30",
+    processedAt: null, // Masih pending
+    processedBy: null,
+    notes: null,
+  },
+]);
 
   // Menu Items
   const menuItems = [
     { id: "dashboard", name: "Dashboard", icon: ChartBarIcon },
+    { id: "shift", name: "Lihat Shift", icon: CalendarDaysIcon },
     { id: "reports", name: "Daily Report", icon: DocumentChartBarIcon },
     { id: "presensi", name: "Presence", icon: MapPinIcon },
     { id: "help", name: "Help Desk", icon: CogIcon },
   ];
+
+  // ==================== FUNGSI PERHITUNGAN ====================
+  
+  // Fungsi untuk menghitung rate kehadiran berdasarkan data aktual
+  const calculateAttendanceRate = () => {
+    if (attendanceHistory.length === 0) return "0%";
+    
+    // Ambil data 30 hari terakhir
+    const thirtyDaysAgo = new Date();
+    thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
+    
+    const recentAttendance = attendanceHistory.filter(att => {
+      const attDate = new Date(att.date);
+      return attDate >= thirtyDaysAgo;
+    });
+    
+    if (recentAttendance.length === 0) return "0%";
+    
+    // Hitung persentase kehadiran yang disetujui
+    const approvedCount = recentAttendance.filter(att => 
+      att.approvalStatus === "approved"
+    ).length;
+    
+    const rate = (approvedCount / recentAttendance.length) * 100;
+    return `${Math.round(rate)}%`;
+  };
+
+  // Fungsi untuk menghitung total laporan bulan ini
+  const calculateMonthlyReports = () => {
+    const now = new Date();
+    const currentMonth = now.getMonth();
+    const currentYear = now.getFullYear();
+    
+    return reports.filter(report => {
+      const reportDate = new Date(report.date);
+      return reportDate.getMonth() === currentMonth && 
+             reportDate.getFullYear() === currentYear;
+    }).length;
+  };
 
   // ==================== FUNGSI NOTIFIKASI ====================
   const markNotificationAsRead = (id) => {
@@ -4645,24 +4710,24 @@ export default function Operator() {
     );
     const latestReport = submittedReports[0];
 
+    // Hitung data aktual
+    const attendanceRate = calculateAttendanceRate();
+    const monthlyReports = calculateMonthlyReports();
+
     setDashboardData((prev) => ({
       ...prev,
-      reportsSubmitted: submittedReports.length,
+      reportsSubmitted: monthlyReports,
       pHLevel: latestReport ? latestReport.pHLevel || "0.0" : "0.0",
       flowRate: latestReport ? `${latestReport.flowRate || "0"} L/h` : "0 L/h",
       tds: latestReport ? `${latestReport.tds || "0"} ppm` : "0 ppm",
       ec: latestReport ? `${latestReport.ec || "0"} μS/cm` : "0 μS/cm",
-      attendanceRate:
-        attendanceHistory.filter((att) => att.approvalStatus === "approved")
-          .length > 0
-          ? "98%"
-          : "0%",
+      attendanceRate: attendanceRate,
     }));
 
     if (submittedReports.length > 0) {
       const latestReports = submittedReports.slice(0, 7);
 
-      const newPHData = latestReports.map((report) => {
+      const newPHData = latestReports.map((report, index) => {
         const reportDate = new Date(report.date);
         const days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
         const dayName = days[reportDate.getDay()];
@@ -4673,7 +4738,7 @@ export default function Operator() {
         };
       });
 
-      const newFlowRateData = latestReports.map((report) => {
+      const newFlowRateData = latestReports.map((report, index) => {
         const reportDate = new Date(report.date);
         const days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
         const dayName = days[reportDate.getDay()];
@@ -4850,17 +4915,36 @@ export default function Operator() {
     setIsSubmitting(true);
 
     setTimeout(async () => {
-      const newReport = {
-        id: Date.now(),
-        ...formData,
-        uploadedFiles: [...uploadedFiles],
-        timestamp: new Date().toISOString(),
-        location: user.site,
-        operator: user.name,
-        status: "Submitted",
-      };
+      if (editingReportId) {
+        // Edit existing report
+        setReports(prev => prev.map(report => 
+          report.id === editingReportId 
+            ? {
+                ...report,
+                ...formData,
+                uploadedFiles: [...uploadedFiles],
+                timestamp: new Date().toISOString(),
+                status: "Draft"
+              }
+            : report
+        ));
+        setEditingReportId(null);
+        alert("Laporan berhasil diedit!");
+      } else {
+        // Create new report
+        const newReport = {
+          id: Date.now(),
+          ...formData,
+          uploadedFiles: [...uploadedFiles],
+          timestamp: new Date().toISOString(),
+          location: user.site,
+          operator: user.name,
+          status: "Submitted",
+        };
 
-      setReports((prev) => [newReport, ...prev]);
+        setReports((prev) => [newReport, ...prev]);
+      }
+
       setFormData({
         date: "",
         time: "",
@@ -4884,16 +4968,14 @@ export default function Operator() {
       setNotifications((prev) => [
         {
           id: Date.now(),
-          title: "Laporan Berhasil Disubmit",
-          message: `Laporan harian ${formData.date} telah berhasil disubmit`,
+          title: editingReportId ? "Laporan Berhasil Diedit" : "Laporan Berhasil Disubmit",
+          message: `Laporan harian ${formData.date} telah berhasil ${editingReportId ? 'diedit' : 'disubmit'}`,
           time: "Baru saja",
           type: "success",
           read: false,
         },
         ...prev,
       ]);
-      
-      alert("Laporan berhasil disubmit!");
     }, 1000);
   };
 
@@ -4945,6 +5027,47 @@ export default function Operator() {
     setReports((prev) => [draftReport, ...prev]);
     updateDashboardData();
     alert("Laporan berhasil disimpan sebagai draft!");
+  };
+
+  const handleDeleteReport = (reportId) => {
+    const reportToDelete = reports.find(r => r.id === reportId);
+    
+    if (!reportToDelete) {
+      alert("Laporan tidak ditemukan");
+      return;
+    }
+    
+    if (reportToDelete.status === "Submitted" || reportToDelete.status === "Approved") {
+      alert("Laporan yang sudah disubmit/telah disetujui tidak dapat dihapus");
+      return;
+    }
+    
+    if (window.confirm("Apakah Anda yakin ingin menghapus laporan ini?")) {
+      setReports(prev => prev.filter(r => r.id !== reportId));
+      alert("Laporan berhasil dihapus");
+      updateDashboardData();
+    }
+  };
+
+  const handleEditReport = (report) => {
+    setFormData({
+      date: report.date,
+      time: report.time,
+      pHLevel: report.pHLevel,
+      flowRate: report.flowRate,
+      volt: report.volt,
+      ampere: report.ampere,
+      tds: report.tds,
+      ec: report.ec,
+      agitatorStatus: report.agitatorStatus,
+      settleStatus: report.settleStatus,
+      outFilterStatus: report.outFilterStatus,
+      additionalNotes: report.additionalNotes,
+    });
+    setUploadedFiles(report.uploadedFiles || []);
+    setEditingReportId(report.id);
+    
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   const handleDateIconClick = () => {
@@ -5052,61 +5175,35 @@ export default function Operator() {
   };
 
  const getCurrentLocation = (isCheckOut = false) => {
-  // Mapping site ke koordinat yang sudah ditentukan
-  const siteCoordinates = {
-    "Jakarta Utara - Site A": { 
-      name: "Jakarta Utara - Site A", 
-      lat: -6.123456, 
-      lng: 106.123456 
-    },
-    "Jakarta Utara - Site B": { 
-      name: "Jakarta Utara - Site B", 
-      lat: -6.234567, 
-      lng: 106.234567 
-    },
-    "Jakarta Utara - Site C": { 
-      name: "Jakarta Utara - Site C", 
-      lat: -6.345678, 
-      lng: 106.345678 
-    },
-    "IPAL Jakarta Pusat": { 
-      name: "IPAL Jakarta Pusat", 
-      lat: -6.181818, 
-      lng: 106.818181 
-    },
-    "IPAL Jakarta Utara": { 
-      name: "IPAL Jakarta Utara", 
-      lat: -6.123456, 
-      lng: 106.123456 
-    },
-    "IPAL Jakarta Selatan": { 
-      name: "IPAL Jakarta Selatan", 
-      lat: -6.261626, 
-      lng: 106.810623 
-    },
-    "IPAL Jakarta Barat": { 
-      name: "IPAL Jakarta Barat", 
-      lat: -6.167347, 
-      lng: 106.758987 
-    },
-    "IPAL Jakarta Timur": { 
-      name: "IPAL Jakarta Timur", 
-      lat: -6.225013, 
-      lng: 106.900146 
-    }
-  };
-
-
-   // Gunakan site dari user, default ke "Jakarta Utara - Site A" jika tidak ditemukan
-  const userSite = user.site || "Jakarta Utara - Site A";
-  const siteData = siteCoordinates[userSite] || siteCoordinates["Jakarta Utara - Site A"];
-  
-  const locationString = `${siteData.name} (Lat: ${siteData.lat.toFixed(6)}, Long: ${siteData.lng.toFixed(6)})`;
-
-
-
-
-
+  // Jika DEMO_MODE aktif, gunakan koordinat dummy dari site
+  if (DEMO_MODE) {
+    const userSite = user.site || "Jakarta Utara - Site A";
+    const siteData = DEMO_SITE_COORDINATES[userSite] || 
+                     DEMO_SITE_COORDINATES["Jakarta Utara - Site A"];
+    
+    // Buat koordinat random dalam radius 50-200 meter dari site
+    const randomOffset = () => (Math.random() * 0.003 - 0.0015); // ~50-200 meter
+    const demoLat = siteData.lat + randomOffset();
+    const demoLng = siteData.lng + randomOffset();
+    
+    // Hitung jarak dari perusahaan (simulasi)
+    const distance = calculateDistance(
+      demoLat,
+      demoLng,
+      COMPANY_COORDINATES.latitude,
+      COMPANY_COORDINATES.longitude
+    );
+    
+    const isWithinRadius = distance <= ALLOWED_RADIUS_METERS;
+    
+    // Format lokasi demo
+    const locationString = `Lat: ${demoLat.toFixed(6)}, Long: ${demoLng.toFixed(6)}`;
+    const statusMessage = isWithinRadius
+      ? `✓ Within allowed radius (${Math.round(distance)} m from company)`
+      : `✗ Outside allowed radius (${Math.round(distance)} m from company) - DEMO MODE`;
+    
+    const fullLocationString = `${locationString}\n${statusMessage}`;
+    
     if (isCheckOut) {
       setCurrentLocationCheckOut("Getting location...");
     } else {
@@ -5191,92 +5288,40 @@ export default function Operator() {
       options
     );
   };
+  };
 
-  const startCamera = async (isCheckOut = false) => {
-    try {
-      // Cek permission kamera terlebih dahulu
-      const hasPermission = await checkCameraPermission();
-      if (!hasPermission) {
-        alert("Please allow camera access in your browser settings first.");
-        return;
-      }
-
-      if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
-        // Meminta akses kamera dengan pesan yang jelas
-        const mediaStream = await navigator.mediaDevices.getUserMedia({
-          video: {
-            facingMode: "user", // Menggunakan kamera depan
-            width: { ideal: 1280 },
-            height: { ideal: 720 },
-          },
-        });
-
-        if (isCheckOut) {
-          setStreamCheckOut(mediaStream);
-          setIsCameraActiveCheckOut(true);
-          if (videoRefCheckOut.current) {
-            videoRefCheckOut.current.srcObject = mediaStream;
-          }
-        } else {
-          setStream(mediaStream);
-          setIsCameraActive(true);
-          if (videoRefCheckIn.current) {
-            videoRefCheckIn.current.srcObject = mediaStream;
-          }
-        }
-
-        // Tambahkan event listener untuk menangani saat kamera dimatikan
-        mediaStream.getVideoTracks()[0].addEventListener("ended", () => {
+  const startCamera = (isCheckOut = false) => {
+    if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+      navigator.mediaDevices
+        .getUserMedia({ video: true })
+        .then((mediaStream) => {
           if (isCheckOut) {
-            setIsCameraActiveCheckOut(false);
+            setStreamCheckOut(mediaStream);
+            setIsCameraActiveCheckOut(true);
+            if (videoRef.current) {
+              videoRef.current.srcObject = mediaStream;
+            }
           } else {
-            setIsCameraActive(false);
+            setStream(mediaStream);
+            setIsCameraActive(true);
+            if (videoRef.current) {
+              videoRef.current.srcObject = mediaStream;
+            }
           }
+        })
+        .catch((error) => {
+          console.error("Error accessing camera:", error);
+          alert("Cannot access camera. Please check permissions.");
         });
-      } else {
-        alert("Camera not supported in this browser.");
-      }
-    } catch (error) {
-      console.error("Error accessing camera:", error);
-
-      if (
-        error.name === "NotAllowedError" ||
-        error.name === "PermissionDeniedError"
-      ) {
-        alert(
-          "Camera access denied. Please allow camera access in your browser settings."
-        );
-      } else if (
-        error.name === "NotFoundError" ||
-        error.name === "DevicesNotFoundError"
-      ) {
-        alert(
-          "Camera not found. Make sure camera is available and not being used by another application."
-        );
-      } else if (
-        error.name === "NotReadableError" ||
-        error.name === "TrackStartError"
-      ) {
-        alert(
-          "Camera is being used by another application. Close other applications using the camera."
-        );
-      } else {
-        alert("Cannot access camera. Please check your camera settings.");
-      }
+    } else {
+      alert("Camera not supported in this browser.");
     }
   };
 
   const capturePhoto = (isCheckOut = false) => {
-    let video, canvas;
-    if (isCheckOut) {
-      video = videoRefCheckOut.current;
-      canvas = canvasRefCheckOut.current;
-    } else {
-      video = videoRefCheckIn.current;
-      canvas = canvasRefCheckIn.current;
-    }
-
-    if (video && canvas) {
+    if (videoRef.current && canvasRef.current) {
+      const video = videoRef.current;
+      const canvas = canvasRef.current;
       const context = canvas.getContext("2d");
       canvas.width = video.videoWidth;
       canvas.height = video.videoHeight;
@@ -5362,16 +5407,6 @@ export default function Operator() {
   };
 
   const handleConfirmCheckIn = () => {
-    if (!locationCaptured) {
-      alert("Please capture your location first!");
-      return;
-    }
-
-    if (!selfieUploaded) {
-      alert("Please upload or take a selfie first!");
-      return;
-    }
-
     const now = new Date();
     const hours = now.getHours().toString().padStart(2, "0");
     const minutes = now.getMinutes().toString().padStart(2, "0");
@@ -5416,13 +5451,6 @@ export default function Operator() {
     setAttendanceHistory((prev) => [newAttendance, ...prev]);
     setIsCheckInModalOpen(false);
 
-    // Reset modal state
-    setLocationCaptured(false);
-    setSelfieUploaded(false);
-    setSelfiePreview(null);
-    setCurrentLocation("Click to get location");
-    stopCamera(false);
-
     updateDashboardData();
 
     alert(
@@ -5431,16 +5459,6 @@ export default function Operator() {
   };
 
   const handleConfirmCheckOut = () => {
-    if (!locationCapturedCheckOut) {
-      alert("Please capture your location first!");
-      return;
-    }
-
-    if (!selfieUploadedCheckOut) {
-      alert("Please upload or take a selfie first!");
-      return;
-    }
-
     const now = new Date();
     const hours = now.getHours().toString().padStart(2, "0");
     const minutes = now.getMinutes().toString().padStart(2, "0");
@@ -5472,13 +5490,6 @@ export default function Operator() {
 
     setAttendanceHistory(updatedHistory);
     setIsCheckOutModalOpen(false);
-
-    // Reset modal state
-    setLocationCapturedCheckOut(false);
-    setSelfieUploadedCheckOut(false);
-    setSelfiePreviewCheckOut(null);
-    setCurrentLocationCheckOut("Click to get location");
-    stopCamera(true);
 
     updateDashboardData();
 
@@ -5514,7 +5525,6 @@ export default function Operator() {
 
     const ticket = {
       id: Date.now(),
-      ticketId: `#T${String(Date.now()).slice(-4)}`,
       title: newTicket.title,
       priority: newTicket.priority,
       status: "Open",
@@ -5524,8 +5534,6 @@ export default function Operator() {
       createdAt: new Date().toISOString().split("T")[0],
       category: newTicket.category,
       resolvedAt: null,
-      attachments: [...attachmentFiles],
-      solution: "",
     };
 
     setTickets((prev) => [ticket, ...prev]);
@@ -5535,25 +5543,11 @@ export default function Operator() {
       title: "",
       description: "",
       priority: "Medium",
-      attachments: [],
     });
-    setAttachmentFiles([]);
     setFormErrors({});
     setIsCreateModalOpen(false);
 
     updateDashboardData();
-
-    setNotifications((prev) => [
-      {
-        id: Date.now(),
-        title: "Tiket Bantuan Diajukan",
-        message: `Tiket "${newTicket.title}" telah berhasil diajukan`,
-        time: "Baru saja",
-        type: "info",
-        read: false,
-      },
-      ...prev,
-    ]);
 
     alert("Tiket bantuan berhasil diajukan!");
   };
@@ -5564,29 +5558,10 @@ export default function Operator() {
     }
   }, [isCreateModalOpen]);
 
-  const handleAttachmentUpload = (event) => {
-    const files = Array.from(event.target.files);
-    const newFiles = files.map((file) => ({
-      file,
-      name: file.name,
-      size: file.size,
-      type: file.type,
-      preview: file.type.startsWith("image/")
-        ? URL.createObjectURL(file)
-        : null,
-    }));
-    setAttachmentFiles((prev) => [...prev, ...newFiles]);
-  };
-
-  const removeAttachment = (index) => {
-    setAttachmentFiles((prev) => prev.filter((_, i) => i !== index));
-  };
-
   const filteredTickets = tickets.filter((ticket) => {
     const matchesSearch =
       ticket.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      ticket.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      ticket.ticketId.toLowerCase().includes(searchTerm.toLowerCase());
+      ticket.description.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesStatus =
       statusFilter === "Semua Status" || ticket.status === statusFilter;
     const matchesPriority =
@@ -5623,57 +5598,118 @@ export default function Operator() {
     }
   };
 
-  const statusOptions = [
-    "Semua Status",
-    "Open",
-    "In Progress",
-    "Resolved",
-    "Closed",
-  ];
+  const statusOptions = ["Semua Status", "Open", "In Progress", "Resolved"];
   const priorityOptions = ["Semua Prioritas", "High", "Medium", "Low"];
-  const categoryOptions = [
-    "Technical",
-    "Operational",
-    "Maintenance",
-    "Software",
-    "Other",
-  ];
 
-  // ==================== SOLUTION FUNCTIONS ====================
-  const openSolutionModal = (ticket) => {
-    setSelectedTicketForSolution(ticket);
-    setSolutionText(ticket.solution || "");
-    setSolutionStatus(ticket.status);
-    setIsSolutionModalOpen(true);
-  };
-
-  const handleSubmitSolution = () => {
-    if (!solutionText.trim()) {
-      alert("Solution cannot be empty");
+  // ==================== FUNGSI LIHAT SHIFT ====================
+  const handleSubmitLibur = () => {
+    if (!liburForm.startDate || !liburForm.reason) {
+      alert("Tanggal dan alasan harus diisi");
       return;
     }
 
-    const updatedTickets = tickets.map((ticket) =>
-      ticket.id === selectedTicketForSolution.id
-        ? {
-            ...ticket,
-            solution: solutionText,
-            status: solutionStatus,
-            resolvedAt:
-              solutionStatus === "Resolved" || solutionStatus === "Closed"
-                ? new Date().toISOString().split("T")[0]
-                : null,
-          }
-        : ticket
-    );
+    const newSubmission = {
+      id: Date.now(),
+      type: "libur",
+      date: new Date().toISOString().split("T")[0],
+      startDate: liburForm.startDate,
+      endDate: liburForm.endDate,
+      reason: liburForm.reason,
+      status: "pending",
+      submittedAt: new Date().toLocaleString("id-ID", {
+        year: 'numeric',
+        month: 'numeric',
+        day: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit'
+      }),
+    };
 
-    setTickets(updatedTickets);
-    setIsSolutionModalOpen(false);
-    setSolutionText("");
-    setSolutionStatus("Open");
-    setSelectedTicketForSolution(null);
+    setSubmissionHistory((prev) => [newSubmission, ...prev]);
+    
+    alert(`Pengajuan libur berhasil dikirim!\nTanggal: ${liburForm.startDate}${liburForm.endDate ? ` - ${liburForm.endDate}` : ''}\nAlasan: ${liburForm.reason}`);
+    
+    setLiburForm({ startDate: "", endDate: "", reason: "" });
+    setIsLiburModalOpen(false);
+    
+    setNotifications((prev) => [
+      {
+        id: Date.now(),
+        title: "Pengajuan Libur Dikirim",
+        message: "Pengajuan libur Anda sedang menunggu persetujuan",
+        time: "Baru saja",
+        type: "info",
+        read: false,
+      },
+      ...prev,
+    ]);
+  };
 
-    alert("Solution submitted successfully!");
+  const handleSubmitIzin = () => {
+    if (!izinForm.startDate || !izinForm.reason) {
+      alert("Tanggal dan alasan harus diisi");
+      return;
+    }
+
+    const newSubmission = {
+      id: Date.now(),
+      type: "izin",
+      date: new Date().toISOString().split("T")[0],
+      startDate: izinForm.startDate,
+      endDate: izinForm.endDate,
+      reason: izinForm.reason,
+      status: "pending",
+      submittedAt: new Date().toLocaleString("id-ID", {
+        year: 'numeric',
+        month: 'numeric',
+        day: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit'
+      }),
+    };
+
+    setSubmissionHistory((prev) => [newSubmission, ...prev]);
+    
+    alert(`Pengajuan izin berhasil dikirim!\nTanggal: ${izinForm.startDate}${izinForm.endDate ? ` - ${izinForm.endDate}` : ''}\nAlasan: ${izinForm.reason}`);
+    
+    setIzinForm({ startDate: "", endDate: "", reason: "" });
+    setIsIzinModalOpen(false);
+    
+    setNotifications((prev) => [
+      {
+        id: Date.now(),
+        title: "Pengajuan Izin Dikirim",
+        message: "Pengajuan izin Anda sedang menunggu persetujuan",
+        time: "Baru saja",
+        type: "info",
+        read: false,
+      },
+      ...prev,
+    ]);
+  };
+
+  const getSubmissionStatusColor = (status) => {
+    switch (status) {
+      case "approved":
+        return "bg-green-100 text-green-800";
+      case "rejected":
+        return "bg-red-100 text-red-800";
+      case "pending":
+        return "bg-yellow-100 text-yellow-800";
+      default:
+        return "bg-gray-100 text-gray-800";
+    }
+  };
+
+  const getSubmissionTypeColor = (type) => {
+    switch (type) {
+      case "libur":
+        return "bg-blue-100 text-blue-800";
+      case "izin":
+        return "bg-purple-100 text-purple-800";
+      default:
+        return "bg-gray-100 text-gray-800";
+    }
   };
 
   // ==================== RENDER FUNCTIONS ====================
@@ -5692,8 +5728,7 @@ export default function Operator() {
             Operator Dashboard
           </h2>
           <p className="text-gray-600 mt-1">
-            Welcome back, {user.name}! Monitor your daily activities and IPAL
-            status
+            Welcome back, {user.name}! Monitor your daily activities and IPAL status
           </p>
         </div>
 
@@ -5702,13 +5737,13 @@ export default function Operator() {
             {
               label: "Reports Submitted",
               value: dashboardData.reportsSubmitted,
-              percent: "+12%",
+              percent: reports.length > 0 ? "+" + Math.round((dashboardData.reportsSubmitted / reports.length) * 100) + "%" : "+0%",
               icon: DocumentChartBarIcon,
             },
             {
               label: "Attendance Rate",
               value: dashboardData.attendanceRate,
-              percent: "+2%",
+              percent: attendanceHistory.length > 0 ? "+" + Math.round(parseInt(dashboardData.attendanceRate)) + "%" : "+0%",
               icon: ChartBarIcon,
             },
             {
@@ -5807,8 +5842,8 @@ export default function Operator() {
                       item.status === "normal"
                         ? "bg-green-500"
                         : item.status === "no data"
-                          ? "bg-gray-400"
-                          : "bg-red-500"
+                        ? "bg-gray-400"
+                        : "bg-red-500"
                     }`}
                   ></div>
                   <span
@@ -5816,8 +5851,8 @@ export default function Operator() {
                       item.status === "normal"
                         ? "text-green-600"
                         : item.status === "no data"
-                          ? "text-gray-600"
-                          : "text-red-600"
+                        ? "text-gray-600"
+                        : "text-red-600"
                     }`}
                   >
                     {item.status}
@@ -5828,7 +5863,6 @@ export default function Operator() {
           </div>
         </div>
 
-        {/* DIAGRAM BATANG */}
         <div className="mb-6 grid grid-cols-1 lg:grid-cols-2 gap-6">
           {/* pH Level Chart */}
           <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-200">
@@ -6062,6 +6096,477 @@ export default function Operator() {
     );
   };
 
+  const renderLihatProfil = () => {
+    // Hitung statistik berdasarkan data aktual
+    const totalReports = reports.filter(r => r.status === "Submitted").length;
+    const attendanceRate = calculateAttendanceRate();
+    const activeTickets = tickets.filter(t => t.status === 'Open').length;
+    
+    // Hitung performa bulan ini
+    const currentMonth = new Date().getMonth();
+    const currentYear = new Date().getFullYear();
+    const monthlyReports = reports.filter(report => {
+      const reportDate = new Date(report.date);
+      return reportDate.getMonth() === currentMonth && 
+             reportDate.getFullYear() === currentYear;
+    }).length;
+
+    return (
+      <div className="px-4 sm:px-6 lg:px-6 py-6 max-w-screen-2xl mx-auto bg-gradient-to-br from-gray-50 to-blue-50 min-h-screen">
+        <div className="mb-6">
+          <h2 className="text-2xl lg:text-3xl font-bold text-gray-900">Lihat Profil</h2>
+          <p className="text-gray-600 mt-1">Informasi profil operator</p>
+        </div>
+
+        <div className="bg-white rounded-xl shadow-sm border border-gray-200">
+          <div className="p-8">
+            <div className="flex flex-col md:flex-row items-center md:items-start gap-8">
+              {/* Foto Profil */}
+              <div className="flex-shrink-0">
+                <div className="w-40 h-40 bg-gradient-to-r from-blue-500 to-cyan-600 rounded-full flex items-center justify-center text-white text-5xl font-bold shadow-lg">
+                  {user.initial}
+                </div>
+                <div className="mt-4 text-center">
+                  <span className="inline-flex items-center gap-1 px-4 py-2 bg-green-100 text-green-800 rounded-full text-sm font-medium">
+                    <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+                    Active
+                  </span>
+                </div>
+              </div>
+              
+              {/* Informasi Profil */}
+              <div className="flex-1">
+                <div className="mb-6">
+                  <h1 className="text-3xl font-bold text-gray-900">{user.name}</h1>
+                  <p className="text-gray-600 text-lg">{user.role} • {user.site}</p>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+                  <div className="space-y-4">
+                    <div className="flex items-start gap-3">
+                      <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                        <IdentificationIcon className="w-5 h-5 text-blue-600" />
+                      </div>
+                      <div>
+                        <p className="text-sm font-medium text-gray-600">ID Operator</p>
+                        <p className="text-lg font-semibold text-gray-900">{user.employeeId}</p>
+                      </div>
+                    </div>
+
+                    <div className="flex items-start gap-3">
+                      <div className="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                        <EnvelopeIcon className="w-5 h-5 text-green-600" />
+                      </div>
+                      <div>
+                        <p className="text-sm font-medium text-gray-600">Email</p>
+                        <p className="text-lg font-semibold text-gray-900">{user.email}</p>
+                      </div>
+                    </div>
+
+                    <div className="flex items-start gap-3">
+                      <div className="w-10 h-10 bg-purple-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                        <DevicePhoneMobileIcon className="w-5 h-5 text-purple-600" />
+                      </div>
+                      <div>
+                        <p className="text-sm font-medium text-gray-600">Telepon</p>
+                        <p className="text-lg font-semibold text-gray-900">{user.phone}</p>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="space-y-4">
+                    <div className="flex items-start gap-3">
+                      <div className="w-10 h-10 bg-yellow-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                        <CalendarDaysIcon className="w-5 h-5 text-yellow-600" />
+                      </div>
+                      <div>
+                        <p className="text-sm font-medium text-gray-600">Tanggal Bergabung</p>
+                        <p className="text-lg font-semibold text-gray-900">{user.joinDate}</p>
+                      </div>
+                    </div>
+
+                    <div className="flex items-start gap-3">
+                      <div className="w-10 h-10 bg-orange-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                        <ClockOutlineIcon className="w-5 h-5 text-orange-600" />
+                      </div>
+                      <div>
+                        <p className="text-sm font-medium text-gray-600">Shift</p>
+                        <p className="text-lg font-semibold text-gray-900">{user.shift}</p>
+                      </div>
+                    </div>
+
+                    <div className="flex items-start gap-3">
+                      <div className="w-10 h-10 bg-cyan-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                        <MapPinIcon className="w-5 h-5 text-cyan-600" />
+                      </div>
+                      <div>
+                        <p className="text-sm font-medium text-gray-600">Site/Lokasi</p>
+                        <p className="text-lg font-semibold text-gray-900">{user.site}</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Alamat */}
+                <div className="mb-8">
+                  <div className="flex items-start gap-3 mb-3">
+                    <div className="w-10 h-10 bg-orange-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                      <HomeIcon className="w-5 h-5 text-orange-600" />
+                    </div>
+                    <div>
+                      <p className="text-sm font-medium text-gray-600">Alamat</p>
+                      <p className="text-lg font-semibold text-gray-900">{user.address}</p>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Statistik Kinerja - Dihitung dari data aktual */}
+                <div className="pt-8 border-t border-gray-200">
+                  <h3 className="text-xl font-bold text-gray-800 mb-6">Statistik Kinerja</h3>
+                  <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                    <div className="bg-blue-50 p-4 rounded-lg border border-blue-100">
+                      <p className="text-sm text-gray-600">Total Laporan</p>
+                      <p className="text-2xl font-bold text-gray-900">{totalReports}</p>
+                      <p className="text-xs text-gray-500 mt-1">{monthlyReports} bulan ini</p>
+                    </div>
+                    <div className="bg-green-50 p-4 rounded-lg border border-green-100">
+                      <p className="text-sm text-gray-600">Rate Kehadiran</p>
+                      <p className="text-2xl font-bold text-gray-900">{attendanceRate}</p>
+                      <p className="text-xs text-gray-500 mt-1">30 hari terakhir</p>
+                    </div>
+                    <div className="bg-yellow-50 p-4 rounded-lg border border-yellow-100">
+                      <p className="text-sm text-gray-600">Shift</p>
+                      <p className="text-2xl font-bold text-gray-900">{user.shift.split(" ")[1]}</p>
+                      <p className="text-xs text-gray-500 mt-1">Jadwal reguler</p>
+                    </div>
+                    <div className="bg-purple-50 p-4 rounded-lg border border-purple-100">
+                      <p className="text-sm text-gray-600">Tiket Aktif</p>
+                      <p className="text-2xl font-bold text-gray-900">{activeTickets}</p>
+                      <p className="text-xs text-gray-500 mt-1">Dalam proses</p>
+                    </div>
+                  </div>
+                  
+                  {/* Informasi Perhitungan */}
+                  <div className="mt-6 bg-gray-50 p-4 rounded-lg border border-gray-200">
+                    <h4 className="font-medium text-gray-700 mb-2">Informasi Perhitungan:</h4>
+                    <ul className="text-sm text-gray-600 space-y-1">
+                      <li>• Rate Kehadiran: {attendanceHistory.filter(a => a.approvalStatus === "approved").length} dari {attendanceHistory.length} presensi disetujui</li>
+                      <li>• Laporan Bulan Ini: {monthlyReports} dari {reports.length} total laporan</li>
+                      <li>• Presensi Terakhir: {attendanceHistory[0]?.date || "Belum ada"}</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  };
+
+  const renderLihatShift = () => (
+    <div className="px-4 sm:px-6 lg:px-6 py-6 max-w-screen-2xl mx-auto bg-gradient-to-br from-gray-50 to-blue-50 min-h-screen">
+      <div className="mb-6">
+        <h2 className="text-2xl lg:text-3xl font-bold text-gray-900">Lihat Shift</h2>
+        <p className="text-gray-600 mt-1">Jadwal shift dan pengajuan libur/izin</p>
+      </div>
+
+      {/* Tombol Aksi */}
+      <div className="flex gap-3 mb-6">
+        <button
+          onClick={() => setIsLiburModalOpen(true)}
+          className="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors flex items-center gap-2"
+        >
+          <CalendarDaysIcon className="w-5 h-5" />
+          Ajukan Libur
+        </button>
+        <button
+          onClick={() => setIsIzinModalOpen(true)}
+          className="px-6 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors flex items-center gap-2"
+        >
+          <CheckBadgeIcon className="w-5 h-5" />
+          Ajukan Izin
+        </button>
+      </div>
+
+      {/* Jadwal Shift */}
+      <div className="bg-white rounded-xl shadow-sm border border-gray-200 mb-8">
+        <div className="p-6">
+          <div className="flex justify-between items-center mb-6">
+            <h3 className="font-semibold text-lg text-gray-800">Jadwal Shift Mendatang</h3>
+            <div className="text-sm text-gray-600">
+              {shiftData.filter(s => s.status === 'Scheduled').length} shift terjadwal
+            </div>
+          </div>
+          
+          {shiftData.length === 0 ? (
+            <div className="text-center py-8">
+              <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                <CalendarDaysIcon className="w-8 h-8 text-gray-400" />
+              </div>
+              <p className="text-gray-500">Belum ada shift yang ditugaskan untuk Anda saat ini</p>
+            </div>
+          ) : (
+            <div className="space-y-4">
+              {shiftData.map((shift) => (
+                <div key={shift.id} className="border border-gray-200 rounded-lg p-6 hover:shadow-md transition-shadow">
+                  <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                    <div className="flex items-center gap-4">
+                      <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
+                        <CalendarDaysIcon className="w-6 h-6 text-blue-600" />
+                      </div>
+                      <div>
+                        <div className="flex items-center gap-3 mb-1">
+                          <h4 className="font-bold text-gray-900">{shift.date}</h4>
+                          <span className="px-2 py-1 bg-blue-100 text-blue-800 rounded-full text-xs font-medium">
+                            {shift.day}
+                          </span>
+                        </div>
+                        <div className="flex items-center gap-4 text-sm text-gray-600">
+                          <span className="flex items-center gap-1">
+                            <ClockOutlineIcon className="w-4 h-4" />
+                            {shift.startTime} - {shift.endTime}
+                          </span>
+                          <span className="flex items-center gap-1">
+                            <MapPinIcon className="w-4 h-4" />
+                            {shift.location}
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="flex flex-col md:items-end gap-2">
+                      <span className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-medium ${
+                        shift.status === 'Scheduled' ? 'bg-green-100 text-green-800' : 
+                        shift.status === 'Cancelled' ? 'bg-red-100 text-red-800' : 
+                        'bg-blue-100 text-blue-800'
+                      }`}>
+                        {shift.status === 'Scheduled' ? '✓ Terjadwal' : 
+                         shift.status === 'Cancelled' ? '✗ Dibatalkan' : 
+                         shift.status}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+      </div>
+
+      {/* RIWAYAT PENGAJUAN */}
+      {/* RIWAYAT PENGAJUAN - UPDATE INI */}
+<div className="bg-white rounded-xl shadow-sm border border-gray-200">
+  <div className="p-6">
+    <div className="flex justify-between items-center mb-6">
+      <h3 className="font-semibold text-lg text-gray-800">Riwayat Pengajuan</h3>
+      <div className="text-sm text-gray-600">
+        {submissionHistory.length} total pengajuan
+      </div>
+    </div>
+    
+    {submissionHistory.length === 0 ? (
+      <div className="text-center py-8">
+        <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
+          <DocumentTextIcon className="w-8 h-8 text-gray-400" />
+        </div>
+        <p className="text-gray-500">Belum ada riwayat pengajuan</p>
+        <p className="text-gray-400 text-sm mt-1">
+          Riwayat pengajuan libur dan izin akan muncul di sini
+        </p>
+      </div>
+    ) : (
+      <div className="space-y-4">
+        {submissionHistory.map((submission) => (
+          <div 
+            key={submission.id} 
+            className="border border-gray-200 rounded-lg p-6 hover:shadow-md transition-shadow cursor-pointer"
+            onClick={() => openSubmissionDetailModal(submission)}
+          >
+            <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+              <div className="flex items-start gap-4">
+                <div className={`w-12 h-12 rounded-lg flex items-center justify-center ${submission.type === 'libur' ? 'bg-blue-100' : 'bg-purple-100'}`}>
+                  {submission.type === 'libur' ? (
+                    <CalendarDaysIcon className="w-6 h-6 text-blue-600" />
+                  ) : (
+                    <CheckBadgeIcon className="w-6 h-6 text-purple-600" />
+                  )}
+                </div>
+                <div>
+                  <div className="flex flex-wrap items-center gap-3 mb-1">
+                    <h4 className="font-bold text-gray-900">
+                      {submission.type === 'libur' ? 'Pengajuan Libur' : 'Pengajuan Izin'}
+                    </h4>
+                    <span className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-medium ${getSubmissionTypeColor(submission.type)}`}>
+                      {submission.type === 'libur' ? 'Libur' : 'Izin'}
+                    </span>
+                    <span className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-medium ${getSubmissionStatusColor(submission.status)}`}>
+                      {submission.status === 'approved' ? '✓ Disetujui' : 
+                       submission.status === 'rejected' ? '✗ Ditolak' : 
+                       '⏳ Menunggu'}
+                    </span>
+                  </div>
+                  <div className="flex flex-col md:flex-row md:items-center gap-4 text-sm text-gray-600">
+                    <span className="flex items-center gap-1">
+                      <CalendarDaysIcon className="w-4 h-4" />
+                      {submission.startDate} {submission.endDate && `- ${submission.endDate}`}
+                    </span>
+                    <span className="hidden md:block">•</span>
+                    <span className="text-gray-700 font-medium">
+                      {submission.reason}
+                    </span>
+                  </div>
+                  <div className="mt-2 text-xs text-gray-500 space-y-1">
+                    <p>Diajukan pada: {submission.submittedAt}</p>
+                    {submission.processedAt && (
+                      <p className="font-medium">
+                        {submission.status === 'approved' ? 'Disetujui' : 'Ditolak'} pada: {submission.processedAt}
+                        {submission.processedBy && ` oleh ${submission.processedBy}`}
+                      </p>
+                    )}
+                  </div>
+                </div>
+              </div>
+              <div className="flex items-center gap-2">
+                <span className="text-gray-400 text-sm">Lihat detail</span>
+                <ChevronRightIcon className="w-5 h-5 text-gray-400" />
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+    )}
+  </div>
+</div>
+    </div>
+  );
+
+
+  // Modal Detail Pengajuan - TAMBAHKAN INI
+const renderSubmissionDetailModal = () => (
+  <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+    <div className="bg-white rounded-xl w-full max-w-md max-h-[90vh] overflow-y-auto">
+      <div className="p-6 border-b border-gray-200">
+        <div className="flex items-center justify-between">
+          <h2 className="text-xl font-bold text-gray-900">Detail Pengajuan</h2>
+          <button
+            onClick={() => setIsSubmissionDetailModalOpen(false)}
+            className="text-gray-400 hover:text-gray-600"
+          >
+            <XMarkIcon className="w-6 h-6" />
+          </button>
+        </div>
+        <p className="text-gray-600 mt-1">
+          {selectedSubmission?.type === 'libur' ? 'Pengajuan Libur' : 'Pengajuan Izin'}
+        </p>
+      </div>
+      <div className="p-6 space-y-4">
+        {/* Status Pengajuan */}
+        <div className="bg-gray-50 p-4 rounded-lg">
+          <h3 className="font-medium text-gray-700 mb-2">Status Pengajuan</h3>
+          <div className="flex items-center gap-3">
+            <span className={`inline-flex items-center px-3 py-1 rounded-full text-sm font-medium ${getSubmissionStatusColor(selectedSubmission?.status)}`}>
+              {selectedSubmission?.status === 'approved' ? '✓ Disetujui' : 
+               selectedSubmission?.status === 'rejected' ? '✗ Ditolak' : 
+               '⏳ Menunggu Persetujuan'}
+            </span>
+            {selectedSubmission?.processedAt && (
+              <span className="text-sm text-gray-600">
+                {selectedSubmission.status === 'approved' ? 'Disetujui' : 'Ditolak'} pada {selectedSubmission.processedAt}
+              </span>
+            )}
+          </div>
+        </div>
+
+        {/* Informasi Pengajuan */}
+        <div>
+          <h3 className="font-medium text-gray-700 mb-2">Informasi Pengajuan</h3>
+          <div className="space-y-3">
+            <div className="flex justify-between">
+              <span className="text-gray-600">Jenis</span>
+              <span className={`font-medium ${selectedSubmission?.type === 'libur' ? 'text-blue-600' : 'text-purple-600'}`}>
+                {selectedSubmission?.type === 'libur' ? 'Libur' : 'Izin'}
+              </span>
+            </div>
+            <div className="flex justify-between">
+              <span className="text-gray-600">Periode</span>
+              <span className="font-medium">
+                {selectedSubmission?.startDate} {selectedSubmission?.endDate && `- ${selectedSubmission.endDate}`}
+              </span>
+            </div>
+            <div className="flex justify-between">
+              <span className="text-gray-600">Tanggal Pengajuan</span>
+              <span className="font-medium">{selectedSubmission?.submittedAt}</span>
+            </div>
+            {selectedSubmission?.processedAt && (
+              <div className="flex justify-between">
+                <span className="text-gray-600">Tanggal Persetujuan</span>
+                <span className="font-medium">{selectedSubmission.processedAt}</span>
+              </div>
+            )}
+          </div>
+        </div>
+
+        {/* Alasan Pengajuan */}
+        <div>
+          <h3 className="font-medium text-gray-700 mb-2">Alasan Pengajuan</h3>
+          <div className="bg-gray-50 p-3 rounded-lg">
+            <p className="text-gray-800">{selectedSubmission?.reason}</p>
+          </div>
+        </div>
+
+        {/* Catatan Admin */}
+        {selectedSubmission?.notes && (
+          <div>
+            <h3 className="font-medium text-gray-700 mb-2">Catatan Admin</h3>
+            <div className={`p-3 rounded-lg ${selectedSubmission?.status === 'approved' ? 'bg-green-50 border border-green-200' : 'bg-red-50 border border-red-200'}`}>
+              <div className="flex items-start gap-2">
+                {selectedSubmission?.status === 'approved' ? (
+                  <CheckCircleIcon className="w-5 h-5 text-green-600 mt-0.5 flex-shrink-0" />
+                ) : (
+                  <ExclamationCircleIcon className="w-5 h-5 text-red-600 mt-0.5 flex-shrink-0" />
+                )}
+                <div>
+                  <p className={`${selectedSubmission?.status === 'approved' ? 'text-green-800' : 'text-red-800'}`}>
+                    {selectedSubmission.notes}
+                  </p>
+                  {selectedSubmission?.processedBy && (
+                    <p className="text-sm text-gray-600 mt-1">
+                      Oleh: {selectedSubmission.processedBy}
+                    </p>
+                  )}
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Info Status Pending */}
+        {selectedSubmission?.status === 'pending' && (
+          <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
+            <div className="flex items-start gap-3">
+              <ExclamationTriangleIcon className="w-5 h-5 text-yellow-600 mt-0.5" />
+              <div>
+                <p className="font-medium text-yellow-800">Menunggu Persetujuan</p>
+                <p className="text-yellow-700 text-sm mt-1">
+                  Pengajuan Anda sedang dalam proses review oleh admin. Anda akan mendapatkan notifikasi ketika status berubah.
+                </p>
+              </div>
+            </div>
+          </div>
+        )}
+      </div>
+      <div className="p-6 border-t border-gray-200">
+        <button
+          onClick={() => setIsSubmissionDetailModalOpen(false)}
+          className="w-full px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+        >
+          Tutup
+        </button>
+      </div>
+    </div>
+  </div>
+);
+
   const renderDailyReport = () => (
     <div className="px-4 sm:px-6 lg:px-6 py-6 max-w-screen-2xl mx-auto bg-gradient-to-br from-gray-50 to-blue-50 min-h-screen">
       <div className="mb-6">
@@ -6072,6 +6577,24 @@ export default function Operator() {
           Submit your daily IPAL operational report
         </p>
       </div>
+
+      {editingReportId && (
+        <div className="bg-yellow-50 p-4 rounded-xl shadow-sm border border-yellow-200 mb-6">
+          <div className="flex items-start gap-3">
+            <div className="w-6 h-6 rounded-full bg-yellow-100 flex items-center justify-center mt-0.5">
+              <ExclamationTriangleIcon className="w-4 h-4 text-yellow-700" />
+            </div>
+            <div>
+              <h3 className="font-bold text-yellow-700 mb-2">
+                Sedang Mengedit Laporan
+              </h3>
+              <p className="text-yellow-800 text-sm">
+                Anda sedang dalam mode edit. Setelah selesai, klik "Submit Report" untuk menyimpan perubahan.
+              </p>
+            </div>
+          </div>
+        </div>
+      )}
 
       <div className="bg-blue-50 p-6 rounded-xl shadow-sm border border-blue-200 mb-6">
         <div className="flex items-start gap-3">
@@ -6100,68 +6623,84 @@ export default function Operator() {
             Report Information
           </h3>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div id="date">
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Date <span className="text-red-500">*</span>
-              </label>
-              <div className="relative">
-                <input
-                  ref={dateInputRef}
-                  type="date"
-                  value={formData.date}
-                  onChange={(e) => handleInputChange("date", e.target.value)}
-                  className={`w-full p-3 border ${
-                    errors.date ? "border-red-500" : "border-gray-200"
-                  } bg-white rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition placeholder-gray-400 text-gray-900`}
-                />
-                <button
-                  type="button"
-                  onClick={handleDateIconClick}
-                  className="absolute right-3 top-1/2 transform -translate-y-1/2 p-1 hover:bg-gray-200 rounded transition-colors"
-                >
-                  <CalendarDaysIcon className="w-5 h-5 text-gray-600" />
-                </button>
-              </div>
-              {errors.date && (
-                <p className="text-red-500 text-sm mt-1 flex items-center gap-1">
-                  <ExclamationCircleIcon className="w-4 h-4" />
-                  {errors.date}
-                </p>
-              )}
-            </div>
-
-            <div id="time">
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Time <span className="text-red-500">*</span>
-              </label>
-              <div className="relative">
-                <input
-                  ref={timeInputRef}
-                  type="time"
-                  value={formData.time}
-                  onChange={(e) => handleInputChange("time", e.target.value)}
-                  className={`w-full p-3 border ${
-                    errors.time ? "border-red-500" : "border-gray-200"
-                  } bg-white rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition placeholder-gray-400 text-gray-900`}
-                />
-                <button
-                  type="button"
-                  onClick={handleTimeIconClick}
-                  className="absolute right-3 top-1/2 transform -translate-y-1/2 p-1 hover:bg-gray-200 rounded transition-colors"
-                >
-                  <ClockIcon className="w-5 h-5 text-gray-600" />
-                </button>
-              </div>
-              {errors.time && (
-                <p className="text-red-500 text-sm mt-1 flex items-center gap-1">
-                  <ExclamationCircleIcon className="w-4 h-4" />
-                  {errors.time}
-                </p>
-              )}
-            </div>
+            {/* PERBAIKAN: Input Date dengan icon tunggal */}
+       
+<div id="date">
+  <label className="block text-sm font-medium text-gray-700 mb-2">
+    Date <span className="text-red-500">*</span>
+  </label>
+  <div className="relative">
+    <input
+      ref={dateInputRef}
+      type="date"
+      value={formData.date}
+      onChange={(e) => handleInputChange("date", e.target.value)}
+      className={`w-full p-3 pr-10 border ${
+        errors.date ? "border-red-500" : "border-gray-200"
+      } bg-white rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition placeholder-gray-400 text-gray-900`}
+      style={{ 
+        WebkitAppearance: 'none',
+        MozAppearance: 'textfield',
+        // Hilangkan icon bawaan browser
+        appearance: 'none'
+      }}
+    />
+    <button
+      type="button"
+      onClick={handleDateIconClick}
+      className="absolute right-3 top-1/2 transform -translate-y-1/2 p-2 hover:bg-gray-100 rounded transition-colors"
+    >
+      <CalendarDaysIcon className="w-5 h-5 text-gray-600" />
+    </button>
+  </div>
+  {errors.date && (
+    <p className="text-red-500 text-sm mt-1 flex items-center gap-1">
+      <ExclamationCircleIcon className="w-4 h-4" />
+      {errors.date}
+    </p>
+  )}
+</div>
+            {/* PERBAIKAN: Input Time dengan icon tunggal */}
+         
+<div id="time">
+  <label className="block text-sm font-medium text-gray-700 mb-2">
+    Time <span className="text-red-500">*</span>
+  </label>
+  <div className="relative">
+    <input
+      ref={timeInputRef}
+      type="time"
+      value={formData.time}
+      onChange={(e) => handleInputChange("time", e.target.value)}
+      className={`w-full p-3 pr-10 border ${
+        errors.time ? "border-red-500" : "border-gray-200"
+      } bg-white rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition placeholder-gray-400 text-gray-900`}
+      style={{ 
+        WebkitAppearance: 'none',
+        MozAppearance: 'textfield',
+        // Hilangkan icon bawaan browser
+        appearance: 'none'
+      }}
+    />
+    <button
+      type="button"
+      onClick={handleTimeIconClick}
+      className="absolute right-3 top-1/2 transform -translate-y-1/2 p-2 hover:bg-gray-100 rounded transition-colors"
+    >
+      <ClockIcon className="w-5 h-5 text-gray-600" />
+    </button>
+  </div>
+  {errors.time && (
+    <p className="text-red-500 text-sm mt-1 flex items-center gap-1">
+      <ExclamationCircleIcon className="w-4 h-4" />
+      {errors.time}
+    </p>
+  )}
+</div>
           </div>
         </div>
 
+        {/* ... Bagian lainnya tetap sama ... */}
         <div className="p-6 border-b border-gray-200">
           <h3 className="font-semibold text-lg text-gray-800 mb-4">
             Water Parameters <span className="text-red-500">*</span>
@@ -6432,6 +6971,31 @@ export default function Operator() {
 
         <div className="p-6">
           <div className="flex flex-col sm:flex-row gap-4 justify-end">
+            {editingReportId && (
+              <button
+                onClick={() => {
+                  setEditingReportId(null);
+                  setFormData({
+                    date: "",
+                    time: "",
+                    pHLevel: "",
+                    flowRate: "",
+                    volt: "",
+                    ampere: "",
+                    tds: "",
+                    ec: "",
+                    agitatorStatus: "Normal",
+                    settleStatus: "Normal",
+                    outFilterStatus: "Normal",
+                    additionalNotes: "",
+                  });
+                  setUploadedFiles([]);
+                }}
+                className="w-full sm:w-auto px-8 py-3 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors font-medium"
+              >
+                Batal Edit
+              </button>
+            )}
             <button
               onClick={handleSaveDraft}
               className="w-full sm:w-auto px-8 py-3 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors font-medium"
@@ -6450,8 +7014,10 @@ export default function Operator() {
               {isSubmitting ? (
                 <>
                   <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
-                  Submitting...
+                  {editingReportId ? "Menyimpan..." : "Submitting..."}
                 </>
+              ) : editingReportId ? (
+                "Update Report"
               ) : (
                 "Submit Report"
               )}
@@ -6480,9 +7046,8 @@ export default function Operator() {
               </div>
               <select className="px-4 py-2 border text-gray-800 bg-white border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
                 <option>Semua Status</option>
-                <option>Pending</option>
-                <option>Setujui</option>
-                <option>Tolak</option>
+                <option>Submitted</option>
+                <option>Draft</option>
               </select>
               <button
                 onClick={handleExportReports}
@@ -6498,6 +7063,9 @@ export default function Operator() {
         <div className="p-6">
           {filteredReports.length === 0 ? (
             <div className="text-center py-8">
+              <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                <DocumentChartBarIcon className="w-8 h-8 text-gray-400" />
+              </div>
               <p className="text-gray-500">Belum ada laporan yang disubmit.</p>
               <p className="text-gray-400 text-sm mt-1">
                 Submit laporan pertama Anda di atas.
@@ -6522,7 +7090,9 @@ export default function Operator() {
                           className={`px-2 py-1 rounded-full text-xs font-medium ${
                             report.status === "Submitted"
                               ? "bg-green-100 text-green-800"
-                              : "bg-yellow-100 text-yellow-800"
+                              : report.status === "Draft"
+                              ? "bg-yellow-100 text-yellow-800"
+                              : "bg-blue-100 text-blue-800"
                           }`}
                         >
                           {report.status}
@@ -6558,7 +7128,7 @@ export default function Operator() {
                         )}
                       </div>
                       {report.additionalNotes && (
-                        <p className="text-gray-700 mb-4">
+                        <p className="text-gray-700 mb-4 line-clamp-2">
                           {report.additionalNotes}
                         </p>
                       )}
@@ -6583,13 +7153,37 @@ export default function Operator() {
                         </span>
                       </div>
                     </div>
-                    <button
-                      onClick={() => openReportDetailModal(report)}
-                      className="inline-flex items-center gap-2 px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors"
-                    >
-                      <MagnifyingGlassIcon className="w-4 h-4" />
-                      Detail
-                    </button>
+                    <div className="flex gap-2">
+                      <button
+                        onClick={() => openReportDetailModal(report)}
+                        className="inline-flex items-center gap-2 px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors"
+                      >
+                        <MagnifyingGlassIcon className="w-4 h-4" />
+                        Detail
+                      </button>
+                      
+                      {/* Tombol Edit - hanya untuk draft */}
+                      {report.status === "Draft" && (
+                        <button
+                          onClick={() => handleEditReport(report)}
+                          className="inline-flex items-center gap-2 px-4 py-2 bg-blue-100 text-blue-700 rounded-lg hover:bg-blue-200 transition-colors"
+                        >
+                          <PencilIcon className="w-4 h-4" />
+                          Edit
+                        </button>
+                      )}
+                      
+                      {/* Tombol Hapus - hanya untuk draft */}
+                      {report.status === "Draft" && (
+                        <button
+                          onClick={() => handleDeleteReport(report.id)}
+                          className="inline-flex items-center gap-2 px-4 py-2 bg-red-100 text-red-700 rounded-lg hover:bg-red-200 transition-colors"
+                        >
+                          <TrashIcon className="w-4 h-4" />
+                          Hapus
+                        </button>
+                      )}
+                    </div>
                   </div>
                 </div>
               ))}
@@ -6636,7 +7230,7 @@ export default function Operator() {
         </div>
       </div>
 
-      {/* Today's Attendance Card */}
+      {/* Today's Attendance Card - Responsive */}
       <div className="bg-white rounded-xl shadow-sm border border-gray-200 mb-6">
         <div className="p-4 border-b border-gray-200 bg-gray-50 rounded-t-xl">
           <h3 className="font-semibold text-lg text-gray-800">
@@ -6717,7 +7311,7 @@ export default function Operator() {
         </div>
       </div>
 
-      {/* Attendance History */}
+      {/* Attendance History - Responsive Table dengan tombol Edit sesuai SRS */}
       <div className="bg-white rounded-xl shadow-sm border border-gray-200">
         <div className="p-4 border-b border-gray-200 bg-gray-50 rounded-t-xl">
           <h3 className="font-semibold text-lg text-gray-800">
@@ -6725,7 +7319,7 @@ export default function Operator() {
           </h3>
         </div>
         <div className="p-4 bg-white rounded-b-xl">
-          {/* Mobile View */}
+          {/* Mobile View - Card Layout */}
           <div className="block lg:hidden space-y-4">
             {attendanceHistory.map((record) => (
               <div
@@ -6770,18 +7364,31 @@ export default function Operator() {
                   </div>
                 </div>
 
-                <button
-                  onClick={() => openDetailModal(record)}
-                  className="w-full flex items-center justify-center gap-1 text-blue-600 hover:text-blue-800 text-sm font-medium py-2 border border-gray-200 rounded-lg hover:bg-blue-50 transition-colors"
-                >
-                  <EyeIcon className="w-4 h-4" />
-                  View Details
-                </button>
+                <div className="flex gap-2">
+                  <button
+                    onClick={() => openDetailModal(record)}
+                    className="flex-1 flex items-center justify-center gap-1 text-blue-600 hover:text-blue-800 text-sm font-medium py-2 border border-gray-200 rounded-lg hover:bg-blue-50 transition-colors"
+                  >
+                    <EyeIcon className="w-4 h-4" />
+                    Detail
+                  </button>
+                  
+                  {/* Tombol Edit sesuai SRS - hanya untuk status pending */}
+                  {record.approvalStatus === "pending" && (
+                    <button
+                      onClick={() => openEditPresenceModal(record)}
+                      className="flex-1 flex items-center justify-center gap-1 text-green-600 hover:text-green-800 text-sm font-medium py-2 border border-gray-200 rounded-lg hover:bg-green-50 transition-colors"
+                    >
+                      <PencilIcon className="w-4 h-4" />
+                      Edit
+                    </button>
+                  )}
+                </div>
               </div>
             ))}
           </div>
 
-          {/* Desktop View */}
+          {/* Desktop View - Table Layout */}
           <div className="hidden lg:block overflow-x-auto">
             <table className="w-full min-w-[600px]">
               <thead>
@@ -6850,13 +7457,26 @@ export default function Operator() {
                       </span>
                     </td>
                     <td className="py-3 px-4">
-                      <button
-                        onClick={() => openDetailModal(record)}
-                        className="flex items-center gap-1 text-blue-600 hover:text-blue-800 text-sm font-medium whitespace-nowrap"
-                      >
-                        <EyeIcon className="w-4 h-4" />
-                        Detail
-                      </button>
+                      <div className="flex gap-2">
+                        <button
+                          onClick={() => openDetailModal(record)}
+                          className="flex items-center gap-1 text-blue-600 hover:text-blue-800 text-sm font-medium whitespace-nowrap"
+                        >
+                          <EyeIcon className="w-4 h-4" />
+                          Detail
+                        </button>
+                        
+                        {/* Tombol Edit sesuai SRS - hanya untuk status pending */}
+                        {record.approvalStatus === "pending" && (
+                          <button
+                            onClick={() => openEditPresenceModal(record)}
+                            className="flex items-center gap-1 text-green-600 hover:text-green-800 text-sm font-medium whitespace-nowrap"
+                          >
+                            <PencilIcon className="w-4 h-4" />
+                            Edit
+                          </button>
+                        )}
+                      </div>
                     </td>
                   </tr>
                 ))}
@@ -6880,7 +7500,6 @@ export default function Operator() {
     </div>
   );
 
-  // ==================== RENDER HELPDESK ====================
   const renderHelpDesk = () => (
     <div className="px-4 sm:px-6 lg:px-6 py-6 max-w-screen-2xl mx-auto bg-gradient-to-br from-gray-50 to-blue-50 min-h-screen">
       <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between mb-6 gap-4">
@@ -7029,24 +7648,9 @@ export default function Operator() {
                       </div>
                       <div className="flex-1">
                         <div className="flex justify-between items-start">
-                          <div>
-                            <h4 className="text-lg font-semibold text-gray-900">
-                              {ticket.title}
-                            </h4>
-                            <div className="flex items-center gap-2 mt-1">
-                              <span className="text-sm text-gray-600 font-medium">
-                                {ticket.ticketId}
-                              </span>
-                              <span className="text-gray-400">•</span>
-                              <span className="text-sm text-gray-600">
-                                {ticket.assignee}
-                              </span>
-                              <span className="text-gray-400">•</span>
-                              <span className="text-sm text-gray-600">
-                                {ticket.createdAt}
-                              </span>
-                            </div>
-                          </div>
+                          <h4 className="text-lg font-semibold text-gray-900">
+                            {ticket.title}
+                          </h4>
                           <span
                             className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${getPriorityColor(
                               ticket.priority
@@ -7066,53 +7670,11 @@ export default function Operator() {
                         <ChatBubbleLeftRightIcon className="w-4 h-4 text-gray-400" />
                         <span>{ticket.site}</span>
                       </div>
-                      <div className="flex items-center gap-2 text-sm text-gray-600">
-                        <span className="font-medium">Kategori:</span>
-                        <span>{ticket.category}</span>
-                      </div>
                     </div>
                     <div className="ml-9">
                       <p className="text-sm text-gray-600 mb-3">
                         {ticket.description}
                       </p>
-
-                      {/* Attachments */}
-                      {ticket.attachments && ticket.attachments.length > 0 && (
-                        <div className="mb-3">
-                          <p className="text-sm font-medium text-gray-700 mb-2">
-                            Attachments:
-                          </p>
-                          <div className="flex flex-wrap gap-2">
-                            {ticket.attachments.map((attachment, idx) => (
-                              <div
-                                key={idx}
-                                className="flex items-center gap-2 bg-gray-100 px-3 py-2 rounded-lg"
-                              >
-                                <DocumentTextIcon className="w-4 h-4 text-gray-600" />
-                                <span className="text-sm text-gray-700">
-                                  {attachment.name}
-                                </span>
-                                <button className="text-blue-600 hover:text-blue-800 text-sm">
-                                  Download
-                                </button>
-                              </div>
-                            ))}
-                          </div>
-                        </div>
-                      )}
-
-                      {/* Solution if exists */}
-                      {ticket.solution && (
-                        <div className="mb-3 p-3 bg-green-50 rounded-lg border border-green-200">
-                          <p className="text-sm font-medium text-green-800 mb-1">
-                            Solution:
-                          </p>
-                          <p className="text-sm text-green-700">
-                            {ticket.solution}
-                          </p>
-                        </div>
-                      )}
-
                       <div className="flex justify-between items-center">
                         <span
                           className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${getTicketStatusColor(
@@ -7121,24 +7683,13 @@ export default function Operator() {
                         >
                           {ticket.status}
                         </span>
-                        <div className="flex items-center gap-2">
-                          {ticket.status === "Open" && (
-                            <button
-                              onClick={() => openSolutionModal(ticket)}
-                              className="inline-flex items-center gap-1 px-3 py-1 bg-green-100 text-green-800 rounded-lg hover:bg-green-200 text-sm"
-                            >
-                              <DocumentTextIcon className="w-4 h-4" />
-                              Provide Solution
-                            </button>
+                        <div className="text-xs text-gray-500">
+                          <span>Created: {ticket.createdAt}</span>
+                          {ticket.resolvedAt && (
+                            <span className="ml-2">
+                              Resolved: {ticket.resolvedAt}
+                            </span>
                           )}
-                          <div className="text-xs text-gray-500">
-                            <span>Created: {ticket.createdAt}</span>
-                            {ticket.resolvedAt && (
-                              <span className="ml-2">
-                                Resolved: {ticket.resolvedAt}
-                              </span>
-                            )}
-                          </div>
                         </div>
                       </div>
                     </div>
@@ -7166,331 +7717,515 @@ export default function Operator() {
     </div>
   );
 
-  // ==================== MODAL CHECK-IN ====================
+  // ==================== MODAL EDIT PRESENSI (SESUAI SRS) ====================
+  const renderEditPresenceModal = () => (
+  <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+    <div className="bg-white rounded-xl w-full max-w-md max-h-[90vh] overflow-y-auto">
+      <div className="p-6 border-b border-gray-200">
+        <h2 className="text-xl font-bold text-gray-900">Edit Presensi</h2>
+        <p className="text-gray-600 mt-1">Edit data presensi sesuai SRS</p>
+      </div>
+      <div className="p-6 space-y-4">
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-2">
+            Tanggal
+          </label>
+          <p className="p-3 border border-gray-200 bg-gray-50 rounded-lg text-gray-900">
+            {editingPresence?.date}
+          </p>
+        </div>
+        
+        {/* PERBAIKAN: Waktu Masuk - dropdown */}
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-2">
+            Waktu Masuk (HH:MM AM/PM)
+          </label>
+          <select
+            value={editPresenceForm.checkIn}
+            onChange={(e) => setEditPresenceForm({...editPresenceForm, checkIn: e.target.value})}
+            className="w-full p-3 border border-gray-200 bg-white rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-900"
+          >
+            <option value="">Pilih waktu masuk</option>
+            <option value="08:00 AM">08:00 AM</option>
+            <option value="08:15 AM">08:15 AM</option>
+            <option value="08:30 AM">08:30 AM</option>
+            <option value="08:45 AM">08:45 AM</option>
+            <option value="09:00 AM">09:00 AM</option>
+            <option value="09:15 AM">09:15 AM</option>
+            <option value="09:30 AM">09:30 AM</option>
+            <option value="09:45 AM">09:45 AM</option>
+            <option value="10:00 AM">10:00 AM</option>
+            <option value="10:15 AM">10:15 AM</option>
+            <option value="10:30 AM">10:30 AM</option>
+            <option value="10:45 AM">10:45 AM</option>
+            <option value="11:00 AM">11:00 AM</option>
+            <option value="11:15 AM">11:15 AM</option>
+            <option value="11:30 AM">11:30 AM</option>
+            <option value="11:45 AM">11:45 AM</option>
+            <option value="12:00 PM">12:00 PM</option>
+            <option value="12:15 PM">12:15 PM</option>
+            <option value="12:30 PM">12:30 PM</option>
+            <option value="12:45 PM">12:45 PM</option>
+            <option value="01:00 PM">01:00 PM</option>
+            <option value="01:15 PM">01:15 PM</option>
+            <option value="01:30 PM">01:30 PM</option>
+            <option value="01:45 PM">01:45 PM</option>
+            <option value="02:00 PM">02:00 PM</option>
+            <option value="02:15 PM">02:15 PM</option>
+            <option value="02:30 PM">02:30 PM</option>
+            <option value="02:45 PM">02:45 PM</option>
+            <option value="03:00 PM">03:00 PM</option>
+            <option value="03:15 PM">03:15 PM</option>
+            <option value="03:30 PM">03:30 PM</option>
+            <option value="03:45 PM">03:45 PM</option>
+            <option value="04:00 PM">04:00 PM</option>
+            <option value="04:15 PM">04:15 PM</option>
+            <option value="04:30 PM">04:30 PM</option>
+            <option value="04:45 PM">04:45 PM</option>
+            <option value="05:00 PM">05:00 PM</option>
+            <option value="05:15 PM">05:15 PM</option>
+            <option value="05:30 PM">05:30 PM</option>
+            <option value="05:45 PM">05:45 PM</option>
+            <option value="06:00 PM">06:00 PM</option>
+            <option value="06:15 PM">06:15 PM</option>
+            <option value="06:30 PM">06:30 PM</option>
+            <option value="06:45 PM">06:45 PM</option>
+            <option value="07:00 PM">07:00 PM</option>
+            <option value="07:15 PM">07:15 PM</option>
+            <option value="07:30 PM">07:30 PM</option>
+            <option value="07:45 PM">07:45 PM</option>
+            <option value="08:00 PM">08:00 PM</option>
+            <option value="08:15 PM">08:15 PM</option>
+            <option value="08:30 PM">08:30 PM</option>
+            <option value="08:45 PM">08:45 PM</option>
+            <option value="09:00 PM">09:00 PM</option>
+            <option value="09:15 PM">09:15 PM</option>
+            <option value="09:30 PM">09:30 PM</option>
+            <option value="09:45 PM">09:45 PM</option>
+            <option value="10:00 PM">10:00 PM</option>
+            <option value="10:15 PM">10:15 PM</option>
+            <option value="10:30 PM">10:30 PM</option>
+            <option value="10:45 PM">10:45 PM</option>
+            <option value="11:00 PM">11:00 PM</option>
+            <option value="11:15 PM">11:15 PM</option>
+            <option value="11:30 PM">11:30 PM</option>
+            <option value="11:45 PM">11:45 PM</option>
+            <option value="12:00 AM">12:00 AM</option>
+          </select>
+          <p className="text-xs text-gray-500 mt-1">Format: HH:MM AM/PM</p>
+        </div>
+        
+        {/* PERBAIKAN: Waktu Pulang - dropdown */}
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-2">
+            Waktu Pulang (HH:MM AM/PM)
+          </label>
+          <select
+            value={editPresenceForm.checkOut}
+            onChange={(e) => setEditPresenceForm({...editPresenceForm, checkOut: e.target.value})}
+            className="w-full p-3 border border-gray-200 bg-white rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-900"
+          >
+            <option value="">Pilih waktu pulang</option>
+            <option value="12:00 PM">12:00 PM</option>
+            <option value="12:15 PM">12:15 PM</option>
+            <option value="12:30 PM">12:30 PM</option>
+            <option value="12:45 PM">12:45 PM</option>
+            <option value="01:00 PM">01:00 PM</option>
+            <option value="01:15 PM">01:15 PM</option>
+            <option value="01:30 PM">01:30 PM</option>
+            <option value="01:45 PM">01:45 PM</option>
+            <option value="02:00 PM">02:00 PM</option>
+            <option value="02:15 PM">02:15 PM</option>
+            <option value="02:30 PM">02:30 PM</option>
+            <option value="02:45 PM">02:45 PM</option>
+            <option value="03:00 PM">03:00 PM</option>
+            <option value="03:15 PM">03:15 PM</option>
+            <option value="03:30 PM">03:30 PM</option>
+            <option value="03:45 PM">03:45 PM</option>
+            <option value="04:00 PM">04:00 PM</option>
+            <option value="04:15 PM">04:15 PM</option>
+            <option value="04:30 PM">04:30 PM</option>
+            <option value="04:45 PM">04:45 PM</option>
+            <option value="05:00 PM">05:00 PM</option>
+            <option value="05:15 PM">05:15 PM</option>
+            <option value="05:30 PM">05:30 PM</option>
+            <option value="05:45 PM">05:45 PM</option>
+            <option value="06:00 PM">06:00 PM</option>
+            <option value="06:15 PM">06:15 PM</option>
+            <option value="06:30 PM">06:30 PM</option>
+            <option value="06:45 PM">06:45 PM</option>
+            <option value="07:00 PM">07:00 PM</option>
+            <option value="07:15 PM">07:15 PM</option>
+            <option value="07:30 PM">07:30 PM</option>
+            <option value="07:45 PM">07:45 PM</option>
+            <option value="08:00 PM">08:00 PM</option>
+            <option value="08:15 PM">08:15 PM</option>
+            <option value="08:30 PM">08:30 PM</option>
+            <option value="08:45 PM">08:45 PM</option>
+            <option value="09:00 PM">09:00 PM</option>
+            <option value="09:15 PM">09:15 PM</option>
+            <option value="09:30 PM">09:30 PM</option>
+            <option value="09:45 PM">09:45 PM</option>
+            <option value="10:00 PM">10:00 PM</option>
+            <option value="10:15 PM">10:15 PM</option>
+            <option value="10:30 PM">10:30 PM</option>
+            <option value="10:45 PM">10:45 PM</option>
+            <option value="11:00 PM">11:00 PM</option>
+            <option value="11:15 PM">11:15 PM</option>
+            <option value="11:30 PM">11:30 PM</option>
+            <option value="11:45 PM">11:45 PM</option>
+            <option value="12:00 AM">12:00 AM</option>
+            <option value="12:15 AM">12:15 AM</option>
+            <option value="12:30 AM">12:30 AM</option>
+            <option value="12:45 AM">12:45 AM</option>
+            <option value="01:00 AM">01:00 AM</option>
+          </select>
+          <p className="text-xs text-gray-500 mt-1">Format: HH:MM AM/PM</p>
+        </div>
+        
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-2">
+            Status Check-in
+          </label>
+          <select
+            value={editPresenceForm.checkInStatus}
+            onChange={(e) => setEditPresenceForm({...editPresenceForm, checkInStatus: e.target.value})}
+            className="w-full p-3 border border-gray-200 bg-white rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-900"
+          >
+            <option value="On Time">On Time</option>
+            <option value="Late">Late</option>
+          </select>
+        </div>
+        
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-2">
+            Lokasi Check-in
+          </label>
+          <select
+            value={editPresenceForm.checkInLocation}
+            onChange={(e) => setEditPresenceForm({...editPresenceForm, checkInLocation: e.target.value})}
+            className="w-full p-3 border border-gray-200 bg-white rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-900"
+          >
+            <option value="">Pilih lokasi check-in</option>
+            <option value="Jakarta Utara - Site A (Lat: -6.123456, Long: 106.789012)">Jakarta Utara - Site A</option>
+            <option value="Jakarta Utara - Site B (Lat: -6.123457, Long: 106.789013)">Jakarta Utara - Site B</option>
+            <option value="Jakarta Utara - Site C (Lat: -6.123458, Long: 106.789014)">Jakarta Utara - Site C</option>
+          </select>
+        </div>
+        
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-2">
+            Lokasi Check-out
+          </label>
+          <select
+            value={editPresenceForm.checkOutLocation}
+            onChange={(e) => setEditPresenceForm({...editPresenceForm, checkOutLocation: e.target.value})}
+            className="w-full p-3 border border-gray-200 bg-white rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-900"
+          >
+            <option value="">Pilih lokasi check-out</option>
+            <option value="Jakarta Utara - Site A (Lat: -6.123456, Long: 106.789012)">Jakarta Utara - Site A</option>
+            <option value="Jakarta Utara - Site B (Lat: -6.123457, Long: 106.789013)">Jakarta Utara - Site B</option>
+            <option value="Jakarta Utara - Site C (Lat: -6.123458, Long: 106.789014)">Jakarta Utara - Site C</option>
+          </select>
+        </div>
+        
+        <div className="bg-yellow-50 p-4 rounded-lg border border-yellow-200">
+          <div className="flex items-start gap-3">
+            <ExclamationTriangleIcon className="w-5 h-5 text-yellow-600 mt-0.5" />
+            <div>
+              <p className="font-medium text-yellow-800 mb-1">
+                Catatan Edit Presensi (SRS)
+              </p>
+              <p className="text-yellow-700 text-sm">
+                Presensi hanya dapat diedit jika statusnya belum disetujui (pending).
+                Setelah diedit, presensi akan kembali menunggu approval admin.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div className="p-6 border-t border-gray-200 flex gap-3">
+        <button
+          onClick={() => setIsEditPresenceModalOpen(false)}
+          className="flex-1 px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50"
+        >
+          Batal
+        </button>
+        <button
+          onClick={handleSaveEditPresence}
+          className="flex-1 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+        >
+          Submit Edit
+        </button>
+      </div>
+    </div>
+  </div>
+);
+
+  // ==================== MODAL LAINNYA ====================
   const renderCheckInModal = () => (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-      <div className="bg-white rounded-xl w-full max-w-md max-h-[85vh] flex flex-col">
+      <div className="bg-white rounded-xl w-full max-w-md max-h-[90vh] overflow-y-auto">
         <div className="p-6 border-b border-gray-200">
-          <div className="flex items-center justify-between">
-            <h2 className="text-xl font-bold text-gray-900">Check In</h2>
+          <h2 className="text-xl font-bold text-gray-900">Check In</h2>
+          <p className="text-gray-600 mt-1">Complete both steps to check in</p>
+        </div>
+        <div className="p-6 space-y-6">
+          <div>
+            <h3 className="font-medium text-gray-900 mb-3">
+              1. Capture Location
+            </h3>
             <button
-              onClick={() => {
-                setIsCheckInModalOpen(false);
-                stopCamera(false);
-              }}
-              className="text-gray-400 hover:text-gray-600"
+              onClick={() => getCurrentLocation(false)}
+              className={`w-full flex items-center gap-3 p-4 border rounded-lg ${
+                locationCaptured
+                  ? "border-green-500 bg-green-50 text-green-700"
+                  : "border-gray-300 bg-white text-gray-700 hover:bg-gray-50"
+              }`}
             >
-              <XMarkIcon className="w-6 h-6" />
+              <MapPinIcon className="w-5 h-5" />
+              <div className="text-left flex-1">
+                <span className="block">
+                  {locationCaptured
+                    ? "Location Captured"
+                    : "Get Current Location"}
+                </span>
+                <span className="block text-xs mt-1 text-gray-500">
+                  {currentLocation}
+                </span>
+              </div>
+              {locationCaptured && (
+                <CheckCircleIcon className="w-5 h-5 ml-auto" />
+              )}
             </button>
           </div>
-          <p className="text-gray-600 mt-1">
-            Complete the following steps to check in
-          </p>
-          {/* TAMBAHKAN BARIS INI */}
-          <p className="text-xs text-gray-500 mt-1">
-            * Must be within {ALLOWED_RADIUS_METERS} meters from company
-            location
-          </p>
-        </div>
-        <div className="flex-1 overflow-y-auto p-6">
-          {/* Step 1: Location */}
-          <div className="mb-6">
-            <div className="flex items-center gap-3 mb-3">
-              <div
-                className={`w-8 h-8 rounded-full flex items-center justify-center ${locationCaptured ? "bg-green-100 text-green-600" : "bg-blue-100 text-blue-600"}`}
-              >
-                {locationCaptured ? (
-                  <CheckCircleIcon className="w-5 h-5" />
-                ) : (
-                  <span className="font-bold">1</span>
-                )}
-              </div>
-              <h3 className="font-semibold text-gray-800">Capture Location</h3>
-            </div>
-            <div className="ml-11">
-              <div className="bg-gray-50 p-3 rounded-lg mb-3">
-                <p className="text-sm text-gray-600 mb-1">Current Location:</p>
-                <p className="text-sm text-gray-900 font-medium break-words max-h-20 overflow-y-auto">
-                  {currentLocation}
-                </p>
-              </div>
-              <button
-                onClick={() => getCurrentLocation(false)}
-                className="w-full px-4 py-2.5 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors flex items-center justify-center gap-2 text-sm"
-              >
-                <MapPinIcon className="w-4 h-4" />
-                {locationCaptured ? "Update Location" : "Get My Location"}
-              </button>
-            </div>
-          </div>
 
-          {/* Step 2: Selfie */}
           <div>
-            <div className="flex items-center gap-3 mb-3">
-              <div
-                className={`w-8 h-8 rounded-full flex items-center justify-center ${selfieUploaded ? "bg-green-100 text-green-600" : "bg-blue-100 text-blue-600"}`}
-              >
-                {selfieUploaded ? (
-                  <CheckCircleIcon className="w-5 h-5" />
-                ) : (
-                  <span className="font-bold">2</span>
-                )}
-              </div>
-              <h3 className="font-semibold text-gray-800">Take Selfie</h3>
-            </div>
-            <div className="ml-11">
-              {isCameraActive ? (
-                <div className="space-y-4">
-                  <div className="relative w-full h-48 bg-gray-900 rounded-lg overflow-hidden">
-                    <video
-                      ref={videoRefCheckIn}
-                      autoPlay
-                      playsInline
-                      className="w-full h-full object-cover"
-                    />
-                  </div>
-                  <div className="flex gap-2">
+            <h3 className="font-medium text-gray-900 mb-3">2. Upload Selfie</h3>
+            {isCameraActive && (
+              <div className="mb-4">
+                <div className="relative bg-black rounded-lg overflow-hidden">
+                  <video
+                    ref={videoRef}
+                    autoPlay
+                    playsInline
+                    className="w-full h-64 object-cover"
+                  />
+                  <div className="absolute bottom-4 left-0 right-0 flex justify-center">
                     <button
                       onClick={() => capturePhoto(false)}
-                      className="flex-1 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 text-sm"
+                      className="bg-white rounded-full p-3 shadow-lg hover:bg-gray-100"
                     >
-                      Capture Photo
-                    </button>
-                    <button
-                      onClick={() => stopCamera(false)}
-                      className="flex-1 px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 text-sm"
-                    >
-                      Cancel
+                      <CameraIcon className="w-6 h-6 text-gray-800" />
                     </button>
                   </div>
                 </div>
-              ) : selfiePreview ? (
-                <div className="space-y-4">
-                  <div className="relative w-full h-48 rounded-lg overflow-hidden border border-gray-200">
-                    <img
-                      src={selfiePreview}
-                      alt="Selfie preview"
-                      className="w-full h-full object-cover"
-                    />
-                  </div>
-                  <div className="flex gap-2">
-                    <button
-                      onClick={() => startCamera(false)}
-                      className="flex-1 px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 text-sm"
-                    >
-                      Retake Photo
-                    </button>
-                    <button
-                      onClick={() => triggerFileInput(false)}
-                      className="flex-1 px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 text-sm"
-                    >
-                      Upload Different
-                    </button>
+                <button
+                  onClick={() => stopCamera(false)}
+                  className="mt-2 text-sm text-red-600 hover:text-red-800"
+                >
+                  Close Camera
+                </button>
+              </div>
+            )}
+            {!isCameraActive && (
+              <div className="grid grid-cols-2 gap-3 mb-4">
+                <button
+                  onClick={() => startCamera(false)}
+                  className="flex flex-col items-center justify-center p-4 border-2 border-dashed border-gray-300 rounded-lg hover:border-blue-500 hover:bg-blue-50 transition-colors"
+                >
+                  <CameraIcon className="w-8 h-8 text-gray-600 mb-2" />
+                  <span className="text-sm font-medium text-gray-400">
+                    Take Photo
+                  </span>
+                </button>
+                <button
+                  onClick={() => triggerFileInput(false)}
+                  className="flex flex-col items-center justify-center p-4 border-2 border-dashed border-gray-300 rounded-lg hover:border-green-500 hover:bg-green-50 transition-colors"
+                >
+                  <PhotoIcon className="w-8 h-8 text-gray-600 mb-2" />
+                  <span className="text-sm font-medium text-gray-400">
+                    Upload Photo
+                  </span>
+                </button>
+              </div>
+            )}
+            {selfiePreview && (
+              <div className="mt-3">
+                <p className="text-sm text-gray-600 mb-2">Selfie Preview:</p>
+                <div className="flex items-center gap-3">
+                  <img
+                    src={selfiePreview}
+                    alt="Selfie preview"
+                    className="w-20 h-20 object-cover rounded-lg border border-gray-300"
+                  />
+                  <div className="flex-1">
+                    <p className="text-sm text-green-600 font-medium">
+                      ✓ Selfie captured
+                    </p>
+                    <p className="text-xs text-gray-500">Ready for check-in</p>
                   </div>
                 </div>
-              ) : (
-                <div className="flex flex-col gap-2">
-                  <button
-                    onClick={() => startCamera(false)}
-                    className="w-full px-4 py-2.5 bg-blue-600 text-white rounded-lg hover:bg-blue-700 flex items-center justify-center gap-2 text-sm"
-                  >
-                    <CameraIcon className="w-4 h-4" />
-                    Open Camera
-                  </button>
-                  <button
-                    onClick={() => triggerFileInput(false)}
-                    className="w-full px-4 py-2.5 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 flex items-center justify-center gap-2 text-sm"
-                  >
-                    <ArrowUpTrayIcon className="w-4 h-4" />
-                    Upload Selfie
-                  </button>
-                </div>
-              )}
-            </div>
+              </div>
+            )}
           </div>
         </div>
-        {/* Confirm Button - FIXED POSITION */}
-        <div className="flex-shrink-0 p-6 border-t border-gray-200 bg-white">
+        <div className="p-6 border-t border-gray-200 flex gap-3">
+          <button
+            onClick={() => {
+              stopCamera(false);
+              setIsCheckInModalOpen(false);
+            }}
+            className="flex-1 px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50"
+          >
+            Cancel
+          </button>
           <button
             onClick={handleConfirmCheckIn}
             disabled={!locationCaptured || !selfieUploaded}
-            className={`w-full py-3 rounded-lg font-medium ${
-              !locationCaptured || !selfieUploaded
-                ? "bg-gray-300 text-gray-500 cursor-not-allowed"
-                : "bg-green-600 text-white hover:bg-green-700"
-            }`}
+            className="flex-1 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:bg-gray-300 disabled:cursor-not-allowed flex items-center justify-center gap-2"
           >
-            Confirm Check In
+            <CheckCircleIcon className="w-5 h-5" />
+            Confirm Check-In
           </button>
         </div>
       </div>
     </div>
   );
 
-  // ==================== MODAL CHECK-OUT ====================
   const renderCheckOutModal = () => (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-      <div className="bg-white rounded-xl w-full max-w-md max-h-[85vh] flex flex-col">
-        <div className="flex-shrink-0 p-6 border-b border-gray-200">
-          <div className="flex items-center justify-between">
-            <h2 className="text-xl font-bold text-gray-900">Check Out</h2>
+      <div className="bg-white rounded-xl w-full max-w-md max-h-[90vh] overflow-y-auto">
+        <div className="p-6 border-b border-gray-200">
+          <h2 className="text-xl font-bold text-gray-900">Check Out</h2>
+          <p className="text-gray-600 mt-1">Complete both steps to check out</p>
+        </div>
+        <div className="p-6 space-y-6">
+          <div>
+            <h3 className="font-medium text-gray-900 mb-3">
+              1. Capture Location
+            </h3>
             <button
-              onClick={() => {
-                setIsCheckOutModalOpen(false);
-                stopCamera(true);
-              }}
-              className="text-gray-400 hover:text-gray-600"
+              onClick={() => getCurrentLocation(true)}
+              className={`w-full flex items-center gap-3 p-4 border rounded-lg ${
+                locationCapturedCheckOut
+                  ? "border-green-500 bg-green-50 text-green-700"
+                  : "border-gray-300 bg-white text-gray-700 hover:bg-gray-50"
+              }`}
             >
-              <XMarkIcon className="w-6 h-6" />
+              <MapPinIcon className="w-5 h-5" />
+              <div className="text-left flex-1">
+                <span className="block">
+                  {locationCapturedCheckOut
+                    ? "Location Captured"
+                    : "Get Current Location"}
+                </span>
+                <span className="block text-xs mt-1 text-gray-500">
+                  {currentLocationCheckOut}
+                </span>
+              </div>
+              {locationCapturedCheckOut && (
+                <CheckCircleIcon className="w-5 h-5 ml-auto" />
+              )}
             </button>
           </div>
-          <p className="text-gray-600 mt-1 text-sm">
-            Complete the following steps to check out
-          </p>
-        </div>
 
-        <div className="flex-1 overflow-y-auto p-6">
-          {/* Step 1: Location */}
-          <div className="mb-6">
-            <div className="flex items-center gap-3 mb-3">
-              <div
-                className={`w-8 h-8 rounded-full flex items-center justify-center ${locationCapturedCheckOut ? "bg-green-100 text-green-600" : "bg-blue-100 text-blue-600"}`}
-              >
-                {locationCapturedCheckOut ? (
-                  <CheckCircleIcon className="w-5 h-5" />
-                ) : (
-                  <span className="font-bold">1</span>
-                )}
-              </div>
-              <h3 className="font-semibold text-gray-800">Capture Location</h3>
-            </div>
-            <div className="ml-11">
-              <div className="bg-gray-50 p-3 rounded-lg mb-3">
-                <p className="text-sm text-gray-600 mb-1">Current Location:</p>
-                <p className="text-sm text-gray-900 font-medium break-words max-h-20 overflow-y-auto">
-                  {currentLocationCheckOut}
-                </p>
-              </div>
-              <button
-                onClick={() => getCurrentLocation(true)}
-                className="w-full px-4 py-2.5 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors flex items-center justify-center gap-2 text-sm"
-              >
-                <MapPinIcon className="w-4 h-4" />
-                {locationCapturedCheckOut
-                  ? "Update Location"
-                  : "Get My Location"}
-              </button>
-            </div>
-          </div>
-
-          {/* Step 2: Selfie */}
           <div>
-            <div className="flex items-center gap-3 mb-3">
-              <div
-                className={`w-8 h-8 rounded-full flex items-center justify-center ${selfieUploadedCheckOut ? "bg-green-100 text-green-600" : "bg-blue-100 text-blue-600"}`}
-              >
-                {selfieUploadedCheckOut ? (
-                  <CheckCircleIcon className="w-5 h-5" />
-                ) : (
-                  <span className="font-bold">2</span>
-                )}
-              </div>
-              <h3 className="font-semibold text-gray-800">Take Selfie</h3>
-            </div>
-            <div className="ml-11">
-              {isCameraActiveCheckOut ? (
-                <div className="space-y-4">
-                  <div className="relative w-full h-48 bg-gray-900 rounded-lg overflow-hidden">
-                    <video
-                      ref={videoRefCheckOut}
-                      autoPlay
-                      playsInline
-                      className="w-full h-full object-cover"
-                    />
-                  </div>
-                  <div className="flex gap-2">
+            <h3 className="font-medium text-gray-900 mb-3">2. Upload Selfie</h3>
+            {isCameraActiveCheckOut && (
+              <div className="mb-4">
+                <div className="relative bg-black rounded-lg overflow-hidden">
+                  <video
+                    ref={videoRef}
+                    autoPlay
+                    playsInline
+                    className="w-full h-64 object-cover"
+                  />
+                  <div className="absolute bottom-4 left-0 right-0 flex justify-center">
                     <button
                       onClick={() => capturePhoto(true)}
-                      className="flex-1 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 text-sm"
+                      className="bg-white rounded-full p-3 shadow-lg hover:bg-gray-100"
                     >
-                      Capture Photo
-                    </button>
-                    <button
-                      onClick={() => stopCamera(true)}
-                      className="flex-1 px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 text-sm"
-                    >
-                      Cancel
+                      <CameraIcon className="w-6 h-6 text-gray-800" />
                     </button>
                   </div>
                 </div>
-              ) : selfiePreviewCheckOut ? (
-                <div className="space-y-4">
-                  <div className="relative w-full h-48 rounded-lg overflow-hidden border border-gray-200">
-                    <img
-                      src={selfiePreviewCheckOut}
-                      alt="Selfie preview"
-                      className="w-full h-full object-cover"
-                    />
-                  </div>
-                  <div className="flex gap-2">
-                    <button
-                      onClick={() => startCamera(true)}
-                      className="flex-1 px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 text-sm"
-                    >
-                      Retake Photo
-                    </button>
-                    <button
-                      onClick={() => triggerFileInput(true)}
-                      className="flex-1 px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 text-sm"
-                    >
-                      Upload Different
-                    </button>
+                <button
+                  onClick={() => stopCamera(true)}
+                  className="mt-2 text-sm text-red-600 hover:text-red-800"
+                >
+                  Close Camera
+                </button>
+              </div>
+            )}
+            {!isCameraActiveCheckOut && (
+              <div className="grid grid-cols-2 gap-3 mb-4">
+                <button
+                  onClick={() => startCamera(true)}
+                  className="flex flex-col items-center justify-center p-4 border-2 border-dashed border-gray-300 rounded-lg hover:border-blue-500 hover:bg-blue-50 transition-colors"
+                >
+                  <CameraIcon className="w-8 h-8 text-gray-600 mb-2" />
+                  <span className="text-sm font-medium text-gray-400">
+                    Take Photo
+                  </span>
+                </button>
+                <button
+                  onClick={() => triggerFileInput(true)}
+                  className="flex flex-col items-center justify-center p-4 border-2 border-dashed border-gray-300 rounded-lg hover:border-green-500 hover:bg-green-50 transition-colors"
+                >
+                  <PhotoIcon className="w-8 h-8 text-gray-600 mb-2" />
+                  <span className="text-sm font-medium text-gray-400">
+                    Upload Photo
+                  </span>
+                </button>
+              </div>
+            )}
+            {selfiePreviewCheckOut && (
+              <div className="mt-3">
+                <p className="text-sm text-gray-600 mb-2">Selfie Preview:</p>
+                <div className="flex items-center gap-3">
+                  <img
+                    src={selfiePreviewCheckOut}
+                    alt="Selfie preview"
+                    className="w-20 h-20 object-cover rounded-lg border border-gray-300"
+                  />
+                  <div className="flex-1">
+                    <p className="text-sm text-green-600 font-medium">
+                      ✓ Selfie captured
+                    </p>
+                    <p className="text-xs text-gray-500">Ready for check-out</p>
                   </div>
                 </div>
-              ) : (
-                <div className="flex flex-col gap-2">
-                  <button
-                    onClick={() => startCamera(true)}
-                    className="w-full px-4 py-2.5 bg-blue-600 text-white rounded-lg hover:bg-blue-700 flex items-center justify-center gap-2 text-sm"
-                  >
-                    <CameraIcon className="w-4 h-4" />
-                    Open Camera
-                  </button>
-                  <button
-                    onClick={() => triggerFileInput(true)}
-                    className="w-full px-4 py-2.5 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 flex items-center justify-center gap-2 text-sm"
-                  >
-                    <ArrowUpTrayIcon className="w-4 h-4" />
-                    Upload Selfie
-                  </button>
-                </div>
-              )}
-            </div>
+              </div>
+            )}
           </div>
         </div>
-
-        {/* Confirm Button - FIXED POSITION */}
-        <div className="flex-shrink-0 p-6 border-t border-gray-200 bg-white">
+        <div className="p-6 border-t border-gray-200 flex gap-3">
+          <button
+            onClick={() => {
+              stopCamera(true);
+              setIsCheckOutModalOpen(false);
+            }}
+            className="flex-1 px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50"
+          >
+            Cancel
+          </button>
           <button
             onClick={handleConfirmCheckOut}
             disabled={!locationCapturedCheckOut || !selfieUploadedCheckOut}
-            className={`w-full py-3 rounded-lg font-medium ${
-              !locationCapturedCheckOut || !selfieUploadedCheckOut
-                ? "bg-gray-300 text-gray-500 cursor-not-allowed"
-                : "bg-green-600 text-white hover:bg-green-700"
-            }`}
+            className="flex-1 px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 disabled:bg-gray-300 disabled:cursor-not-allowed flex items-center justify-center gap-2"
           >
-            Confirm Check Out
+            <CheckCircleIcon className="w-5 h-5" />
+            Confirm Check-Out
           </button>
         </div>
       </div>
     </div>
   );
 
-  // ==================== MODAL DETAIL ATTENDANCE ====================
   const renderDetailModal = () => (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-      <div className="bg-white rounded-xl w-full max-w-2xl max-h-[90vh] overflow-y-auto">
+      <div className="bg-white rounded-xl w-full max-w-4xl max-h-[90vh] overflow-y-auto">
         <div className="p-6 border-b border-gray-200">
           <div className="flex items-center justify-between">
             <h2 className="text-xl font-bold text-gray-900">
@@ -7505,129 +8240,140 @@ export default function Operator() {
           </div>
           <p className="text-gray-600 mt-1">Date: {selectedAttendance?.date}</p>
         </div>
-
         <div className="p-6 space-y-6">
-          {/* Basic Information */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div>
-              <h3 className="font-semibold text-gray-800 mb-3">
-                Check In Details
-              </h3>
-              <div className="space-y-2">
-                <div className="flex justify-between">
-                  <span className="text-gray-600">Time:</span>
-                  <span className="font-medium">
-                    {selectedAttendance?.checkIn}
-                  </span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-gray-600">Status:</span>
-                  <span
-                    className={`font-medium ${selectedAttendance?.checkInStatus === "On Time" ? "text-green-600" : "text-red-600"}`}
-                  >
-                    {selectedAttendance?.checkInStatus}
-                  </span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-gray-600">Location:</span>
-                  <span className="font-medium text-right">
-                    {selectedAttendance?.checkInLocation}
-                  </span>
-                </div>
-              </div>
-            </div>
-
-            <div>
-              <h3 className="font-semibold text-gray-800 mb-3">
-                Check Out Details
-              </h3>
-              <div className="space-y-2">
-                <div className="flex justify-between">
-                  <span className="text-gray-600">Time:</span>
-                  <span className="font-medium">
-                    {selectedAttendance?.checkOut}
-                  </span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-gray-600">Location:</span>
-                  <span className="font-medium text-right">
-                    {selectedAttendance?.checkOutLocation}
-                  </span>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* Approval Status */}
-          <div>
+          <div className="bg-gray-50 rounded-lg p-4">
             <h3 className="font-semibold text-gray-800 mb-3">
               Approval Status
             </h3>
-            <div className="bg-gray-50 rounded-lg p-4">
-              <div className="flex items-center justify-between mb-2">
-                <span className="text-gray-600">Status:</span>
-                <span
-                  className={`font-medium ${getApprovalStatusColor(selectedAttendance?.approvalStatus)} px-3 py-1 rounded-full text-sm`}
-                >
-                  {selectedAttendance?.approvalStatus}
+            <div className="flex items-center gap-2">
+              <span
+                className={`inline-flex items-center justify-center min-w-[100px] gap-1 px-3 py-1 rounded-full text-sm font-medium ${getApprovalStatusColor(
+                  selectedAttendance?.approvalStatus
+                )}`}
+              >
+                {selectedAttendance?.approvalStatus === "pending" &&
+                  "⏳ Pending Approval"}
+                {selectedAttendance?.approvalStatus === "approved" &&
+                  "✓ Approved by Admin"}
+                {selectedAttendance?.approvalStatus === "rejected" &&
+                  "✗ Rejected by Admin"}
+              </span>
+              {selectedAttendance?.approvalStatus === "pending" && (
+                <span className="text-sm text-gray-600">
+                  Waiting for admin approval
                 </span>
-              </div>
-              {selectedAttendance?.approvedBy && (
-                <div className="flex justify-between">
-                  <span className="text-gray-600">Approved by:</span>
-                  <span className="font-medium">
-                    {selectedAttendance?.approvedBy}
-                  </span>
-                </div>
               )}
-              {selectedAttendance?.approvedAt && (
-                <div className="flex justify-between">
-                  <span className="text-gray-600">Approved at:</span>
-                  <span className="font-medium">
-                    {selectedAttendance?.approvedAt}
+              {selectedAttendance?.approvalStatus === "approved" &&
+                selectedAttendance?.approvedBy && (
+                  <span className="text-sm text-gray-600">
+                    Approved by {selectedAttendance.approvedBy} at{" "}
+                    {selectedAttendance.approvedAt}
                   </span>
-                </div>
-              )}
+                )}
             </div>
           </div>
 
-          {/* Selfies */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {selectedAttendance?.selfieCheckIn && (
+          <div className="bg-gray-50 rounded-lg p-4">
+            <h3 className="font-semibold text-gray-800 mb-3 flex items-center gap-2">
+              <CheckCircleIcon className="w-5 h-5 text-green-600" />
+              Check-in Information
+            </h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
-                <h3 className="font-semibold text-gray-800 mb-3">
-                  Check In Selfie
-                </h3>
-                <div className="relative w-full h-48 rounded-lg overflow-hidden border border-gray-200">
-                  <img
-                    src={selectedAttendance.selfieCheckIn}
-                    alt="Check-in selfie"
-                    className="w-full h-full object-cover"
-                  />
-                </div>
+                <p className="text-sm text-gray-600">Time</p>
+                <p className="font-medium text-gray-900">
+                  {selectedAttendance?.checkIn}
+                </p>
               </div>
-            )}
-            {selectedAttendance?.selfieCheckOut && (
               <div>
-                <h3 className="font-semibold text-gray-800 mb-3">
-                  Check Out Selfie
-                </h3>
-                <div className="relative w-full h-48 rounded-lg overflow-hidden border border-gray-200">
-                  <img
-                    src={selectedAttendance.selfieCheckOut}
-                    alt="Check-out selfie"
-                    className="w-full h-full object-cover"
-                  />
-                </div>
+                <p className="text-sm text-gray-600">Status</p>
+                <p
+                  className={`font-medium ${
+                    selectedAttendance?.checkInStatus === "On Time"
+                      ? "text-green-600"
+                      : "text-red-600"
+                  }`}
+                >
+                  {selectedAttendance?.checkInStatus}
+                </p>
+              </div>
+              <div className="md:col-span-2">
+                <p className="text-sm text-gray-600">Location</p>
+                <p className="font-medium text-gray-900 text-sm">
+                  {selectedAttendance?.checkInLocation}
+                </p>
+              </div>
+            </div>
+            {selectedAttendance?.selfieCheckIn && (
+              <div className="mt-4">
+                <p className="text-sm text-gray-600 mb-2">Check-in Selfie</p>
+                <img
+                  src={selectedAttendance.selfieCheckIn}
+                  alt="Check-in selfie"
+                  className="w-48 h-48 object-cover rounded-lg border border-gray-300"
+                />
               </div>
             )}
           </div>
-        </div>
 
+          <div className="bg-gray-50 rounded-lg p-4">
+            <h3 className="font-semibold text-gray-800 mb-3 flex items-center gap-2">
+              <CheckCircleIcon className="w-5 h-5 text-blue-600" />
+              Check-out Information
+            </h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <p className="text-sm text-gray-600">Time</p>
+                <p className="font-medium text-gray-900">
+                  {selectedAttendance?.checkOut}
+                </p>
+              </div>
+              <div>
+                <p className="text-sm text-gray-600">Status</p>
+                <p className="font-medium text-gray-900">
+                  {selectedAttendance?.checkOut === "--:--"
+                    ? "Not checked out"
+                    : "Completed"}
+                </p>
+              </div>
+              <div className="md:col-span-2">
+                <p className="text-sm text-gray-600">Location</p>
+                <p className="font-medium text-gray-900 text-sm">
+                  {selectedAttendance?.checkOutLocation}
+                </p>
+              </div>
+            </div>
+            {selectedAttendance?.selfieCheckOut && (
+              <div className="mt-4">
+                <p className="text-sm text-gray-600 mb-2">Check-out Selfie</p>
+                <img
+                  src={selectedAttendance.selfieCheckOut}
+                  alt="Check-out selfie"
+                  className="w-48 h-48 object-cover rounded-lg border border-gray-300"
+                />
+              </div>
+            )}
+          </div>
+
+          <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
+            <div className="flex items-start gap-3">
+              <ExclamationTriangleIcon className="w-5 h-5 text-yellow-600 mt-0.5" />
+              <div>
+                <p className="font-medium text-yellow-800">
+                  Menunggu Approval Admin
+                </p>
+                <p className="text-yellow-700 text-sm mt-1">
+                  Attendance Anda sedang menunggu persetujuan dari admin. Anda
+                  akan mendapatkan notifikasi setelah disetujui.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
         <div className="p-6 border-t border-gray-200">
           <button
             onClick={() => setIsDetailModalOpen(false)}
-            className="w-full px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors"
+            className="w-full px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
           >
             Close
           </button>
@@ -7636,7 +8382,6 @@ export default function Operator() {
     </div>
   );
 
-  // ==================== MODAL CREATE TICKET ====================
   const renderCreateTicketModal = () => (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
       <div className="bg-white rounded-xl w-full max-w-2xl max-h-[90vh] overflow-y-auto">
@@ -7649,7 +8394,6 @@ export default function Operator() {
               onClick={() => {
                 setIsCreateModalOpen(false);
                 setFormErrors({});
-                setAttachmentFiles([]);
               }}
               className="text-gray-400 hover:text-gray-600"
             >
@@ -7661,65 +8405,41 @@ export default function Operator() {
           </p>
         </div>
         <div className="p-6 space-y-4">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Site <span className="text-red-500">*</span>
-              </label>
-              <select
-                value={newTicket.site}
-                onChange={(e) =>
-                  setNewTicket({ ...newTicket, site: e.target.value })
-                }
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-900 bg-white"
-              >
-                <option>IPAL Jakarta Pusat</option>
-                <option>IPAL Jakarta Utara</option>
-                <option>IPAL Jakarta Selatan</option>
-                <option>IPAL Jakarta Barat</option>
-                <option>IPAL Jakarta Timur</option>
-              </select>
-            </div>
-
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Kategori <span className="text-red-500">*</span>
-              </label>
-              <select
-                value={newTicket.category}
-                onChange={(e) =>
-                  setNewTicket({ ...newTicket, category: e.target.value })
-                }
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-900 bg-white"
-              >
-                {categoryOptions.map((category) => (
-                  <option key={category} value={category}>
-                    {category}
-                  </option>
-                ))}
-              </select>
-            </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Site
+            </label>
+            <select
+              value={newTicket.site}
+              onChange={(e) =>
+                setNewTicket({ ...newTicket, site: e.target.value })
+              }
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-900 bg-white"
+            >
+              <option>IPAL Jakarta Pusat</option>
+              <option>IPAL Jakarta Utara</option>
+              <option>IPAL Jakarta Selatan</option>
+              <option>IPAL Jakarta Barat</option>
+              <option>IPAL Jakarta Timur</option>
+            </select>
           </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Prioritas <span className="text-red-500">*</span>
-              </label>
-              <select
-                value={newTicket.priority}
-                onChange={(e) =>
-                  setNewTicket({ ...newTicket, priority: e.target.value })
-                }
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-900 bg-white"
-              >
-                <option value="Low">Low</option>
-                <option value="Medium">Medium</option>
-                <option value="High">High</option>
-              </select>
-            </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Kategori
+            </label>
+            <select
+              value={newTicket.category}
+              onChange={(e) =>
+                setNewTicket({ ...newTicket, category: e.target.value })
+              }
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-900 bg-white"
+            >
+              <option>Technical</option>
+              <option>Operational</option>
+              <option>Maintenance</option>
+              <option>Other</option>
+            </select>
           </div>
-
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
               Judul Masalah <span className="text-red-500">*</span>
@@ -7741,14 +8461,13 @@ export default function Operator() {
               <p className="text-red-500 text-sm mt-1">{formErrors.title}</p>
             )}
           </div>
-
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
               Deskripsi Masalah <span className="text-red-500">*</span>
             </label>
             <textarea
               rows={4}
-              placeholder="Jelaskan detail masalah yang Anda alami... Contoh: Software monitoring tidak bisa connect ke server. Error terjadi sejak pagi hari. Sudah dicoba restart tapi belum berhasil."
+              placeholder="Jelaskan detail masalah yang Anda alami..."
               value={newTicket.description}
               onChange={(e) => {
                 setNewTicket({ ...newTicket, description: e.target.value });
@@ -7765,69 +8484,43 @@ export default function Operator() {
               </p>
             )}
           </div>
-
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
-              Lampiran (Optional)
+              Prioritas
             </label>
-            <div className="border-2 border-dashed border-gray-300 rounded-lg p-4 text-center">
-              <input
-                type="file"
-                id="attachment-upload"
-                multiple
-                onChange={handleAttachmentUpload}
-                className="hidden"
-              />
-              <label
-                htmlFor="attachment-upload"
-                className="cursor-pointer flex flex-col items-center"
+            <div className="grid grid-cols-3 gap-2">
+              <button
+                onClick={() => setNewTicket({ ...newTicket, priority: "Low" })}
+                className={`px-3 py-2 border rounded-lg text-sm hover:bg-gray-50 ${
+                  newTicket.priority === "Low"
+                    ? "border-green-500 bg-green-50 text-green-700"
+                    : "border-gray-300 text-gray-900 bg-white"
+                }`}
               >
-                <PaperClipIcon className="w-8 h-8 text-gray-400 mb-2" />
-                <p className="text-sm text-gray-600">
-                  Klik untuk upload file pendukung (foto, screenshot, dll.)
-                </p>
-                <p className="text-xs text-gray-500 mt-1">
-                  Max 5MB per file. Format: JPG, PNG, PDF, DOC
-                </p>
-              </label>
-
-              {/* Preview Attachments */}
-              {attachmentFiles.length > 0 && (
-                <div className="mt-4">
-                  <p className="text-sm font-medium text-gray-700 mb-2">
-                    File yang akan diupload:
-                  </p>
-                  <div className="space-y-2">
-                    {attachmentFiles.map((file, index) => (
-                      <div
-                        key={index}
-                        className="flex items-center justify-between bg-gray-50 p-2 rounded"
-                      >
-                        <div className="flex items-center gap-2">
-                          {file.type.startsWith("image/") ? (
-                            <PhotoIcon className="w-4 h-4 text-gray-500" />
-                          ) : (
-                            <DocumentTextIcon className="w-4 h-4 text-gray-500" />
-                          )}
-                          <span className="text-sm text-gray-700 truncate max-w-xs">
-                            {file.name}
-                          </span>
-                          <span className="text-xs text-gray-500">
-                            ({(file.size / 1024).toFixed(1)} KB)
-                          </span>
-                        </div>
-                        <button
-                          type="button"
-                          onClick={() => removeAttachment(index)}
-                          className="text-red-500 hover:text-red-700"
-                        >
-                          <XMarkIcon className="w-4 h-4" />
-                        </button>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              )}
+                Low
+              </button>
+              <button
+                onClick={() =>
+                  setNewTicket({ ...newTicket, priority: "Medium" })
+                }
+                className={`px-3 py-2 border rounded-lg text-sm hover:bg-gray-50 ${
+                  newTicket.priority === "Medium"
+                    ? "border-blue-500 bg-blue-50 text-blue-700"
+                    : "border-gray-300 text-gray-900 bg-white"
+                }`}
+              >
+                Medium
+              </button>
+              <button
+                onClick={() => setNewTicket({ ...newTicket, priority: "High" })}
+                className={`px-3 py-2 border rounded-lg text-sm hover:bg-gray-50 ${
+                  newTicket.priority === "High"
+                    ? "border-red-500 bg-red-50 text-red-700"
+                    : "border-gray-300 text-gray-900 bg-white"
+                }`}
+              >
+                High
+              </button>
             </div>
           </div>
         </div>
@@ -7836,7 +8529,6 @@ export default function Operator() {
             onClick={() => {
               setIsCreateModalOpen(false);
               setFormErrors({});
-              setAttachmentFiles([]);
             }}
             className="flex-1 px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 bg-white"
           >
@@ -7854,212 +8546,12 @@ export default function Operator() {
     </div>
   );
 
-  // ==================== SOLUTION MODAL ====================
-  const renderSolutionModal = () => (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-      <div className="bg-white rounded-xl w-full max-w-2xl max-h-[90vh] overflow-y-auto">
-        <div className="p-6 border-b border-gray-200">
-          <div className="flex items-center justify-between">
-            <h2 className="text-xl font-bold text-gray-900">
-              Provide Solution for the Reported Problem
-            </h2>
-            <button
-              onClick={() => {
-                setIsSolutionModalOpen(false);
-                setSolutionText("");
-                setSolutionStatus("Open");
-                setSelectedTicketForSolution(null);
-              }}
-              className="text-gray-400 hover:text-gray-600"
-            >
-              <XMarkIcon className="w-6 h-6" />
-            </button>
-          </div>
-          <p className="text-gray-600 mt-1">
-            Ticket #{selectedTicketForSolution?.ticketId}
-          </p>
-        </div>
-
-        <div className="p-6 space-y-6">
-          {/* Ticket Information */}
-          <div className="bg-gray-50 rounded-lg p-4">
-            <h3 className="font-semibold text-lg text-gray-800 mb-3">
-              Ticket Information
-            </h3>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div>
-                <p className="text-sm text-gray-600">Ticket ID</p>
-                <p className="font-medium text-gray-900">
-                  {selectedTicketForSolution?.ticketId}
-                </p>
-              </div>
-              <div>
-                <p className="text-sm text-gray-600">Submitted Date</p>
-                <p className="font-medium text-gray-900">
-                  {selectedTicketForSolution?.createdAt} at 11:20
-                </p>
-              </div>
-              <div>
-                <p className="text-sm text-gray-600">Operator</p>
-                <p className="font-medium text-gray-900">
-                  {selectedTicketForSolution?.assignee}
-                </p>
-              </div>
-              <div>
-                <p className="text-sm text-gray-600">Site</p>
-                <p className="font-medium text-gray-900">
-                  {selectedTicketForSolution?.site}
-                </p>
-              </div>
-              <div>
-                <p className="text-sm text-gray-600">Priority</p>
-                <span
-                  className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${getPriorityColor(selectedTicketForSolution?.priority)}`}
-                >
-                  {selectedTicketForSolution?.priority}
-                </span>
-              </div>
-              <div>
-                <p className="text-sm text-gray-600">Category</p>
-                <p className="font-medium text-gray-900">
-                  {selectedTicketForSolution?.category}
-                </p>
-              </div>
-            </div>
-          </div>
-
-          {/* Problem Description */}
-          <div>
-            <h3 className="font-semibold text-lg text-gray-800 mb-3">
-              Problem Description
-            </h3>
-            <div className="bg-gray-50 rounded-lg p-4">
-              <p className="text-gray-700">
-                {selectedTicketForSolution?.description}
-              </p>
-            </div>
-          </div>
-
-          {/* Attachments */}
-          {selectedTicketForSolution?.attachments &&
-            selectedTicketForSolution.attachments.length > 0 && (
-              <div>
-                <h3 className="font-semibold text-lg text-gray-800 mb-3">
-                  Attachments
-                </h3>
-                <div className="flex items-center gap-3 bg-gray-50 p-4 rounded-lg">
-                  <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
-                    <PhotoIcon className="w-6 h-6 text-blue-600" />
-                  </div>
-                  <div className="flex-1">
-                    <p className="font-medium text-gray-900">
-                      {selectedTicketForSolution.attachments[0].name}
-                    </p>
-                    <p className="text-sm text-gray-600">Image</p>
-                  </div>
-                  <button className="px-3 py-1 bg-blue-600 text-white rounded-lg hover:bg-blue-700 text-sm">
-                    Download
-                  </button>
-                </div>
-              </div>
-            )}
-
-          {/* Provide Solution */}
-          <div>
-            <h3 className="font-semibold text-lg text-gray-800 mb-3">
-              Provide Solution
-            </h3>
-
-            {/* Status Selection */}
-            <div className="mb-4">
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Status
-              </label>
-              <div className="grid grid-cols-3 gap-2">
-                <button
-                  onClick={() => setSolutionStatus("Open")}
-                  className={`px-4 py-2 rounded-lg border text-sm font-medium ${
-                    solutionStatus === "Open"
-                      ? "bg-blue-50 border-blue-500 text-blue-700"
-                      : "bg-white border-gray-300 text-gray-700 hover:bg-gray-50"
-                  }`}
-                >
-                  Open
-                </button>
-                <button
-                  onClick={() => setSolutionStatus("Pending")}
-                  className={`px-4 py-2 rounded-lg border text-sm font-medium ${
-                    solutionStatus === "Pending"
-                      ? "bg-yellow-50 border-yellow-500 text-yellow-700"
-                      : "bg-white border-gray-300 text-gray-700 hover:bg-gray-50"
-                  }`}
-                >
-                  Pending
-                </button>
-                <button
-                  onClick={() => setSolutionStatus("Resolved")}
-                  className={`px-4 py-2 rounded-lg border text-sm font-medium ${
-                    solutionStatus === "Resolved"
-                      ? "bg-green-50 border-green-500 text-green-700"
-                      : "bg-white border-gray-300 text-gray-700 hover:bg-gray-50"
-                  }`}
-                >
-                  Resolved
-                </button>
-              </div>
-            </div>
-
-            {/* Solution Input */}
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Solution / Response
-              </label>
-              <textarea
-                rows={6}
-                placeholder="Enter your solution, instructions, or request for more information..."
-                value={solutionText}
-                onChange={(e) => setSolutionText(e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 resize-none text-gray-900 bg-white"
-              />
-              <p className="text-sm text-gray-500 mt-1">
-                Provide clear instructions or solution. If more information is
-                needed from operator, explain what is required.
-              </p>
-            </div>
-          </div>
-        </div>
-
-        <div className="p-6 border-t border-gray-200 flex gap-3">
-          <button
-            onClick={() => {
-              setIsSolutionModalOpen(false);
-              setSolutionText("");
-              setSolutionStatus("Open");
-              setSelectedTicketForSolution(null);
-            }}
-            className="flex-1 px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 bg-white"
-          >
-            Cancel
-          </button>
-          <button
-            onClick={handleSubmitSolution}
-            className="flex-1 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 flex items-center justify-center gap-2"
-          >
-            <CheckCircleIcon className="w-5 h-5" />
-            Submit Solution
-          </button>
-        </div>
-      </div>
-    </div>
-  );
-
-  // ==================== RENDER REPORT DETAIL MODAL ====================
   const renderReportDetailModal = () => (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
       <div className="bg-white rounded-xl w-full max-w-4xl max-h-[90vh] overflow-y-auto">
         <div className="p-6 border-b border-gray-200">
           <div className="flex items-center justify-between">
-            <h2 className="text-xl font-bold text-gray-900">Report Details</h2>
+            <h2 className="text-xl font-bold text-gray-900">Detail Laporan</h2>
             <button
               onClick={() => setIsReportDetailModalOpen(false)}
               className="text-gray-400 hover:text-gray-600"
@@ -8068,90 +8560,145 @@ export default function Operator() {
             </button>
           </div>
           <p className="text-gray-600 mt-1">
-            Date: {selectedReport?.date} | Time: {selectedReport?.time}
+            Tanggal: {selectedReport?.date} {selectedReport?.time}
           </p>
         </div>
-        <div className="p-6">
+        <div className="p-6 space-y-6">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
-              <h3 className="font-semibold text-gray-800 mb-3">
-                Report Information
+              <h3 className="font-semibold text-lg text-gray-800 mb-3">
+                Informasi Umum
               </h3>
-              <div className="space-y-2">
-                <div className="flex justify-between">
-                  <span className="text-gray-600">Operator:</span>
-                  <span className="font-medium">
-                    {selectedReport?.operator}
-                  </span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-gray-600">Location:</span>
-                  <span className="font-medium">
+              <div className="space-y-3 bg-gray-50 p-4 rounded-lg">
+                <div className="flex justify-between items-center">
+                  <span className="text-gray-700 font-medium">Lokasi:</span>
+                  <span className="text-gray-900 font-semibold">
                     {selectedReport?.location}
                   </span>
                 </div>
-                <div className="flex justify-between">
-                  <span className="text-gray-600">Status:</span>
+                <div className="flex justify-between items-center">
+                  <span className="text-gray-700 font-medium">Operator:</span>
+                  <span className="text-gray-900 font-semibold">
+                    {selectedReport?.operator}
+                  </span>
+                </div>
+                <div className="flex justify-between items-center">
+                  <span className="text-gray-700 font-medium">Status:</span>
                   <span
-                    className={`font-medium ${selectedReport?.status === "Submitted" ? "text-green-600" : "text-yellow-600"}`}
+                    className={`font-semibold ${
+                      selectedReport?.status === "Submitted"
+                        ? "text-green-600"
+                        : "text-yellow-600"
+                    }`}
                   >
                     {selectedReport?.status}
                   </span>
                 </div>
               </div>
             </div>
+
             <div>
-              <h3 className="font-semibold text-gray-800 mb-3">
-                Water Parameters
+              <h3 className="font-semibold text-lg text-gray-800 mb-3">
+                Parameter Air
               </h3>
-              <div className="space-y-2">
-                <div className="flex justify-between">
-                  <span className="text-gray-600">pH Level:</span>
-                  <span className="font-medium">{selectedReport?.pHLevel}</span>
+              <div className="space-y-3 bg-gray-50 p-4 rounded-lg">
+                <div className="flex justify-between items-center">
+                  <span className="text-gray-700 font-medium">pH Level:</span>
+                  <span className="text-gray-900 font-semibold">
+                    {selectedReport?.pHLevel}
+                  </span>
                 </div>
-                <div className="flex justify-between">
-                  <span className="text-gray-600">Flow Rate:</span>
-                  <span className="font-medium">
+                <div className="flex justify-between items-center">
+                  <span className="text-gray-700 font-medium">Flow Rate:</span>
+                  <span className="text-gray-900 font-semibold">
                     {selectedReport?.flowRate} L/h
                   </span>
                 </div>
-                <div className="flex justify-between">
-                  <span className="text-gray-600">TDS:</span>
-                  <span className="font-medium">{selectedReport?.tds} ppm</span>
+                <div className="flex justify-between items-center">
+                  <span className="text-gray-700 font-medium">TDS:</span>
+                  <span className="text-gray-900 font-semibold">
+                    {selectedReport?.tds} ppm
+                  </span>
                 </div>
-                <div className="flex justify-between">
-                  <span className="text-gray-600">EC:</span>
-                  <span className="font-medium">
+                <div className="flex justify-between items-center">
+                  <span className="text-gray-700 font-medium">EC:</span>
+                  <span className="text-gray-900 font-semibold">
                     {selectedReport?.ec} μS/cm
                   </span>
                 </div>
               </div>
             </div>
           </div>
-          <div className="mt-6">
-            <h3 className="font-semibold text-gray-800 mb-3">
-              Additional Notes
+
+          <div>
+            <h3 className="font-semibold text-lg text-gray-800 mb-3">
+              Status Peralatan
+            </h3>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div className="bg-gray-50 p-4 rounded-lg text-center">
+                <span className="text-gray-700 font-medium">Agitator:</span>
+                <span className="text-gray-900 font-semibold ml-2">
+                  {selectedReport?.agitatorStatus}
+                </span>
+              </div>
+              <div className="bg-gray-50 p-4 rounded-lg text-center">
+                <span className="text-gray-700 font-medium">Settle:</span>
+                <span className="text-gray-900 font-semibold ml-2">
+                  {selectedReport?.settleStatus}
+                </span>
+              </div>
+              <div className="bg-gray-50 p-4 rounded-lg text-center">
+                <span className="text-gray-700 font-medium">Out Filter:</span>
+                <span className="text-gray-900 font-semibold ml-2">
+                  {selectedReport?.outFilterStatus}
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <h3 className="font-semibold text-lg text-gray-800 mb-3">
+              Catatan Tambahan
             </h3>
             <div className="bg-gray-50 p-4 rounded-lg">
               <p className="text-gray-700">{selectedReport?.additionalNotes}</p>
             </div>
           </div>
+
           {selectedReport?.uploadedFiles &&
             selectedReport.uploadedFiles.length > 0 && (
-              <div className="mt-6">
-                <h3 className="font-semibold text-gray-800 mb-3">Photos</h3>
+              <div>
+                <h3 className="font-semibold text-lg text-gray-800 mb-3">
+                  Foto Pendukung
+                </h3>
                 <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
                   {selectedReport.uploadedFiles.map((file, index) => (
-                    <div
-                      key={index}
-                      className="relative h-40 rounded-lg overflow-hidden border border-gray-200"
-                    >
-                      <img
-                        src={URL.createObjectURL(file)}
-                        alt={`Report photo ${index + 1}`}
-                        className="w-full h-full object-cover cursor-pointer hover:opacity-90"
-                        onClick={() => openImageModal(file)}
-                      />
+                    <div key={index} className="relative group">
+                      {file.type?.startsWith("image/") ? (
+                        <div
+                          className="cursor-pointer transform transition-transform hover:scale-105"
+                          onClick={() => openImageModal(file)}
+                        >
+                          <img
+                            src={URL.createObjectURL(file)}
+                            alt={`Preview ${index + 1}`}
+                            className="w-full h-32 object-cover rounded-lg border border-gray-300 shadow-sm"
+                          />
+                          <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-20 transition-all rounded-lg flex items-center justify-center">
+                            <EyeIcon className="w-8 h-8 text-white opacity-0 group-hover:opacity-100 transition-opacity" />
+                          </div>
+                        </div>
+                      ) : (
+                        <div className="bg-gray-50 p-3 rounded-lg text-center border border-gray-300">
+                          <DocumentTextIcon className="w-8 h-8 text-gray-400 mx-auto mb-2" />
+                          <p className="text-sm text-gray-600 truncate">
+                            {file.name}
+                          </p>
+                        </div>
+                      )}
+                      <p className="text-xs text-gray-500 mt-1 truncate">
+                        {file.name}
+                      </p>
                     </div>
                   ))}
                 </div>
@@ -8161,51 +8708,240 @@ export default function Operator() {
         <div className="p-6 border-t border-gray-200">
           <button
             onClick={() => setIsReportDetailModalOpen(false)}
-            className="w-full px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors"
+            className="w-full px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
           >
-            Close
+            Tutup
           </button>
         </div>
       </div>
     </div>
   );
 
-  // ==================== RENDER IMAGE MODAL ====================
   const renderImageModal = () => (
-    <div className="fixed inset-0 bg-black bg-opacity-90 flex items-center justify-center z-50 p-4">
-      <div className="relative w-full max-w-4xl max-h-[90vh]">
+    <div className="fixed inset-0 bg-black bg-opacity-90 flex items-center justify-center z-[60] p-4">
+      <div className="relative max-w-4xl max-h-full">
         <button
           onClick={() => setIsImageModalOpen(false)}
-          className="absolute top-4 right-4 z-10 text-white hover:text-gray-300"
+          className="absolute -top-12 right-0 text-white hover:text-gray-300 z-10"
         >
           <XMarkIcon className="w-8 h-8" />
         </button>
-        <img
-          src={URL.createObjectURL(selectedImage)}
-          alt="Full size"
-          className="w-full h-auto max-h-[80vh] object-contain"
-        />
+        {selectedImage && selectedImage.type?.startsWith("image/") && (
+          <img
+            src={URL.createObjectURL(selectedImage)}
+            alt="Preview"
+            className="max-w-full max-h-[80vh] object-contain rounded-lg"
+          />
+        )}
+        <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 bg-black bg-opacity-50 text-white px-3 py-1 rounded-full text-sm">
+          {selectedImage?.name}
+        </div>
       </div>
     </div>
   );
 
-  // ==================== ARROW UP TRAY ICON (missing import) ====================
-  const ArrowUpTrayIcon = (props) => (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      fill="none"
-      viewBox="0 0 24 24"
-      strokeWidth={1.5}
-      stroke="currentColor"
-      className="w-6 h-6"
-      {...props}
-    >
-      <path
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5m-13.5-9L12 3m0 0 4.5 4.5M12 3v13.5"
-      />
-    </svg>
+  const renderLiburModal = () => (
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+      <div className="bg-white rounded-xl w-full max-w-md max-h-[90vh] overflow-y-auto">
+        <div className="p-6 border-b border-gray-200">
+          <h2 className="text-xl font-bold text-gray-900">Ajukan Libur</h2>
+          <p className="text-gray-600 mt-1">Isi form untuk mengajukan libur</p>
+        </div>
+        <div className="p-6 space-y-4">
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Tanggal Mulai <span className="text-red-500">*</span>
+            </label>
+            <input
+              type="date"
+              value={liburForm.startDate}
+              onChange={(e) => setLiburForm({...liburForm, startDate: e.target.value})}
+              className="w-full p-3 border border-gray-200 bg-white rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-900"
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Tanggal Selesai (Opsional)
+            </label>
+            <input
+              type="date"
+              value={liburForm.endDate}
+              onChange={(e) => setLiburForm({...liburForm, endDate: e.target.value})}
+              className="w-full p-3 border border-gray-200 bg-white rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-900"
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Alasan <span className="text-red-500">*</span>
+            </label>
+            <textarea
+              rows={3}
+              value={liburForm.reason}
+              onChange={(e) => setLiburForm({...liburForm, reason: e.target.value})}
+              placeholder="Masukkan alasan mengajukan libur..."
+              className="w-full p-3 border border-gray-200 bg-white rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-900"
+            />
+          </div>
+        </div>
+        <div className="p-6 border-t border-gray-200 flex gap-3">
+          <button
+            onClick={() => setIsLiburModalOpen(false)}
+            className="flex-1 px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50"
+          >
+            Batal
+          </button>
+          <button
+            onClick={handleSubmitLibur}
+            className="flex-1 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+          >
+            Ajukan Libur
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+
+  const renderIzinModal = () => (
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+      <div className="bg-white rounded-xl w-full max-w-md max-h-[90vh] overflow-y-auto">
+        <div className="p-6 border-b border-gray-200">
+          <h2 className="text-xl font-bold text-gray-900">Ajukan Izin</h2>
+          <p className="text-gray-600 mt-1">Isi form untuk mengajukan izin</p>
+        </div>
+        <div className="p-6 space-y-4">
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Tanggal Mulai <span className="text-red-500">*</span>
+            </label>
+            <input
+              type="date"
+              value={izinForm.startDate}
+              onChange={(e) => setIzinForm({...izinForm, startDate: e.target.value})}
+              className="w-full p-3 border border-gray-200 bg-white rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-900"
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Tanggal Selesai (Opsional)
+            </label>
+            <input
+              type="date"
+              value={izinForm.endDate}
+              onChange={(e) => setIzinForm({...izinForm, endDate: e.target.value})}
+              className="w-full p-3 border border-gray-200 bg-white rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-900"
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Alasan <span className="text-red-500">*</span>
+            </label>
+            <textarea
+              rows={3}
+              value={izinForm.reason}
+              onChange={(e) => setIzinForm({...izinForm, reason: e.target.value})}
+              placeholder="Masukkan alasan mengajukan izin..."
+              className="w-full p-3 border border-gray-200 bg-white rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-900"
+            />
+          </div>
+        </div>
+        <div className="p-6 border-t border-gray-200 flex gap-3">
+          <button
+            onClick={() => setIsIzinModalOpen(false)}
+            className="flex-1 px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50"
+          >
+            Batal
+          </button>
+          <button
+            onClick={handleSubmitIzin}
+            className="flex-1 px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700"
+          >
+            Ajukan Izin
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+
+  // ==================== NOTIFICATION DROPDOWN ====================
+  const renderNotificationDropdown = () => (
+    <div className="absolute right-0 top-full mt-2 w-80 bg-white rounded-lg shadow-xl border border-gray-200 py-2 z-[9999]">
+      <div className="flex justify-between items-center px-4 py-2 border-b border-gray-200">
+        <h3 className="font-semibold text-gray-800">Notifikasi</h3>
+        <button
+          onClick={markAllNotificationsAsRead}
+          className="text-sm text-blue-600 hover:text-blue-800 font-medium"
+        >
+          Tandai semua dibaca
+        </button>
+      </div>
+      <div className="max-h-96 overflow-y-auto">
+        {notifications.length === 0 ? (
+          <div className="text-center py-8">
+            <BellIcon className="w-12 h-12 text-gray-300 mx-auto mb-3" />
+            <p className="text-gray-500">Tidak ada notifikasi</p>
+          </div>
+        ) : (
+          notifications.map((notification) => (
+            <div
+              key={notification.id}
+              className={`px-4 py-3 border-b border-gray-100 hover:bg-gray-50 cursor-pointer transition-colors ${
+                !notification.read ? "bg-blue-50" : ""
+              }`}
+              onClick={() => handleNotificationClick(notification)}
+            >
+              <div className="flex justify-between items-start mb-1">
+                <p
+                  className={`font-medium ${
+                    notification.read ? "text-gray-600" : "text-gray-900"
+                  }`}
+                >
+                  {notification.title}
+                </p>
+                <span className="text-xs text-gray-500 whitespace-nowrap ml-2">
+                  {notification.time}
+                </span>
+              </div>
+              <p className="text-sm text-gray-600 mb-2">
+                {notification.message}
+              </p>
+              <div className="flex items-center justify-between">
+                <div className="flex items-center">
+                  <div
+                    className={`w-2 h-2 rounded-full mr-2 ${
+                      notification.type === "success"
+                        ? "bg-green-500"
+                        : notification.type === "warning"
+                        ? "bg-yellow-500"
+                        : "bg-blue-500"
+                    }`}
+                  ></div>
+                  <span className="text-xs text-gray-500">
+                    {notification.type === "success"
+                      ? "Disetujui"
+                      : notification.type === "warning"
+                      ? "Perhatian"
+                      : "Informasi"}
+                  </span>
+                </div>
+                {!notification.read && (
+                  <span className="text-xs text-blue-600 font-medium">
+                    Baru
+                  </span>
+                )}
+              </div>
+            </div>
+          ))
+        )}
+      </div>
+      <div className="px-4 py-2 border-t border-gray-200">
+        <button
+          onClick={handleViewAllNotifications}
+          className="w-full text-center text-sm text-blue-600 hover:text-blue-800 py-1 font-medium"
+        >
+          Lihat Semua Notifikasi
+        </button>
+      </div>
+    </div>
   );
 
   // ==================== MAIN RENDER ====================
@@ -8269,7 +9005,6 @@ export default function Operator() {
           </ul>
         </nav>
 
-        {/* User Badge */}
         <div className="p-4 mt-auto">
           <div className="bg-gray-50 rounded-xl p-4 border border-gray-200 shadow-sm hover:shadow-md transition-shadow duration-200">
             <div className="flex items-center gap-3">
@@ -8321,7 +9056,7 @@ export default function Operator() {
               </h1>
             </div>
             <div className="flex items-center gap-4">
-              {/* Notifikasi */}
+              {/* NOTIFIKASI */}
               <div ref={notificationRef} className="relative">
                 <button
                   onClick={() => setIsNotificationOpen(!isNotificationOpen)}
@@ -8336,95 +9071,10 @@ export default function Operator() {
                     </span>
                   )}
                 </button>
-                {isNotificationOpen && (
-                  <div className="absolute right-0 top-full mt-2 w-80 bg-white rounded-lg shadow-xl border border-gray-200 py-2 z-[9999]">
-                    <div className="flex justify-between items-center px-4 py-2 border-b border-gray-200">
-                      <h3 className="font-semibold text-gray-800">
-                        Notifikasi
-                      </h3>
-                      <button
-                        onClick={markAllNotificationsAsRead}
-                        className="text-sm text-blue-600 hover:text-blue-800 font-medium"
-                      >
-                        Tandai semua dibaca
-                      </button>
-                    </div>
-                    <div className="max-h-96 overflow-y-auto">
-                      {notifications.length === 0 ? (
-                        <div className="text-center py-8">
-                          <BellIcon className="w-12 h-12 text-gray-300 mx-auto mb-3" />
-                          <p className="text-gray-500">Tidak ada notifikasi</p>
-                        </div>
-                      ) : (
-                        notifications.map((notification) => (
-                          <div
-                            key={notification.id}
-                            className={`px-4 py-3 border-b border-gray-100 hover:bg-gray-50 cursor-pointer transition-colors ${
-                              !notification.read ? "bg-blue-50" : ""
-                            }`}
-                            onClick={() =>
-                              handleNotificationClick(notification)
-                            }
-                          >
-                            <div className="flex justify-between items-start mb-1">
-                              <p
-                                className={`font-medium ${
-                                  notification.read
-                                    ? "text-gray-600"
-                                    : "text-gray-900"
-                                }`}
-                              >
-                                {notification.title}
-                              </p>
-                              <span className="text-xs text-gray-500 whitespace-nowrap ml-2">
-                                {notification.time}
-                              </span>
-                            </div>
-                            <p className="text-sm text-gray-600 mb-2">
-                              {notification.message}
-                            </p>
-                            <div className="flex items-center justify-between">
-                              <div className="flex items-center">
-                                <div
-                                  className={`w-2 h-2 rounded-full mr-2 ${
-                                    notification.type === "success"
-                                      ? "bg-green-500"
-                                      : notification.type === "warning"
-                                        ? "bg-yellow-500"
-                                        : "bg-blue-500"
-                                  }`}
-                                ></div>
-                                <span className="text-xs text-gray-500">
-                                  {notification.type === "success"
-                                    ? "Disetujui"
-                                    : notification.type === "warning"
-                                      ? "Perhatian"
-                                      : "Informasi"}
-                                </span>
-                              </div>
-                              {!notification.read && (
-                                <span className="text-xs text-blue-600 font-medium">
-                                  Baru
-                                </span>
-                              )}
-                            </div>
-                          </div>
-                        ))
-                      )}
-                    </div>
-                    <div className="px-4 py-2 border-t border-gray-200">
-                      <button
-                        onClick={handleViewAllNotifications}
-                        className="w-full text-center text-sm text-blue-600 hover:text-blue-800 py-1 font-medium"
-                      >
-                        Lihat Semua Notifikasi
-                      </button>
-                    </div>
-                  </div>
-                )}
+                {isNotificationOpen && renderNotificationDropdown()}
               </div>
 
-              {/* Profile Dropdown */}
+              {/* PROFILE DROPDOWN */}
               <div
                 ref={dropdownRef}
                 className="relative flex flex-col items-end gap-2"
@@ -8458,7 +9108,6 @@ export default function Operator() {
                 </button>
                 {dropdownOpen && (
                   <div className="absolute right-0 top-full mt-2 w-64 bg-white rounded-lg shadow-xl border border-gray-200 shadow-md py-2 z-[9999] transition-transform origin-top">
-                    {/* User Info Section */}
                     <div className="px-4 py-3 border-b border-gray-200">
                       <div className="flex items-center gap-3">
                         <div className="w-10 h-10 bg-gradient-to-r from-blue-500 to-cyan-600 rounded-full flex items-center justify-center text-white font-bold">
@@ -8477,6 +9126,17 @@ export default function Operator() {
                         </div>
                       </div>
                     </div>
+
+                    <button
+                      onClick={() => {
+                        setActiveMenu('profile');
+                        setDropdownOpen(false);
+                      }}
+                      className="w-full flex items-center gap-3 px-4 py-2 text-gray-700 hover:bg-gray-100 text-left text-sm"
+                    >
+                      <UserIcon className="w-4 h-4 text-gray-600" />
+                      Profil
+                    </button>
 
                     <button
                       onClick={async () => {
@@ -8498,31 +9158,27 @@ export default function Operator() {
 
         {/* Main Content */}
         {activeMenu === "dashboard" && renderDashboard()}
+        {activeMenu === "profile" && renderLihatProfil()}
+        {activeMenu === "shift" && renderLihatShift()}
         {activeMenu === "reports" && renderDailyReport()}
         {activeMenu === "presensi" && renderPresence()}
         {activeMenu === "help" && renderHelpDesk()}
       </div>
 
       {/* Modals */}
-      {isCheckInModalOpen && renderCheckInModal()}
-      {isCheckOutModalOpen && renderCheckOutModal()}
-      {isDetailModalOpen && selectedAttendance && renderDetailModal()}
-      {isCreateModalOpen && renderCreateTicketModal()}
-      {isReportDetailModalOpen && selectedReport && renderReportDetailModal()}
-      {isImageModalOpen && renderImageModal()}
-      {isSolutionModalOpen &&
-        selectedTicketForSolution &&
-        renderSolutionModal()}
+{isCheckInModalOpen && renderCheckInModal()}
+{isCheckOutModalOpen && renderCheckOutModal()}
+{isDetailModalOpen && selectedAttendance && renderDetailModal()}
+{isEditPresenceModalOpen && renderEditPresenceModal()}
+{isCreateModalOpen && renderCreateTicketModal()}
+{isReportDetailModalOpen && selectedReport && renderReportDetailModal()}
+{isImageModalOpen && renderImageModal()}
+{isLiburModalOpen && renderLiburModal()}
+{isIzinModalOpen && renderIzinModal()}
+{isSubmissionDetailModalOpen && selectedSubmission && renderSubmissionDetailModal()} {/* TAMBAHKAN INI */}
 
-      {/* Canvas untuk capture foto (hidden) */}
-      <canvas ref={canvasRefCheckIn} className="hidden" />
-      <canvas ref={canvasRefCheckOut} className="hidden" />
+{/* Canvas untuk capture foto (hidden) */}
+<canvas ref={canvasRef} className="hidden" />
     </div>
   );
 }
-//KODE DENGAN GEOLOKASI DEFAULT
-//KODE DENGAN GEOLOKASI DEFAULT
-//KODE DENGAN GEOLOKASI DEFAULT
-//KODE DENGAN GEOLOKASI DEFAULT
-//KODE DENGAN GEOLOKASI DEFAULT
-//KODE DENGAN GEOLOKASI DEFAULT

@@ -5,6 +5,7 @@ export class ShiftValidation {
     static CREATE = z.object({
         date: z.string().date(),
         time: z.string().time(),
+        end: z.string().time(),
         userId: z.number().int(),
         siteId: z.number().int()
     })

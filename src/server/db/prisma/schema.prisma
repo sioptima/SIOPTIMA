@@ -56,6 +56,8 @@ model User {
   ticket            Ticket[]
 
   activity          Activity[]
+
+  feedback          Feedback[]
 }
 
 enum RoleName {
@@ -77,17 +79,28 @@ model Role {
 model JadwalShift {
   id                Int             @id @default(autoincrement())
   shiftDate         DateTime
+  shiftEnd          DateTime
   createdAt         DateTime        @default(now())
   updatedAt         DateTime        @updatedAt
   deletedAt         DateTime?
 
-  user              User            @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId            Int
+  user              User[]
 
   site              Site            @relation(fields: [siteId], references: [id], onDelete: Cascade)
   siteId            Int
 
   presensi          Presensi?
+}
+
+model JamKerja {
+  id           Int       @id @default(autoincrement())
+  workerId     Int
+  weekStart    DateTime   // Monday of the week
+  weekEnd      DateTime   // Sunday of the week
+  totalHours   Int
+
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
 }
 
 enum SiteStatus {
@@ -101,6 +114,8 @@ model Site {
   name              String          @unique
   image             String?
   status            SiteStatus      @default(ACTIVE)
+  maxCapacity       Int             @default(10)
+
   createdAt         DateTime        @default(now())
   updatedAt         DateTime        @updatedAt
   deletedAt         DateTime?
@@ -112,6 +127,8 @@ model Site {
   report            Laporan[]
 
   shift             JadwalShift[]
+
+  ticket            Ticket[]
 }
 
 model SiteAddress {
@@ -283,16 +300,65 @@ model Help {
   userId            Int
 }
 
+enum TicketCategory {
+  TECHNICAL
+  OPERATIONAL
+  MAINTENANCE
+  EQUIPMENT
+  INSTRUMENT
+  SUPPLY
+  SOFTWARE
+  OTHER
+}
+
+enum Priority {
+  LOW
+  MEDIUM
+  HIGH
+}
+
+enum TicketStatus {
+  OPEN
+  PENDING
+  RESOLVED
+}
+
 model Ticket {
   id                Int             @id @default(autoincrement())
   deskripsi         String          @db.Text
   gambar            String?
-  ticketDate        DateTime
+  kategori          TicketCategory 
+  judul             String          
+  prioritas         Priority
+  status            TicketStatus    @default(OPEN)
+
+  resolvedAt        DateTime?
   createdAt         DateTime        @default(now())
   updatedAt         DateTime        @updatedAt
   deletedAt         DateTime?
 
   user              User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId            Int
+
+  site              Site            @relation(fields: [siteId], references: [id], onDelete: Cascade)
+  siteId            Int
+
+  feedback          Feedback[]
+}
+
+//for replying ticket
+model Feedback {
+  id                Int             @id @default(autoincrement())
+  feedback          String?         @db.Text
+  
+  createdAt         DateTime        @default(now())
+  updatedAt         DateTime        @updatedAt
+  deletedAt         DateTime?
+
+  ticket            Ticket          @relation(fields: [ticketId], references: [id])
+  ticketId          Int
+
+  user              User            @relation(fields: [userId], references: [id])
   userId            Int
 }
 
