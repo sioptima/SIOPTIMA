@@ -139,7 +139,7 @@ export class ReportService {
             settleStatus: report.settleStatus,
             outFilterStatus: report.outFilterStatus,
             additionalNotes: report.notes,
-            status: "submitted",
+            status: report.laporanStatus,
             images: report.fotoSampel
         }))
 

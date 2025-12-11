@@ -373,4 +373,70 @@ export class PresensiRepository {
             throw new ResponseError(500, "Failed when trying to reject record in database")
         }
     }
+
+    static async findFiltered(data){
+        try {
+            const skip = (data.page - 1) * data.size;
+            let where;
+            if (data.name || data.status){
+                where = {
+                    OR: [
+                        data.name ? 
+                        {
+                        user: {
+                            username: {
+                            contains: data.name,
+                            mode: "insensitive",
+                            },
+                        },
+                        } : {},
+                        data.name ?
+                        {
+                        user: {
+                            profile: {
+                            name: {
+                                contains: data.name,
+                                mode: "insensitive",
+                            },
+                            },
+                        },
+                        } : {},
+                        data.status ?
+                        {
+                            statusApproval: data.status,
+                        } : {},
+                    ],
+                }
+            }
+
+            const [presensi, count] = await PrismaClient.$transaction([
+                PrismaClient.presensi.findMany({
+                    where,
+                    include: {
+                        user: {
+                            include: {
+                                profile: true,
+                            }
+                        },
+                        shift: {
+                            include: {
+                                site: true,
+                            }
+                        },
+                        checkOut: true, 
+                    },
+                    orderBy: {
+                            createdAt: 'desc',
+                    },
+                    take: data.size,
+                    skip: skip
+                  }),
+                  PrismaClient.presensi.count({where})
+            ])
+
+              return {presensi, count}
+        } catch (error) {
+            throw new ResponseError(500, "Failed when trying to search attendance by operator name")
+        }
+    }
 }

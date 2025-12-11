@@ -9,14 +9,15 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "postinstall": "npx prisma generate && npx prisma db seed"
   },
   "dependencies": {
     "@heroicons/react": "^2.2.0",
     "@hookform/resolvers": "^3.9.0",
     "@next/env": "^16.0.0",
-    "@prisma/adapter-pg": "^6.19.0",
-    "@prisma/client": "^6.19.0",
+    "@prisma/adapter-pg": "^6.18.0",
+    "@prisma/client": "^6.18.0",
     "@radix-ui/react-dialog": "^1.1.1",
     "@radix-ui/react-icons": "^1.3.0",
     "@radix-ui/react-label": "^2.1.0",
@@ -28,21 +29,16 @@
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
     "db": "file:src/server/db/generated/prisma",
-    "dotenv": "^17.2.3",
     "framer-motion": "^11.3.30",
     "jose": "^6.1.0",
     "leaflet": "^1.9.4",
     "lucide-react": "^0.436.0",
     "next": "^16.0.1",
+    "next-cloudinary": "^6.17.5",
     "next-themes": "^0.3.0",
-<<<<<<< HEAD
-    "pg": "^8.16.3",
     "react": "^18.3.1",
-=======
-    "react": "^19.0.0-rc.1",
->>>>>>> 7a6e8f41932157dd9921fa16275990620c51475c
     "react-countup": "^6.5.3",
-    "react-dom": "^19.0.0-rc.1",
+    "react-dom": "^18.3.1",
     "react-fast-marquee": "^1.6.5",
     "react-hook-form": "^7.53.0",
     "react-icons": "^5.3.0",
@@ -58,18 +54,12 @@
     "zod": "^3.25.76"
   },
   "devDependencies": {
-<<<<<<< HEAD
-    "@types/node": "^24.10.2",
-    "@types/pg": "^8.15.6",
-=======
-    "@types/leaflet": "^1.9.21",
->>>>>>> 7a6e8f41932157dd9921fa16275990620c51475c
     "autoprefixer": "^10.4.21",
     "baseline-browser-mapping": "^2.9.2",
     "gh-pages": "^6.3.0",
     "postcss": "^8.5.6",
     "prettier": "3.6.2",
-    "prisma": "^6.19.0",
+    "prisma": "^6.18.0",
     "tailwindcss": "^3.4.17"
   }
 }

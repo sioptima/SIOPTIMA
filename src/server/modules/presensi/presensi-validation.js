@@ -35,4 +35,15 @@ export class PresensiValidation {
         notes: z.string().max(300).optional()
       })
     })
+
+    static GETFILTERED = z.object({
+      parameter: z.object({
+        status: z.string().toUpperCase()
+                 .pipe(z.enum(["APPROVED", "PENDING", "REJECTED"]))
+                 .optional(),
+        search: z.string().max(100).optional(),
+        page: z.coerce.number().int(),
+        size: z.coerce.number().int(),
+      })
+    })
 }

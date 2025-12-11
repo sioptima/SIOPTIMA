@@ -133,7 +133,12 @@ paths:
         schema:
           type: integer
           description: Number of records to return
-      summary: Get current user attendance records history - ordered by latest
+      - in: query
+        name: month
+        schema:
+          type: string
+          description: accepted format = yyyy-mm
+      summary: Get current user attendance records history - ordered by latest. month format = yyyy-mm
       tags:
         - Attendance
 

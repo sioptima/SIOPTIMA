@@ -31,6 +31,7 @@ export async function GET(request) {
       const parameter = {
         page: searchParams.get("page") || 1,
         size: searchParams.get("limit") || 5,
+        status: searchParams.get("status") || undefined,
       }
 
       const result = await ReportService.getAllByUserId(parameter);

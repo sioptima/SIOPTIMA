@@ -169,4 +169,23 @@ export class SiteRepository {
             throw new ResponseError(500, "Failed when updating site to database")
         }
     }
+
+    static async hardDeleteById(data){
+        try {
+            const site = await PrismaClient.site.findUnique({where: {id: data.siteId}})
+            if(site){
+                await PrismaClient.site.delete({
+                    where:
+                    {
+                        id: data.siteId
+                    }
+                })
+                return true;
+            } else {
+                return false;
+            }
+        } catch (error) {
+            throw new ResponseError(500, "Failed when trying to delete site")
+        }
+    }
 }

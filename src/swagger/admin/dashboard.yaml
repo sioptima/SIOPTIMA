@@ -1,0 +1,131 @@
+paths:
+  /api/admin/dashboard/summary:
+    get:
+      summary: Get dashboard information -  report information is daily
+      tags:
+        - Dashboard
+      
+      responses:
+        '200':
+          description: Dashboard information
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  message: 
+                    type: string
+                    example: Summary retrieved
+                  data:
+                    type: object
+                    properties:
+                      totalSites:
+                        type: integer
+                        example: 5
+                      activeOperator:
+                        type: integer
+                        example: 1
+                      dailyReport:
+                        type: integer
+                        example: 5
+                      complianceRate:
+                        type: integer
+                        example: 40
+                      activeSite:
+                        type: integer
+                        example: 3
+                      maintenanceSite:
+                        type: integer
+                        example: 1
+                      inactiveSite:
+                        type: integer
+                        example: 1
+                      approvedReport:
+                        type: integer
+                        example: 2
+                      pendingReport:
+                        type: integer
+                        example: 2
+                      rejectedReport:
+                        type: integer
+                        example: 1
+          
+  /api/admin/dashboard/water-quality:
+    get:
+      summary: Get water trends information
+      tags:
+        - Dashboard
+      
+      responses:
+        '200':
+          description: Water trends information
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  message: 
+                    type: string
+                    example: Summary retrieved
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        day:
+                          type: string
+                          example: Mon
+                        ec:
+                          type: number
+                          format: double
+                          example: 670
+                        tds:
+                          type: number
+                          format: double
+                          example: 440
+                        pH:
+                          type: number
+                          format: double
+                          example: 7.0
+
+  /api/admin/dashboard/report-status:
+    get:
+      summary: Get daily report status information
+      tags:
+        - Dashboard
+      
+      responses:
+        '200':
+          description: Report status distribution information
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  message: 
+                    type: string
+                    example: Report status retrieved
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        status:
+                          type: string
+                          example: approved
+                        value:
+                          type: number
+                          format: double
+                          example: 40
+                        count:
+                          type: integer
+                          example: 2

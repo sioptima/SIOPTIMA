@@ -2,7 +2,7 @@
     get:
         summary: Get current user assigned sites
         tags:
-          - Profile
+          - Sites
 
         responses:
           '200':

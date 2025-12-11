@@ -12,6 +12,12 @@ paths:
         schema:
           type: integer
           description: Number of report to return
+      - in: query
+        name: status
+        schema:
+          type: string
+          enum: ["APPROVED", "PENDING", "REJECTED"]
+          description: Report status
       summary: Get all report information
       tags:
         - Report

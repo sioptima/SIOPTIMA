@@ -112,3 +112,52 @@ paths:
                       notes:
                         type: string
                         example: Location too far
+  
+  /api/hrd/attendance:
+    get:
+      parameters:
+      - in: query
+        name: page
+        schema:
+          type: integer
+          description: Page to show
+      - in: query
+        name: size
+        schema:
+          type: integer
+          description: Size of page
+      - in: query
+        name: search
+        schema:
+          type: string
+          description: Operator/site name
+      - in: query
+        name: status
+        schema:
+          type: string
+          enum: ["APPROVED", "PENDING", "REJECTED"]
+          description: Attendance's status
+      summary: Get many attendance
+      tags:
+        - Attendance
+
+      responses:
+        '200':
+          description: Request confirmation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: Attendance rejected successfully
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                    

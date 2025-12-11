@@ -1,4 +1,3 @@
-import { date } from "zod";
 import { getUser } from "../../utils/auth";
 import { labelFuture } from "../../utils/helper";
 import { SiteRepository } from "../site/site-repository";
@@ -75,9 +74,87 @@ export class DashboardService {
         const operators = await UserRepository.countOperator();
 
         const attendances = await DashboardRepository.attendancesSummary();
+
+        const days = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
+
+        const weeklyStats = days.map((day, i) => ({
+            day,
+            present: attendances.onTime[i] ?? 0,
+            late: attendances.late[i] ?? 0,
+            absent: attendances.noShow[i] ?? 0,
+            total: (attendances.onTime[i] ?? 0) + (attendances.late[i] ?? 0) + (attendances.noShow[i] ?? 0)
+          }));
+        
+        const todayStatus = [
+            {
+                status: "Present",
+                value: (attendances.presentToday/(attendances.presentToday + attendances.lateToday)) * 100 ?? "-",
+                count: attendances.presentToday ?? "-"
+            },
+            {
+                status: "Late",
+                value: (attendances.lateToday/(attendances.presentToday + attendances.lateToday))*100 ?? "-",
+                count: attendances.lateToday ?? "-"
+            }
+        ]
+        
         const result = {
             totalOperators: (operators !== null) ? operators : "-",
-            
+            presentToday: (attendances.presentToday !== null) ? attendances.presentToday : "-",
+            attendanceRate: (attendances.attendanceRate !== null) ? attendances.attendanceRate : "-",
+            pendingValidation: (attendances.pendingCount !== null) ? attendances.pendingCount : "-",
+            weeklyStats, 
+            todayStatus,
         }
+
+        return result;
     }
+    
+    static async adminSummary(){
+        const summary = await DashboardRepository.adminSummary()
+
+
+        const {activeSite, maintenanceSite, inactiveSite, activeOperator, approvedReport, pendingReport, rejectedReport} = summary
+        const complianceRate = (approvedReport/(approvedReport+pendingReport+rejectedReport))*100
+
+        const result = {
+            totalSites: activeSite+maintenanceSite+inactiveSite,
+            activeOperator,
+            dailyReports: approvedReport+pendingReport+rejectedReport,
+            complianceRate,
+            activeSite,
+            maintenanceSite,
+            inactiveSite,
+            approvedReport,
+            pendingReport,
+            rejectedReport,
+        }
+
+        return result
+    }
+
+    static async reportStatus(){
+        const {approvedReport, pendingReport,rejectedReport} = await DashboardRepository.reportStatus()
+
+        const result = [
+            {
+                status: "approved",
+                value:  (approvedReport/(approvedReport,pendingReport,rejectedReport))*100,
+                count: approvedReport,
+            },
+            {
+                status: "pending",
+                value:  (pendingReport/(approvedReport,pendingReport,rejectedReport))*100,
+                count: pendingReport,
+            },
+            {
+                status: "rejected",
+                value:  (rejectedReport/(approvedReport,pendingReport,rejectedReport))*100,
+                count: rejectedReport,
+            }
+        ];
+
+        return result;
+    }
+
 }

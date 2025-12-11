@@ -105,7 +105,8 @@ export class ReportRepository {
             const skip = (data.page - 1) * data.size;
             const query = {
                 where: {
-                    userId
+                    userId,
+                    laporanStatus: data.status
                 },
                 include:{
                     user: {
@@ -120,7 +121,7 @@ export class ReportRepository {
                 take: data.size,
                 skip: skip
             }
-
+            
             const [reports, count] = await PrismaClient.$transaction([
                 PrismaClient.laporan.findMany(query),
                 PrismaClient.laporan.count({where: query.where})
@@ -129,7 +130,7 @@ export class ReportRepository {
             return {result: reports, count: count};
             
         } catch (error) {
-            throw new ResponseError(500, "Failed when querying in database")
+            throw new ResponseError(500, error.message)
         }
     }
 

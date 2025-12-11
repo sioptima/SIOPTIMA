@@ -1,0 +1,72 @@
+paths:
+  /api/hrd/dashboard:
+    get:
+      summary: Get dashboard information
+      tags:
+        - Dashboard
+      
+      responses:
+        '200':
+          description: Dashboard information
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  message: 
+                    type: string
+                    example: Summary retrieved
+                  data:
+                    type: object
+                    properties:
+                      totalOperators:
+                        type: integer
+                        example: 123
+                      presentToday:
+                        type: integer
+                        example: 123
+                      pendingValidation:
+                        type: integer
+                        example: 12
+                      weeklyStats:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            day: 
+                              type: string
+                              example: Mon
+                            present:
+                              type: integer
+                              example: 123
+                            late:
+                              type: integer
+                              example: 1
+                            absent:
+                              type: integer
+                              example: 7
+                            total:
+                              type: integer
+                              example: 131
+                      todayStatus:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            status:
+                              type: string
+                              enum: ["Present", "Late"]
+                              example: "Present"
+                            value:
+                              type: integer
+                              example: 75
+                            count: 
+                              type: integer
+                              example: 85
+                            color:
+                              type: string
+                              enum: ["#10B981", "#F59E0B"]
+                              example: "#10B981"

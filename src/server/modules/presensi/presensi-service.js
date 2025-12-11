@@ -294,4 +294,44 @@ export class PresensiService{
             notes: (rejectedRecord.notes) ? rejectedRecord.notes : undefined,
         }
     }
+
+    static async getFiltered(request){
+        const validatedReq = PresensiValidation.GETFILTERED.parse(request);
+        
+        const attendance  = await PresensiRepository.findFiltered({
+            name: validatedReq.parameter.search, 
+            page: validatedReq.parameter.page, 
+            size: validatedReq.parameter.size,
+            status: validatedReq.parameter.status,
+        });
+
+        const result = attendance.presensi.map((a) => ({
+            id: a.id,
+            operator: {
+                id: a.userId,
+                name: (a.user.profile?.name) ? a.user.profile.name : "-",
+            },
+            site: {
+                id: (a.shift?.siteId) ? a.shift.siteId : "-",
+                name: (a.shift?.site.name) ? a.shift.site.name : "-"
+            },
+            date: a.presensiDate.toLocaleDateString(),
+            checkIn: a.presensiDate.toLocaleTimeString(),
+            checkOut: (a.checkOut?.checkOutDate) ? a.checkOut.checkOutDate.toLocaleTimeString() : "-",
+            status: a.statusApproval,
+            submittedBy: (a.user.profile?.name) ? a.user.profile.name : a.user.username,
+            location: (a.shift?.site?.name) ? a.shift.site.name : "-",
+            notes: (a.notes) ? a.notes : "-",
+        }))
+
+        return {
+            result,
+            paging: {
+                size: validatedReq.parameter.size,
+                total_page: Math.ceil(attendance.count / validatedReq.parameter.size),
+                current_page: validatedReq.parameter.page,
+                total: attendance.count
+            }
+        }; 
+    }
 }

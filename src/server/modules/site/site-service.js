@@ -115,4 +115,14 @@ export class SiteService {
 
         return  siteTransform;
     }
+
+    static async hardDelete(parameter){
+        const validatedParam = SiteValidation.DELETE.parse(parameter);
+        const isDeleted = await SiteRepository.hardDeleteById({siteId: validatedParam.id})
+        if(isDeleted){
+            return;
+        } else {
+            throw new ResponseError(200, "Site you are trying to delete does not exist")
+        }
+    }
 }

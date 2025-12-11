@@ -268,3 +268,30 @@ paths:
                       lastReport:
                         type: string
                         example: 2 hours ago
+
+    delete:
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+            description: Site id to delete
+          required: true
+      summary: Hard delete a site
+      tags:
+        - Sites
+
+      responses:
+        '200':
+          description: Request confirmation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: Site deleted successfully

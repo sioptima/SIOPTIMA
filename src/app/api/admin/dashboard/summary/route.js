@@ -3,11 +3,11 @@ import { requireRole } from "@/src/server/utils/auth";
 
 export async function GET(request) {
   try {
-    await requireRole("HRD");
-    const result = await DashboardService.hrdSummary();
+    await requireRole("ADMIN");
+    const result = await DashboardService.adminSummary();
     return Response.json({
        success: true, 
-       message: "Dashboard data retrieved" ,
+       message: "Summary retrieved" ,
        data: result,
       },
       { status: 200 }

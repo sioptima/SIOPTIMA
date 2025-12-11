@@ -199,7 +199,12 @@ export class DashboardRepository {
 
     static async attendancesSummary(){
         try {
+            // get weekly attendance information
             const date = new Date()
+            //get day of week(number)
+            //0 on  getDay() is Sunday, we want 0 as Monday
+            const numberdayweek = [6,0,1,2,3,4,5];
+            const day = numberdayweek[date.getDay()] 
             const weekDates = daysOfWeek(new Date(date.getFullYear(), date.getMonth(), date.getDate())); // array of 7 days
 
             const endOfWeek = new Date(
@@ -208,7 +213,8 @@ export class DashboardRepository {
                 weekDates[6].getDate() + 1
             );
 
-            const ranges = weekDates.map((d, i) => ({
+            //range will not include upcoming day; +1 so each day has a end of day time
+            const ranges = weekDates.slice(0,day+1).map((d, i) => ({
                 start: d,
                 end: i === 6 ? endOfWeek : weekDates[i + 1]
             }));
@@ -236,19 +242,101 @@ export class DashboardRepository {
             );
 
             const noShow = await Promise.all(
-                ranges.map(r => 
+                ranges.map(r =>
                     PrismaClient.jadwalShift.count({
                         where: {
-                            shiftDate: { gte: r.start, lt: date },
+                            shiftDate: { gte: r.start, lt: r.end },
                             presensi: null,
                         }
                     })
                 )
             );
 
-            return { onTime, late, noShow,  };
+            //get shifts both with and without attendance information to calculate attendance rate
+            //also get attendances that are PENDING  
+            const startOfMonth = new Date(date.getFullYear(), date.getMonth());
+            const endOfMonth = new Date(date.getFullYear(), date.getMonth() + 1);
+            const [checkedIn, noCheckIns ,pendingCount] = await PrismaClient.$transaction([
+                PrismaClient.jadwalShift.count({where: {
+                    shiftDate: {gte: startOfMonth, lt: endOfMonth},
+                    presensi: { isNot: null}
+                }}),
+                PrismaClient.jadwalShift.count({where: {
+                    shiftDate: {gte: startOfMonth, lt: endOfMonth},
+                    presensi: null
+                }}),
+                PrismaClient.presensi.count({
+                    where: {
+                        statusApproval: "PENDING"
+                    }
+                })
+            ]) 
+
+            const attendanceRate = (checkedIn/(checkedIn+noCheckIns))*100
+
+            //get count of operator that checked in today
+            const presentToday = onTime[day]; 
+            const lateToday = late[day];
+
+            return { onTime, late, noShow, pendingCount, attendanceRate, presentToday, lateToday };
         } catch (error) {
             throw new ResponseError(500, "Failed when querying for attendances information")
+        }
+    }
+
+    static async adminSummary(){
+        try {
+            const date = new Date();
+            const startOfDay = new Date(date.getFullYear(),date.getMonth(),date.getDate())
+            const endOfDay = new Date(date.getFullYear(),date.getMonth(),date.getDate()+1)
+            const [activeSite, maintenanceSite, inactiveSite, activeOperator, approvedReport, pendingReport, rejectedReport] = 
+                await PrismaClient.$transaction([
+                    PrismaClient.site.count({where: {status:"ACTIVE"}}),
+                    PrismaClient.site.count({where: {status:"MAINTENANCE"}}),
+                    PrismaClient.site.count({where: {status:"INACTIVE"}}),
+                    PrismaClient.user.count({where: {role: {name:"OPERATOR"},status:"ACTIVE"}}),
+                    PrismaClient.laporan.count({where: {
+                        laporanStatus:"APPROVED",
+                        laporanDate: {gte: startOfDay, lt:endOfDay}
+                    }}),
+                    PrismaClient.laporan.count({where: {
+                        laporanStatus:"PENDING",
+                        laporanDate: {gte: startOfDay, lt:endOfDay}
+                    }}),
+                    PrismaClient.laporan.count({where: {
+                        laporanStatus:"REJECTED",
+                        laporanDate: {gte: startOfDay, lt:endOfDay}
+                    }}),
+                ])
+            return {activeSite, maintenanceSite, inactiveSite, activeOperator, approvedReport, pendingReport, rejectedReport}
+        } catch (error) {
+            throw new ResponseError(500, "Failed when retrieving dashboard information from database")
+        }
+    }
+
+    static async reportStatus(){
+        try {
+            const date = new Date();
+                const startOfDay = new Date(date.getFullYear(),date.getMonth(),date.getDate())
+                const endOfDay = new Date(date.getFullYear(),date.getMonth(),date.getDate()+1)
+                const [approvedReport, pendingReport, rejectedReport] = 
+                    await PrismaClient.$transaction([
+                        PrismaClient.laporan.count({where: {
+                            laporanStatus:"APPROVED",
+                            laporanDate: {gte: startOfDay, lt:endOfDay}
+                        }}),
+                        PrismaClient.laporan.count({where: {
+                            laporanStatus:"PENDING",
+                            laporanDate: {gte: startOfDay, lt:endOfDay}
+                        }}),
+                        PrismaClient.laporan.count({where: {
+                            laporanStatus:"REJECTED",
+                            laporanDate: {gte: startOfDay, lt:endOfDay}
+                        }}),
+                    ])
+                return {approvedReport, pendingReport, rejectedReport}
+        } catch (error) {
+            throw new ResponseError(500, "Failed when retrieving report status distribution from database")
         }
     }
 }

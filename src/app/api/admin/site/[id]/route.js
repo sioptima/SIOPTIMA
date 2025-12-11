@@ -47,3 +47,26 @@ export async function PATCH(request, {params}) {
       );
   }
 }
+
+export async function DELETE(request, {params}){
+  try {
+    await requireRole("ADMIN");
+    const { id } = await params;//grab query parameter(/:id)
+    await SiteService.hardDelete({id: id});
+    return Response.json({
+       success: true, 
+       message: "Site deleted successfully"
+      },
+      { status: 200 }
+    );
+  } catch (error) {
+    return Response.json(
+      { 
+        success: error.success,
+        code: error.status || 500,
+        message: error.issues || error.message || "Internal Server Error",
+      },
+      { status: error.status || 500 }
+      );
+  }
+}
