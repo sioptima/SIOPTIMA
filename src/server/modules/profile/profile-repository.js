@@ -24,6 +24,13 @@ export class ProfileRepository {
                                 select: {
                                     name: true,
                                 }
+                            },
+                            profile: {
+                                select: {
+                                    address: {
+                                        select: {address: true,}
+                                    },
+                                }
                             }
                         }
                     }

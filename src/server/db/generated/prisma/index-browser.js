@@ -213,6 +213,7 @@ exports.Prisma.PresensiScalarFieldEnum = {
   presensiDate: 'presensiDate',
   latitude: 'latitude',
   longitude: 'longitude',
+  distanceToSite: 'distanceToSite',
   fotoDiri: 'fotoDiri',
   statusPresensi: 'statusPresensi',
   statusApproval: 'statusApproval',
@@ -231,6 +232,7 @@ exports.Prisma.CheckOutScalarFieldEnum = {
   checkOutDate: 'checkOutDate',
   latitude: 'latitude',
   longitude: 'longitude',
+  distanceToSite: 'distanceToSite',
   fotoDiri: 'fotoDiri',
   approvedAt: 'approvedAt',
   createdAt: 'createdAt',
@@ -264,7 +266,9 @@ exports.Prisma.LaporanScalarFieldEnum = {
 
 exports.Prisma.IjinScalarFieldEnum = {
   id: 'id',
+  reason: 'reason',
   ijinDate: 'ijinDate',
+  ijinEnd: 'ijinEnd',
   ijinStatus: 'ijinStatus',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
@@ -274,7 +278,9 @@ exports.Prisma.IjinScalarFieldEnum = {
 
 exports.Prisma.LiburScalarFieldEnum = {
   id: 'id',
+  reason: 'reason',
   liburDate: 'liburDate',
+  liburEnd: 'liburEnd',
   liburStatus: 'liburStatus',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',

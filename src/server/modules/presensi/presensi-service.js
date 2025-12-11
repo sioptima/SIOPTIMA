@@ -4,20 +4,34 @@ import { PresensiRepository } from "./presensi-repository";
 import { uploadImage } from "../../utils/uploadthing";
 import { getUser } from "../../utils/auth";
 import { ShiftRepository } from "../shift/shift-repository";
-import { transformFormData } from "../../utils/helper";
+import { calculateDistance, transformFormData } from "../../utils/helper";
 import { trackActivity } from "../../utils/trackUser";
+import ExifReader from "exifreader";
 
 export class PresensiService{
 
     static async checkIn(request){
         const user = await getUser();
-
+        
         //turn formdata to object
         const object = transformFormData(request)
-
+        
         //validate
         const checkInRequest = PresensiValidation.CHECKIN.parse(object);
+        
+        //get gps from photo metadata
+        const file = request.get('selfie');
+        const arrayBuffer = await file.arrayBuffer();
+        const tags = ExifReader.load(arrayBuffer, {expanded: true});
+        
+        if(!tags.gps){throw new ResponseError(500, "No GPS in metadata, please enable photo geotagging")}
 
+        const gps = {
+          lat: tags.gps.Latitude,
+          lon: tags.gps.Longitude
+        };
+      
+        
         //check if theres an active checkin session
         const isActive = await PresensiRepository.getActiveCheckIn({userId: user.userId}) 
         if (isActive){
@@ -38,12 +52,20 @@ export class PresensiService{
             isLate = true;
         }
 
+        //calculate distance to site
+        let distance;
+        if(shift){
+            distance = calculateDistance(gps.lat, gps.lon, shift.site.address.latitude, shift.site.address.longitude)
+        }
+
         //write to db without image link
         const checkIn = await PresensiRepository.checkIn({
-            request: checkInRequest, 
+            request: checkInRequest,
+            gps, 
             userId: user.userId, 
             isLate: isLate, 
-            shiftId: (shift) ? shift.id : null
+            shiftId: (shift) ? shift.id : null,
+            distance,
         });
 
         //track activity
@@ -59,6 +81,8 @@ export class PresensiService{
             throw new ResponseError (200, "Attendance recorded in database but failed to upload images", true, checkIn)
         }
         const imageLink = uploadImageData.data.ufsUrl;
+
+
         //update record in db with image
         const result = await PresensiRepository.updateCheckInImage({imageLink: imageLink, presensiId: checkIn.id})
         const transformedResult = {
@@ -66,7 +90,8 @@ export class PresensiService{
             shiftStart: (shift) ? shift.shiftDate.toLocaleTimeString() : "--:--",
             checkInTime: result.presensiDate.toLocaleTimeString(),
             status: result.statusPresensi,
-            approvalStatus: result.statusApproval
+            approvalStatus: result.statusApproval,
+            distanceToSite: (result.distanceToSite !== null) ? `${Math.ceil(result.distanceToSite)} m` : "-",
         }
         if(!shift){
             throw new ResponseError(200, 
@@ -89,6 +114,18 @@ export class PresensiService{
         //validate
         const checkOutRequest = PresensiValidation.CHECKIN.parse(object);
 
+        //get gps information from photo metadata
+        const file = request.get('selfie');
+        const arrayBuffer = await file.arrayBuffer();
+        const tags = ExifReader.load(arrayBuffer, {expanded: true});
+        
+        if(!tags.gps){throw new ResponseError(500, "No GPS in metadata, please enable photo geotagging")}
+
+        const gps = {
+          lat: tags.gps.Latitude,
+          lon: tags.gps.Longitude
+        };
+
         //get the corresponding checkin(clockin) information by assuming its related if its 'open' (no checkout appended yet)
         const checkIn = await PresensiRepository.getActiveCheckIn({userId: user.userId}) 
         if(!checkIn){
@@ -97,9 +134,10 @@ export class PresensiService{
 
         //write to db without image link and connect the corresponding checkin checkout relation
         const checkOut = await PresensiRepository.checkOut({
-            request: checkOutRequest, 
+            request: checkOutRequest,
+            gps,
             userId: user.userId,
-            checkInId: checkIn.id
+            checkInId: checkIn.id,
         });
 
         //track activity
@@ -119,13 +157,25 @@ export class PresensiService{
                 })
         }
         const imageLink = uploadImageData.data.ufsUrl;
+
+        //calculate distance to site
+        let distance
+        if(checkOut.checkIn.shift?.site.address.latitude && checkOut.checkIn.shift?.site.address.longitude){
+            distance = calculateDistance(gps.lat, gps.lon, checkOut.checkIn.shift.site.address.latitude, checkOut.checkIn.shift.site.address.longitude)
+        }
+
         //update record in db with image
-        const result = await PresensiRepository.updateCheckOutImage({imageLink: imageLink, checkOutId: checkOut.id})
+        const result = await PresensiRepository.updateCheckOutImage({
+            imageLink: imageLink, 
+            checkOutId: checkOut.id,
+            distance
+        })
         //return result
         return {
             id: result.id,
             checkOutTime: result.checkOutDate.toLocaleTimeString(),
-            approvalStatus: result.checkIn.statusApproval
+            approvalStatus: result.checkIn.statusApproval,
+            distanceToSite: (result.distanceToSite !== null) ? `${Math.ceil(result.distanceToSite)} m` : "-",
         }
     }
 

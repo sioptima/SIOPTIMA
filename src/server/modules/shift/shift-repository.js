@@ -1,5 +1,6 @@
 import { ResponseError } from "@/src/lib/response-error.js";
 import PrismaClient from "../../db/db.js"
+import { daysOfWeek } from "../../utils/helper.js";
 
 export class ShiftRepository {
 
@@ -8,7 +9,9 @@ export class ShiftRepository {
             const {date, time, end} = data
             const shiftDate = new Date(date+","+time)
             const shiftEnd = new Date(date+","+end)
-            return await PrismaClient.jadwalShift.create({
+            const totalHour = (shiftEnd - shiftDate)/(1000*60*60)
+            
+            const shift = await PrismaClient.jadwalShift.create({
                 data: {
                     shiftDate,
                     shiftEnd,
@@ -35,9 +38,46 @@ export class ShiftRepository {
                         }
                     }
                 }
-            });  
+            });
+            
+            //update each user weekly work hour
+            const weekDates = daysOfWeek(new Date(shiftDate.getFullYear(), shiftDate.getMonth(), shiftDate.getDate())); // array of 7 days 
+
+            const upsertPromises = users.map((user) => {
+                return PrismaClient.user.update({
+                    where: {
+                        id: user.id
+                    },
+                    data: {
+                        jamKerja: {
+                            upsert: {
+                                create: {
+                                    totalHours: totalHour,
+                                    weekEnd: weekDates[6],
+                                    weekStart: weekDates[0]
+                                },
+                                where: {
+                                    weekStart_userId: {
+                                        userId: user.id,
+                                        weekStart: weekDates[0],
+                                    }
+                                },
+                                update: {
+                                    totalHours: {
+                                        increment: totalHour
+                                    }
+                                }
+                            }
+                        }
+                    }
+                })
+              });
+              
+            await PrismaClient.$transaction(upsertPromises);
+
+            return shift
         } catch (error) {
-            throw new ResponseError(500, "Failed when writing to database");
+            throw new ResponseError(500, error.message);
         }
     }
 
@@ -49,19 +89,31 @@ export class ShiftRepository {
                         gte: data.start, //find shift schedule that is the same day as the check-in's request
                         lt: data.end
                     },
-                    userId: data.userId,
+                    user: {
+                        every: {
+                            id: data.userId
+                        }
+                    },
                     presensi: null
                 },
                 select: {
                     shiftDate:true,
                     id: true,
+                    site: {
+                        select: {
+                            address: {select: {
+                                latitude: true,
+                                longitude: true,
+                            }}
+                        }
+                    }
                 },
                 orderBy: {
                     shiftDate: 'asc'
                 }
             })
         } catch (error) {
-            throw new ResponseError(500, "Failed when querying shift in database")
+            throw new ResponseError(500, error.message)
         }
     }
 }

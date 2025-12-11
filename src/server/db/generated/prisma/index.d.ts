@@ -7242,7 +7242,7 @@ export namespace Prisma {
     readonly id: FieldRef<"JamKerja", 'Int'>
     readonly weekStart: FieldRef<"JamKerja", 'DateTime'>
     readonly weekEnd: FieldRef<"JamKerja", 'DateTime'>
-    readonly totalHours: FieldRef<"JamKerja", 'Int'>
+    readonly totalHours: FieldRef<"JamKerja", 'Float'>
     readonly createdAt: FieldRef<"JamKerja", 'DateTime'>
     readonly updatedAt: FieldRef<"JamKerja", 'DateTime'>
     readonly userId: FieldRef<"JamKerja", 'Int'>
@@ -12418,6 +12418,7 @@ export namespace Prisma {
     id: number | null
     latitude: number | null
     longitude: number | null
+    distanceToSite: number | null
     shiftid: number | null
     userId: number | null
     approverId: number | null
@@ -12427,6 +12428,7 @@ export namespace Prisma {
     id: number | null
     latitude: number | null
     longitude: number | null
+    distanceToSite: number | null
     shiftid: number | null
     userId: number | null
     approverId: number | null
@@ -12437,6 +12439,7 @@ export namespace Prisma {
     presensiDate: Date | null
     latitude: number | null
     longitude: number | null
+    distanceToSite: number | null
     fotoDiri: string | null
     statusPresensi: $Enums.StatusPresensi | null
     statusApproval: $Enums.StatusApproval | null
@@ -12455,6 +12458,7 @@ export namespace Prisma {
     presensiDate: Date | null
     latitude: number | null
     longitude: number | null
+    distanceToSite: number | null
     fotoDiri: string | null
     statusPresensi: $Enums.StatusPresensi | null
     statusApproval: $Enums.StatusApproval | null
@@ -12473,6 +12477,7 @@ export namespace Prisma {
     presensiDate: number
     latitude: number
     longitude: number
+    distanceToSite: number
     fotoDiri: number
     statusPresensi: number
     statusApproval: number
@@ -12492,6 +12497,7 @@ export namespace Prisma {
     id?: true
     latitude?: true
     longitude?: true
+    distanceToSite?: true
     shiftid?: true
     userId?: true
     approverId?: true
@@ -12501,6 +12507,7 @@ export namespace Prisma {
     id?: true
     latitude?: true
     longitude?: true
+    distanceToSite?: true
     shiftid?: true
     userId?: true
     approverId?: true
@@ -12511,6 +12518,7 @@ export namespace Prisma {
     presensiDate?: true
     latitude?: true
     longitude?: true
+    distanceToSite?: true
     fotoDiri?: true
     statusPresensi?: true
     statusApproval?: true
@@ -12529,6 +12537,7 @@ export namespace Prisma {
     presensiDate?: true
     latitude?: true
     longitude?: true
+    distanceToSite?: true
     fotoDiri?: true
     statusPresensi?: true
     statusApproval?: true
@@ -12547,6 +12556,7 @@ export namespace Prisma {
     presensiDate?: true
     latitude?: true
     longitude?: true
+    distanceToSite?: true
     fotoDiri?: true
     statusPresensi?: true
     statusApproval?: true
@@ -12652,6 +12662,7 @@ export namespace Prisma {
     presensiDate: Date
     latitude: number
     longitude: number
+    distanceToSite: number | null
     fotoDiri: string | null
     statusPresensi: $Enums.StatusPresensi
     statusApproval: $Enums.StatusApproval
@@ -12689,6 +12700,7 @@ export namespace Prisma {
     presensiDate?: boolean
     latitude?: boolean
     longitude?: boolean
+    distanceToSite?: boolean
     fotoDiri?: boolean
     statusPresensi?: boolean
     statusApproval?: boolean
@@ -12711,6 +12723,7 @@ export namespace Prisma {
     presensiDate?: boolean
     latitude?: boolean
     longitude?: boolean
+    distanceToSite?: boolean
     fotoDiri?: boolean
     statusPresensi?: boolean
     statusApproval?: boolean
@@ -12732,6 +12745,7 @@ export namespace Prisma {
     presensiDate?: boolean
     latitude?: boolean
     longitude?: boolean
+    distanceToSite?: boolean
     fotoDiri?: boolean
     statusPresensi?: boolean
     statusApproval?: boolean
@@ -12753,6 +12767,7 @@ export namespace Prisma {
     presensiDate?: boolean
     latitude?: boolean
     longitude?: boolean
+    distanceToSite?: boolean
     fotoDiri?: boolean
     statusPresensi?: boolean
     statusApproval?: boolean
@@ -12766,7 +12781,7 @@ export namespace Prisma {
     approverId?: boolean
   }
 
-  export type PresensiOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "presensiDate" | "latitude" | "longitude" | "fotoDiri" | "statusPresensi" | "statusApproval" | "approvedAt" | "createdAt" | "updatedAt" | "deletedAt" | "notes" | "shiftid" | "userId" | "approverId", ExtArgs["result"]["presensi"]>
+  export type PresensiOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "presensiDate" | "latitude" | "longitude" | "distanceToSite" | "fotoDiri" | "statusPresensi" | "statusApproval" | "approvedAt" | "createdAt" | "updatedAt" | "deletedAt" | "notes" | "shiftid" | "userId" | "approverId", ExtArgs["result"]["presensi"]>
   export type PresensiInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     shift?: boolean | Presensi$shiftArgs<ExtArgs>
     user?: boolean | UserDefaultArgs<ExtArgs>
@@ -12797,6 +12812,7 @@ export namespace Prisma {
       presensiDate: Date
       latitude: number
       longitude: number
+      distanceToSite: number | null
       fotoDiri: string | null
       statusPresensi: $Enums.StatusPresensi
       statusApproval: $Enums.StatusApproval
@@ -13239,6 +13255,7 @@ export namespace Prisma {
     readonly presensiDate: FieldRef<"Presensi", 'DateTime'>
     readonly latitude: FieldRef<"Presensi", 'Float'>
     readonly longitude: FieldRef<"Presensi", 'Float'>
+    readonly distanceToSite: FieldRef<"Presensi", 'Float'>
     readonly fotoDiri: FieldRef<"Presensi", 'String'>
     readonly statusPresensi: FieldRef<"Presensi", 'StatusPresensi'>
     readonly statusApproval: FieldRef<"Presensi", 'StatusApproval'>
@@ -13737,6 +13754,7 @@ export namespace Prisma {
     id: number | null
     latitude: number | null
     longitude: number | null
+    distanceToSite: number | null
     userId: number | null
     checkInId: number | null
   }
@@ -13745,6 +13763,7 @@ export namespace Prisma {
     id: number | null
     latitude: number | null
     longitude: number | null
+    distanceToSite: number | null
     userId: number | null
     checkInId: number | null
   }
@@ -13754,6 +13773,7 @@ export namespace Prisma {
     checkOutDate: Date | null
     latitude: number | null
     longitude: number | null
+    distanceToSite: number | null
     fotoDiri: string | null
     approvedAt: Date | null
     createdAt: Date | null
@@ -13768,6 +13788,7 @@ export namespace Prisma {
     checkOutDate: Date | null
     latitude: number | null
     longitude: number | null
+    distanceToSite: number | null
     fotoDiri: string | null
     approvedAt: Date | null
     createdAt: Date | null
@@ -13782,6 +13803,7 @@ export namespace Prisma {
     checkOutDate: number
     latitude: number
     longitude: number
+    distanceToSite: number
     fotoDiri: number
     approvedAt: number
     createdAt: number
@@ -13797,6 +13819,7 @@ export namespace Prisma {
     id?: true
     latitude?: true
     longitude?: true
+    distanceToSite?: true
     userId?: true
     checkInId?: true
   }
@@ -13805,6 +13828,7 @@ export namespace Prisma {
     id?: true
     latitude?: true
     longitude?: true
+    distanceToSite?: true
     userId?: true
     checkInId?: true
   }
@@ -13814,6 +13838,7 @@ export namespace Prisma {
     checkOutDate?: true
     latitude?: true
     longitude?: true
+    distanceToSite?: true
     fotoDiri?: true
     approvedAt?: true
     createdAt?: true
@@ -13828,6 +13853,7 @@ export namespace Prisma {
     checkOutDate?: true
     latitude?: true
     longitude?: true
+    distanceToSite?: true
     fotoDiri?: true
     approvedAt?: true
     createdAt?: true
@@ -13842,6 +13868,7 @@ export namespace Prisma {
     checkOutDate?: true
     latitude?: true
     longitude?: true
+    distanceToSite?: true
     fotoDiri?: true
     approvedAt?: true
     createdAt?: true
@@ -13943,6 +13970,7 @@ export namespace Prisma {
     checkOutDate: Date
     latitude: number
     longitude: number
+    distanceToSite: number | null
     fotoDiri: string | null
     approvedAt: Date | null
     createdAt: Date
@@ -13976,6 +14004,7 @@ export namespace Prisma {
     checkOutDate?: boolean
     latitude?: boolean
     longitude?: boolean
+    distanceToSite?: boolean
     fotoDiri?: boolean
     approvedAt?: boolean
     createdAt?: boolean
@@ -13992,6 +14021,7 @@ export namespace Prisma {
     checkOutDate?: boolean
     latitude?: boolean
     longitude?: boolean
+    distanceToSite?: boolean
     fotoDiri?: boolean
     approvedAt?: boolean
     createdAt?: boolean
@@ -14008,6 +14038,7 @@ export namespace Prisma {
     checkOutDate?: boolean
     latitude?: boolean
     longitude?: boolean
+    distanceToSite?: boolean
     fotoDiri?: boolean
     approvedAt?: boolean
     createdAt?: boolean
@@ -14024,6 +14055,7 @@ export namespace Prisma {
     checkOutDate?: boolean
     latitude?: boolean
     longitude?: boolean
+    distanceToSite?: boolean
     fotoDiri?: boolean
     approvedAt?: boolean
     createdAt?: boolean
@@ -14033,7 +14065,7 @@ export namespace Prisma {
     checkInId?: boolean
   }
 
-  export type CheckOutOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "checkOutDate" | "latitude" | "longitude" | "fotoDiri" | "approvedAt" | "createdAt" | "updatedAt" | "deletedAt" | "userId" | "checkInId", ExtArgs["result"]["checkOut"]>
+  export type CheckOutOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "checkOutDate" | "latitude" | "longitude" | "distanceToSite" | "fotoDiri" | "approvedAt" | "createdAt" | "updatedAt" | "deletedAt" | "userId" | "checkInId", ExtArgs["result"]["checkOut"]>
   export type CheckOutInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | UserDefaultArgs<ExtArgs>
     checkIn?: boolean | PresensiDefaultArgs<ExtArgs>
@@ -14058,6 +14090,7 @@ export namespace Prisma {
       checkOutDate: Date
       latitude: number
       longitude: number
+      distanceToSite: number | null
       fotoDiri: string | null
       approvedAt: Date | null
       createdAt: Date
@@ -14494,6 +14527,7 @@ export namespace Prisma {
     readonly checkOutDate: FieldRef<"CheckOut", 'DateTime'>
     readonly latitude: FieldRef<"CheckOut", 'Float'>
     readonly longitude: FieldRef<"CheckOut", 'Float'>
+    readonly distanceToSite: FieldRef<"CheckOut", 'Float'>
     readonly fotoDiri: FieldRef<"CheckOut", 'String'>
     readonly approvedAt: FieldRef<"CheckOut", 'DateTime'>
     readonly createdAt: FieldRef<"CheckOut", 'DateTime'>
@@ -16283,7 +16317,9 @@ export namespace Prisma {
 
   export type IjinMinAggregateOutputType = {
     id: number | null
+    reason: string | null
     ijinDate: Date | null
+    ijinEnd: Date | null
     ijinStatus: $Enums.StatusApproval | null
     createdAt: Date | null
     updatedAt: Date | null
@@ -16293,7 +16329,9 @@ export namespace Prisma {
 
   export type IjinMaxAggregateOutputType = {
     id: number | null
+    reason: string | null
     ijinDate: Date | null
+    ijinEnd: Date | null
     ijinStatus: $Enums.StatusApproval | null
     createdAt: Date | null
     updatedAt: Date | null
@@ -16303,7 +16341,9 @@ export namespace Prisma {
 
   export type IjinCountAggregateOutputType = {
     id: number
+    reason: number
     ijinDate: number
+    ijinEnd: number
     ijinStatus: number
     createdAt: number
     updatedAt: number
@@ -16325,7 +16365,9 @@ export namespace Prisma {
 
   export type IjinMinAggregateInputType = {
     id?: true
+    reason?: true
     ijinDate?: true
+    ijinEnd?: true
     ijinStatus?: true
     createdAt?: true
     updatedAt?: true
@@ -16335,7 +16377,9 @@ export namespace Prisma {
 
   export type IjinMaxAggregateInputType = {
     id?: true
+    reason?: true
     ijinDate?: true
+    ijinEnd?: true
     ijinStatus?: true
     createdAt?: true
     updatedAt?: true
@@ -16345,7 +16389,9 @@ export namespace Prisma {
 
   export type IjinCountAggregateInputType = {
     id?: true
+    reason?: true
     ijinDate?: true
+    ijinEnd?: true
     ijinStatus?: true
     createdAt?: true
     updatedAt?: true
@@ -16442,7 +16488,9 @@ export namespace Prisma {
 
   export type IjinGroupByOutputType = {
     id: number
+    reason: string
     ijinDate: Date
+    ijinEnd: Date | null
     ijinStatus: $Enums.StatusApproval
     createdAt: Date
     updatedAt: Date
@@ -16471,7 +16519,9 @@ export namespace Prisma {
 
   export type IjinSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
+    reason?: boolean
     ijinDate?: boolean
+    ijinEnd?: boolean
     ijinStatus?: boolean
     createdAt?: boolean
     updatedAt?: boolean
@@ -16482,7 +16532,9 @@ export namespace Prisma {
 
   export type IjinSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
+    reason?: boolean
     ijinDate?: boolean
+    ijinEnd?: boolean
     ijinStatus?: boolean
     createdAt?: boolean
     updatedAt?: boolean
@@ -16493,7 +16545,9 @@ export namespace Prisma {
 
   export type IjinSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
+    reason?: boolean
     ijinDate?: boolean
+    ijinEnd?: boolean
     ijinStatus?: boolean
     createdAt?: boolean
     updatedAt?: boolean
@@ -16504,7 +16558,9 @@ export namespace Prisma {
 
   export type IjinSelectScalar = {
     id?: boolean
+    reason?: boolean
     ijinDate?: boolean
+    ijinEnd?: boolean
     ijinStatus?: boolean
     createdAt?: boolean
     updatedAt?: boolean
@@ -16512,7 +16568,7 @@ export namespace Prisma {
     userId?: boolean
   }
 
-  export type IjinOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "ijinDate" | "ijinStatus" | "createdAt" | "updatedAt" | "deletedAt" | "userId", ExtArgs["result"]["ijin"]>
+  export type IjinOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "reason" | "ijinDate" | "ijinEnd" | "ijinStatus" | "createdAt" | "updatedAt" | "deletedAt" | "userId", ExtArgs["result"]["ijin"]>
   export type IjinInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | UserDefaultArgs<ExtArgs>
   }
@@ -16530,7 +16586,9 @@ export namespace Prisma {
     }
     scalars: $Extensions.GetPayloadResult<{
       id: number
+      reason: string
       ijinDate: Date
+      ijinEnd: Date | null
       ijinStatus: $Enums.StatusApproval
       createdAt: Date
       updatedAt: Date
@@ -16961,7 +17019,9 @@ export namespace Prisma {
    */
   interface IjinFieldRefs {
     readonly id: FieldRef<"Ijin", 'Int'>
+    readonly reason: FieldRef<"Ijin", 'String'>
     readonly ijinDate: FieldRef<"Ijin", 'DateTime'>
+    readonly ijinEnd: FieldRef<"Ijin", 'DateTime'>
     readonly ijinStatus: FieldRef<"Ijin", 'StatusApproval'>
     readonly createdAt: FieldRef<"Ijin", 'DateTime'>
     readonly updatedAt: FieldRef<"Ijin", 'DateTime'>
@@ -17405,7 +17465,9 @@ export namespace Prisma {
 
   export type LiburMinAggregateOutputType = {
     id: number | null
+    reason: string | null
     liburDate: Date | null
+    liburEnd: Date | null
     liburStatus: $Enums.StatusApproval | null
     createdAt: Date | null
     updatedAt: Date | null
@@ -17415,7 +17477,9 @@ export namespace Prisma {
 
   export type LiburMaxAggregateOutputType = {
     id: number | null
+    reason: string | null
     liburDate: Date | null
+    liburEnd: Date | null
     liburStatus: $Enums.StatusApproval | null
     createdAt: Date | null
     updatedAt: Date | null
@@ -17425,7 +17489,9 @@ export namespace Prisma {
 
   export type LiburCountAggregateOutputType = {
     id: number
+    reason: number
     liburDate: number
+    liburEnd: number
     liburStatus: number
     createdAt: number
     updatedAt: number
@@ -17447,7 +17513,9 @@ export namespace Prisma {
 
   export type LiburMinAggregateInputType = {
     id?: true
+    reason?: true
     liburDate?: true
+    liburEnd?: true
     liburStatus?: true
     createdAt?: true
     updatedAt?: true
@@ -17457,7 +17525,9 @@ export namespace Prisma {
 
   export type LiburMaxAggregateInputType = {
     id?: true
+    reason?: true
     liburDate?: true
+    liburEnd?: true
     liburStatus?: true
     createdAt?: true
     updatedAt?: true
@@ -17467,7 +17537,9 @@ export namespace Prisma {
 
   export type LiburCountAggregateInputType = {
     id?: true
+    reason?: true
     liburDate?: true
+    liburEnd?: true
     liburStatus?: true
     createdAt?: true
     updatedAt?: true
@@ -17564,7 +17636,9 @@ export namespace Prisma {
 
   export type LiburGroupByOutputType = {
     id: number
+    reason: string
     liburDate: Date
+    liburEnd: Date | null
     liburStatus: $Enums.StatusApproval
     createdAt: Date
     updatedAt: Date
@@ -17593,7 +17667,9 @@ export namespace Prisma {
 
   export type LiburSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
+    reason?: boolean
     liburDate?: boolean
+    liburEnd?: boolean
     liburStatus?: boolean
     createdAt?: boolean
     updatedAt?: boolean
@@ -17604,7 +17680,9 @@ export namespace Prisma {
 
   export type LiburSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
+    reason?: boolean
     liburDate?: boolean
+    liburEnd?: boolean
     liburStatus?: boolean
     createdAt?: boolean
     updatedAt?: boolean
@@ -17615,7 +17693,9 @@ export namespace Prisma {
 
   export type LiburSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
+    reason?: boolean
     liburDate?: boolean
+    liburEnd?: boolean
     liburStatus?: boolean
     createdAt?: boolean
     updatedAt?: boolean
@@ -17626,7 +17706,9 @@ export namespace Prisma {
 
   export type LiburSelectScalar = {
     id?: boolean
+    reason?: boolean
     liburDate?: boolean
+    liburEnd?: boolean
     liburStatus?: boolean
     createdAt?: boolean
     updatedAt?: boolean
@@ -17634,7 +17716,7 @@ export namespace Prisma {
     userId?: boolean
   }
 
-  export type LiburOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "liburDate" | "liburStatus" | "createdAt" | "updatedAt" | "deletedAt" | "userId", ExtArgs["result"]["libur"]>
+  export type LiburOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "reason" | "liburDate" | "liburEnd" | "liburStatus" | "createdAt" | "updatedAt" | "deletedAt" | "userId", ExtArgs["result"]["libur"]>
   export type LiburInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | UserDefaultArgs<ExtArgs>
   }
@@ -17652,7 +17734,9 @@ export namespace Prisma {
     }
     scalars: $Extensions.GetPayloadResult<{
       id: number
+      reason: string
       liburDate: Date
+      liburEnd: Date | null
       liburStatus: $Enums.StatusApproval
       createdAt: Date
       updatedAt: Date
@@ -18083,7 +18167,9 @@ export namespace Prisma {
    */
   interface LiburFieldRefs {
     readonly id: FieldRef<"Libur", 'Int'>
+    readonly reason: FieldRef<"Libur", 'String'>
     readonly liburDate: FieldRef<"Libur", 'DateTime'>
+    readonly liburEnd: FieldRef<"Libur", 'DateTime'>
     readonly liburStatus: FieldRef<"Libur", 'StatusApproval'>
     readonly createdAt: FieldRef<"Libur", 'DateTime'>
     readonly updatedAt: FieldRef<"Libur", 'DateTime'>
@@ -23262,6 +23348,7 @@ export namespace Prisma {
     presensiDate: 'presensiDate',
     latitude: 'latitude',
     longitude: 'longitude',
+    distanceToSite: 'distanceToSite',
     fotoDiri: 'fotoDiri',
     statusPresensi: 'statusPresensi',
     statusApproval: 'statusApproval',
@@ -23283,6 +23370,7 @@ export namespace Prisma {
     checkOutDate: 'checkOutDate',
     latitude: 'latitude',
     longitude: 'longitude',
+    distanceToSite: 'distanceToSite',
     fotoDiri: 'fotoDiri',
     approvedAt: 'approvedAt',
     createdAt: 'createdAt',
@@ -23322,7 +23410,9 @@ export namespace Prisma {
 
   export const IjinScalarFieldEnum: {
     id: 'id',
+    reason: 'reason',
     ijinDate: 'ijinDate',
+    ijinEnd: 'ijinEnd',
     ijinStatus: 'ijinStatus',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt',
@@ -23335,7 +23425,9 @@ export namespace Prisma {
 
   export const LiburScalarFieldEnum: {
     id: 'id',
+    reason: 'reason',
     liburDate: 'liburDate',
+    liburEnd: 'liburEnd',
     liburStatus: 'liburStatus',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt',
@@ -23522,20 +23614,6 @@ export namespace Prisma {
 
 
   /**
-   * Reference to a field of type 'SiteStatus'
-   */
-  export type EnumSiteStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'SiteStatus'>
-    
-
-
-  /**
-   * Reference to a field of type 'SiteStatus[]'
-   */
-  export type ListEnumSiteStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'SiteStatus[]'>
-    
-
-
-  /**
    * Reference to a field of type 'Float'
    */
   export type FloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float'>
@@ -23546,6 +23624,20 @@ export namespace Prisma {
    * Reference to a field of type 'Float[]'
    */
   export type ListFloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'SiteStatus'
+   */
+  export type EnumSiteStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'SiteStatus'>
+    
+
+
+  /**
+   * Reference to a field of type 'SiteStatus[]'
+   */
+  export type ListEnumSiteStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'SiteStatus[]'>
     
 
 
@@ -23901,7 +23993,7 @@ export namespace Prisma {
     id?: IntFilter<"JamKerja"> | number
     weekStart?: DateTimeFilter<"JamKerja"> | Date | string
     weekEnd?: DateTimeFilter<"JamKerja"> | Date | string
-    totalHours?: IntFilter<"JamKerja"> | number
+    totalHours?: FloatFilter<"JamKerja"> | number
     createdAt?: DateTimeFilter<"JamKerja"> | Date | string
     updatedAt?: DateTimeFilter<"JamKerja"> | Date | string
     userId?: IntFilter<"JamKerja"> | number
@@ -23921,17 +24013,18 @@ export namespace Prisma {
 
   export type JamKerjaWhereUniqueInput = Prisma.AtLeast<{
     id?: number
+    weekStart_userId?: JamKerjaWeekStartUserIdCompoundUniqueInput
     AND?: JamKerjaWhereInput | JamKerjaWhereInput[]
     OR?: JamKerjaWhereInput[]
     NOT?: JamKerjaWhereInput | JamKerjaWhereInput[]
     weekStart?: DateTimeFilter<"JamKerja"> | Date | string
     weekEnd?: DateTimeFilter<"JamKerja"> | Date | string
-    totalHours?: IntFilter<"JamKerja"> | number
+    totalHours?: FloatFilter<"JamKerja"> | number
     createdAt?: DateTimeFilter<"JamKerja"> | Date | string
     updatedAt?: DateTimeFilter<"JamKerja"> | Date | string
     userId?: IntFilter<"JamKerja"> | number
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
-  }, "id">
+  }, "id" | "weekStart_userId">
 
   export type JamKerjaOrderByWithAggregationInput = {
     id?: SortOrder
@@ -23955,7 +24048,7 @@ export namespace Prisma {
     id?: IntWithAggregatesFilter<"JamKerja"> | number
     weekStart?: DateTimeWithAggregatesFilter<"JamKerja"> | Date | string
     weekEnd?: DateTimeWithAggregatesFilter<"JamKerja"> | Date | string
-    totalHours?: IntWithAggregatesFilter<"JamKerja"> | number
+    totalHours?: FloatWithAggregatesFilter<"JamKerja"> | number
     createdAt?: DateTimeWithAggregatesFilter<"JamKerja"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"JamKerja"> | Date | string
     userId?: IntWithAggregatesFilter<"JamKerja"> | number
@@ -24292,6 +24385,7 @@ export namespace Prisma {
     presensiDate?: DateTimeFilter<"Presensi"> | Date | string
     latitude?: FloatFilter<"Presensi"> | number
     longitude?: FloatFilter<"Presensi"> | number
+    distanceToSite?: FloatNullableFilter<"Presensi"> | number | null
     fotoDiri?: StringNullableFilter<"Presensi"> | string | null
     statusPresensi?: EnumStatusPresensiFilter<"Presensi"> | $Enums.StatusPresensi
     statusApproval?: EnumStatusApprovalFilter<"Presensi"> | $Enums.StatusApproval
@@ -24314,6 +24408,7 @@ export namespace Prisma {
     presensiDate?: SortOrder
     latitude?: SortOrder
     longitude?: SortOrder
+    distanceToSite?: SortOrderInput | SortOrder
     fotoDiri?: SortOrderInput | SortOrder
     statusPresensi?: SortOrder
     statusApproval?: SortOrder
@@ -24340,6 +24435,7 @@ export namespace Prisma {
     presensiDate?: DateTimeFilter<"Presensi"> | Date | string
     latitude?: FloatFilter<"Presensi"> | number
     longitude?: FloatFilter<"Presensi"> | number
+    distanceToSite?: FloatNullableFilter<"Presensi"> | number | null
     fotoDiri?: StringNullableFilter<"Presensi"> | string | null
     statusPresensi?: EnumStatusPresensiFilter<"Presensi"> | $Enums.StatusPresensi
     statusApproval?: EnumStatusApprovalFilter<"Presensi"> | $Enums.StatusApproval
@@ -24361,6 +24457,7 @@ export namespace Prisma {
     presensiDate?: SortOrder
     latitude?: SortOrder
     longitude?: SortOrder
+    distanceToSite?: SortOrderInput | SortOrder
     fotoDiri?: SortOrderInput | SortOrder
     statusPresensi?: SortOrder
     statusApproval?: SortOrder
@@ -24387,6 +24484,7 @@ export namespace Prisma {
     presensiDate?: DateTimeWithAggregatesFilter<"Presensi"> | Date | string
     latitude?: FloatWithAggregatesFilter<"Presensi"> | number
     longitude?: FloatWithAggregatesFilter<"Presensi"> | number
+    distanceToSite?: FloatNullableWithAggregatesFilter<"Presensi"> | number | null
     fotoDiri?: StringNullableWithAggregatesFilter<"Presensi"> | string | null
     statusPresensi?: EnumStatusPresensiWithAggregatesFilter<"Presensi"> | $Enums.StatusPresensi
     statusApproval?: EnumStatusApprovalWithAggregatesFilter<"Presensi"> | $Enums.StatusApproval
@@ -24408,6 +24506,7 @@ export namespace Prisma {
     checkOutDate?: DateTimeFilter<"CheckOut"> | Date | string
     latitude?: FloatFilter<"CheckOut"> | number
     longitude?: FloatFilter<"CheckOut"> | number
+    distanceToSite?: FloatNullableFilter<"CheckOut"> | number | null
     fotoDiri?: StringNullableFilter<"CheckOut"> | string | null
     approvedAt?: DateTimeNullableFilter<"CheckOut"> | Date | string | null
     createdAt?: DateTimeFilter<"CheckOut"> | Date | string
@@ -24424,6 +24523,7 @@ export namespace Prisma {
     checkOutDate?: SortOrder
     latitude?: SortOrder
     longitude?: SortOrder
+    distanceToSite?: SortOrderInput | SortOrder
     fotoDiri?: SortOrderInput | SortOrder
     approvedAt?: SortOrderInput | SortOrder
     createdAt?: SortOrder
@@ -24444,6 +24544,7 @@ export namespace Prisma {
     checkOutDate?: DateTimeFilter<"CheckOut"> | Date | string
     latitude?: FloatFilter<"CheckOut"> | number
     longitude?: FloatFilter<"CheckOut"> | number
+    distanceToSite?: FloatNullableFilter<"CheckOut"> | number | null
     fotoDiri?: StringNullableFilter<"CheckOut"> | string | null
     approvedAt?: DateTimeNullableFilter<"CheckOut"> | Date | string | null
     createdAt?: DateTimeFilter<"CheckOut"> | Date | string
@@ -24459,6 +24560,7 @@ export namespace Prisma {
     checkOutDate?: SortOrder
     latitude?: SortOrder
     longitude?: SortOrder
+    distanceToSite?: SortOrderInput | SortOrder
     fotoDiri?: SortOrderInput | SortOrder
     approvedAt?: SortOrderInput | SortOrder
     createdAt?: SortOrder
@@ -24481,6 +24583,7 @@ export namespace Prisma {
     checkOutDate?: DateTimeWithAggregatesFilter<"CheckOut"> | Date | string
     latitude?: FloatWithAggregatesFilter<"CheckOut"> | number
     longitude?: FloatWithAggregatesFilter<"CheckOut"> | number
+    distanceToSite?: FloatNullableWithAggregatesFilter<"CheckOut"> | number | null
     fotoDiri?: StringNullableWithAggregatesFilter<"CheckOut"> | string | null
     approvedAt?: DateTimeNullableWithAggregatesFilter<"CheckOut"> | Date | string | null
     createdAt?: DateTimeWithAggregatesFilter<"CheckOut"> | Date | string
@@ -24625,7 +24728,9 @@ export namespace Prisma {
     OR?: IjinWhereInput[]
     NOT?: IjinWhereInput | IjinWhereInput[]
     id?: IntFilter<"Ijin"> | number
+    reason?: StringFilter<"Ijin"> | string
     ijinDate?: DateTimeFilter<"Ijin"> | Date | string
+    ijinEnd?: DateTimeNullableFilter<"Ijin"> | Date | string | null
     ijinStatus?: EnumStatusApprovalFilter<"Ijin"> | $Enums.StatusApproval
     createdAt?: DateTimeFilter<"Ijin"> | Date | string
     updatedAt?: DateTimeFilter<"Ijin"> | Date | string
@@ -24636,7 +24741,9 @@ export namespace Prisma {
 
   export type IjinOrderByWithRelationInput = {
     id?: SortOrder
+    reason?: SortOrder
     ijinDate?: SortOrder
+    ijinEnd?: SortOrderInput | SortOrder
     ijinStatus?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -24650,7 +24757,9 @@ export namespace Prisma {
     AND?: IjinWhereInput | IjinWhereInput[]
     OR?: IjinWhereInput[]
     NOT?: IjinWhereInput | IjinWhereInput[]
+    reason?: StringFilter<"Ijin"> | string
     ijinDate?: DateTimeFilter<"Ijin"> | Date | string
+    ijinEnd?: DateTimeNullableFilter<"Ijin"> | Date | string | null
     ijinStatus?: EnumStatusApprovalFilter<"Ijin"> | $Enums.StatusApproval
     createdAt?: DateTimeFilter<"Ijin"> | Date | string
     updatedAt?: DateTimeFilter<"Ijin"> | Date | string
@@ -24661,7 +24770,9 @@ export namespace Prisma {
 
   export type IjinOrderByWithAggregationInput = {
     id?: SortOrder
+    reason?: SortOrder
     ijinDate?: SortOrder
+    ijinEnd?: SortOrderInput | SortOrder
     ijinStatus?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -24679,7 +24790,9 @@ export namespace Prisma {
     OR?: IjinScalarWhereWithAggregatesInput[]
     NOT?: IjinScalarWhereWithAggregatesInput | IjinScalarWhereWithAggregatesInput[]
     id?: IntWithAggregatesFilter<"Ijin"> | number
+    reason?: StringWithAggregatesFilter<"Ijin"> | string
     ijinDate?: DateTimeWithAggregatesFilter<"Ijin"> | Date | string
+    ijinEnd?: DateTimeNullableWithAggregatesFilter<"Ijin"> | Date | string | null
     ijinStatus?: EnumStatusApprovalWithAggregatesFilter<"Ijin"> | $Enums.StatusApproval
     createdAt?: DateTimeWithAggregatesFilter<"Ijin"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Ijin"> | Date | string
@@ -24692,7 +24805,9 @@ export namespace Prisma {
     OR?: LiburWhereInput[]
     NOT?: LiburWhereInput | LiburWhereInput[]
     id?: IntFilter<"Libur"> | number
+    reason?: StringFilter<"Libur"> | string
     liburDate?: DateTimeFilter<"Libur"> | Date | string
+    liburEnd?: DateTimeNullableFilter<"Libur"> | Date | string | null
     liburStatus?: EnumStatusApprovalFilter<"Libur"> | $Enums.StatusApproval
     createdAt?: DateTimeFilter<"Libur"> | Date | string
     updatedAt?: DateTimeFilter<"Libur"> | Date | string
@@ -24703,7 +24818,9 @@ export namespace Prisma {
 
   export type LiburOrderByWithRelationInput = {
     id?: SortOrder
+    reason?: SortOrder
     liburDate?: SortOrder
+    liburEnd?: SortOrderInput | SortOrder
     liburStatus?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -24717,7 +24834,9 @@ export namespace Prisma {
     AND?: LiburWhereInput | LiburWhereInput[]
     OR?: LiburWhereInput[]
     NOT?: LiburWhereInput | LiburWhereInput[]
+    reason?: StringFilter<"Libur"> | string
     liburDate?: DateTimeFilter<"Libur"> | Date | string
+    liburEnd?: DateTimeNullableFilter<"Libur"> | Date | string | null
     liburStatus?: EnumStatusApprovalFilter<"Libur"> | $Enums.StatusApproval
     createdAt?: DateTimeFilter<"Libur"> | Date | string
     updatedAt?: DateTimeFilter<"Libur"> | Date | string
@@ -24728,7 +24847,9 @@ export namespace Prisma {
 
   export type LiburOrderByWithAggregationInput = {
     id?: SortOrder
+    reason?: SortOrder
     liburDate?: SortOrder
+    liburEnd?: SortOrderInput | SortOrder
     liburStatus?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -24746,7 +24867,9 @@ export namespace Prisma {
     OR?: LiburScalarWhereWithAggregatesInput[]
     NOT?: LiburScalarWhereWithAggregatesInput | LiburScalarWhereWithAggregatesInput[]
     id?: IntWithAggregatesFilter<"Libur"> | number
+    reason?: StringWithAggregatesFilter<"Libur"> | string
     liburDate?: DateTimeWithAggregatesFilter<"Libur"> | Date | string
+    liburEnd?: DateTimeNullableWithAggregatesFilter<"Libur"> | Date | string | null
     liburStatus?: EnumStatusApprovalWithAggregatesFilter<"Libur"> | $Enums.StatusApproval
     createdAt?: DateTimeWithAggregatesFilter<"Libur"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Libur"> | Date | string
@@ -25348,7 +25471,7 @@ export namespace Prisma {
   export type JamKerjaUpdateInput = {
     weekStart?: DateTimeFieldUpdateOperationsInput | Date | string
     weekEnd?: DateTimeFieldUpdateOperationsInput | Date | string
-    totalHours?: IntFieldUpdateOperationsInput | number
+    totalHours?: FloatFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     user?: UserUpdateOneRequiredWithoutJamKerjaNestedInput
@@ -25358,7 +25481,7 @@ export namespace Prisma {
     id?: IntFieldUpdateOperationsInput | number
     weekStart?: DateTimeFieldUpdateOperationsInput | Date | string
     weekEnd?: DateTimeFieldUpdateOperationsInput | Date | string
-    totalHours?: IntFieldUpdateOperationsInput | number
+    totalHours?: FloatFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     userId?: IntFieldUpdateOperationsInput | number
@@ -25377,7 +25500,7 @@ export namespace Prisma {
   export type JamKerjaUpdateManyMutationInput = {
     weekStart?: DateTimeFieldUpdateOperationsInput | Date | string
     weekEnd?: DateTimeFieldUpdateOperationsInput | Date | string
-    totalHours?: IntFieldUpdateOperationsInput | number
+    totalHours?: FloatFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -25386,7 +25509,7 @@ export namespace Prisma {
     id?: IntFieldUpdateOperationsInput | number
     weekStart?: DateTimeFieldUpdateOperationsInput | Date | string
     weekEnd?: DateTimeFieldUpdateOperationsInput | Date | string
-    totalHours?: IntFieldUpdateOperationsInput | number
+    totalHours?: FloatFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     userId?: IntFieldUpdateOperationsInput | number
@@ -25741,6 +25864,7 @@ export namespace Prisma {
     presensiDate: Date | string
     latitude: number
     longitude: number
+    distanceToSite?: number | null
     fotoDiri?: string | null
     statusPresensi: $Enums.StatusPresensi
     statusApproval?: $Enums.StatusApproval
@@ -25760,6 +25884,7 @@ export namespace Prisma {
     presensiDate: Date | string
     latitude: number
     longitude: number
+    distanceToSite?: number | null
     fotoDiri?: string | null
     statusPresensi: $Enums.StatusPresensi
     statusApproval?: $Enums.StatusApproval
@@ -25778,6 +25903,7 @@ export namespace Prisma {
     presensiDate?: DateTimeFieldUpdateOperationsInput | Date | string
     latitude?: FloatFieldUpdateOperationsInput | number
     longitude?: FloatFieldUpdateOperationsInput | number
+    distanceToSite?: NullableFloatFieldUpdateOperationsInput | number | null
     fotoDiri?: NullableStringFieldUpdateOperationsInput | string | null
     statusPresensi?: EnumStatusPresensiFieldUpdateOperationsInput | $Enums.StatusPresensi
     statusApproval?: EnumStatusApprovalFieldUpdateOperationsInput | $Enums.StatusApproval
@@ -25797,6 +25923,7 @@ export namespace Prisma {
     presensiDate?: DateTimeFieldUpdateOperationsInput | Date | string
     latitude?: FloatFieldUpdateOperationsInput | number
     longitude?: FloatFieldUpdateOperationsInput | number
+    distanceToSite?: NullableFloatFieldUpdateOperationsInput | number | null
     fotoDiri?: NullableStringFieldUpdateOperationsInput | string | null
     statusPresensi?: EnumStatusPresensiFieldUpdateOperationsInput | $Enums.StatusPresensi
     statusApproval?: EnumStatusApprovalFieldUpdateOperationsInput | $Enums.StatusApproval
@@ -25816,6 +25943,7 @@ export namespace Prisma {
     presensiDate: Date | string
     latitude: number
     longitude: number
+    distanceToSite?: number | null
     fotoDiri?: string | null
     statusPresensi: $Enums.StatusPresensi
     statusApproval?: $Enums.StatusApproval
@@ -25833,6 +25961,7 @@ export namespace Prisma {
     presensiDate?: DateTimeFieldUpdateOperationsInput | Date | string
     latitude?: FloatFieldUpdateOperationsInput | number
     longitude?: FloatFieldUpdateOperationsInput | number
+    distanceToSite?: NullableFloatFieldUpdateOperationsInput | number | null
     fotoDiri?: NullableStringFieldUpdateOperationsInput | string | null
     statusPresensi?: EnumStatusPresensiFieldUpdateOperationsInput | $Enums.StatusPresensi
     statusApproval?: EnumStatusApprovalFieldUpdateOperationsInput | $Enums.StatusApproval
@@ -25848,6 +25977,7 @@ export namespace Prisma {
     presensiDate?: DateTimeFieldUpdateOperationsInput | Date | string
     latitude?: FloatFieldUpdateOperationsInput | number
     longitude?: FloatFieldUpdateOperationsInput | number
+    distanceToSite?: NullableFloatFieldUpdateOperationsInput | number | null
     fotoDiri?: NullableStringFieldUpdateOperationsInput | string | null
     statusPresensi?: EnumStatusPresensiFieldUpdateOperationsInput | $Enums.StatusPresensi
     statusApproval?: EnumStatusApprovalFieldUpdateOperationsInput | $Enums.StatusApproval
@@ -25865,6 +25995,7 @@ export namespace Prisma {
     checkOutDate: Date | string
     latitude: number
     longitude: number
+    distanceToSite?: number | null
     fotoDiri?: string | null
     approvedAt?: Date | string | null
     createdAt?: Date | string
@@ -25879,6 +26010,7 @@ export namespace Prisma {
     checkOutDate: Date | string
     latitude: number
     longitude: number
+    distanceToSite?: number | null
     fotoDiri?: string | null
     approvedAt?: Date | string | null
     createdAt?: Date | string
@@ -25892,6 +26024,7 @@ export namespace Prisma {
     checkOutDate?: DateTimeFieldUpdateOperationsInput | Date | string
     latitude?: FloatFieldUpdateOperationsInput | number
     longitude?: FloatFieldUpdateOperationsInput | number
+    distanceToSite?: NullableFloatFieldUpdateOperationsInput | number | null
     fotoDiri?: NullableStringFieldUpdateOperationsInput | string | null
     approvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -25906,6 +26039,7 @@ export namespace Prisma {
     checkOutDate?: DateTimeFieldUpdateOperationsInput | Date | string
     latitude?: FloatFieldUpdateOperationsInput | number
     longitude?: FloatFieldUpdateOperationsInput | number
+    distanceToSite?: NullableFloatFieldUpdateOperationsInput | number | null
     fotoDiri?: NullableStringFieldUpdateOperationsInput | string | null
     approvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -25920,6 +26054,7 @@ export namespace Prisma {
     checkOutDate: Date | string
     latitude: number
     longitude: number
+    distanceToSite?: number | null
     fotoDiri?: string | null
     approvedAt?: Date | string | null
     createdAt?: Date | string
@@ -25933,6 +26068,7 @@ export namespace Prisma {
     checkOutDate?: DateTimeFieldUpdateOperationsInput | Date | string
     latitude?: FloatFieldUpdateOperationsInput | number
     longitude?: FloatFieldUpdateOperationsInput | number
+    distanceToSite?: NullableFloatFieldUpdateOperationsInput | number | null
     fotoDiri?: NullableStringFieldUpdateOperationsInput | string | null
     approvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -25945,6 +26081,7 @@ export namespace Prisma {
     checkOutDate?: DateTimeFieldUpdateOperationsInput | Date | string
     latitude?: FloatFieldUpdateOperationsInput | number
     longitude?: FloatFieldUpdateOperationsInput | number
+    distanceToSite?: NullableFloatFieldUpdateOperationsInput | number | null
     fotoDiri?: NullableStringFieldUpdateOperationsInput | string | null
     approvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -26104,7 +26241,9 @@ export namespace Prisma {
   }
 
   export type IjinCreateInput = {
-    ijinDate?: Date | string
+    reason: string
+    ijinDate: Date | string
+    ijinEnd?: Date | string | null
     ijinStatus?: $Enums.StatusApproval
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -26114,7 +26253,9 @@ export namespace Prisma {
 
   export type IjinUncheckedCreateInput = {
     id?: number
-    ijinDate?: Date | string
+    reason: string
+    ijinDate: Date | string
+    ijinEnd?: Date | string | null
     ijinStatus?: $Enums.StatusApproval
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -26123,7 +26264,9 @@ export namespace Prisma {
   }
 
   export type IjinUpdateInput = {
+    reason?: StringFieldUpdateOperationsInput | string
     ijinDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    ijinEnd?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     ijinStatus?: EnumStatusApprovalFieldUpdateOperationsInput | $Enums.StatusApproval
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -26133,7 +26276,9 @@ export namespace Prisma {
 
   export type IjinUncheckedUpdateInput = {
     id?: IntFieldUpdateOperationsInput | number
+    reason?: StringFieldUpdateOperationsInput | string
     ijinDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    ijinEnd?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     ijinStatus?: EnumStatusApprovalFieldUpdateOperationsInput | $Enums.StatusApproval
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -26143,7 +26288,9 @@ export namespace Prisma {
 
   export type IjinCreateManyInput = {
     id?: number
-    ijinDate?: Date | string
+    reason: string
+    ijinDate: Date | string
+    ijinEnd?: Date | string | null
     ijinStatus?: $Enums.StatusApproval
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -26152,7 +26299,9 @@ export namespace Prisma {
   }
 
   export type IjinUpdateManyMutationInput = {
+    reason?: StringFieldUpdateOperationsInput | string
     ijinDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    ijinEnd?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     ijinStatus?: EnumStatusApprovalFieldUpdateOperationsInput | $Enums.StatusApproval
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -26161,7 +26310,9 @@ export namespace Prisma {
 
   export type IjinUncheckedUpdateManyInput = {
     id?: IntFieldUpdateOperationsInput | number
+    reason?: StringFieldUpdateOperationsInput | string
     ijinDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    ijinEnd?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     ijinStatus?: EnumStatusApprovalFieldUpdateOperationsInput | $Enums.StatusApproval
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -26170,7 +26321,9 @@ export namespace Prisma {
   }
 
   export type LiburCreateInput = {
+    reason: string
     liburDate: Date | string
+    liburEnd?: Date | string | null
     liburStatus?: $Enums.StatusApproval
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -26180,7 +26333,9 @@ export namespace Prisma {
 
   export type LiburUncheckedCreateInput = {
     id?: number
+    reason: string
     liburDate: Date | string
+    liburEnd?: Date | string | null
     liburStatus?: $Enums.StatusApproval
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -26189,7 +26344,9 @@ export namespace Prisma {
   }
 
   export type LiburUpdateInput = {
+    reason?: StringFieldUpdateOperationsInput | string
     liburDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    liburEnd?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     liburStatus?: EnumStatusApprovalFieldUpdateOperationsInput | $Enums.StatusApproval
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -26199,7 +26356,9 @@ export namespace Prisma {
 
   export type LiburUncheckedUpdateInput = {
     id?: IntFieldUpdateOperationsInput | number
+    reason?: StringFieldUpdateOperationsInput | string
     liburDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    liburEnd?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     liburStatus?: EnumStatusApprovalFieldUpdateOperationsInput | $Enums.StatusApproval
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -26209,7 +26368,9 @@ export namespace Prisma {
 
   export type LiburCreateManyInput = {
     id?: number
+    reason: string
     liburDate: Date | string
+    liburEnd?: Date | string | null
     liburStatus?: $Enums.StatusApproval
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -26218,7 +26379,9 @@ export namespace Prisma {
   }
 
   export type LiburUpdateManyMutationInput = {
+    reason?: StringFieldUpdateOperationsInput | string
     liburDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    liburEnd?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     liburStatus?: EnumStatusApprovalFieldUpdateOperationsInput | $Enums.StatusApproval
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -26227,7 +26390,9 @@ export namespace Prisma {
 
   export type LiburUncheckedUpdateManyInput = {
     id?: IntFieldUpdateOperationsInput | number
+    reason?: StringFieldUpdateOperationsInput | string
     liburDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    liburEnd?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     liburStatus?: EnumStatusApprovalFieldUpdateOperationsInput | $Enums.StatusApproval
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -26964,9 +27129,25 @@ export namespace Prisma {
     siteId?: SortOrder
   }
 
+  export type FloatFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel>
+    in?: number[] | ListFloatFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel>
+    lt?: number | FloatFieldRefInput<$PrismaModel>
+    lte?: number | FloatFieldRefInput<$PrismaModel>
+    gt?: number | FloatFieldRefInput<$PrismaModel>
+    gte?: number | FloatFieldRefInput<$PrismaModel>
+    not?: NestedFloatFilter<$PrismaModel> | number
+  }
+
   export type UserScalarRelationFilter = {
     is?: UserWhereInput
     isNot?: UserWhereInput
+  }
+
+  export type JamKerjaWeekStartUserIdCompoundUniqueInput = {
+    weekStart: Date | string
+    userId: number
   }
 
   export type JamKerjaCountOrderByAggregateInput = {
@@ -27009,6 +27190,22 @@ export namespace Prisma {
     id?: SortOrder
     totalHours?: SortOrder
     userId?: SortOrder
+  }
+
+  export type FloatWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel>
+    in?: number[] | ListFloatFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel>
+    lt?: number | FloatFieldRefInput<$PrismaModel>
+    lte?: number | FloatFieldRefInput<$PrismaModel>
+    gt?: number | FloatFieldRefInput<$PrismaModel>
+    gte?: number | FloatFieldRefInput<$PrismaModel>
+    not?: NestedFloatWithAggregatesFilter<$PrismaModel> | number
+    _count?: NestedIntFilter<$PrismaModel>
+    _avg?: NestedFloatFilter<$PrismaModel>
+    _sum?: NestedFloatFilter<$PrismaModel>
+    _min?: NestedFloatFilter<$PrismaModel>
+    _max?: NestedFloatFilter<$PrismaModel>
   }
 
   export type StringNullableFilter<$PrismaModel = never> = {
@@ -27109,17 +27306,6 @@ export namespace Prisma {
     _max?: NestedEnumSiteStatusFilter<$PrismaModel>
   }
 
-  export type FloatFilter<$PrismaModel = never> = {
-    equals?: number | FloatFieldRefInput<$PrismaModel>
-    in?: number[] | ListFloatFieldRefInput<$PrismaModel>
-    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel>
-    lt?: number | FloatFieldRefInput<$PrismaModel>
-    lte?: number | FloatFieldRefInput<$PrismaModel>
-    gt?: number | FloatFieldRefInput<$PrismaModel>
-    gte?: number | FloatFieldRefInput<$PrismaModel>
-    not?: NestedFloatFilter<$PrismaModel> | number
-  }
-
   export type SiteAddressCountOrderByAggregateInput = {
     id?: SortOrder
     address?: SortOrder
@@ -27171,22 +27357,6 @@ export namespace Prisma {
     latitude?: SortOrder
     longitude?: SortOrder
     siteId?: SortOrder
-  }
-
-  export type FloatWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: number | FloatFieldRefInput<$PrismaModel>
-    in?: number[] | ListFloatFieldRefInput<$PrismaModel>
-    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel>
-    lt?: number | FloatFieldRefInput<$PrismaModel>
-    lte?: number | FloatFieldRefInput<$PrismaModel>
-    gt?: number | FloatFieldRefInput<$PrismaModel>
-    gte?: number | FloatFieldRefInput<$PrismaModel>
-    not?: NestedFloatWithAggregatesFilter<$PrismaModel> | number
-    _count?: NestedIntFilter<$PrismaModel>
-    _avg?: NestedFloatFilter<$PrismaModel>
-    _sum?: NestedFloatFilter<$PrismaModel>
-    _min?: NestedFloatFilter<$PrismaModel>
-    _max?: NestedFloatFilter<$PrismaModel>
   }
 
   export type UserAddressNullableScalarRelationFilter = {
@@ -27291,6 +27461,17 @@ export namespace Prisma {
     profileId?: SortOrder
   }
 
+  export type FloatNullableFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel> | null
+    in?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
+    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
+    lt?: number | FloatFieldRefInput<$PrismaModel>
+    lte?: number | FloatFieldRefInput<$PrismaModel>
+    gt?: number | FloatFieldRefInput<$PrismaModel>
+    gte?: number | FloatFieldRefInput<$PrismaModel>
+    not?: NestedFloatNullableFilter<$PrismaModel> | number | null
+  }
+
   export type EnumStatusPresensiFilter<$PrismaModel = never> = {
     equals?: $Enums.StatusPresensi | EnumStatusPresensiFieldRefInput<$PrismaModel>
     in?: $Enums.StatusPresensi[] | ListEnumStatusPresensiFieldRefInput<$PrismaModel>
@@ -27336,6 +27517,7 @@ export namespace Prisma {
     presensiDate?: SortOrder
     latitude?: SortOrder
     longitude?: SortOrder
+    distanceToSite?: SortOrder
     fotoDiri?: SortOrder
     statusPresensi?: SortOrder
     statusApproval?: SortOrder
@@ -27353,6 +27535,7 @@ export namespace Prisma {
     id?: SortOrder
     latitude?: SortOrder
     longitude?: SortOrder
+    distanceToSite?: SortOrder
     shiftid?: SortOrder
     userId?: SortOrder
     approverId?: SortOrder
@@ -27363,6 +27546,7 @@ export namespace Prisma {
     presensiDate?: SortOrder
     latitude?: SortOrder
     longitude?: SortOrder
+    distanceToSite?: SortOrder
     fotoDiri?: SortOrder
     statusPresensi?: SortOrder
     statusApproval?: SortOrder
@@ -27381,6 +27565,7 @@ export namespace Prisma {
     presensiDate?: SortOrder
     latitude?: SortOrder
     longitude?: SortOrder
+    distanceToSite?: SortOrder
     fotoDiri?: SortOrder
     statusPresensi?: SortOrder
     statusApproval?: SortOrder
@@ -27398,9 +27583,26 @@ export namespace Prisma {
     id?: SortOrder
     latitude?: SortOrder
     longitude?: SortOrder
+    distanceToSite?: SortOrder
     shiftid?: SortOrder
     userId?: SortOrder
     approverId?: SortOrder
+  }
+
+  export type FloatNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel> | null
+    in?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
+    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
+    lt?: number | FloatFieldRefInput<$PrismaModel>
+    lte?: number | FloatFieldRefInput<$PrismaModel>
+    gt?: number | FloatFieldRefInput<$PrismaModel>
+    gte?: number | FloatFieldRefInput<$PrismaModel>
+    not?: NestedFloatNullableWithAggregatesFilter<$PrismaModel> | number | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _avg?: NestedFloatNullableFilter<$PrismaModel>
+    _sum?: NestedFloatNullableFilter<$PrismaModel>
+    _min?: NestedFloatNullableFilter<$PrismaModel>
+    _max?: NestedFloatNullableFilter<$PrismaModel>
   }
 
   export type EnumStatusPresensiWithAggregatesFilter<$PrismaModel = never> = {
@@ -27449,6 +27651,7 @@ export namespace Prisma {
     checkOutDate?: SortOrder
     latitude?: SortOrder
     longitude?: SortOrder
+    distanceToSite?: SortOrder
     fotoDiri?: SortOrder
     approvedAt?: SortOrder
     createdAt?: SortOrder
@@ -27462,6 +27665,7 @@ export namespace Prisma {
     id?: SortOrder
     latitude?: SortOrder
     longitude?: SortOrder
+    distanceToSite?: SortOrder
     userId?: SortOrder
     checkInId?: SortOrder
   }
@@ -27471,6 +27675,7 @@ export namespace Prisma {
     checkOutDate?: SortOrder
     latitude?: SortOrder
     longitude?: SortOrder
+    distanceToSite?: SortOrder
     fotoDiri?: SortOrder
     approvedAt?: SortOrder
     createdAt?: SortOrder
@@ -27485,6 +27690,7 @@ export namespace Prisma {
     checkOutDate?: SortOrder
     latitude?: SortOrder
     longitude?: SortOrder
+    distanceToSite?: SortOrder
     fotoDiri?: SortOrder
     approvedAt?: SortOrder
     createdAt?: SortOrder
@@ -27498,6 +27704,7 @@ export namespace Prisma {
     id?: SortOrder
     latitude?: SortOrder
     longitude?: SortOrder
+    distanceToSite?: SortOrder
     userId?: SortOrder
     checkInId?: SortOrder
   }
@@ -27620,7 +27827,9 @@ export namespace Prisma {
 
   export type IjinCountOrderByAggregateInput = {
     id?: SortOrder
+    reason?: SortOrder
     ijinDate?: SortOrder
+    ijinEnd?: SortOrder
     ijinStatus?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -27635,7 +27844,9 @@ export namespace Prisma {
 
   export type IjinMaxOrderByAggregateInput = {
     id?: SortOrder
+    reason?: SortOrder
     ijinDate?: SortOrder
+    ijinEnd?: SortOrder
     ijinStatus?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -27645,7 +27856,9 @@ export namespace Prisma {
 
   export type IjinMinOrderByAggregateInput = {
     id?: SortOrder
+    reason?: SortOrder
     ijinDate?: SortOrder
+    ijinEnd?: SortOrder
     ijinStatus?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -27660,7 +27873,9 @@ export namespace Prisma {
 
   export type LiburCountOrderByAggregateInput = {
     id?: SortOrder
+    reason?: SortOrder
     liburDate?: SortOrder
+    liburEnd?: SortOrder
     liburStatus?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -27675,7 +27890,9 @@ export namespace Prisma {
 
   export type LiburMaxOrderByAggregateInput = {
     id?: SortOrder
+    reason?: SortOrder
     liburDate?: SortOrder
+    liburEnd?: SortOrder
     liburStatus?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -27685,7 +27902,9 @@ export namespace Prisma {
 
   export type LiburMinOrderByAggregateInput = {
     id?: SortOrder
+    reason?: SortOrder
     liburDate?: SortOrder
+    liburEnd?: SortOrder
     liburStatus?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -28730,6 +28949,14 @@ export namespace Prisma {
     connect?: UserWhereUniqueInput
   }
 
+  export type FloatFieldUpdateOperationsInput = {
+    set?: number
+    increment?: number
+    decrement?: number
+    multiply?: number
+    divide?: number
+  }
+
   export type UserUpdateOneRequiredWithoutJamKerjaNestedInput = {
     create?: XOR<UserCreateWithoutJamKerjaInput, UserUncheckedCreateWithoutJamKerjaInput>
     connectOrCreate?: UserCreateOrConnectWithoutJamKerjaInput
@@ -28948,14 +29175,6 @@ export namespace Prisma {
     connect?: SiteWhereUniqueInput
   }
 
-  export type FloatFieldUpdateOperationsInput = {
-    set?: number
-    increment?: number
-    decrement?: number
-    multiply?: number
-    divide?: number
-  }
-
   export type SiteUpdateOneRequiredWithoutAddressNestedInput = {
     create?: XOR<SiteCreateWithoutAddressInput, SiteUncheckedCreateWithoutAddressInput>
     connectOrCreate?: SiteCreateOrConnectWithoutAddressInput
@@ -29052,6 +29271,14 @@ export namespace Prisma {
     create?: XOR<CheckOutCreateWithoutCheckInInput, CheckOutUncheckedCreateWithoutCheckInInput>
     connectOrCreate?: CheckOutCreateOrConnectWithoutCheckInInput
     connect?: CheckOutWhereUniqueInput
+  }
+
+  export type NullableFloatFieldUpdateOperationsInput = {
+    set?: number | null
+    increment?: number
+    decrement?: number
+    multiply?: number
+    divide?: number
   }
 
   export type EnumStatusPresensiFieldUpdateOperationsInput = {
@@ -29521,6 +29748,22 @@ export namespace Prisma {
     _max?: NestedEnumRoleNameFilter<$PrismaModel>
   }
 
+  export type NestedFloatWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel>
+    in?: number[] | ListFloatFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel>
+    lt?: number | FloatFieldRefInput<$PrismaModel>
+    lte?: number | FloatFieldRefInput<$PrismaModel>
+    gt?: number | FloatFieldRefInput<$PrismaModel>
+    gte?: number | FloatFieldRefInput<$PrismaModel>
+    not?: NestedFloatWithAggregatesFilter<$PrismaModel> | number
+    _count?: NestedIntFilter<$PrismaModel>
+    _avg?: NestedFloatFilter<$PrismaModel>
+    _sum?: NestedFloatFilter<$PrismaModel>
+    _min?: NestedFloatFilter<$PrismaModel>
+    _max?: NestedFloatFilter<$PrismaModel>
+  }
+
   export type NestedStringNullableFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel> | null
     in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
@@ -29569,20 +29812,15 @@ export namespace Prisma {
     _max?: NestedEnumSiteStatusFilter<$PrismaModel>
   }
 
-  export type NestedFloatWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: number | FloatFieldRefInput<$PrismaModel>
-    in?: number[] | ListFloatFieldRefInput<$PrismaModel>
-    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel>
+  export type NestedFloatNullableFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel> | null
+    in?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
+    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
     lt?: number | FloatFieldRefInput<$PrismaModel>
     lte?: number | FloatFieldRefInput<$PrismaModel>
     gt?: number | FloatFieldRefInput<$PrismaModel>
     gte?: number | FloatFieldRefInput<$PrismaModel>
-    not?: NestedFloatWithAggregatesFilter<$PrismaModel> | number
-    _count?: NestedIntFilter<$PrismaModel>
-    _avg?: NestedFloatFilter<$PrismaModel>
-    _sum?: NestedFloatFilter<$PrismaModel>
-    _min?: NestedFloatFilter<$PrismaModel>
-    _max?: NestedFloatFilter<$PrismaModel>
+    not?: NestedFloatNullableFilter<$PrismaModel> | number | null
   }
 
   export type NestedEnumStatusPresensiFilter<$PrismaModel = never> = {
@@ -29597,6 +29835,22 @@ export namespace Prisma {
     in?: $Enums.StatusApproval[] | ListEnumStatusApprovalFieldRefInput<$PrismaModel>
     notIn?: $Enums.StatusApproval[] | ListEnumStatusApprovalFieldRefInput<$PrismaModel>
     not?: NestedEnumStatusApprovalFilter<$PrismaModel> | $Enums.StatusApproval
+  }
+
+  export type NestedFloatNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel> | null
+    in?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
+    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
+    lt?: number | FloatFieldRefInput<$PrismaModel>
+    lte?: number | FloatFieldRefInput<$PrismaModel>
+    gt?: number | FloatFieldRefInput<$PrismaModel>
+    gte?: number | FloatFieldRefInput<$PrismaModel>
+    not?: NestedFloatNullableWithAggregatesFilter<$PrismaModel> | number | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _avg?: NestedFloatNullableFilter<$PrismaModel>
+    _sum?: NestedFloatNullableFilter<$PrismaModel>
+    _min?: NestedFloatNullableFilter<$PrismaModel>
+    _max?: NestedFloatNullableFilter<$PrismaModel>
   }
 
   export type NestedEnumStatusPresensiWithAggregatesFilter<$PrismaModel = never> = {
@@ -29633,17 +29887,6 @@ export namespace Prisma {
     _sum?: NestedIntNullableFilter<$PrismaModel>
     _min?: NestedIntNullableFilter<$PrismaModel>
     _max?: NestedIntNullableFilter<$PrismaModel>
-  }
-
-  export type NestedFloatNullableFilter<$PrismaModel = never> = {
-    equals?: number | FloatFieldRefInput<$PrismaModel> | null
-    in?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
-    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
-    lt?: number | FloatFieldRefInput<$PrismaModel>
-    lte?: number | FloatFieldRefInput<$PrismaModel>
-    gt?: number | FloatFieldRefInput<$PrismaModel>
-    gte?: number | FloatFieldRefInput<$PrismaModel>
-    not?: NestedFloatNullableFilter<$PrismaModel> | number | null
   }
 
   export type NestedEnumEquipmentStatusFilter<$PrismaModel = never> = {
@@ -29851,6 +30094,7 @@ export namespace Prisma {
     presensiDate: Date | string
     latitude: number
     longitude: number
+    distanceToSite?: number | null
     fotoDiri?: string | null
     statusPresensi: $Enums.StatusPresensi
     statusApproval?: $Enums.StatusApproval
@@ -29869,6 +30113,7 @@ export namespace Prisma {
     presensiDate: Date | string
     latitude: number
     longitude: number
+    distanceToSite?: number | null
     fotoDiri?: string | null
     statusPresensi: $Enums.StatusPresensi
     statusApproval?: $Enums.StatusApproval
@@ -29896,6 +30141,7 @@ export namespace Prisma {
     checkOutDate: Date | string
     latitude: number
     longitude: number
+    distanceToSite?: number | null
     fotoDiri?: string | null
     approvedAt?: Date | string | null
     createdAt?: Date | string
@@ -29909,6 +30155,7 @@ export namespace Prisma {
     checkOutDate: Date | string
     latitude: number
     longitude: number
+    distanceToSite?: number | null
     fotoDiri?: string | null
     approvedAt?: Date | string | null
     createdAt?: Date | string
@@ -29931,6 +30178,7 @@ export namespace Prisma {
     presensiDate: Date | string
     latitude: number
     longitude: number
+    distanceToSite?: number | null
     fotoDiri?: string | null
     statusPresensi: $Enums.StatusPresensi
     statusApproval?: $Enums.StatusApproval
@@ -29949,6 +30197,7 @@ export namespace Prisma {
     presensiDate: Date | string
     latitude: number
     longitude: number
+    distanceToSite?: number | null
     fotoDiri?: string | null
     statusPresensi: $Enums.StatusPresensi
     statusApproval?: $Enums.StatusApproval
@@ -30024,7 +30273,9 @@ export namespace Prisma {
   }
 
   export type IjinCreateWithoutUserInput = {
-    ijinDate?: Date | string
+    reason: string
+    ijinDate: Date | string
+    ijinEnd?: Date | string | null
     ijinStatus?: $Enums.StatusApproval
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -30033,7 +30284,9 @@ export namespace Prisma {
 
   export type IjinUncheckedCreateWithoutUserInput = {
     id?: number
-    ijinDate?: Date | string
+    reason: string
+    ijinDate: Date | string
+    ijinEnd?: Date | string | null
     ijinStatus?: $Enums.StatusApproval
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -30051,7 +30304,9 @@ export namespace Prisma {
   }
 
   export type LiburCreateWithoutUserInput = {
+    reason: string
     liburDate: Date | string
+    liburEnd?: Date | string | null
     liburStatus?: $Enums.StatusApproval
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -30060,7 +30315,9 @@ export namespace Prisma {
 
   export type LiburUncheckedCreateWithoutUserInput = {
     id?: number
+    reason: string
     liburDate: Date | string
+    liburEnd?: Date | string | null
     liburStatus?: $Enums.StatusApproval
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -30373,6 +30630,7 @@ export namespace Prisma {
     presensiDate?: DateTimeFilter<"Presensi"> | Date | string
     latitude?: FloatFilter<"Presensi"> | number
     longitude?: FloatFilter<"Presensi"> | number
+    distanceToSite?: FloatNullableFilter<"Presensi"> | number | null
     fotoDiri?: StringNullableFilter<"Presensi"> | string | null
     statusPresensi?: EnumStatusPresensiFilter<"Presensi"> | $Enums.StatusPresensi
     statusApproval?: EnumStatusApprovalFilter<"Presensi"> | $Enums.StatusApproval
@@ -30410,6 +30668,7 @@ export namespace Prisma {
     checkOutDate?: DateTimeFilter<"CheckOut"> | Date | string
     latitude?: FloatFilter<"CheckOut"> | number
     longitude?: FloatFilter<"CheckOut"> | number
+    distanceToSite?: FloatNullableFilter<"CheckOut"> | number | null
     fotoDiri?: StringNullableFilter<"CheckOut"> | string | null
     approvedAt?: DateTimeNullableFilter<"CheckOut"> | Date | string | null
     createdAt?: DateTimeFilter<"CheckOut"> | Date | string
@@ -30497,7 +30756,9 @@ export namespace Prisma {
     OR?: IjinScalarWhereInput[]
     NOT?: IjinScalarWhereInput | IjinScalarWhereInput[]
     id?: IntFilter<"Ijin"> | number
+    reason?: StringFilter<"Ijin"> | string
     ijinDate?: DateTimeFilter<"Ijin"> | Date | string
+    ijinEnd?: DateTimeNullableFilter<"Ijin"> | Date | string | null
     ijinStatus?: EnumStatusApprovalFilter<"Ijin"> | $Enums.StatusApproval
     createdAt?: DateTimeFilter<"Ijin"> | Date | string
     updatedAt?: DateTimeFilter<"Ijin"> | Date | string
@@ -30526,7 +30787,9 @@ export namespace Prisma {
     OR?: LiburScalarWhereInput[]
     NOT?: LiburScalarWhereInput | LiburScalarWhereInput[]
     id?: IntFilter<"Libur"> | number
+    reason?: StringFilter<"Libur"> | string
     liburDate?: DateTimeFilter<"Libur"> | Date | string
+    liburEnd?: DateTimeNullableFilter<"Libur"> | Date | string | null
     liburStatus?: EnumStatusApprovalFilter<"Libur"> | $Enums.StatusApproval
     createdAt?: DateTimeFilter<"Libur"> | Date | string
     updatedAt?: DateTimeFilter<"Libur"> | Date | string
@@ -30680,7 +30943,7 @@ export namespace Prisma {
     id?: IntFilter<"JamKerja"> | number
     weekStart?: DateTimeFilter<"JamKerja"> | Date | string
     weekEnd?: DateTimeFilter<"JamKerja"> | Date | string
-    totalHours?: IntFilter<"JamKerja"> | number
+    totalHours?: FloatFilter<"JamKerja"> | number
     createdAt?: DateTimeFilter<"JamKerja"> | Date | string
     updatedAt?: DateTimeFilter<"JamKerja"> | Date | string
     userId?: IntFilter<"JamKerja"> | number
@@ -30863,6 +31126,7 @@ export namespace Prisma {
     presensiDate: Date | string
     latitude: number
     longitude: number
+    distanceToSite?: number | null
     fotoDiri?: string | null
     statusPresensi: $Enums.StatusPresensi
     statusApproval?: $Enums.StatusApproval
@@ -30881,6 +31145,7 @@ export namespace Prisma {
     presensiDate: Date | string
     latitude: number
     longitude: number
+    distanceToSite?: number | null
     fotoDiri?: string | null
     statusPresensi: $Enums.StatusPresensi
     statusApproval?: $Enums.StatusApproval
@@ -30970,6 +31235,7 @@ export namespace Prisma {
     presensiDate?: DateTimeFieldUpdateOperationsInput | Date | string
     latitude?: FloatFieldUpdateOperationsInput | number
     longitude?: FloatFieldUpdateOperationsInput | number
+    distanceToSite?: NullableFloatFieldUpdateOperationsInput | number | null
     fotoDiri?: NullableStringFieldUpdateOperationsInput | string | null
     statusPresensi?: EnumStatusPresensiFieldUpdateOperationsInput | $Enums.StatusPresensi
     statusApproval?: EnumStatusApprovalFieldUpdateOperationsInput | $Enums.StatusApproval
@@ -30988,6 +31254,7 @@ export namespace Prisma {
     presensiDate?: DateTimeFieldUpdateOperationsInput | Date | string
     latitude?: FloatFieldUpdateOperationsInput | number
     longitude?: FloatFieldUpdateOperationsInput | number
+    distanceToSite?: NullableFloatFieldUpdateOperationsInput | number | null
     fotoDiri?: NullableStringFieldUpdateOperationsInput | string | null
     statusPresensi?: EnumStatusPresensiFieldUpdateOperationsInput | $Enums.StatusPresensi
     statusApproval?: EnumStatusApprovalFieldUpdateOperationsInput | $Enums.StatusApproval
@@ -31850,6 +32117,7 @@ export namespace Prisma {
     checkOutDate: Date | string
     latitude: number
     longitude: number
+    distanceToSite?: number | null
     fotoDiri?: string | null
     approvedAt?: Date | string | null
     createdAt?: Date | string
@@ -31863,6 +32131,7 @@ export namespace Prisma {
     checkOutDate: Date | string
     latitude: number
     longitude: number
+    distanceToSite?: number | null
     fotoDiri?: string | null
     approvedAt?: Date | string | null
     createdAt?: Date | string
@@ -32039,6 +32308,7 @@ export namespace Prisma {
     checkOutDate?: DateTimeFieldUpdateOperationsInput | Date | string
     latitude?: FloatFieldUpdateOperationsInput | number
     longitude?: FloatFieldUpdateOperationsInput | number
+    distanceToSite?: NullableFloatFieldUpdateOperationsInput | number | null
     fotoDiri?: NullableStringFieldUpdateOperationsInput | string | null
     approvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -32052,6 +32322,7 @@ export namespace Prisma {
     checkOutDate?: DateTimeFieldUpdateOperationsInput | Date | string
     latitude?: FloatFieldUpdateOperationsInput | number
     longitude?: FloatFieldUpdateOperationsInput | number
+    distanceToSite?: NullableFloatFieldUpdateOperationsInput | number | null
     fotoDiri?: NullableStringFieldUpdateOperationsInput | string | null
     approvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -32116,6 +32387,7 @@ export namespace Prisma {
     presensiDate: Date | string
     latitude: number
     longitude: number
+    distanceToSite?: number | null
     fotoDiri?: string | null
     statusPresensi: $Enums.StatusPresensi
     statusApproval?: $Enums.StatusApproval
@@ -32134,6 +32406,7 @@ export namespace Prisma {
     presensiDate: Date | string
     latitude: number
     longitude: number
+    distanceToSite?: number | null
     fotoDiri?: string | null
     statusPresensi: $Enums.StatusPresensi
     statusApproval?: $Enums.StatusApproval
@@ -32225,6 +32498,7 @@ export namespace Prisma {
     presensiDate?: DateTimeFieldUpdateOperationsInput | Date | string
     latitude?: FloatFieldUpdateOperationsInput | number
     longitude?: FloatFieldUpdateOperationsInput | number
+    distanceToSite?: NullableFloatFieldUpdateOperationsInput | number | null
     fotoDiri?: NullableStringFieldUpdateOperationsInput | string | null
     statusPresensi?: EnumStatusPresensiFieldUpdateOperationsInput | $Enums.StatusPresensi
     statusApproval?: EnumStatusApprovalFieldUpdateOperationsInput | $Enums.StatusApproval
@@ -32243,6 +32517,7 @@ export namespace Prisma {
     presensiDate?: DateTimeFieldUpdateOperationsInput | Date | string
     latitude?: FloatFieldUpdateOperationsInput | number
     longitude?: FloatFieldUpdateOperationsInput | number
+    distanceToSite?: NullableFloatFieldUpdateOperationsInput | number | null
     fotoDiri?: NullableStringFieldUpdateOperationsInput | string | null
     statusPresensi?: EnumStatusPresensiFieldUpdateOperationsInput | $Enums.StatusPresensi
     statusApproval?: EnumStatusApprovalFieldUpdateOperationsInput | $Enums.StatusApproval
@@ -33300,6 +33575,7 @@ export namespace Prisma {
     presensiDate: Date | string
     latitude: number
     longitude: number
+    distanceToSite?: number | null
     fotoDiri?: string | null
     statusPresensi: $Enums.StatusPresensi
     statusApproval?: $Enums.StatusApproval
@@ -33317,6 +33593,7 @@ export namespace Prisma {
     checkOutDate: Date | string
     latitude: number
     longitude: number
+    distanceToSite?: number | null
     fotoDiri?: string | null
     approvedAt?: Date | string | null
     createdAt?: Date | string
@@ -33330,6 +33607,7 @@ export namespace Prisma {
     presensiDate: Date | string
     latitude: number
     longitude: number
+    distanceToSite?: number | null
     fotoDiri?: string | null
     statusPresensi: $Enums.StatusPresensi
     statusApproval?: $Enums.StatusApproval
@@ -33365,7 +33643,9 @@ export namespace Prisma {
 
   export type IjinCreateManyUserInput = {
     id?: number
-    ijinDate?: Date | string
+    reason: string
+    ijinDate: Date | string
+    ijinEnd?: Date | string | null
     ijinStatus?: $Enums.StatusApproval
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -33374,7 +33654,9 @@ export namespace Prisma {
 
   export type LiburCreateManyUserInput = {
     id?: number
+    reason: string
     liburDate: Date | string
+    liburEnd?: Date | string | null
     liburStatus?: $Enums.StatusApproval
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -33508,6 +33790,7 @@ export namespace Prisma {
     presensiDate?: DateTimeFieldUpdateOperationsInput | Date | string
     latitude?: FloatFieldUpdateOperationsInput | number
     longitude?: FloatFieldUpdateOperationsInput | number
+    distanceToSite?: NullableFloatFieldUpdateOperationsInput | number | null
     fotoDiri?: NullableStringFieldUpdateOperationsInput | string | null
     statusPresensi?: EnumStatusPresensiFieldUpdateOperationsInput | $Enums.StatusPresensi
     statusApproval?: EnumStatusApprovalFieldUpdateOperationsInput | $Enums.StatusApproval
@@ -33526,6 +33809,7 @@ export namespace Prisma {
     presensiDate?: DateTimeFieldUpdateOperationsInput | Date | string
     latitude?: FloatFieldUpdateOperationsInput | number
     longitude?: FloatFieldUpdateOperationsInput | number
+    distanceToSite?: NullableFloatFieldUpdateOperationsInput | number | null
     fotoDiri?: NullableStringFieldUpdateOperationsInput | string | null
     statusPresensi?: EnumStatusPresensiFieldUpdateOperationsInput | $Enums.StatusPresensi
     statusApproval?: EnumStatusApprovalFieldUpdateOperationsInput | $Enums.StatusApproval
@@ -33544,6 +33828,7 @@ export namespace Prisma {
     presensiDate?: DateTimeFieldUpdateOperationsInput | Date | string
     latitude?: FloatFieldUpdateOperationsInput | number
     longitude?: FloatFieldUpdateOperationsInput | number
+    distanceToSite?: NullableFloatFieldUpdateOperationsInput | number | null
     fotoDiri?: NullableStringFieldUpdateOperationsInput | string | null
     statusPresensi?: EnumStatusPresensiFieldUpdateOperationsInput | $Enums.StatusPresensi
     statusApproval?: EnumStatusApprovalFieldUpdateOperationsInput | $Enums.StatusApproval
@@ -33560,6 +33845,7 @@ export namespace Prisma {
     checkOutDate?: DateTimeFieldUpdateOperationsInput | Date | string
     latitude?: FloatFieldUpdateOperationsInput | number
     longitude?: FloatFieldUpdateOperationsInput | number
+    distanceToSite?: NullableFloatFieldUpdateOperationsInput | number | null
     fotoDiri?: NullableStringFieldUpdateOperationsInput | string | null
     approvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -33573,6 +33859,7 @@ export namespace Prisma {
     checkOutDate?: DateTimeFieldUpdateOperationsInput | Date | string
     latitude?: FloatFieldUpdateOperationsInput | number
     longitude?: FloatFieldUpdateOperationsInput | number
+    distanceToSite?: NullableFloatFieldUpdateOperationsInput | number | null
     fotoDiri?: NullableStringFieldUpdateOperationsInput | string | null
     approvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -33586,6 +33873,7 @@ export namespace Prisma {
     checkOutDate?: DateTimeFieldUpdateOperationsInput | Date | string
     latitude?: FloatFieldUpdateOperationsInput | number
     longitude?: FloatFieldUpdateOperationsInput | number
+    distanceToSite?: NullableFloatFieldUpdateOperationsInput | number | null
     fotoDiri?: NullableStringFieldUpdateOperationsInput | string | null
     approvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -33598,6 +33886,7 @@ export namespace Prisma {
     presensiDate?: DateTimeFieldUpdateOperationsInput | Date | string
     latitude?: FloatFieldUpdateOperationsInput | number
     longitude?: FloatFieldUpdateOperationsInput | number
+    distanceToSite?: NullableFloatFieldUpdateOperationsInput | number | null
     fotoDiri?: NullableStringFieldUpdateOperationsInput | string | null
     statusPresensi?: EnumStatusPresensiFieldUpdateOperationsInput | $Enums.StatusPresensi
     statusApproval?: EnumStatusApprovalFieldUpdateOperationsInput | $Enums.StatusApproval
@@ -33616,6 +33905,7 @@ export namespace Prisma {
     presensiDate?: DateTimeFieldUpdateOperationsInput | Date | string
     latitude?: FloatFieldUpdateOperationsInput | number
     longitude?: FloatFieldUpdateOperationsInput | number
+    distanceToSite?: NullableFloatFieldUpdateOperationsInput | number | null
     fotoDiri?: NullableStringFieldUpdateOperationsInput | string | null
     statusPresensi?: EnumStatusPresensiFieldUpdateOperationsInput | $Enums.StatusPresensi
     statusApproval?: EnumStatusApprovalFieldUpdateOperationsInput | $Enums.StatusApproval
@@ -33634,6 +33924,7 @@ export namespace Prisma {
     presensiDate?: DateTimeFieldUpdateOperationsInput | Date | string
     latitude?: FloatFieldUpdateOperationsInput | number
     longitude?: FloatFieldUpdateOperationsInput | number
+    distanceToSite?: NullableFloatFieldUpdateOperationsInput | number | null
     fotoDiri?: NullableStringFieldUpdateOperationsInput | string | null
     statusPresensi?: EnumStatusPresensiFieldUpdateOperationsInput | $Enums.StatusPresensi
     statusApproval?: EnumStatusApprovalFieldUpdateOperationsInput | $Enums.StatusApproval
@@ -33709,7 +34000,9 @@ export namespace Prisma {
   }
 
   export type IjinUpdateWithoutUserInput = {
+    reason?: StringFieldUpdateOperationsInput | string
     ijinDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    ijinEnd?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     ijinStatus?: EnumStatusApprovalFieldUpdateOperationsInput | $Enums.StatusApproval
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -33718,7 +34011,9 @@ export namespace Prisma {
 
   export type IjinUncheckedUpdateWithoutUserInput = {
     id?: IntFieldUpdateOperationsInput | number
+    reason?: StringFieldUpdateOperationsInput | string
     ijinDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    ijinEnd?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     ijinStatus?: EnumStatusApprovalFieldUpdateOperationsInput | $Enums.StatusApproval
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -33727,7 +34022,9 @@ export namespace Prisma {
 
   export type IjinUncheckedUpdateManyWithoutUserInput = {
     id?: IntFieldUpdateOperationsInput | number
+    reason?: StringFieldUpdateOperationsInput | string
     ijinDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    ijinEnd?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     ijinStatus?: EnumStatusApprovalFieldUpdateOperationsInput | $Enums.StatusApproval
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -33735,7 +34032,9 @@ export namespace Prisma {
   }
 
   export type LiburUpdateWithoutUserInput = {
+    reason?: StringFieldUpdateOperationsInput | string
     liburDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    liburEnd?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     liburStatus?: EnumStatusApprovalFieldUpdateOperationsInput | $Enums.StatusApproval
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -33744,7 +34043,9 @@ export namespace Prisma {
 
   export type LiburUncheckedUpdateWithoutUserInput = {
     id?: IntFieldUpdateOperationsInput | number
+    reason?: StringFieldUpdateOperationsInput | string
     liburDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    liburEnd?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     liburStatus?: EnumStatusApprovalFieldUpdateOperationsInput | $Enums.StatusApproval
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -33753,7 +34054,9 @@ export namespace Prisma {
 
   export type LiburUncheckedUpdateManyWithoutUserInput = {
     id?: IntFieldUpdateOperationsInput | number
+    reason?: StringFieldUpdateOperationsInput | string
     liburDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    liburEnd?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     liburStatus?: EnumStatusApprovalFieldUpdateOperationsInput | $Enums.StatusApproval
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -33890,7 +34193,7 @@ export namespace Prisma {
   export type JamKerjaUpdateWithoutUserInput = {
     weekStart?: DateTimeFieldUpdateOperationsInput | Date | string
     weekEnd?: DateTimeFieldUpdateOperationsInput | Date | string
-    totalHours?: IntFieldUpdateOperationsInput | number
+    totalHours?: FloatFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -33899,7 +34202,7 @@ export namespace Prisma {
     id?: IntFieldUpdateOperationsInput | number
     weekStart?: DateTimeFieldUpdateOperationsInput | Date | string
     weekEnd?: DateTimeFieldUpdateOperationsInput | Date | string
-    totalHours?: IntFieldUpdateOperationsInput | number
+    totalHours?: FloatFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -33908,7 +34211,7 @@ export namespace Prisma {
     id?: IntFieldUpdateOperationsInput | number
     weekStart?: DateTimeFieldUpdateOperationsInput | Date | string
     weekEnd?: DateTimeFieldUpdateOperationsInput | Date | string
-    totalHours?: IntFieldUpdateOperationsInput | number
+    totalHours?: FloatFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }

@@ -99,13 +99,14 @@ export class SiteRepository {
             return await PrismaClient.site.create({
                 data:{
                     name: data.name,
+                    maxCapacity: data.capacity,
                     address: {
                         create: {
                             city: data.city,
                             province: data.province,
                             address: data.address,
                             latitude: data.latitude,
-                            longitude: data.longitude 
+                            longitude: data.longitude,
                         }
                     }
                 },

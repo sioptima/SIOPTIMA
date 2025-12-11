@@ -1,0 +1,127 @@
+paths:
+  /api/hrd/ijin:
+    get:
+      parameters:
+      - in: query
+        name: page
+        schema:
+          type: integer
+          description: Which page to show
+      - in: query
+        name: limit
+        schema:
+          type: integer
+          description: Number of things to return
+      summary: Get all users Ijin request
+      tags:
+        - Ijin
+
+      responses:
+        '200':
+          description: Ijin history
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: Records retrieved
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+
+  /api/hrd/ijin/{id}:
+    get:
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+            description: Record's id to search
+      summary: Get an Ijin request record
+      tags:
+        - Ijin
+
+      responses:
+        '200':
+          description: Record information
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: Record retrieved
+                  data:
+                    type: object
+                    properties:
+
+  /api/hrd/ijin/{id}/approve:
+    patch:
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+            description: Record's id to approve
+      summary: Approve an ijin request
+      tags:
+        - Ijin
+
+      responses:
+        '200':
+          description: Request confirmation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: Record retrieved
+                  data:
+                    type: object
+                    properties:
+
+  /api/hrd/ijin/{id}/reject:
+    patch:
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+            description: Record's id to reject
+      summary: Reject an ijin request
+      tags:
+        - Ijin
+
+      responses:
+        '200':
+          description: Request confirmation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: Record retrieved
+                  data:
+                    type: object
+                    properties:

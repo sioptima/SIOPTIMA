@@ -12,21 +12,21 @@ paths:
             schema:
               type: object
               properties:
-                lat:
-                  type: number
-                  format: double
-                  example: -6.123456
-                long:
-                  type: number
-                  format: double
-                  example: 106.123456
+                ##lat:
+                ##  type: number
+                ##  format: double
+                ##  example: -7.276155
+                ##long:
+                ##  type: number
+                ##  format: double
+                ##  example: 112.7400511
                 selfie:
                   type: string
                   format: binary
                 timestamp:
                   type: string
                   format: date-time
-                  example: "2024-01-27T08:00:00Z"
+                  example: "2025-12-15T08:00:00Z"
                   
       responses:
         '200':
@@ -76,21 +76,21 @@ paths:
             schema:
               type: object
               properties:
-                lat:
-                  type: number
-                  format: double
-                  example: -6.123456
-                long:
-                  type: number
-                  format: double
-                  example: 106.123456
+                ##lat:
+                ##  type: number
+                ##  format: double
+                ##  example: -7.276155
+                ##long:
+                ##  type: number
+                ##  format: double
+                ##  example: 112.7400511
                 selfie:
                   type: string
                   format: binary
                 timestamp:
                   type: string
                   format: date-time
-                  example: "2024-01-27T08:00:00Z"
+                  example: "2025-12-15T08:00:00Z"
                   
       responses:
         '200':

@@ -29,6 +29,7 @@
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
     "db": "file:src/server/db/generated/prisma",
+    "exifreader": "^4.33.1",
     "framer-motion": "^11.3.30",
     "jose": "^6.1.0",
     "leaflet": "^1.9.4",

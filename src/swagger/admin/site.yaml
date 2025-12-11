@@ -32,6 +32,9 @@ paths:
                   type: number
                   format: double
                   example: 112.70984636375198
+                capacity:
+                  type: integer
+                  example: 10
 
       responses:
         '200':

@@ -23,7 +23,8 @@ export class SiteService {
             city: createRequest.city,
             province: createRequest.province,
             latitude: createRequest.latitude,
-            longitude: createRequest.longitude
+            longitude: createRequest.longitude,
+            capacity: createRequest.capacity
         });
         if (!newSite) {
             throw new ResponseError(500, "Failed to create site");

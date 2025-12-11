@@ -1,0 +1,109 @@
+paths:
+  /api/operator/ijin:
+    post:
+      summary: create a new ijin request
+      tags:
+        - Ijin
+
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                start:
+                  type: string
+                  format: date
+                  example: 2025-12-15
+                end:
+                  type: string
+                  format: date
+                  example: 2025-12-16
+                reason:
+                  type: string
+                  example: "Reason here"
+                  
+      responses:
+        '200':
+          description: Request confirmation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: Success
+                  data:
+                    type: object
+                    properties:
+  
+    get:
+      parameters:
+      - in: query
+        name: page
+        schema:
+          type: integer
+          description: Which page to show
+      - in: query
+        name: limit
+        schema:
+          type: integer
+          description: Number of report to return
+      summary: Get all current user Ijin request history
+      tags:
+        - Ijin
+
+      responses:
+        '200':
+          description: Ijin history
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: Records retrieved
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+
+  /api/operator/ijin/{id}:
+    get:
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+            description: Record's id to search
+      summary: Get an Ijin request record
+      tags:
+        - Ijin
+
+      responses:
+        '200':
+          description: Record information
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: Record retrieved
+                  data:
+                    type: object
+                    properties:

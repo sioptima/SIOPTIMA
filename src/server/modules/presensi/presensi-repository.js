@@ -7,10 +7,11 @@ export class PresensiRepository {
         try {
             return await PrismaClient.presensi.create({
                 data: {       
-                    latitude: data.request.lat,
-                    longitude: data.request.long,
+                    latitude: data.gps.lat,
+                    longitude: data.gps.lon,
                     presensiDate: data.request.timestamp,
                     statusPresensi: data.isLate ? "LATE" : "ONTIME",
+                    distanceToSite: data.distance,
                     user: {
                         connect: {
                             id: data.userId
@@ -38,8 +39,8 @@ export class PresensiRepository {
         try {
             const checkOut = await PrismaClient.checkOut.create({
                 data: {       
-                    latitude: data.request.lat,
-                    longitude: data.request.long,
+                    latitude: data.gps.lat,
+                    longitude: data.gps.lon,
                     checkOutDate: data.request.timestamp,
                     user: {
                         connect: {
@@ -58,27 +59,28 @@ export class PresensiRepository {
                     checkIn: {
                         select: {
                             statusApproval: true,
+                            shift: {
+                                select: {
+                                    site: {
+                                        select: {
+                                            address: {
+                                                select: {
+                                                    latitude: true,
+                                                    longitude: true,
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
                         }
                     }
                 }
             });
 
-            await PrismaClient.presensi.update({
-                where: {
-                    id: data.checkInId,
-                },
-                data:{
-                    checkOut: {
-                        connect: {
-                            id: checkOut.id
-                        }
-                    }
-                }
-            })
-
             return checkOut
         } catch (error) {
-            throw new ResponseError(500, "Failed when writing to database")
+            throw new ResponseError(500, "Failed when trying to create checkout record")
         }
     }
 
@@ -119,7 +121,8 @@ export class PresensiRepository {
                     id: true,
                     presensiDate: true,
                     statusPresensi: true,
-                    statusApproval: true
+                    statusApproval: true,
+                    distanceToSite: true,
                 }
 
             });
@@ -135,11 +138,13 @@ export class PresensiRepository {
                     id: data.checkOutId
                 },
                 data: {
-                    fotoDiri: data.imageLink
+                    fotoDiri: data.imageLink,
+                    distanceToSite: data.distance
                 },
                 select: {
                     id: true,
                     checkOutDate: true,
+                    distanceToSite: true,
                     checkIn: {
                         select: {
                             statusApproval:true

@@ -62,6 +62,13 @@ export function timeSince(date) {
     return "in " + Math.floor(seconds) + " seconds";
   }
 
+  function getWeekOfYear(d) {
+    var dayNum = d.getUTCDay() || 7;
+    d.setUTCDate(d.getUTCDate() + 4 - dayNum);
+    var yearStart = new Date(Date.UTC(d.getUTCFullYear(),0,1));
+    return Math.ceil((((d - yearStart) / 86400000) + 1)/7)
+  }
+
 // Source - https://stackoverflow.com/questions/43008354/get-all-days-of-the-week-given-a-day
 // Posted by Joe Pi, modified by community. See post 'Timeline' for change history
 // Retrieved 2025-12-08, License - CC BY-SA 3.0
@@ -96,4 +103,16 @@ export function transformFormData(formdata) {
             object[key].push(value);
         });
   return object;
+}
+
+/// https://stackoverflow.com/questions/27928/calculate-distance-between-two-latitude-longitude-points-haversine-formula
+export function calculateDistance(lat1, lon1, lat2, lon2) {
+  const r = 6371000; // meter
+  const p = Math.PI / 180;
+
+  const a = 0.5 - Math.cos((lat2 - lat1) * p) / 2
+                + Math.cos(lat1 * p) * Math.cos(lat2 * p) *
+                  (1 - Math.cos((lon2 - lon1) * p)) / 2;
+
+  return 2 * r * Math.asin(Math.sqrt(a)); //returns in meter
 }

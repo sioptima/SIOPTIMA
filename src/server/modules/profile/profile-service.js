@@ -25,6 +25,7 @@ export class ProfileService {
             phone: profile.phone,
             status: profile.user.status,
             joinDate: profile.user.createdAt.toLocaleDateString(),
+            address: profile.user.profile?.address?.address || "-"
         }
         
         return result;

@@ -98,13 +98,15 @@ model JamKerja {
   id         Int      @id @default(autoincrement())
   weekStart  DateTime // Monday of the week
   weekEnd    DateTime // Sunday of the week
-  totalHours Int
+  totalHours Float
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
   user   User @relation(fields: [userId], references: [id])
   userId Int
+
+  @@unique([weekStart, userId])
 }
 
 enum SiteStatus {
@@ -196,6 +198,7 @@ model Presensi {
   presensiDate   DateTime
   latitude       Float
   longitude      Float
+  distanceToSite Float?
   fotoDiri       String?
   statusPresensi StatusPresensi
   statusApproval StatusApproval @default(PENDING)
@@ -218,15 +221,16 @@ model Presensi {
 }
 
 model CheckOut {
-  id           Int       @id @default(autoincrement())
-  checkOutDate DateTime
-  latitude     Float
-  longitude    Float
-  fotoDiri     String?
-  approvedAt   DateTime?
-  createdAt    DateTime  @default(now())
-  updatedAt    DateTime  @updatedAt
-  deletedAt    DateTime?
+  id             Int       @id @default(autoincrement())
+  checkOutDate   DateTime
+  latitude       Float
+  longitude      Float
+  distanceToSite Float?
+  fotoDiri       String?
+  approvedAt     DateTime?
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+  deletedAt      DateTime?
 
   user   User @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId Int
@@ -269,7 +273,9 @@ model Laporan {
 
 model Ijin {
   id         Int            @id @default(autoincrement())
-  ijinDate   DateTime       @default(now())
+  reason     String         @db.Text
+  ijinDate   DateTime
+  ijinEnd    DateTime?
   ijinStatus StatusApproval @default(PENDING)
   createdAt  DateTime       @default(now())
   updatedAt  DateTime       @updatedAt
@@ -281,7 +287,9 @@ model Ijin {
 
 model Libur {
   id          Int            @id @default(autoincrement())
+  reason      String         @db.Text
   liburDate   DateTime
+  liburEnd    DateTime?
   liburStatus StatusApproval @default(PENDING)
   createdAt   DateTime       @default(now())
   updatedAt   DateTime       @updatedAt
