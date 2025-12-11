@@ -4234,12 +4234,54 @@
 // //KODE DENGAN GEOLOKASI DEFAULT
 // //KODE DENGAN GEOLOKASI DEFAULT
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 //KODE DENGAN GEOLOKASI DEFAULT
 //KODE DENGAN GEOLOKASI DEFAULT
 //KODE DENGAN GEOLOKASI DEFAULT
 //KODE DENGAN GEOLOKASI DEFAULT
 //KODE DENGAN GEOLOKASI DEFAULT
 //KODE DENGAN GEOLOKASI DEFAULT
+
 "use client";
 import React, { useState, useRef, useEffect } from "react";
 import { useRouter } from "next/navigation";
@@ -4284,6 +4326,7 @@ import {
   DevicePhoneMobileIcon,
   ChevronRightIcon,
 } from "@heroicons/react/24/outline";
+
 
 // BAGIAN GEOLOKASI OR GEOLOCATION
 //rumus geolokasi
@@ -4341,6 +4384,7 @@ const checkCameraPermission = async () => {
   }
 };
 //rumus geolokasi
+
 
 export default function Operator() {
   const [selectedRange, setSelectedRange] = useState("Month");
@@ -4557,15 +4601,15 @@ const openSubmissionDetailModal = (submission) => {
 
   const [isLiburModalOpen, setIsLiburModalOpen] = useState(false);
   const [isIzinModalOpen, setIsIzinModalOpen] = useState(false);
-  const [liburForm, setLiburForm] = useState({ 
-    startDate: "", 
-    endDate: "", 
-    reason: "" 
+  const [liburForm, setLiburForm] = useState({
+    startDate: "",
+    endDate: "",
+    reason: ""
   });
-  const [izinForm, setIzinForm] = useState({ 
-    startDate: "", 
-    endDate: "", 
-    reason: "" 
+  const [izinForm, setIzinForm] = useState({
+    startDate: "",
+    endDate: "",
+    reason: ""
   });
 
   // State untuk riwayat pengajuan shift
@@ -4639,7 +4683,7 @@ const [submissionHistory, setSubmissionHistory] = useState([
     if (recentAttendance.length === 0) return "0%";
     
     // Hitung persentase kehadiran yang disetujui
-    const approvedCount = recentAttendance.filter(att => 
+    const approvedCount = recentAttendance.filter(att =>
       att.approvalStatus === "approved"
     ).length;
     
@@ -4655,7 +4699,7 @@ const [submissionHistory, setSubmissionHistory] = useState([
     
     return reports.filter(report => {
       const reportDate = new Date(report.date);
-      return reportDate.getMonth() === currentMonth && 
+      return reportDate.getMonth() === currentMonth &&
              reportDate.getFullYear() === currentYear;
     }).length;
   };
@@ -5174,6 +5218,73 @@ const [submissionHistory, setSubmissionHistory] = useState([
     setIsDetailModalOpen(true);
   };
 
+
+  // Fungsi untuk membuka modal edit presensi (sesuai SRS)
+  const openEditPresenceModal = (attendance) => {
+    if (attendance.approvalStatus !== "pending") {
+      alert("Presensi yang sudah disetujui tidak dapat diedit");
+      return;
+    }
+
+    setEditingPresence(attendance);
+    setEditPresenceForm({
+      checkIn: attendance.checkIn,
+      checkOut: attendance.checkOut,
+      checkInLocation: attendance.checkInLocation,
+      checkOutLocation: attendance.checkOutLocation,
+      checkInStatus: attendance.checkInStatus,
+    });
+    setIsEditPresenceModalOpen(true);
+  };
+
+  // Fungsi untuk menyimpan edit presensi (sesuai SRS)
+  const handleSaveEditPresence = () => {
+    if (!editPresenceForm.checkIn || !editPresenceForm.checkOut) {
+      alert("Waktu check-in dan check-out harus diisi");
+      return;
+    }
+
+    // Validasi format waktu
+    const timeRegex = /^(0[0-9]|1[0-9]|2[0-3]):[0-5][0-9] (AM|PM)$/;
+    if (!timeRegex.test(editPresenceForm.checkIn) || !timeRegex.test(editPresenceForm.checkOut)) {
+      alert("Format waktu tidak valid. Gunakan format: HH:MM AM/PM");
+      return;
+    }
+
+    // Update attendance history
+    const updatedHistory = attendanceHistory.map(att =>
+      att.id === editingPresence.id
+        ? {
+            ...att,
+            ...editPresenceForm,
+            timestamp: new Date().toISOString(),
+          }
+        : att
+    );
+
+    setAttendanceHistory(updatedHistory);
+    setIsEditPresenceModalOpen(false);
+    
+    // Update dashboard data
+    updateDashboardData();
+    
+    // Tambah notifikasi
+    setNotifications((prev) => [
+      {
+        id: Date.now(),
+        title: "Presensi Berhasil Diedit",
+        message: `Presensi tanggal ${editingPresence.date} berhasil diperbarui`,
+        time: "Baru saja",
+        type: "success",
+        read: false,
+      },
+      ...prev,
+    ]);
+    
+    alert("Presensi berhasil diedit!");
+  };
+
+
  const getCurrentLocation = (isCheckOut = false) => {
   // Jika DEMO_MODE aktif, gunakan koordinat dummy dari site
   if (DEMO_MODE) {
@@ -5192,6 +5303,7 @@ const [submissionHistory, setSubmissionHistory] = useState([
       demoLng,
       COMPANY_COORDINATES.latitude,
       COMPANY_COORDINATES.longitude
+
     );
     
     const isWithinRadius = distance <= ALLOWED_RADIUS_METERS;
@@ -7722,9 +7834,8 @@ const renderSubmissionDetailModal = () => (
   <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
     <div className="bg-white rounded-xl w-full max-w-md max-h-[90vh] overflow-y-auto">
       <div className="p-6 border-b border-gray-200">
-        <h2 className="text-xl font-bold text-gray-900">Edit Presensi</h2>
-        <p className="text-gray-600 mt-1">Edit data presensi sesuai SRS</p>
-      </div>
+        <h1 className="text-xl font-bold text-gray-900">Edit Presensi</h1>
+              </div>
       <div className="p-6 space-y-4">
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -7934,7 +8045,7 @@ const renderSubmissionDetailModal = () => (
             <ExclamationTriangleIcon className="w-5 h-5 text-yellow-600 mt-0.5" />
             <div>
               <p className="font-medium text-yellow-800 mb-1">
-                Catatan Edit Presensi (SRS)
+                Catatan Edit Presensi
               </p>
               <p className="text-yellow-700 text-sm">
                 Presensi hanya dapat diedit jika statusnya belum disetujui (pending).

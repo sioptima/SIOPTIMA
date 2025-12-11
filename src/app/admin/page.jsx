@@ -30,6 +30,8 @@ import {
   PaperAirplaneIcon,
   ArrowPathIcon,
   PhotoIcon,
+  FilmIcon,
+  DocumentTextIcon,
 } from "@heroicons/react/24/outline";
 import AddSiteButton from "@/src/components/site/AddSiteButton";
 
@@ -55,8 +57,13 @@ export default function Admin() {
     address: "",
     province: "",
     status: "active",
+    latitude: "",
+    longitude: "",
   });
   const [formErrors, setFormErrors] = useState({});
+
+  // State untuk geolokasi
+  const [mapClickPosition, setMapClickPosition] = useState({ x: 50, y: 50 });
 
   // State untuk image preview
   const [previewImage, setPreviewImage] = useState(null);
@@ -251,6 +258,8 @@ export default function Admin() {
       city: "Jakarta Utara",
       address: "Jl. Industri No. 123, Jakarta Utara",
       province: "DKI Jakarta",
+      latitude: "-6.1333",
+      longitude: "106.8833",
       operators: 3,
       status: "active",
       lastReport: "2 hours ago",
@@ -261,6 +270,8 @@ export default function Admin() {
       city: "Bandung",
       address: "Jl. Soekarno Hatta No. 456, Bandung",
       province: "Jawa Barat",
+      latitude: "-6.9147",
+      longitude: "107.6098",
       operators: 2,
       status: "active",
       lastReport: "3 hours ago",
@@ -271,6 +282,8 @@ export default function Admin() {
       city: "Surabaya",
       address: "Jl. Basuki Rahmat No. 789, Surabaya",
       province: "Jawa Timur",
+      latitude: "-7.2504",
+      longitude: "112.7688",
       operators: 4,
       status: "active",
       lastReport: "5 hours ago",
@@ -281,6 +294,8 @@ export default function Admin() {
       city: "Semarang",
       address: "Jl. Pemuda No. 321, Semarang",
       province: "Jawa Tengah",
+      latitude: "-6.9667",
+      longitude: "110.4167",
       operators: 2,
       status: "inactive",
       lastReport: "2 days ago",
@@ -291,6 +306,8 @@ export default function Admin() {
       city: "Yogyakarta",
       address: "Jl. Malioboro No. 654, Yogyakarta",
       province: "DI Yogyakarta",
+      latitude: "-7.7971",
+      longitude: "110.3688",
       operators: 3,
       status: "maintenance",
       lastReport: "1 hour ago",
@@ -488,14 +505,6 @@ export default function Admin() {
     },
   ];
 
-  // const totalPercentage = reportStatusData.reduce(
-  //   (sum, item) => sum + item.value,
-  //   0
-  // );
-  // if (totalPercentage !== 100 && reportStatusData.length > 0) {
-  //   reportStatusData[0].value += 100 - totalPercentage;
-  // }
-
   // ==================== FUNGSI UNTUK PIE CHART ====================
   const calculatePath = (cx, cy, radius, startAngle, endAngle) => {
     const startRad = (startAngle * Math.PI) / 180;
@@ -689,9 +698,12 @@ export default function Admin() {
       address: "",
       province: "",
       status: "active",
+      latitude: "",
+      longitude: "",
     });
     setIsAddSiteModalOpen(false);
     setFormErrors({});
+    setMapClickPosition({ x: 50, y: 50 });
   };
 
   const handleEditSite = (site) => {
@@ -1160,26 +1172,26 @@ export default function Admin() {
       approved: {
         icon: CheckCircleIcon,
         color: "text-green-100",
-        bgColor: "bg-green-600",
+        bgColor: "bg-green-100", // DIUBAH: sama dengan dashboard
         borderColor: "border-green-200",
         text: "Approved",
-        textColor: "text-green-400",
+        textColor: "text-green-800", // DIUBAH: lebih gelap agar terlihat
       },
       pending: {
         icon: ClockIcon,
         color: "text-yellow-600",
-        bgColor: "bg-yellow-300",
+        bgColor: "bg-yellow-100", // DIUBAH: sama dengan dashboard
         borderColor: "border-yellow-200",
         text: "Pending",
-        textColor: "text-yellow-800",
+        textColor: "text-yellow-800", // DIUBAH: lebih gelap agar terlihat
       },
       rejected: {
         icon: XCircleIcon,
         color: "text-red-100",
-        bgColor: "bg-red-600",
+        bgColor: "bg-red-100", // DIUBAH: sama dengan dashboard
         borderColor: "border-red-200",
         text: "Rejected",
-        textColor: "text-red-50",
+        textColor: "text-red-800", // DIUBAH: lebih gelap agar terlihat
       },
     };
     return config[status] || config.pending;
@@ -1601,10 +1613,30 @@ export default function Admin() {
   const ReviewModal = () => {
     if (!selectedReport) return null;
 
+    // Fungsi untuk membuka attachment
+    const openAttachment = (fileName) => {
+      // Simulasi membuka file
+      if (/\.(jpg|jpeg|png|gif|webp)$/i.test(fileName)) {
+        // Jika gambar, buka di tab baru
+        window.open(
+          `https://via.placeholder.com/800x600?text=${encodeURIComponent(
+            fileName
+          )}`,
+          "_blank"
+        );
+      } else {
+        // Jika file lain, download
+        downloadAttachment(fileName, 0);
+      }
+    };
+
     return (
       isReviewModalOpen && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-[9999] p-4">
-          <div className="bg-white rounded-2xl shadow-2xl w-full max-w-4xl max-h-[90vh] flex flex-col overflow-hidden">
+          <div
+            ref={reviewModalRef}
+            className="bg-white rounded-2xl shadow-2xl w-full max-w-4xl max-h-[90vh] flex flex-col overflow-hidden"
+          >
             <div className="flex justify-between items-center px-6 py-4 border-b border-gray-200 bg-gray-50">
               <div>
                 <h2 className="text-xl font-bold text-gray-900">
@@ -1653,6 +1685,24 @@ export default function Admin() {
                       <p className="mt-1 text-sm text-gray-900">
                         {selectedReport.date} {selectedReport.time}
                       </p>
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700">
+                        Status
+                      </label>
+                      <div className="mt-1">
+                        <span
+                          className={`inline-flex items-center gap-2 px-3 py-1 rounded-full text-sm font-medium ${getStatusConfig(selectedReport.status).bgColor} ${getStatusConfig(selectedReport.status).textColor}`}
+                        >
+                          {(() => {
+                            const Icon = getStatusConfig(
+                              selectedReport.status
+                            ).icon;
+                            return <Icon className="w-4 h-4" />;
+                          })()}
+                          {getStatusConfig(selectedReport.status).text}
+                        </span>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -1717,12 +1767,18 @@ export default function Admin() {
                       </label>
                       <div className="mt-2 flex flex-wrap gap-2">
                         {selectedReport.details.images.map((image, index) => (
-                          <div
+                          <button
                             key={index}
-                            className="bg-blue-50 border border-blue-200 rounded-lg px-3 py-2"
+                            onClick={() => openAttachment(image)}
+                            className="bg-blue-50 border border-blue-200 rounded-lg px-3 py-2 hover:bg-blue-100 transition flex items-center gap-2"
                           >
+                            {/\.(jpg|jpeg|png|gif|webp)$/i.test(image) ? (
+                              <PhotoIcon className="w-4 h-4 text-blue-600" />
+                            ) : (
+                              <DocumentTextIcon className="w-4 h-4 text-blue-600" />
+                            )}
                             <p className="text-sm text-blue-700">{image}</p>
-                          </div>
+                          </button>
                         ))}
                       </div>
                     </div>
@@ -1764,6 +1820,31 @@ export default function Admin() {
         </div>
       )
     );
+  };
+
+  // ==================== FUNGSI GEOLOKASI ====================
+  const handleMapClick = (e, isEditMode = false) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+
+    // Batasi posisi dalam peta
+    const boundedX = Math.max(10, Math.min(x, rect.width - 10));
+    const boundedY = Math.max(10, Math.min(y, rect.height - 10));
+
+    setMapClickPosition({ x: boundedX, y: boundedY });
+
+    // Konversi ke latitude dan longitude (simulasi)
+    const lat = ((rect.height - boundedY) / rect.height) * 180 - 90;
+    const lng = (boundedX / rect.width) * 360 - 180;
+
+    if (isEditMode) {
+      handleEditInputChange("latitude", lat.toFixed(6));
+      handleEditInputChange("longitude", lng.toFixed(6));
+    } else {
+      handleInputChange("latitude", lat.toFixed(6));
+      handleInputChange("longitude", lng.toFixed(6));
+    }
   };
 
   return (
@@ -2817,6 +2898,90 @@ export default function Admin() {
                     )}
                   </div>
 
+                  {/* GEOLOKASI PINPOINT */}
+                  <div>
+                    <label className="block text-sm font-medium text-gray-900 mb-1 sm:mb-2">
+                      Geolokasi (Opsional)
+                    </label>
+                    <div className="border border-gray-300 rounded-lg p-3 sm:p-4 bg-white">
+                      <p className="text-xs sm:text-sm text-gray-600 mb-2">
+                        Klik pada peta untuk menentukan lokasi atau masukkan
+                        koordinat secara manual
+                      </p>
+
+                      {/* Peta Simulasi */}
+                      <div className="relative border border-gray-300 rounded-lg overflow-hidden mb-3 sm:mb-4">
+                        <div
+                          className="w-full h-32 sm:h-48 bg-gradient-to-r from-blue-50 to-green-50 relative cursor-pointer"
+                          onClick={handleMapClick}
+                        >
+                          {/* Grid peta */}
+                          <div className="absolute inset-0 bg-grid-pattern opacity-10"></div>
+
+                          {/* Marker */}
+                          <div
+                            className="absolute w-6 h-6 transform -translate-x-1/2 -translate-y-1/2 transition-all duration-300"
+                            style={{
+                              left: `${mapClickPosition.x}%`,
+                              top: `${mapClickPosition.y}%`,
+                            }}
+                          >
+                            <MapPinIcon className="w-6 h-6 text-red-600 drop-shadow-lg" />
+                          </div>
+
+                          {/* Label koordinat */}
+                          <div
+                            className="absolute bg-white/90 backdrop-blur-sm px-2 py-1 rounded text-xs font-medium shadow-sm"
+                            style={{
+                              left: `${Math.min(mapClickPosition.x + 5, 85)}%`,
+                              top: `${Math.max(mapClickPosition.y - 15, 10)}%`,
+                            }}
+                          >
+                            {newSiteData.latitude && newSiteData.longitude
+                              ? `${newSiteData.latitude}, ${newSiteData.longitude}`
+                              : "Klik untuk memilih"}
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Input Koordinat */}
+                      <div className="grid grid-cols-2 gap-3 sm:gap-4">
+                        <div>
+                          <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-1">
+                            Latitude
+                          </label>
+                          <input
+                            type="text"
+                            value={newSiteData.latitude}
+                            onChange={(e) =>
+                              handleInputChange("latitude", e.target.value)
+                            }
+                            placeholder="-6.2088"
+                            className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm"
+                          />
+                        </div>
+                        <div>
+                          <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-1">
+                            Longitude
+                          </label>
+                          <input
+                            type="text"
+                            value={newSiteData.longitude}
+                            onChange={(e) =>
+                              handleInputChange("longitude", e.target.value)
+                            }
+                            placeholder="106.8456"
+                            className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm"
+                          />
+                        </div>
+                      </div>
+
+                      <p className="text-xs text-gray-500 mt-2">
+                        Koordinat akan otomatis terisi saat mengklik peta
+                      </p>
+                    </div>
+                  </div>
+
                   {/* Provinsi */}
                   <div>
                     <label className="block text-sm font-medium text-gray-900 mb-1 sm:mb-2">
@@ -2984,6 +3149,98 @@ export default function Admin() {
                         {formErrors.address}
                       </p>
                     )}
+                  </div>
+
+                  {/* GEOLOKASI PINPOINT */}
+                  <div>
+                    <label className="block text-sm font-medium text-gray-900 mb-1 sm:mb-2">
+                      Geolokasi (Opsional)
+                    </label>
+                    <div className="border border-gray-300 rounded-lg p-3 sm:p-4 bg-white">
+                      <p className="text-xs sm:text-sm text-gray-600 mb-2">
+                        Klik pada peta untuk menentukan lokasi atau masukkan
+                        koordinat secara manual
+                      </p>
+
+                      {/* Peta Simulasi */}
+                      <div className="relative border border-gray-300 rounded-lg overflow-hidden mb-3 sm:mb-4">
+                        <div
+                          className="w-full h-32 sm:h-48 bg-gradient-to-r from-blue-50 to-green-50 relative cursor-pointer"
+                          onClick={(e) => handleMapClick(e, true)}
+                        >
+                          {/* Grid peta */}
+                          <div className="absolute inset-0 bg-grid-pattern opacity-10"></div>
+
+                          {/* Marker */}
+                          <div
+                            className="absolute w-6 h-6 transform -translate-x-1/2 -translate-y-1/2 transition-all duration-300"
+                            style={{
+                              left: `${
+                                editingSite.latitude
+                                  ? 50 + (parseFloat(editingSite.longitude) || 0) * 0.1
+                                  : 50
+                              }%`,
+                              top: `${
+                                editingSite.latitude
+                                  ? 50 - (parseFloat(editingSite.latitude) || 0) * 0.1
+                                  : 50
+                              }%`,
+                            }}
+                          >
+                            <MapPinIcon className="w-6 h-6 text-red-600 drop-shadow-lg" />
+                          </div>
+
+                          {/* Label koordinat */}
+                          <div
+                            className="absolute bg-white/90 backdrop-blur-sm px-2 py-1 rounded text-xs font-medium shadow-sm"
+                            style={{
+                              left: "60%",
+                              top: "20%",
+                            }}
+                          >
+                            {editingSite.latitude && editingSite.longitude
+                              ? `${editingSite.latitude}, ${editingSite.longitude}`
+                              : "Klik untuk memilih"}
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Input Koordinat */}
+                      <div className="grid grid-cols-2 gap-3 sm:gap-4">
+                        <div>
+                          <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-1">
+                            Latitude
+                          </label>
+                          <input
+                            type="text"
+                            value={editingSite.latitude}
+                            onChange={(e) =>
+                              handleEditInputChange("latitude", e.target.value)
+                            }
+                            placeholder="-6.2088"
+                            className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm"
+                          />
+                        </div>
+                        <div>
+                          <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-1">
+                            Longitude
+                          </label>
+                          <input
+                            type="text"
+                            value={editingSite.longitude}
+                            onChange={(e) =>
+                              handleEditInputChange("longitude", e.target.value)
+                            }
+                            placeholder="106.8456"
+                            className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm"
+                          />
+                        </div>
+                      </div>
+
+                      <p className="text-xs text-gray-500 mt-2">
+                        Koordinat akan otomatis terisi saat mengklik peta
+                      </p>
+                    </div>
                   </div>
 
                   {/* Provinsi */}
@@ -4715,11 +4972,9 @@ export default function Admin() {
                               </p>
                             </div>
                             <span
-                              className={`inline-flex items-center gap-1 px-2 py-1 rounded-full text-xs font-medium ${statusConfig.bgColor} ${statusConfig.borderColor} border`}
+                              className={`inline-flex items-center gap-1 px-2 py-1 rounded-full text-xs font-medium ${statusConfig.bgColor} ${statusConfig.textColor} border`}
                             >
-                              <StatusIcon
-                                className={`w-3 h-3 ${statusConfig.color}`}
-                              />
+                              <StatusIcon className="w-3 h-3" />
                               {statusConfig.text}
                             </span>
                           </div>
@@ -4831,11 +5086,9 @@ export default function Admin() {
 
                         <div className="hidden lg:flex col-span-2 items-center">
                           <span
-                            className={`inline-flex items-center gap-2 px-2 py-1 rounded-full text-xs font-medium ${statusConfig.bgColor} ${statusConfig.borderColor} border`}
+                            className={`inline-flex items-center gap-2 px-2 py-1 rounded-full text-xs font-medium ${statusConfig.bgColor} ${statusConfig.textColor} border`}
                           >
-                            <StatusIcon
-                              className={`w-3 h-3 ${statusConfig.color}`}
-                            />
+                            <StatusIcon className="w-3 h-3" />
                             {statusConfig.text}
                           </span>
                         </div>
@@ -4952,11 +5205,3 @@ export default function Admin() {
     </div>
   );
 }
-
-
-
-
-
-
-
-
