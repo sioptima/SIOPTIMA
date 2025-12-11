@@ -1,0 +1,309 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider   = "prisma-client-js"
+  output     = "../generated/prisma"
+  engineType = "client"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+enum UserStatus {
+  ACTIVE
+  INACTIVE
+}
+
+model User {
+  id        Int        @id @default(autoincrement())
+  username  String     @unique
+  password  String
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+  deletedAt DateTime?
+  status    UserStatus @default(ACTIVE)
+
+  role   Role @relation(fields: [roleId], references: [id])
+  roleId Int
+
+  profile Profile?
+
+  sites Site[]
+
+  shift JadwalShift[]
+
+  presensi Presensi[] @relation("holder")
+
+  checkOut CheckOut[]
+
+  approved Presensi[] @relation("approver")
+
+  laporan Laporan[]
+
+  ijin Ijin[]
+
+  libur Libur[]
+
+  help Help[]
+
+  ticket Ticket[]
+
+  activity Activity[]
+}
+
+enum RoleName {
+  ADMIN
+  OPERATOR
+  HRD
+}
+
+model Role {
+  id        Int       @id @default(autoincrement())
+  name      RoleName  @unique
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+
+  users User[]
+}
+
+model JadwalShift {
+  id        Int       @id @default(autoincrement())
+  shiftDate DateTime
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+
+  user   User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId Int
+
+  site   Site @relation(fields: [siteId], references: [id], onDelete: Cascade)
+  siteId Int
+
+  presensi Presensi?
+}
+
+enum SiteStatus {
+  ACTIVE
+  MAINTENANCE
+  INACTIVE
+}
+
+model Site {
+  id        Int        @id @default(autoincrement())
+  name      String     @unique
+  image     String?
+  status    SiteStatus @default(ACTIVE)
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+  deletedAt DateTime?
+
+  address SiteAddress?
+
+  users User[]
+
+  report Laporan[]
+
+  shift JadwalShift[]
+}
+
+model SiteAddress {
+  id        Int       @id @default(autoincrement())
+  address   String
+  city      String
+  province  String
+  latitude  Float
+  longitude Float
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+
+  site   Site @relation(fields: [siteId], references: [id], onDelete: Cascade)
+  siteId Int  @unique
+}
+
+model Profile {
+  id        Int       @id @default(autoincrement())
+  birthDate DateTime?
+  email     String?
+  name      String?
+  image     String?
+  phone     String?
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+
+  user   User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId Int  @unique
+
+  address UserAddress?
+}
+
+model UserAddress {
+  id        Int       @id @default(autoincrement())
+  address   String?
+  city      String?
+  province  String?
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+
+  profile   Profile @relation(fields: [profileId], references: [id], onDelete: Cascade)
+  profileId Int     @unique
+}
+
+enum StatusApproval {
+  APPROVED
+  PENDING
+  REJECTED
+}
+
+enum StatusPresensi {
+  ONTIME
+  LATE
+}
+
+model Presensi {
+  id             Int            @id @default(autoincrement())
+  presensiDate   DateTime
+  latitude       Float
+  longitude      Float
+  fotoDiri       String?
+  statusPresensi StatusPresensi
+  statusApproval StatusApproval @default(PENDING)
+  approvedAt     DateTime?
+  createdAt      DateTime       @default(now())
+  updatedAt      DateTime       @updatedAt
+  deletedAt      DateTime?
+  notes          String?        @db.Text
+
+  shift   JadwalShift? @relation(fields: [shiftid], references: [id], onDelete: SetNull)
+  shiftid Int?         @unique
+
+  user   User @relation(fields: [userId], references: [id], name: "holder", onDelete: Cascade)
+  userId Int
+
+  approver   User? @relation(fields: [approverId], references: [id], name: "approver", onDelete: SetNull)
+  approverId Int?
+
+  checkOut CheckOut?
+}
+
+model CheckOut {
+  id           Int       @id @default(autoincrement())
+  checkOutDate DateTime
+  latitude     Float
+  longitude    Float
+  fotoDiri     String?
+  approvedAt   DateTime?
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+  deletedAt    DateTime?
+
+  user   User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId Int
+
+  checkIn   Presensi @relation(fields: [checkInId], references: [id], onDelete: Cascade)
+  checkInId Int      @unique
+}
+
+enum EquipmentStatus {
+  NORMAL
+  MAINTENANCE
+  BROKEN
+}
+
+model Laporan {
+  id              Int             @id @default(autoincrement())
+  fotoSampel      String[]
+  flowRate        Float
+  volt            Float
+  pH              Float
+  ampere          Float
+  TDS             Float
+  EC              Float
+  laporanStatus   StatusApproval  @default(PENDING)
+  agitatorStatus  EquipmentStatus @default(NORMAL)
+  settleStatus    EquipmentStatus @default(NORMAL)
+  outFilterStatus EquipmentStatus @default(NORMAL)
+  notes           String          @db.Text
+  laporanDate     DateTime        @default(now())
+  createdAt       DateTime        @default(now())
+  updatedAt       DateTime        @updatedAt
+  deletedAt       DateTime?
+
+  site     Site?   @relation(fields: [siteName], references: [name], onDelete: SetNull)
+  siteName String?
+
+  user   User? @relation(fields: [userId], references: [id], onDelete: SetNull)
+  userId Int?
+}
+
+model Ijin {
+  id         Int            @id @default(autoincrement())
+  ijinDate   DateTime       @default(now())
+  ijinStatus StatusApproval @default(PENDING)
+  createdAt  DateTime       @default(now())
+  updatedAt  DateTime       @updatedAt
+  deletedAt  DateTime?
+
+  user   User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId Int
+}
+
+model Libur {
+  id          Int            @id @default(autoincrement())
+  liburDate   DateTime
+  liburStatus StatusApproval @default(PENDING)
+  createdAt   DateTime       @default(now())
+  updatedAt   DateTime       @updatedAt
+  deletedAt   DateTime?
+
+  user   User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId Int
+}
+
+model Help {
+  id        Int       @id @default(autoincrement())
+  deskripsi String    @db.Text
+  gambar    String?
+  helpDate  DateTime  @default(now())
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+
+  user   User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId Int
+}
+
+model Ticket {
+  id         Int       @id @default(autoincrement())
+  deskripsi  String    @db.Text
+  gambar     String?
+  ticketDate DateTime
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+  deletedAt  DateTime?
+
+  user   User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId Int
+}
+
+model Activity {
+  id        Int      @id @default(autoincrement())
+  action    String
+  type      String
+  title     String
+  metadata  Json?
+  createdAt DateTime @default(now())
+
+  user   User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId Int
+}
