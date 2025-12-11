@@ -4232,7 +4232,6 @@
 // //KODE DENGAN GEOLOKASI DEFAULT
 // //KODE DENGAN GEOLOKASI DEFAULT
 
-<<<<<<< HEAD
 
 
 
@@ -4272,14 +4271,15 @@
 
 
 
-=======
+
+
 //KODE DENGAN GEOLOKASI DEFAULT
 //KODE DENGAN GEOLOKASI DEFAULT
 //KODE DENGAN GEOLOKASI DEFAULT
 //KODE DENGAN GEOLOKASI DEFAULT
 //KODE DENGAN GEOLOKASI DEFAULT
 //KODE DENGAN GEOLOKASI DEFAULT
->>>>>>> 7a6e8f41932157dd9921fa16275990620c51475c
+
 "use client";
 import React, { useState, useRef, useEffect } from "react";
 import { useRouter } from "next/navigation";
@@ -4325,8 +4325,7 @@ import {
   ChevronRightIcon,
 } from "@heroicons/react/24/outline";
 
-<<<<<<< HEAD
-=======
+
 // BAGIAN GEOLOKASI OR GEOLOCATION
 // ==================== DEMO MODE SETTINGS ====================
 const DEMO_MODE = true; // Setel ke true untuk mode demo
@@ -4396,7 +4395,7 @@ const checkCameraPermission = async () => {
 };
 //rumus geolokasi
 
->>>>>>> 7a6e8f41932157dd9921fa16275990620c51475c
+
 export default function Operator() {
   const [selectedRange, setSelectedRange] = useState("Month");
   const [dropdownOpen, setDropdownOpen] = useState(false);
@@ -4612,15 +4611,15 @@ const openSubmissionDetailModal = (submission) => {
 
   const [isLiburModalOpen, setIsLiburModalOpen] = useState(false);
   const [isIzinModalOpen, setIsIzinModalOpen] = useState(false);
-  const [liburForm, setLiburForm] = useState({ 
-    startDate: "", 
-    endDate: "", 
-    reason: "" 
+  const [liburForm, setLiburForm] = useState({
+    startDate: "",
+    endDate: "",
+    reason: ""
   });
-  const [izinForm, setIzinForm] = useState({ 
-    startDate: "", 
-    endDate: "", 
-    reason: "" 
+  const [izinForm, setIzinForm] = useState({
+    startDate: "",
+    endDate: "",
+    reason: ""
   });
 
   // State untuk riwayat pengajuan shift
@@ -4694,7 +4693,7 @@ const [submissionHistory, setSubmissionHistory] = useState([
     if (recentAttendance.length === 0) return "0%";
     
     // Hitung persentase kehadiran yang disetujui
-    const approvedCount = recentAttendance.filter(att => 
+    const approvedCount = recentAttendance.filter(att =>
       att.approvalStatus === "approved"
     ).length;
     
@@ -4710,7 +4709,7 @@ const [submissionHistory, setSubmissionHistory] = useState([
     
     return reports.filter(report => {
       const reportDate = new Date(report.date);
-      return reportDate.getMonth() === currentMonth && 
+      return reportDate.getMonth() === currentMonth &&
              reportDate.getFullYear() === currentYear;
     }).length;
   };
@@ -5202,7 +5201,7 @@ const [submissionHistory, setSubmissionHistory] = useState([
     setIsDetailModalOpen(true);
   };
 
-<<<<<<< HEAD
+
   // Fungsi untuk membuka modal edit presensi (sesuai SRS)
   const openEditPresenceModal = (attendance) => {
     if (attendance.approvalStatus !== "pending") {
@@ -5268,64 +5267,7 @@ const [submissionHistory, setSubmissionHistory] = useState([
     alert("Presensi berhasil diedit!");
   };
 
-  const getCurrentLocation = (isCheckOut = false) => {
-    if (!navigator.geolocation) {
-      alert("Geolocation is not supported by this browser.");
-      return;
-    }
 
-    if (isCheckOut) {
-      setCurrentLocationCheckOut("Getting location...");
-    } else {
-      setCurrentLocation("Getting location...");
-    }
-
-    navigator.geolocation.getCurrentPosition(
-      (position) => {
-        const { latitude, longitude } = position.coords;
-        const locations = [
-          "Jakarta Utara - Site A",
-          "Jakarta Utara - Site B",
-          "Jakarta Utara - Site C",
-        ];
-        const randomLocation =
-          locations[Math.floor(Math.random() * locations.length)];
-        const locationString = `${randomLocation} (Lat: ${latitude.toFixed(
-          6
-        )}, Long: ${longitude.toFixed(6)})`;
-
-        if (isCheckOut) {
-          setCurrentLocationCheckOut(locationString);
-          setLocationCapturedCheckOut(true);
-        } else {
-          setCurrentLocation(locationString);
-          setLocationCaptured(true);
-        }
-        alert("Location captured successfully!");
-      },
-      (error) => {
-        console.error("Error getting location:", error);
-        let errorMessage = "Unknown error occurred";
-        switch (error.code) {
-          case error.PERMISSION_DENIED:
-            errorMessage = "Location access denied by user";
-            break;
-          case error.POSITION_UNAVAILABLE:
-            errorMessage = "Location information unavailable";
-            break;
-          case error.TIMEOUT:
-            errorMessage = "Location request timed out";
-            break;
-        }
-        if (isCheckOut) {
-          setCurrentLocationCheckOut("Location unavailable");
-        } else {
-          setCurrentLocation("Location unavailable");
-        }
-        alert(`Failed to get location: ${errorMessage}`);
-      },
-      { enableHighAccuracy: true, timeout: 10000, maximumAge: 60000 }
-=======
  const getCurrentLocation = (isCheckOut = false) => {
   // Jika DEMO_MODE aktif, gunakan koordinat dummy dari site
   if (DEMO_MODE) {
@@ -5344,7 +5286,7 @@ const [submissionHistory, setSubmissionHistory] = useState([
       demoLng,
       COMPANY_COORDINATES.latitude,
       COMPANY_COORDINATES.longitude
->>>>>>> 7a6e8f41932157dd9921fa16275990620c51475c
+
     );
     
     const isWithinRadius = distance <= ALLOWED_RADIUS_METERS;
@@ -7862,9 +7804,8 @@ const renderSubmissionDetailModal = () => (
   <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
     <div className="bg-white rounded-xl w-full max-w-md max-h-[90vh] overflow-y-auto">
       <div className="p-6 border-b border-gray-200">
-        <h2 className="text-xl font-bold text-gray-900">Edit Presensi</h2>
-        <p className="text-gray-600 mt-1">Edit data presensi sesuai SRS</p>
-      </div>
+        <h1 className="text-xl font-bold text-gray-900">Edit Presensi</h1>
+              </div>
       <div className="p-6 space-y-4">
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -8074,7 +8015,7 @@ const renderSubmissionDetailModal = () => (
             <ExclamationTriangleIcon className="w-5 h-5 text-yellow-600 mt-0.5" />
             <div>
               <p className="font-medium text-yellow-800 mb-1">
-                Catatan Edit Presensi (SRS)
+                Catatan Edit Presensi
               </p>
               <p className="text-yellow-700 text-sm">
                 Presensi hanya dapat diedit jika statusnya belum disetujui (pending).

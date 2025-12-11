@@ -82,3 +82,13 @@ function DraggableMarker({onPositionChange}) {
 
 // prevent reinitializing map when its already initialized
 export default React.memo(Map);
+
+
+
+
+
+
+
+
+
+
