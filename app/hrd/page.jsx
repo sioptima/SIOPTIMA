@@ -52,7 +52,7 @@
 //   const [hoveredPie, setHoveredPie] = useState(null);
 //   const [isDetailModalOpen, setIsDetailModalOpen] = useState(false);
 //   const [selectedAttendance, setSelectedAttendance] = useState(null);
-  
+
 //   // State baru untuk fitur tambahan
 //   const [showShiftForm, setShowShiftForm] = useState(false);
 //   const [showSiteForm, setShowSiteForm] = useState(false);
@@ -60,7 +60,7 @@
 //   const [editingShift, setEditingShift] = useState(null);
 //   const [editingSite, setEditingSite] = useState(null);
 //   const [selectedLeave, setSelectedLeave] = useState(null);
-  
+
 //   // Form state untuk shift
 //   const [shiftForm, setShiftForm] = useState({
 //     name: "Morning Shift", // Default value
@@ -69,7 +69,7 @@
 //     siteId: "",
 //     maxOperators: 5,
 //   });
-  
+
 //   // Form state untuk site
 //   const [siteForm, setSiteForm] = useState({
 //     name: "",
@@ -79,7 +79,7 @@
 //     supervisor: "",
 //     contact: "",
 //   });
-  
+
 //   const router = useRouter();
 //   const dropdownRef = useRef(null);
 //   const notificationRef = useRef(null);
@@ -440,7 +440,7 @@
 //         shift.id === editingShift.id ? { ...shift, ...shiftForm, id: editingShift.id } : shift
 //       );
 //       setShifts(updatedShifts);
-      
+
 //       const newNotification = {
 //         id: Date.now(),
 //         title: "Shift Updated",
@@ -457,7 +457,7 @@
 //         ...shiftForm,
 //       };
 //       setShifts([...shifts, newShift]);
-      
+
 //       const newNotification = {
 //         id: Date.now(),
 //         title: "New Shift Added",
@@ -490,7 +490,7 @@
 //     if (window.confirm("Are you sure you want to delete this shift?")) {
 //       const shiftToDelete = shifts.find(shift => shift.id === id);
 //       setShifts(shifts.filter(shift => shift.id !== id));
-      
+
 //       const newNotification = {
 //         id: Date.now(),
 //         title: "Shift Deleted",
@@ -529,7 +529,7 @@
 //         site.id === editingSite.id ? { ...site, ...siteForm, id: editingSite.id } : site
 //       );
 //       setSites(updatedSites);
-      
+
 //       const newNotification = {
 //         id: Date.now(),
 //         title: "Site Updated",
@@ -546,7 +546,7 @@
 //         ...siteForm,
 //       };
 //       setSites([...sites, newSite]);
-      
+
 //       const newNotification = {
 //         id: Date.now(),
 //         title: "New Site Added",
@@ -580,7 +580,7 @@
 //     if (window.confirm("Are you sure you want to delete this site?")) {
 //       const siteToDelete = sites.find(site => site.id === id);
 //       setSites(sites.filter(site => site.id !== id));
-      
+
 //       const newNotification = {
 //         id: Date.now(),
 //         title: "Site Deleted",
@@ -1069,8 +1069,8 @@
 //                   <label className="text-sm font-medium text-gray-700">Type</label>
 //                   <p className="mt-1">
 //                     <span className={`inline-flex items-center px-3 py-1 rounded-full text-sm font-medium ${
-//                       selectedLeave.type === 'izin' 
-//                         ? 'bg-blue-100 text-blue-800' 
+//                       selectedLeave.type === 'izin'
+//                         ? 'bg-blue-100 text-blue-800'
 //                         : 'bg-purple-100 text-purple-800'
 //                     }`}>
 //                       {selectedLeave.type === 'izin' ? 'Permission (Izin)' : 'Leave (Libur)'}
@@ -1081,7 +1081,7 @@
 //                   <label className="text-sm font-medium text-gray-700">Status</label>
 //                   <p className="mt-1">
 //                     <span className={`inline-flex items-center px-3 py-1 rounded-full text-sm font-medium ${
-//                       selectedLeave.status === 'approved' 
+//                       selectedLeave.status === 'approved'
 //                         ? 'bg-green-100 text-green-800'
 //                         : selectedLeave.status === 'rejected'
 //                         ? 'bg-red-100 text-red-800'
@@ -2288,7 +2288,7 @@
 //                   <div>
 //                     <p className="text-sm text-gray-600">Avg Operators/Shift</p>
 //                     <p className="text-2xl font-bold text-gray-900 mt-1">
-//                       {shifts.length > 0 
+//                       {shifts.length > 0
 //                         ? Math.round(shifts.reduce((acc, shift) => acc + shift.maxOperators, 0) / shifts.length)
 //                         : 0
 //                       }
@@ -2332,7 +2332,7 @@
 //                               {shift.maxOperators} ops
 //                             </span>
 //                           </div>
-                          
+
 //                           <div className="grid grid-cols-2 gap-4">
 //                             <div>
 //                               <p className="text-gray-500 text-xs uppercase font-medium mb-1">Start Time</p>
@@ -2468,7 +2468,7 @@
 //                             Capacity: {site.capacity}
 //                           </span>
 //                         </div>
-                        
+
 //                         <div>
 //                           <p className="text-gray-500 text-xs uppercase font-medium mb-1">Address</p>
 //                           <p className="text-gray-900 text-sm line-clamp-2">{site.address}</p>
@@ -2622,8 +2622,8 @@
 //                                 {request.type === 'izin' ? 'Permission' : 'Leave'}
 //                               </span>
 //                               <span className={`inline-flex items-center px-2 py-0.5 rounded text-xs font-medium ${
-//                                 request.status === 'approved' ? 'bg-green-100 text-green-800' : 
-//                                 request.status === 'rejected' ? 'bg-red-100 text-red-800' : 
+//                                 request.status === 'approved' ? 'bg-green-100 text-green-800' :
+//                                 request.status === 'rejected' ? 'bg-red-100 text-red-800' :
 //                                 'bg-yellow-100 text-yellow-800'
 //                               }`}>
 //                                 {request.status}
@@ -2631,7 +2631,7 @@
 //                             </div>
 //                           </div>
 //                         </div>
-                        
+
 //                         <div>
 //                           <p className="text-gray-500 text-xs uppercase font-medium mb-1">Date Range</p>
 //                           <p className="text-gray-900 text-sm font-medium">
@@ -2652,7 +2652,7 @@
 //                             <EyeIcon className="w-4 h-4" />
 //                             View Details
 //                           </button>
-                          
+
 //                           {request.status === "pending" && (
 //                             <div className="flex gap-2">
 //                               <button
@@ -2690,8 +2690,8 @@
 //                               {request.type === 'izin' ? 'Permission (Izin)' : 'Leave (Libur)'}
 //                             </span>
 //                             <span className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-medium ${
-//                               request.status === 'approved' ? 'bg-green-100 text-green-800' : 
-//                               request.status === 'rejected' ? 'bg-red-100 text-red-800' : 
+//                               request.status === 'approved' ? 'bg-green-100 text-green-800' :
+//                               request.status === 'rejected' ? 'bg-red-100 text-red-800' :
 //                               'bg-yellow-100 text-yellow-800'
 //                             }`}>
 //                               {request.status}
@@ -2715,7 +2715,7 @@
 //                           >
 //                             <EyeIcon className="w-5 h-5" />
 //                           </button>
-                          
+
 //                           {request.status === "pending" && (
 //                             <>
 //                               <button
@@ -2856,7 +2856,7 @@ export default function HRD() {
   const [hoveredPie, setHoveredPie] = useState(null);
   const [isDetailModalOpen, setIsDetailModalOpen] = useState(false);
   const [selectedAttendance, setSelectedAttendance] = useState(null);
-  
+
   // State baru untuk fitur tambahan
   const [showShiftForm, setShowShiftForm] = useState(false);
   const [showSiteForm, setShowSiteForm] = useState(false);
@@ -2864,7 +2864,7 @@ export default function HRD() {
   const [editingShift, setEditingShift] = useState(null);
   const [editingSite, setEditingSite] = useState(null);
   const [selectedLeave, setSelectedLeave] = useState(null);
-  
+
   // Form state untuk shift
   const [shiftForm, setShiftForm] = useState({
     name: "Morning Shift",
@@ -2875,7 +2875,7 @@ export default function HRD() {
     assignedOperators: [],
     dayOfWeek: "Monday"
   });
-  
+
   // Form state untuk site
   const [siteForm, setSiteForm] = useState({
     name: "",
@@ -2885,6 +2885,7 @@ export default function HRD() {
     supervisor: "",
     contact: "",
   });
+
 
   const router = useRouter();
   const dropdownRef = useRef(null);
@@ -3313,15 +3314,26 @@ export default function HRD() {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
         setDropdownOpen(false);
       }
-      if (notificationRef.current && !notificationRef.current.contains(event.target)) {
+      if (
+        notificationRef.current &&
+        !notificationRef.current.contains(event.target)
+      ) {
         setNotificationOpen(false);
       }
-      if (shiftFormRef.current && !shiftFormRef.current.contains(event.target) && showShiftForm) {
+      if (
+        shiftFormRef.current &&
+        !shiftFormRef.current.contains(event.target) &&
+        showShiftForm
+      ) {
         setShowShiftForm(false);
         setEditingShift(null);
         resetShiftForm();
       }
-      if (siteFormRef.current && !siteFormRef.current.contains(event.target) && showSiteForm) {
+      if (
+        siteFormRef.current &&
+        !siteFormRef.current.contains(event.target) &&
+        showSiteForm
+      ) {
         setShowSiteForm(false);
         setEditingSite(null);
         resetSiteForm();
@@ -3374,7 +3386,7 @@ export default function HRD() {
     { id: "siteManagement", name: "Site Management", icon: BuildingOfficeIcon },
     { id: "leaveManagement", name: "Leave Management", icon: CalendarIcon },
   ];
-
+ 
   // Fungsi untuk handle approve attendance - SESUAI SRS (Approve Presensi Operator)
   const handleApprove = (id) => {
     const attendanceToApprove = attendanceData.find(item => item.id === id);
@@ -3623,7 +3635,7 @@ export default function HRD() {
         } : shift
       );
       setShifts(updatedShifts);
-      
+
       const newNotification = {
         id: Date.now(),
         title: "Shift Updated",
@@ -3637,12 +3649,12 @@ export default function HRD() {
     } else {
       // Tambah shift baru - SESUAI SRS (Tambah Shift Operator)
       const newShift = {
-        id: shifts.length > 0 ? Math.max(...shifts.map(s => s.id)) + 1 : 1,
+        id: shifts.length > 0 ? Math.max(...shifts.map((s) => s.id)) + 1 : 1,
         ...shiftForm,
         siteId: parseInt(shiftForm.siteId)
       };
       setShifts([...shifts, newShift]);
-      
+
       const newNotification = {
         id: Date.now(),
         title: "New Shift Added",
@@ -3675,9 +3687,9 @@ export default function HRD() {
 
   const handleDeleteShift = (id) => {
     if (window.confirm("Are you sure you want to delete this shift?")) {
-      const shiftToDelete = shifts.find(shift => shift.id === id);
-      setShifts(shifts.filter(shift => shift.id !== id));
-      
+      const shiftToDelete = shifts.find((shift) => shift.id === id);
+      setShifts(shifts.filter((shift) => shift.id !== id));
+
       const newNotification = {
         id: Date.now(),
         title: "Shift Deleted",
@@ -3712,11 +3724,13 @@ export default function HRD() {
     }
 
     if (editingSite) {
-      const updatedSites = sites.map(site =>
-        site.id === editingSite.id ? { ...site, ...siteForm, id: editingSite.id } : site
+      const updatedSites = sites.map((site) =>
+        site.id === editingSite.id
+          ? { ...site, ...siteForm, id: editingSite.id }
+          : site
       );
       setSites(updatedSites);
-      
+
       const newNotification = {
         id: Date.now(),
         title: "Site Updated",
@@ -3729,12 +3743,12 @@ export default function HRD() {
       setNotifications((prev) => [newNotification, ...prev]);
     } else {
       const newSite = {
-        id: sites.length > 0 ? Math.max(...sites.map(s => s.id)) + 1 : 1,
+        id: sites.length > 0 ? Math.max(...sites.map((s) => s.id)) + 1 : 1,
         ...siteForm,
         status: "active",
       };
       setSites([...sites, newSite]);
-      
+
       const newNotification = {
         id: Date.now(),
         title: "New Site Added",
@@ -3766,9 +3780,9 @@ export default function HRD() {
 
   const handleDeleteSite = (id) => {
     if (window.confirm("Are you sure you want to delete this site?")) {
-      const siteToDelete = sites.find(site => site.id === id);
-      setSites(sites.filter(site => site.id !== id));
-      
+      const siteToDelete = sites.find((site) => site.id === id);
+      setSites(sites.filter((site) => site.id !== id));
+
       const newNotification = {
         id: Date.now(),
         title: "Site Deleted",
@@ -3785,12 +3799,12 @@ export default function HRD() {
   // ==================== FUNGSI LEAVE MANAGEMENT ====================
 
   const handleApproveLeave = (id) => {
-    const updatedLeaveRequests = leaveRequests.map(request =>
+    const updatedLeaveRequests = leaveRequests.map((request) =>
       request.id === id ? { ...request, status: "approved" } : request
     );
     setLeaveRequests(updatedLeaveRequests);
 
-    const approvedLeave = leaveRequests.find(request => request.id === id);
+    const approvedLeave = leaveRequests.find((request) => request.id === id);
     const newNotification = {
       id: Date.now(),
       title: "Leave Request Approved",
@@ -3804,12 +3818,12 @@ export default function HRD() {
   };
 
   const handleRejectLeave = (id) => {
-    const updatedLeaveRequests = leaveRequests.map(request =>
+    const updatedLeaveRequests = leaveRequests.map((request) =>
       request.id === id ? { ...request, status: "rejected" } : request
     );
     setLeaveRequests(updatedLeaveRequests);
 
-    const rejectedLeave = leaveRequests.find(request => request.id === id);
+    const rejectedLeave = leaveRequests.find((request) => request.id === id);
     const newNotification = {
       id: Date.now(),
       title: "Leave Request Rejected",
@@ -3861,7 +3875,9 @@ export default function HRD() {
     setNotifications((prev) => prev.map((notif) => ({ ...notif, read: true })));
   };
 
-  const unreadNotifications = notifications.filter((notif) => !notif.read).length;
+  const unreadNotifications = notifications.filter(
+    (notif) => !notif.read
+  ).length;
 
   // ==================== DATA VISUALISASI DENGAN LOGIKA REALISTIS ====================
 
@@ -4044,8 +4060,10 @@ export default function HRD() {
   const stats = {
     total: attendanceData.length,
     pending: attendanceData.filter((item) => item.status === "pending").length,
-    approved: attendanceData.filter((item) => item.status === "approved").length,
-    rejected: attendanceData.filter((item) => item.status === "rejected").length,
+    approved: attendanceData.filter((item) => item.status === "approved")
+      .length,
+    rejected: attendanceData.filter((item) => item.status === "rejected")
+      .length,
   };
 
   // Tambahkan komponen SiteFormModal sebelum ShiftFormModal
@@ -4077,7 +4095,9 @@ const SiteFormModal = () => {
               <input
                 type="text"
                 value={siteForm.name}
-                onChange={(e) => setSiteForm({ ...siteForm, name: e.target.value })}
+                onChange={(e) =>
+                  setSiteForm({ ...siteForm, name: e.target.value })
+                }
                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                 placeholder="Contoh: Site Jakarta A"
               />
@@ -4090,7 +4110,9 @@ const SiteFormModal = () => {
               <input
                 type="text"
                 value={siteForm.location}
-                onChange={(e) => setSiteForm({ ...siteForm, location: e.target.value })}
+                onChange={(e) =>
+                  setSiteForm({ ...siteForm, location: e.target.value })
+                }
                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                 placeholder="Contoh: Jakarta Utara"
               />
@@ -4102,7 +4124,9 @@ const SiteFormModal = () => {
               </label>
               <textarea
                 value={siteForm.address}
-                onChange={(e) => setSiteForm({ ...siteForm, address: e.target.value })}
+                onChange={(e) =>
+                  setSiteForm({ ...siteForm, address: e.target.value })
+                }
                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                 rows={3}
                 placeholder="Jl. Raya Jakarta No. 123"
@@ -4130,7 +4154,9 @@ const SiteFormModal = () => {
                 <input
                   type="text"
                   value={siteForm.supervisor}
-                  onChange={(e) => setSiteForm({ ...siteForm, supervisor: e.target.value })}
+                  onChange={(e) =>
+                    setSiteForm({ ...siteForm, supervisor: e.target.value })
+                  }
                   className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                   placeholder="Nama Supervisor"
                 />
@@ -4144,7 +4170,9 @@ const SiteFormModal = () => {
               <input
                 type="text"
                 value={siteForm.contact}
-                onChange={(e) => setSiteForm({ ...siteForm, contact: e.target.value })}
+                onChange={(e) =>
+                  setSiteForm({ ...siteForm, contact: e.target.value })
+                }
                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                 placeholder="0812-3456-7890"
               />
@@ -4645,8 +4673,8 @@ const LeaveDetailModal = () => {
                         selectedAttendance.status === "approved"
                           ? "bg-green-100 text-green-800"
                           : selectedAttendance.status === "rejected"
-                          ? "bg-red-100 text-red-800"
-                          : "bg-yellow-100 text-yellow-800"
+                            ? "bg-red-100 text-red-800"
+                            : "bg-yellow-100 text-yellow-800"
                       }`}
                     >
                       {selectedAttendance.status}
@@ -4818,10 +4846,14 @@ const LeaveDetailModal = () => {
                           : "text-gray-800 hover:bg-gray-100 hover:shadow-sm"
                       }`}
                   >
-                    <Icon className={`w-5 h-5 ${
-                      activeMenu === item.id ? "text-white" : "text-gray-500"
-                    }`} />
-                    <span className="whitespace-nowrap font-medium">{item.name}</span>
+                    <Icon
+                      className={`w-5 h-5 ${
+                        activeMenu === item.id ? "text-white" : "text-gray-500"
+                      }`}
+                    />
+                    <span className="whitespace-nowrap font-medium">
+                      {item.name}
+                    </span>
                   </button>
                 </li>
               );
@@ -4909,9 +4941,7 @@ const LeaveDetailModal = () => {
                 </button>
 
                 {notificationOpen && (
-                  <div
-                    className="absolute right-0 top-full mt-2 w-80 bg-white rounded-lg shadow-xl border border-gray-200 shadow-md py-2 z-[9999] transition-transform origin-top"
-                  >
+                  <div className="absolute right-0 top-full mt-2 w-80 bg-white rounded-lg shadow-xl border border-gray-200 shadow-md py-2 z-[9999] transition-transform origin-top">
                     <div className="px-4 py-2 border-b border-gray-200 flex justify-between items-center">
                       <h3 className="font-semibold text-gray-900">
                         Notifications
@@ -4988,9 +5018,7 @@ const LeaveDetailModal = () => {
                   }}
                   className="flex items-center gap-2 cursor-pointer"
                 >
-                  <div
-                    className="w-10 h-10 bg-gradient-to-r from-emerald-800 to-green-800 rounded-full flex items-center justify-center text-white font-bold"
-                  >
+                  <div className="w-10 h-10 bg-gradient-to-r from-emerald-800 to-green-800 rounded-full flex items-center justify-center text-white font-bold">
                     {hrdUser.initial}
                   </div>
 
@@ -5012,14 +5040,10 @@ const LeaveDetailModal = () => {
                 </button>
 
                 {dropdownOpen && (
-                  <div
-                    className="absolute right-0 top-full mt-2 w-64 bg-white rounded-lg shadow-xl border border-gray-200 shadow-md py-2 z-[9999] transition-transform origin-top"
-                  >
+                  <div className="absolute right-0 top-full mt-2 w-64 bg-white rounded-lg shadow-xl border border-gray-200 shadow-md py-2 z-[9999] transition-transform origin-top">
                     <div className="px-4 py-3 border-b border-gray-200">
                       <div className="flex items-center gap-3">
-                        <div
-                          className="w-10 h-10 bg-gradient-to-r from-emerald-800 to-green-800 rounded-full flex items-center justify-center text-white font-bold"
-                        >
+                        <div className="w-10 h-10 bg-gradient-to-r from-emerald-800 to-green-800 rounded-full flex items-center justify-center text-white font-bold">
                           {hrdUser.initial}
                         </div>
                         <div className="flex-1 min-w-0">
@@ -5076,7 +5100,7 @@ const LeaveDetailModal = () => {
                   icon: UsersIcon,
                   bgColor: "bg-blue-50",
                   iconColor: "text-blue-600",
-                  menu: "attendance"
+                  menu: "attendance",
                 },
                 {
                   label: "Pending Validation",
@@ -5088,7 +5112,7 @@ const LeaveDetailModal = () => {
                   icon: ClockIcon,
                   bgColor: "bg-yellow-50",
                   iconColor: "text-yellow-600",
-                  menu: "attendance"
+                  menu: "attendance",
                 },
                 {
                   label: "Attendance Rate",
@@ -5106,7 +5130,7 @@ const LeaveDetailModal = () => {
                   icon: CheckCircleIcon,
                   bgColor: "bg-emerald-50",
                   iconColor: "text-emerald-600",
-                  menu: "attendance"
+                  menu: "attendance",
                 },
               ].map((item, i) => {
                 const Icon = item.icon;
@@ -5121,7 +5145,9 @@ const LeaveDetailModal = () => {
                         {item.label}
                       </p>
                       <div className={`p-1 sm:p-2 rounded-lg ${item.bgColor}`}>
-                        <Icon className={`w-3 h-3 sm:w-4 sm:h-4 lg:w-5 lg:h-5 ${item.iconColor}`} />
+                        <Icon
+                          className={`w-3 h-3 sm:w-4 sm:h-4 lg:w-5 lg:h-5 ${item.iconColor}`}
+                        />
                       </div>
                     </div>
                     <p className="text-lg sm:text-xl lg:text-2xl xl:text-3xl font-bold text-gray-900">
@@ -5135,7 +5161,9 @@ const LeaveDetailModal = () => {
                       {item.percent}
                     </p>
                     <div className="mt-2 text-right">
-                      <span className="text-xs text-blue-600 font-medium">View →</span>
+                      <span className="text-xs text-blue-600 font-medium">
+                        View →
+                      </span>
                     </div>
                   </div>
                 );
@@ -5145,7 +5173,7 @@ const LeaveDetailModal = () => {
             {/* SECOND ROW - OTHER MENU SUMMARIES */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-3 sm:gap-4 mb-4 sm:mb-6">
               {/* Shift Management Summary */}
-              <div 
+              <div
                 className="bg-white p-3 sm:p-4 lg:p-6 rounded-lg sm:rounded-xl border border-gray-200 shadow-sm sm:shadow-md hover:shadow-md transition-shadow cursor-pointer"
                 onClick={() => setActiveMenu("shiftManagement")}
               >
@@ -5154,7 +5182,9 @@ const LeaveDetailModal = () => {
                     <h3 className="font-semibold text-base sm:text-lg text-gray-800 mb-1">
                       Shift Management
                     </h3>
-                    <p className="text-xs sm:text-sm text-gray-600">Total shifts: {shifts.length}</p>
+                    <p className="text-xs sm:text-sm text-gray-600">
+                      Total shifts: {shifts.length}
+                    </p>
                   </div>
                   <div className="p-2 bg-blue-50 rounded-lg">
                     <ClockIcon className="w-5 h-5 sm:w-6 sm:h-6 text-blue-600" />
@@ -5165,7 +5195,10 @@ const LeaveDetailModal = () => {
                     const site = sites.find(s => s.id === shift.siteId);
                     const assignedCount = shift.assignedOperators?.length || 0;
                     return (
-                      <div key={index} className="flex items-center justify-between p-2 bg-gray-50 rounded">
+                      <div
+                        key={index}
+                        className="flex items-center justify-between p-2 bg-gray-50 rounded"
+                      >
                         <div>
                           <p className="text-sm font-medium text-gray-900">{shift.name}</p>
                           <p className="text-xs text-gray-600">{shift.dayOfWeek} • {assignedCount}/{shift.maxOperators} ops</p>
@@ -5185,7 +5218,7 @@ const LeaveDetailModal = () => {
               </div>
 
               {/* Site Management Summary */}
-              <div 
+              <div
                 className="bg-white p-3 sm:p-4 lg:p-6 rounded-lg sm:rounded-xl border border-gray-200 shadow-sm sm:shadow-md hover:shadow-md transition-shadow cursor-pointer"
                 onClick={() => setActiveMenu("siteManagement")}
               >
@@ -5194,7 +5227,9 @@ const LeaveDetailModal = () => {
                     <h3 className="font-semibold text-base sm:text-lg text-gray-800 mb-1">
                       Site Management
                     </h3>
-                    <p className="text-xs sm:text-sm text-gray-600">Total sites: {sites.length}</p>
+                    <p className="text-xs sm:text-sm text-gray-600">
+                      Total sites: {sites.length}
+                    </p>
                   </div>
                   <div className="p-2 bg-green-50 rounded-lg">
                     <BuildingOfficeIcon className="w-5 h-5 sm:w-6 sm:h-6 text-green-600" />
@@ -5202,9 +5237,14 @@ const LeaveDetailModal = () => {
                 </div>
                 <div className="space-y-2">
                   {sites.slice(0, 3).map((site, index) => (
-                    <div key={index} className="flex items-center justify-between p-2 bg-gray-50 rounded">
+                    <div
+                      key={index}
+                      className="flex items-center justify-between p-2 bg-gray-50 rounded"
+                    >
                       <div>
-                        <p className="text-sm font-medium text-gray-900">{site.name}</p>
+                        <p className="text-sm font-medium text-gray-900">
+                          {site.name}
+                        </p>
                         <p className="text-xs text-gray-600">{site.location}</p>
                       </div>
                       <span className="text-xs bg-green-100 text-green-800 px-2 py-1 rounded">
@@ -5221,7 +5261,7 @@ const LeaveDetailModal = () => {
               </div>
 
               {/* Leave Management Summary */}
-              <div 
+              <div
                 className="bg-white p-3 sm:p-4 lg:p-6 rounded-lg sm:rounded-xl border border-gray-200 shadow-sm sm:shadow-md hover:shadow-md transition-shadow cursor-pointer"
                 onClick={() => setActiveMenu("leaveManagement")}
               >
@@ -5230,7 +5270,13 @@ const LeaveDetailModal = () => {
                     <h3 className="font-semibold text-base sm:text-lg text-gray-800 mb-1">
                       Leave Management
                     </h3>
-                    <p className="text-xs sm:text-sm text-gray-600">Pending: {leaveRequests.filter(r => r.status === 'pending').length}</p>
+                    <p className="text-xs sm:text-sm text-gray-600">
+                      Pending:{" "}
+                      {
+                        leaveRequests.filter((r) => r.status === "pending")
+                          .length
+                      }
+                    </p>
                   </div>
                   <div className="p-2 bg-purple-50 rounded-lg">
                     <CalendarIcon className="w-5 h-5 sm:w-6 sm:h-6 text-purple-600" />
@@ -5238,16 +5284,27 @@ const LeaveDetailModal = () => {
                 </div>
                 <div className="space-y-2">
                   {leaveRequests.slice(0, 3).map((request, index) => (
-                    <div key={index} className="flex items-center justify-between p-2 bg-gray-50 rounded">
+                    <div
+                      key={index}
+                      className="flex items-center justify-between p-2 bg-gray-50 rounded"
+                    >
                       <div>
-                        <p className="text-sm font-medium text-gray-900">{request.operator}</p>
-                        <p className="text-xs text-gray-600">{request.type} • {request.startDate}</p>
+                        <p className="text-sm font-medium text-gray-900">
+                          {request.operator}
+                        </p>
+                        <p className="text-xs text-gray-600">
+                          {request.type} • {request.startDate}
+                        </p>
                       </div>
-                      <span className={`text-xs px-2 py-1 rounded ${
-                        request.status === 'approved' ? 'bg-green-100 text-green-800' : 
-                        request.status === 'rejected' ? 'bg-red-100 text-red-800' : 
-                        'bg-yellow-100 text-yellow-800'
-                      }`}>
+                      <span
+                        className={`text-xs px-2 py-1 rounded ${
+                          request.status === "approved"
+                            ? "bg-green-100 text-green-800"
+                            : request.status === "rejected"
+                              ? "bg-red-100 text-red-800"
+                              : "bg-yellow-100 text-yellow-800"
+                        }`}
+                      >
                         {request.status}
                       </span>
                     </div>
@@ -5269,7 +5326,7 @@ const LeaveDetailModal = () => {
                   <h3 className="font-semibold text-base sm:text-lg text-gray-800">
                     Weekly Attendance Trends
                   </h3>
-                  <button 
+                  <button
                     onClick={() => setActiveMenu("attendance")}
                     className="text-xs sm:text-sm text-blue-600 hover:text-blue-800 font-medium"
                   >
@@ -5291,22 +5348,37 @@ const LeaveDetailModal = () => {
                         const maxValue = Math.max(...weeklyAttendanceData.map(d => d.expectedOperators), 50);
                         const chartHeight = 120;
                         return (
-                          <div key={index} className="flex flex-col items-center flex-1 relative overflow-visible">
+                          <div
+                            key={index}
+                            className="flex flex-col items-center flex-1 relative overflow-visible"
+                          >
                             <div className="flex items-end justify-center gap-0.5 sm:gap-1.5 w-full overflow-visible">
-                              <div className="w-1.5 sm:w-2 lg:w-2.5 bg-green-500 rounded-t transition-all duration-300 hover:bg-green-600 cursor-pointer relative group"
-                                style={{ height: `${(data.present / maxValue) * chartHeight}px` }}>
+                              <div
+                                className="w-1.5 sm:w-2 lg:w-2.5 bg-green-500 rounded-t transition-all duration-300 hover:bg-green-600 cursor-pointer relative group"
+                                style={{
+                                  height: `${(data.present / maxValue) * chartHeight}px`,
+                                }}
+                              >
                                 <div className="absolute -top-6 sm:-top-7 left-1/2 transform -translate-x-1/2 opacity-0 group-hover:opacity-100 transition bg-gray-800 text-white px-1 sm:px-2 py-0.5 sm:py-1 rounded text-xs whitespace-nowrap z-50 pointer-events-none">
                                   Present: {data.present}
                                 </div>
                               </div>
-                              <div className="w-1.5 sm:w-2 lg:w-2.5 bg-yellow-400 rounded-t transition-all duration-300 hover:bg-yellow-500 cursor-pointer relative group"
-                                style={{ height: `${(data.late / maxValue) * chartHeight}px` }}>
+                              <div
+                                className="w-1.5 sm:w-2 lg:w-2.5 bg-yellow-400 rounded-t transition-all duration-300 hover:bg-yellow-500 cursor-pointer relative group"
+                                style={{
+                                  height: `${(data.late / maxValue) * chartHeight}px`,
+                                }}
+                              >
                                 <div className="absolute -top-6 sm:-top-7 left-1/2 transform -translate-x-1/2 opacity-0 group-hover:opacity-100 transition bg-gray-800 text-white px-1 sm:px-2 py-0.5 sm:py-1 rounded text-xs whitespace-nowrap z-50 pointer-events-none">
                                   Late: {data.late}
                                 </div>
                               </div>
-                              <div className="w-1.5 sm:w-2 lg:w-2.5 bg-red-500 rounded-t transition-all duration-300 hover:bg-red-600 cursor-pointer relative group"
-                                style={{ height: `${(data.absent / maxValue) * chartHeight}px` }}>
+                              <div
+                                className="w-1.5 sm:w-2 lg:w-2.5 bg-red-500 rounded-t transition-all duration-300 hover:bg-red-600 cursor-pointer relative group"
+                                style={{
+                                  height: `${(data.absent / maxValue) * chartHeight}px`,
+                                }}
+                              >
                                 <div className="absolute -top-6 sm:-top-7 left-1/2 transform -translate-x-1/2 opacity-0 group-hover:opacity-100 transition bg-gray-800 text-white px-1 sm:px-2 py-0.5 sm:py-1 rounded text-xs whitespace-nowrap z-50 pointer-events-none">
                                   Absent: {data.absent}
                                 </div>
@@ -5321,15 +5393,21 @@ const LeaveDetailModal = () => {
                     <div className="flex justify-center gap-2 sm:gap-3 lg:gap-4 mt-2 sm:mt-3 text-xs">
                       <div className="flex items-center gap-1 sm:gap-1.5">
                         <div className="w-2 h-2 sm:w-3 sm:h-3 bg-green-500 rounded"></div>
-                        <span className="text-gray-700 text-xs sm:text-sm">Present</span>
+                        <span className="text-gray-700 text-xs sm:text-sm">
+                          Present
+                        </span>
                       </div>
                       <div className="flex items-center gap-1 sm:gap-1.5">
                         <div className="w-2 h-2 sm:w-3 sm:h-3 bg-yellow-400 rounded"></div>
-                        <span className="text-gray-700 text-xs sm:text-sm">Late</span>
+                        <span className="text-gray-700 text-xs sm:text-sm">
+                          Late
+                        </span>
                       </div>
                       <div className="flex items-center gap-1 sm:gap-1.5">
                         <div className="w-2 h-2 sm:w-3 sm:h-3 bg-red-500 rounded"></div>
-                        <span className="text-gray-700 text-xs sm:text-sm">Absent</span>
+                        <span className="text-gray-700 text-xs sm:text-sm">
+                          Absent
+                        </span>
                       </div>
                     </div>
                   </div>
@@ -5359,9 +5437,23 @@ const LeaveDetailModal = () => {
                 </div>
                 <div className="flex flex-col lg:flex-row items-center gap-4 sm:gap-6 lg:gap-8">
                   <div className="relative flex flex-col items-center">
-                    <svg width="120" height="120" viewBox="0 0 100 100" className="cursor-pointer sm:w-32 sm:h-32 lg:w-36 lg:h-36">
+                    <svg
+                      width="120"
+                      height="120"
+                      viewBox="0 0 100 100"
+                      className="cursor-pointer sm:w-32 sm:h-32 lg:w-36 lg:h-36"
+                    >
                       {pieChartData.map((item, index) => (
-                        <path key={item.status} d={item.path} fill={item.color} className={`transition-all duration-300 ${hoveredPie === index ? "opacity-80 scale-105" : "opacity-100"}`} stroke="white" strokeWidth="2" onMouseEnter={() => setHoveredPie(index)} onMouseLeave={() => setHoveredPie(null)} />
+                        <path
+                          key={item.status}
+                          d={item.path}
+                          fill={item.color}
+                          className={`transition-all duration-300 ${hoveredPie === index ? "opacity-80 scale-105" : "opacity-100"}`}
+                          stroke="white"
+                          strokeWidth="2"
+                          onMouseEnter={() => setHoveredPie(index)}
+                          onMouseLeave={() => setHoveredPie(null)}
+                        />
                       ))}
                     </svg>
                     <div className="text-center mt-2 sm:mt-3">
@@ -5373,20 +5465,40 @@ const LeaveDetailModal = () => {
                     {hoveredPie !== null && (
                       <div className="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-full bg-gray-800 text-white px-2 sm:px-3 py-1 sm:py-2 rounded text-xs sm:text-sm z-10 shadow-lg">
                         <div className="flex items-center gap-1 sm:gap-2">
-                          <div className="w-2 h-2 sm:w-3 sm:h-3 rounded" style={{ backgroundColor: pieChartData[hoveredPie].color }}></div>
-                          <span>{pieChartData[hoveredPie].status}: {pieChartData[hoveredPie].value}%</span>
+                          <div
+                            className="w-2 h-2 sm:w-3 sm:h-3 rounded"
+                            style={{
+                              backgroundColor: pieChartData[hoveredPie].color,
+                            }}
+                          ></div>
+                          <span>
+                            {pieChartData[hoveredPie].status}:{" "}
+                            {pieChartData[hoveredPie].value}%
+                          </span>
                         </div>
                       </div>
                     )}
                   </div>
                   <div className="space-y-2 sm:space-y-3 lg:space-y-4 flex-1 w-full">
                     {todayStatusData.map((item, index) => (
-                      <div key={item.status} className={`flex items-center justify-between p-2 sm:p-3 rounded-lg transition-all duration-200 cursor-pointer ${hoveredPie === index ? "bg-gray-50 transform scale-105" : ""}`} onMouseEnter={() => setHoveredPie(index)} onMouseLeave={() => setHoveredPie(null)}>
+                      <div
+                        key={item.status}
+                        className={`flex items-center justify-between p-2 sm:p-3 rounded-lg transition-all duration-200 cursor-pointer ${hoveredPie === index ? "bg-gray-50 transform scale-105" : ""}`}
+                        onMouseEnter={() => setHoveredPie(index)}
+                        onMouseLeave={() => setHoveredPie(null)}
+                      >
                         <div className="flex items-center gap-2 sm:gap-3">
-                          <div className="w-3 h-3 rounded transition-transform duration-200" style={{ backgroundColor: item.color }}></div>
-                          <span className="text-sm text-gray-700 font-medium">{item.status}</span>
+                          <div
+                            className="w-3 h-3 rounded transition-transform duration-200"
+                            style={{ backgroundColor: item.color }}
+                          ></div>
+                          <span className="text-sm text-gray-700 font-medium">
+                            {item.status}
+                          </span>
                         </div>
-                        <span className="text-base sm:text-lg font-bold text-gray-900">{item.value}%</span>
+                        <span className="text-base sm:text-lg font-bold text-gray-900">
+                          {item.value}%
+                        </span>
                       </div>
                     ))}
                   </div>
@@ -5395,19 +5507,31 @@ const LeaveDetailModal = () => {
             </div>
 
             {/* RECENT ACTIVITIES SECTION */}
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-3 sm:gap-4 lg:gap-6">
+            <div className="grid grid-cols-1 lg:grid-cols-1 gap-3 sm:gap-4 lg:gap-6">
               {/* Recent Attendance */}
               <div className="bg-white p-3 sm:p-4 lg:p-6 rounded-lg sm:rounded-xl border border-gray-200 shadow-sm sm:shadow-md">
                 <div className="flex justify-between items-center mb-3 sm:mb-4 lg:mb-5">
-                  <h3 className="font-semibold text-base sm:text-lg text-gray-800">Recent Attendance</h3>
-                  <button onClick={() => setActiveMenu("attendance")} className="text-blue-600 text-xs sm:text-sm font-medium hover:underline">
+                  <h3 className="font-semibold text-base sm:text-lg text-gray-800">
+                    Recent Attendance
+                  </h3>
+                  <button
+                    onClick={() => setActiveMenu("attendance")}
+                    className="text-blue-600 text-xs sm:text-sm font-medium hover:underline"
+                  >
                     View All →
                   </button>
                 </div>
                 <div className="space-y-2 sm:space-y-3 lg:space-y-4">
                   {recentAttendanceData.map((attendance, index) => (
-                    <div key={index} className="flex items-center justify-between p-2 sm:p-3 border-b border-gray-100 last:border-0 hover:bg-gray-50 transition-colors cursor-pointer"
-                      onClick={() => openDetailModal(attendanceData.find(a => a.id === attendance.id))}>
+                    <div
+                      key={index}
+                      className="flex items-center justify-between p-2 sm:p-3 border-b border-gray-100 last:border-0 hover:bg-gray-50 transition-colors cursor-pointer"
+                      onClick={() =>
+                        openDetailModal(
+                          attendanceData.find((a) => a.id === attendance.id)
+                        )
+                      }
+                    >
                       <div className="min-w-0 flex-1">
                         <p className="font-semibold text-gray-900 truncate text-sm sm:text-base">{attendance.name}</p>
                         <p className="text-gray-600 truncate text-xs sm:text-sm">{attendance.location} • {attendance.time} • {attendance.date}</p>
@@ -5424,7 +5548,7 @@ const LeaveDetailModal = () => {
               </div>
 
               {/* Top Performers */}
-              <div className="bg-white p-3 sm:p-4 lg:p-6 rounded-lg sm:rounded-xl border border-gray-200 shadow-sm sm:shadow-md">
+              {/* <div className="bg-white p-3 sm:p-4 lg:p-6 rounded-lg sm:rounded-xl border border-gray-200 shadow-sm sm:shadow-md">
                 <h3 className="font-semibold text-base sm:text-lg text-gray-800 mb-3 sm:mb-4 lg:mb-5">
                   Top Performers (This Month)
                 </h3>
@@ -5457,7 +5581,7 @@ const LeaveDetailModal = () => {
                     </div>
                   ))}
                 </div>
-              </div>
+              </div> */}
             </div>
           </div>
         )}
@@ -5781,7 +5905,9 @@ const LeaveDetailModal = () => {
                 <div className="flex items-center justify-between">
                   <div>
                     <p className="text-sm text-gray-600">Total Shifts</p>
-                    <p className="text-2xl font-bold text-gray-900 mt-1">{shifts.length}</p>
+                    <p className="text-2xl font-bold text-gray-900 mt-1">
+                      {shifts.length}
+                    </p>
                   </div>
                   <div className="p-3 bg-blue-50 rounded-lg">
                     <ClockIcon className="w-6 h-6 text-blue-600" />
@@ -5857,7 +5983,10 @@ const LeaveDetailModal = () => {
                       .join(", ");
                     
                     return (
-                      <div key={shift.id} className="block lg:grid lg:grid-cols-12 lg:gap-4 px-4 sm:px-6 py-4 hover:bg-gray-50 transition-colors">
+                      <div
+                        key={shift.id}
+                        className="block lg:grid lg:grid-cols-12 lg:gap-4 px-4 sm:px-6 py-4 hover:bg-gray-50 transition-colors"
+                      >
                         <div className="lg:hidden space-y-4">
                           <div className="flex justify-between items-start">
                             <div className="flex-1 min-w-0">
@@ -5870,7 +5999,7 @@ const LeaveDetailModal = () => {
                               {(shift.assignedOperators?.length || 0)}/{shift.maxOperators} ops
                             </span>
                           </div>
-                          
+
                           <div className="grid grid-cols-2 gap-4">
                             <div>
                               <p className="text-gray-500 text-xs uppercase font-medium mb-1">Waktu</p>
@@ -5915,8 +6044,12 @@ const LeaveDetailModal = () => {
                         <div className="hidden lg:contents">
                           <div className="col-span-3 flex items-center">
                             <div>
-                              <p className="font-medium text-gray-900">{shift.name}</p>
-                              <p className="text-sm text-gray-500 mt-0.5">{shift.startTime} - {shift.endTime}</p>
+                              <p className="font-medium text-gray-900">
+                                {shift.name}
+                              </p>
+                              <p className="text-sm text-gray-500 mt-0.5">
+                                {shift.startTime} - {shift.endTime}
+                              </p>
                             </div>
                           </div>
                           <div className="col-span-2 flex items-center">
@@ -6023,14 +6156,18 @@ const LeaveDetailModal = () => {
                       <div className="lg:hidden space-y-4">
                         <div className="flex justify-between items-start">
                           <div className="flex-1 min-w-0">
-                            <h3 className="font-semibold text-gray-900 text-base sm:text-lg truncate">{site.name}</h3>
-                            <p className="text-gray-500 text-sm mt-1 truncate">{site.location}</p>
+                            <h3 className="font-semibold text-gray-900 text-base sm:text-lg truncate">
+                              {site.name}
+                            </h3>
+                            <p className="text-gray-500 text-sm mt-1 truncate">
+                              {site.location}
+                            </p>
                           </div>
                           <span className="bg-green-100 text-green-800 text-xs font-medium px-2 py-1 rounded flex-shrink-0">
                             Kapasitas: {site.capacity}
                           </span>
                         </div>
-                        
+
                         <div>
                           <p className="text-gray-500 text-xs uppercase font-medium mb-1">Alamat</p>
                           <p className="text-gray-900 text-sm line-clamp-2">{site.address}</p>
@@ -6038,8 +6175,12 @@ const LeaveDetailModal = () => {
 
                         <div className="grid grid-cols-2 gap-4">
                           <div>
-                            <p className="text-gray-500 text-xs uppercase font-medium mb-1">Supervisor</p>
-                            <p className="text-gray-900 text-sm font-medium">{site.supervisor}</p>
+                            <p className="text-gray-500 text-xs uppercase font-medium mb-1">
+                              Supervisor
+                            </p>
+                            <p className="text-gray-900 text-sm font-medium">
+                              {site.supervisor}
+                            </p>
                           </div>
                           <div>
                             <p className="text-gray-500 text-xs uppercase font-medium mb-1">Kontak</p>
@@ -6079,12 +6220,18 @@ const LeaveDetailModal = () => {
                           <p className="text-gray-700">{site.location}</p>
                         </div>
                         <div className="col-span-3 flex items-center">
-                          <p className="text-gray-700 truncate">{site.address}</p>
+                          <p className="text-gray-700 truncate">
+                            {site.address}
+                          </p>
                         </div>
                         <div className="col-span-2 flex items-center">
                           <div>
-                            <p className="font-medium text-gray-900">{site.supervisor}</p>
-                            <p className="text-sm text-gray-500">{site.contact}</p>
+                            <p className="font-medium text-gray-900">
+                              {site.supervisor}
+                            </p>
+                            <p className="text-sm text-gray-500">
+                              {site.contact}
+                            </p>
                           </div>
                         </div>
                         <div className="col-span-2 flex items-center justify-center gap-2">
@@ -6127,9 +6274,11 @@ const LeaveDetailModal = () => {
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
               <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-200">
                 <div className="flex items-center justify-between mb-4">
-                  <h3 className="font-semibold text-lg text-gray-800">Pending Requests</h3>
+                  <h3 className="font-semibold text-lg text-gray-800">
+                    Pending Requests
+                  </h3>
                   <span className="bg-yellow-100 text-yellow-800 text-sm font-medium px-3 py-1 rounded-full">
-                    {leaveRequests.filter(r => r.status === 'pending').length}
+                    {leaveRequests.filter((r) => r.status === "pending").length}
                   </span>
                 </div>
                 <p className="text-gray-600">Permohonan menunggu persetujuan</p>
@@ -6138,7 +6287,10 @@ const LeaveDetailModal = () => {
                 <div className="flex items-center justify-between mb-4">
                   <h3 className="font-semibold text-lg text-gray-800">Disetujui</h3>
                   <span className="bg-green-100 text-green-800 text-sm font-medium px-3 py-1 rounded-full">
-                    {leaveRequests.filter(r => r.status === 'approved').length}
+                    {
+                      leaveRequests.filter((r) => r.status === "approved")
+                        .length
+                    }
                   </span>
                 </div>
                 <p className="text-gray-600">Permohonan yang telah disetujui</p>
@@ -6147,7 +6299,10 @@ const LeaveDetailModal = () => {
                 <div className="flex items-center justify-between mb-4">
                   <h3 className="font-semibold text-lg text-gray-800">Ditolak</h3>
                   <span className="bg-red-100 text-red-800 text-sm font-medium px-3 py-1 rounded-full">
-                    {leaveRequests.filter(r => r.status === 'rejected').length}
+                    {
+                      leaveRequests.filter((r) => r.status === "rejected")
+                        .length
+                    }
                   </span>
                 </div>
                 <p className="text-gray-600">Permohonan yang telah ditolak</p>
@@ -6172,11 +6327,16 @@ const LeaveDetailModal = () => {
                   </div>
                 ) : (
                   leaveRequests.map((request) => (
-                    <div key={request.id} className="block lg:grid lg:grid-cols-12 lg:gap-4 px-4 sm:px-6 py-4 hover:bg-gray-50 transition-colors">
+                    <div
+                      key={request.id}
+                      className="block lg:grid lg:grid-cols-12 lg:gap-4 px-4 sm:px-6 py-4 hover:bg-gray-50 transition-colors"
+                    >
                       <div className="lg:hidden space-y-4">
                         <div className="flex justify-between items-start">
                           <div className="flex-1 min-w-0">
-                            <h3 className="font-semibold text-gray-900 text-base sm:text-lg truncate">{request.operator}</h3>
+                            <h3 className="font-semibold text-gray-900 text-base sm:text-lg truncate">
+                              {request.operator}
+                            </h3>
                             <div className="flex items-center gap-2 mt-1">
                               <span className={`inline-flex items-center px-2 py-0.5 rounded text-xs font-medium ${
                                 request.type === 'izin' ? 'bg-blue-100 text-blue-800' : 'bg-purple-100 text-purple-800'
@@ -6194,7 +6354,7 @@ const LeaveDetailModal = () => {
                             </div>
                           </div>
                         </div>
-                        
+
                         <div>
                           <p className="text-gray-500 text-xs uppercase font-medium mb-1">Periode</p>
                           <p className="text-gray-900 text-sm font-medium">
@@ -6215,7 +6375,7 @@ const LeaveDetailModal = () => {
                             <EyeIcon className="w-4 h-4" />
                             Lihat Detail
                           </button>
-                          
+
                           {request.status === "pending" && (
                             <div className="flex gap-2">
                               <button
@@ -6269,7 +6429,9 @@ const LeaveDetailModal = () => {
                           </p>
                         </div>
                         <div className="col-span-3 flex items-center">
-                          <p className="text-gray-700 truncate">{request.reason}</p>
+                          <p className="text-gray-700 truncate">
+                            {request.reason}
+                          </p>
                         </div>
                         <div className="col-span-2 flex items-center justify-center gap-2">
                           <button
@@ -6279,7 +6441,7 @@ const LeaveDetailModal = () => {
                           >
                             <EyeIcon className="w-5 h-5" />
                           </button>
-                          
+
                           {request.status === "pending" && (
                             <>
                               <button

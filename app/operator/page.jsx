@@ -37,7 +37,6 @@
 //   ChevronDownIcon,
 // } from "@heroicons/react/24/outline";
 
-
 // // BAGIAN GEOLOKASI OR GEOLOCATION
 // //rumus geolokasi
 // // Tambahkan kode ini setelah baris import dan sebelum "export default function Operator()"
@@ -67,7 +66,6 @@
 // };
 // // Fungsi untuk menghitung jarak antara dua koordinat (rumus Haversine)
 // // BAGIAN GEOLOKASI OR GEOLOCATION
-
 
 // // Fungsi untuk mengecek permission kamera
 // const checkCameraPermission = async () => {
@@ -4234,6 +4232,7 @@
 // //KODE DENGAN GEOLOKASI DEFAULT
 // //KODE DENGAN GEOLOKASI DEFAULT
 
+<<<<<<< HEAD
 
 
 
@@ -4273,6 +4272,14 @@
 
 
 
+=======
+//KODE DENGAN GEOLOKASI DEFAULT
+//KODE DENGAN GEOLOKASI DEFAULT
+//KODE DENGAN GEOLOKASI DEFAULT
+//KODE DENGAN GEOLOKASI DEFAULT
+//KODE DENGAN GEOLOKASI DEFAULT
+//KODE DENGAN GEOLOKASI DEFAULT
+>>>>>>> 7a6e8f41932157dd9921fa16275990620c51475c
 "use client";
 import React, { useState, useRef, useEffect } from "react";
 import { useRouter } from "next/navigation";
@@ -4318,6 +4325,78 @@ import {
   ChevronRightIcon,
 } from "@heroicons/react/24/outline";
 
+<<<<<<< HEAD
+=======
+// BAGIAN GEOLOKASI OR GEOLOCATION
+// ==================== DEMO MODE SETTINGS ====================
+const DEMO_MODE = true; // Setel ke true untuk mode demo
+const DEMO_SITE_COORDINATES = {
+  "Jakarta Utara - Site A": { lat: -6.123456, lng: 106.123456 },
+  "Jakarta Utara - Site B": { lat: -6.234567, lng: 106.234567 },
+  "IPAL Jakarta Pusat": { lat: -6.181818, lng: 106.818181 },
+  "IPAL Jakarta Utara": { lat: -6.123456, lng: 106.123456 },
+  "IPAL Jakarta Selatan": { lat: -6.261626, lng: 106.810623 },
+  "IPAL Jakarta Barat": { lat: -6.167347, lng: 106.758987 },
+  "IPAL Jakarta Timur": { lat: -6.225013, lng: 106.900146 },
+};
+// ==================== DEMO MODE SETTINGS ====================
+
+//rumus geolokasi
+// Tambahkan kode ini setelah baris import dan sebelum "export default function Operator()"
+
+// ==================== KONSTANTA GEO-LOCATION ====================
+const COMPANY_COORDINATES = {
+  latitude: -7.2375495, // GANTI DENGAN KOORDINAT PERUSAHAAN ANDA
+  longitude: 112.7271187, // GANTI DENGAN KOORDINAT PERUSAHAAN ANDA
+};
+const ALLOWED_RADIUS_METERS = 100; // Radius 100 meter
+// ==================== KONSTANTA GEO-LOCATION ====================
+
+// Fungsi untuk menghitung jarak antara dua koordinat (rumus Haversine)
+const calculateDistance = (lat1, lon1, lat2, lon2) => {
+  const R = 6371e3; // Radius bumi dalam meter
+  const φ1 = (lat1 * Math.PI) / 180;
+  const φ2 = (lat2 * Math.PI) / 180;
+  const Δφ = ((lat2 - lat1) * Math.PI) / 180;
+  const Δλ = ((lon2 - lon1) * Math.PI) / 180;
+
+  const a =
+    Math.sin(Δφ / 2) * Math.sin(Δφ / 2) +
+    Math.cos(φ1) * Math.cos(φ2) * Math.sin(Δλ / 2) * Math.sin(Δλ / 2);
+  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+
+  return R * c; // Jarak dalam meter
+};
+// Fungsi untuk menghitung jarak antara dua koordinat (rumus Haversine)
+// BAGIAN GEOLOKASI OR GEOLOCATION
+
+// Fungsi untuk mengecek permission kamera
+const checkCameraPermission = async () => {
+  try {
+    if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+      throw new Error("Browser tidak mendukung akses kamera");
+    }
+
+    // Cek permission tanpa langsung membuka kamera
+    const permissionStatus = await navigator.permissions.query({
+      name: "camera",
+    });
+
+    if (permissionStatus.state === "denied") {
+      throw new Error(
+        "Akses kamera ditolak. Harap izinkan akses kamera di pengaturan browser."
+      );
+    }
+
+    return true;
+  } catch (error) {
+    console.error("Camera permission check failed:", error);
+    return false;
+  }
+};
+//rumus geolokasi
+
+>>>>>>> 7a6e8f41932157dd9921fa16275990620c51475c
 export default function Operator() {
   const [selectedRange, setSelectedRange] = useState("Month");
   const [dropdownOpen, setDropdownOpen] = useState(false);
@@ -5123,6 +5202,7 @@ const [submissionHistory, setSubmissionHistory] = useState([
     setIsDetailModalOpen(true);
   };
 
+<<<<<<< HEAD
   // Fungsi untuk membuka modal edit presensi (sesuai SRS)
   const openEditPresenceModal = (attendance) => {
     if (attendance.approvalStatus !== "pending") {
@@ -5245,8 +5325,110 @@ const [submissionHistory, setSubmissionHistory] = useState([
         alert(`Failed to get location: ${errorMessage}`);
       },
       { enableHighAccuracy: true, timeout: 10000, maximumAge: 60000 }
+=======
+ const getCurrentLocation = (isCheckOut = false) => {
+  // Jika DEMO_MODE aktif, gunakan koordinat dummy dari site
+  if (DEMO_MODE) {
+    const userSite = user.site || "Jakarta Utara - Site A";
+    const siteData = DEMO_SITE_COORDINATES[userSite] || 
+                     DEMO_SITE_COORDINATES["Jakarta Utara - Site A"];
+    
+    // Buat koordinat random dalam radius 50-200 meter dari site
+    const randomOffset = () => (Math.random() * 0.003 - 0.0015); // ~50-200 meter
+    const demoLat = siteData.lat + randomOffset();
+    const demoLng = siteData.lng + randomOffset();
+    
+    // Hitung jarak dari perusahaan (simulasi)
+    const distance = calculateDistance(
+      demoLat,
+      demoLng,
+      COMPANY_COORDINATES.latitude,
+      COMPANY_COORDINATES.longitude
+>>>>>>> 7a6e8f41932157dd9921fa16275990620c51475c
     );
-  };
+    
+    const isWithinRadius = distance <= ALLOWED_RADIUS_METERS;
+    
+    // Format lokasi demo
+    const locationString = `Lat: ${demoLat.toFixed(6)}, Long: ${demoLng.toFixed(6)}`;
+    const statusMessage = isWithinRadius
+      ? `✓ Within allowed radius (${Math.round(distance)} m from company)`
+      : `✗ Outside allowed radius (${Math.round(distance)} m from company) - DEMO MODE`;
+    
+    const fullLocationString = `${locationString}\n${statusMessage}`;
+    
+    if (isCheckOut) {
+      setCurrentLocationCheckOut(fullLocationString);
+      setLocationCapturedCheckOut(true); // Selalu true di demo mode
+    } else {
+      setCurrentLocation(fullLocationString);
+      setLocationCaptured(true); // Selalu true di demo mode
+    }
+    
+    // Alert khusus untuk demo mode
+    alert(
+      `DEMO MODE: Location simulated near ${userSite}\n` +
+      `Coordinates: ${demoLat.toFixed(6)}, ${demoLng.toFixed(6)}\n` +
+      `Distance from company: ${Math.round(distance)} meters\n` +
+      `Check-in ${isWithinRadius ? 'allowed' : 'simulated'} for demo purposes`
+    );
+    
+    return;
+  }
+  
+  // KODE ASLI untuk mode non-demo
+  navigator.geolocation.getCurrentPosition(
+    (position) => {
+      const { latitude, longitude } = position.coords;
+      const distance = calculateDistance(
+        latitude,
+        longitude,
+        COMPANY_COORDINATES.latitude,
+        COMPANY_COORDINATES.longitude
+      );
+      const isWithinRadius = distance <= ALLOWED_RADIUS_METERS;
+      
+      const locationString = `Lat: ${latitude.toFixed(6)}, Long: ${longitude.toFixed(6)}`;
+      const statusMessage = isWithinRadius
+        ? `✓ Within allowed radius (${Math.round(distance)} m from company)`
+        : `✗ Outside allowed radius (${Math.round(distance)} m from company)`;
+      
+      const fullLocationString = `${locationString}\n${statusMessage}`;
+      
+      if (isCheckOut) {
+        setCurrentLocationCheckOut(fullLocationString);
+        setLocationCapturedCheckOut(isWithinRadius);
+      } else {
+        setCurrentLocation(fullLocationString);
+        setLocationCaptured(isWithinRadius);
+      }
+    },
+    (error) => {
+      console.error("Error getting location:", error);
+      let errorMessage = "Unknown error occurred";
+      switch (error.code) {
+        case error.PERMISSION_DENIED:
+          errorMessage = "Location access denied by user";
+          break;
+        case error.POSITION_UNAVAILABLE:
+          errorMessage = "Location information unavailable";
+          break;
+        case error.TIMEOUT:
+          errorMessage = "Location request timed out";
+          break;
+      }
+      if (isCheckOut) {
+        setCurrentLocationCheckOut("Location unavailable");
+        setLocationCapturedCheckOut(false);
+      } else {
+        setCurrentLocation("Location unavailable");
+        setLocationCaptured(false);
+      }
+      alert(`Failed to get location: ${errorMessage}`);
+    },
+    { enableHighAccuracy: true, timeout: 5000, maximumAge: 0 }
+  );
+};
 
   const startCamera = (isCheckOut = false) => {
     if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
