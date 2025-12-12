@@ -9,5 +9,17 @@ export class ShiftValidation {
         userId: z.array(z.number().int()),
         siteId: z.number().int(),
     })
+    
+    static GETASSIGNABLE = z.object({
+        page: z.coerce.number("Invalid parameter").int(),
+        size: z.coerce.number("Invalid parameter").int(),
+        date: z.string().date()
+    })
+
+    static GETBYDATE = z.object({
+        page: z.coerce.number("Invalid parameter").int(),
+        size: z.coerce.number("Invalid parameter").int(),
+        date: z.string().date()
+    })
 
 }

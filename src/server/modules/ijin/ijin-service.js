@@ -2,6 +2,7 @@ import { ResponseError } from "@/src/lib/response-error";
 import { getUser } from "../../utils/auth";
 import { IzinRepository } from "./ijin-repository";
 import { IzinValidation } from "./ijin-validation";
+import { NotificationRepository } from "../notification/notification-repository";
 
 export class IjinService {
 
@@ -113,7 +114,7 @@ export class IjinService {
         const izin = await IzinRepository.getById({ijinId: validated.id})
         if(!izin){throw new ResponseError(200, "Resource you are trying to update does not exist")}
         const approved = await IzinRepository.approve({ijinId: validated.id})
-
+        
         const result = {
             id: approved.id,
             start: approved.ijinDate,
@@ -121,6 +122,9 @@ export class IjinService {
             status: approved.ijinStatus,
             reason: approved.reason
         }
+
+        //create notification for related operator
+        await NotificationRepository.create({userId: approved.userId, type: "IJIN", title: `Permintaan ijin tanggal ${approved.ijinDate.toLocaleDateString()} disetujui`})
 
         return result
     }
@@ -139,6 +143,9 @@ export class IjinService {
             status: rejected.ijinStatus,
             reason: rejected.reason
         }
+
+        //create notification for related operator
+        await NotificationRepository.create({userId: approved.userId, type: "IJIN", title: `Permintaan ijin tanggal ${rejected.ijinDate.toLocaleDateString()} ditolak`})
 
         return result
     }

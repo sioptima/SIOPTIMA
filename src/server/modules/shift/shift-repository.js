@@ -29,7 +29,8 @@ export class ShiftRepository {
                 include: {
                     user: {
                         select: {
-                            username: true
+                            username: true,
+                            id: true,
                         }
                     },
                     site: {
@@ -112,6 +113,127 @@ export class ShiftRepository {
                     shiftDate: 'asc'
                 }
             })
+        } catch (error) {
+            throw new ResponseError(500, "Failed when trying to find shift information in database")
+        }
+    }
+
+    static async getAssignable(data){
+        try {
+            const skip = (data.page - 1) * data.size;
+
+            const targetDate = new Date(data.date);
+            const startOfDay = new Date(targetDate.getFullYear(), targetDate.getMonth(), targetDate.getDate())
+            const endOfDay = new Date(targetDate.getFullYear(), targetDate.getMonth(), targetDate.getDate()+1)
+
+            //find week range to be used for checking weekly hour
+            const weekDates = daysOfWeek(new Date(targetDate.getFullYear(), targetDate.getMonth(), targetDate.getDate())); // array of 7 days 
+            const weekStart = weekDates[0];
+            const weekEnd = weekDates[6];
+            
+            const query = {
+                status: "ACTIVE",
+            
+                //NOT in Ijin on targetDate
+                ijin: {
+                  none: {
+                      ijinDate: { gte: startOfDay, lt:endOfDay},
+                  }
+                },
+            
+                //NOT in Libur on targetDate
+                libur: {
+                  none: {
+                      liburDate: { gte: startOfDay, lt: endOfDay },
+                  }
+                },
+            
+                //NOT assigned to a shift on targetDate
+                shift: {
+                  none: {
+                      shiftDate: { gte: startOfDay, lt: endOfDay },
+                  }
+                },
+            
+                //Weekly hours < 40
+                jamKerja: {
+                  none: {
+                    weekStart: weekStart,
+                    weekEnd: weekEnd,
+                    totalHours: { gt: 40 }
+                  }
+                }
+              }
+
+            const [eligibleOperators, count] = await PrismaClient.$transaction([
+                PrismaClient.user.findMany({
+                  where: query,
+                  select: {
+                    id: true,
+                    username: true,
+                    role: {select: {name: true}},
+                    profile: {select: {name: true}}
+                  },
+                  take: data.size,
+                  skip: skip
+                }),
+                PrismaClient.user.count({
+                    where: query
+                })
+
+            ])
+
+            return {eligibleOperators, count};
+        } catch (error) {
+            throw new ResponseError(500, error.message)
+        }
+    }
+
+    static async getByDate(data){
+        try {
+            const skip = (data.page - 1) * data.size;
+
+            const date = new Date(data.date)
+            const startOfDay = new Date(date.getFullYear(), date.getMonth(), date.getDate())
+            const endOfDay = new Date(date.getFullYear(), date.getMonth(), date.getDate()+1)
+
+            const [shifts, count] = await PrismaClient.$transaction([
+                PrismaClient.jadwalShift.findMany({
+                    where: {
+                        shiftDate: {
+                            gte: startOfDay,
+                            lt: endOfDay,
+                        }
+                    },
+                    include: {
+                        site: {
+                            select: {
+                                name: true,
+                            }
+                        },
+                        user: {
+                            select: {
+                                username: true,
+                                profile: {
+                                    select: {name: true,}
+                                }
+                            }
+                        }
+                    },
+                    take: data.size,
+                    skip: skip 
+                }),
+                PrismaClient.jadwalShift.count({
+                    where: {
+                        shiftDate: {
+                            gte: startOfDay,
+                            lt: endOfDay,
+                        }
+                    }
+                })
+            ])
+
+            return {shifts, count};
         } catch (error) {
             throw new ResponseError(500, error.message)
         }

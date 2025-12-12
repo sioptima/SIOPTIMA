@@ -228,6 +228,7 @@ export class PresensiRepository {
             },
             select: {
                 presensiDate: true,
+                distanceToSite: true,
                 checkOut: {
                     select: {
                         checkOutDate: true,
@@ -343,7 +344,9 @@ export class PresensiRepository {
                     statusApproval: true,
                     approver: true,
                     updatedAt: true,
-                    notes: true
+                    notes: true,
+                    userId: true,
+                    presensiDate:true,
                 }
             })
         } catch (error) {
@@ -372,6 +375,8 @@ export class PresensiRepository {
                     approver: true,
                     updatedAt: true,
                     notes: true,
+                    userId: true,
+                    presensiDate: true,
                 }
             })
         } catch (error) {

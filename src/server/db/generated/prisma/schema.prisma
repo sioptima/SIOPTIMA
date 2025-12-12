@@ -60,6 +60,8 @@ model User {
   feedback Feedback[]
 
   jamKerja JamKerja[]
+
+  notification Notification[]
 }
 
 enum RoleName {
@@ -381,6 +383,28 @@ model Activity {
   title     String
   metadata  Json?
   createdAt DateTime @default(now())
+
+  user   User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId Int
+}
+
+enum NotificationType {
+  SHIFT
+  PRESENSI
+  TICKET
+  IJIN
+  LIBUR
+  LAPORAN
+  SITE
+  SYSTEM
+}
+
+model Notification {
+  id        Int              @id @default(autoincrement())
+  title     String
+  type      NotificationType
+  createdAt DateTime         @default(now())
+  read      Boolean          @default(false)
 
   user   User @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId Int

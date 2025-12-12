@@ -1,0 +1,78 @@
+paths:
+  /api/notification:
+    get:
+      summary: Get current user unread notification list
+      tags:
+        - Notification
+      
+      responses:
+        '200':
+          description: Notification list
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  message: 
+                    type: string
+                    example: Notifications retrieved
+                  data:
+                    type: object
+                    properties:
+
+  /api/notification/read-all:
+    patch:
+      summary: Read all current user notifications
+      tags:
+        - Notification
+      
+      responses:
+        '200':
+          description: Request confirmation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  message: 
+                    type: string
+                    example: Notifications read
+                  data:
+                    type: object
+                    properties:
+
+  /api/notification/{id}/read:
+    patch:
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+            description: Notification's id to read
+      summary: Read a notification
+      tags:
+        - Notification
+
+      responses:
+        '200':
+          description: Request confirmation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: Notification read
+                  data:
+                    type: object
+                    properties:

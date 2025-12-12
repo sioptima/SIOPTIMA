@@ -1,0 +1,137 @@
+paths:
+  /api/hrd/shift:
+    post:
+      summary: Create a shift for multiple user
+      tags:
+        - Shifts
+
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                date:
+                  type: string
+                  format: date
+                  example: "2025-12-15"
+                time:
+                  type: string
+                  example: "15:30"
+                end:
+                  type: string
+                  example: "21:00"
+                userId:
+                  type: array
+                  items:
+                    type: integer
+                    example: 1
+                siteId:
+                  type: integer
+                  example: 1
+
+      responses:
+        '200':
+          description: Request confirmation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: Shift created
+                  data:
+                    type: object
+                    properties:
+
+    get:
+      parameters:
+      - in: query
+        name: page
+        schema:
+          type: integer
+          description: Which page to show
+      - in: query
+        name: limit
+        schema:
+          type: integer
+          description: Number of record to return
+      - in: query
+        name: date
+        required: true
+        schema:
+          type: string
+          format: date
+          description: Target date
+      summary: Get a list of shift given a certain date
+      tags:
+        - Shifts
+
+      responses:
+        '200':
+          description: List of shifts
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: Shifts retrieved
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+
+  /api/hrd/shift/operator:                    
+    get:
+      parameters:
+      - in: query
+        name: page
+        schema:
+          type: integer
+          description: Which page to show
+      - in: query
+        name: limit
+        schema:
+          type: integer
+          description: Number of record to return
+      - in: query
+        name: date
+        required: true
+        schema:
+          type: string
+          format: date
+          description: Target date
+      summary: Get a list of assignable operator given a date
+      tags:
+        - Shifts
+
+      responses:
+        '200':
+          description: List of operators
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: Operators retrieved
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:

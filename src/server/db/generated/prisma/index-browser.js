@@ -335,6 +335,15 @@ exports.Prisma.ActivityScalarFieldEnum = {
   userId: 'userId'
 };
 
+exports.Prisma.NotificationScalarFieldEnum = {
+  id: 'id',
+  title: 'title',
+  type: 'type',
+  createdAt: 'createdAt',
+  read: 'read',
+  userId: 'userId'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -417,6 +426,17 @@ exports.TicketStatus = exports.$Enums.TicketStatus = {
   RESOLVED: 'RESOLVED'
 };
 
+exports.NotificationType = exports.$Enums.NotificationType = {
+  SHIFT: 'SHIFT',
+  PRESENSI: 'PRESENSI',
+  TICKET: 'TICKET',
+  IJIN: 'IJIN',
+  LIBUR: 'LIBUR',
+  LAPORAN: 'LAPORAN',
+  SITE: 'SITE',
+  SYSTEM: 'SYSTEM'
+};
+
 exports.Prisma.ModelName = {
   User: 'User',
   Role: 'Role',
@@ -434,7 +454,8 @@ exports.Prisma.ModelName = {
   Help: 'Help',
   Ticket: 'Ticket',
   Feedback: 'Feedback',
-  Activity: 'Activity'
+  Activity: 'Activity',
+  Notification: 'Notification'
 };
 
 /**

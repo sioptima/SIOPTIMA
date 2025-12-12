@@ -194,6 +194,8 @@ export class ReportRepository {
                 select: {
                     id: true,
                     laporanStatus: true,
+                    userId: true,
+                    laporanDate: true,
                 }
             })
         } catch (error) {
@@ -213,6 +215,8 @@ export class ReportRepository {
                 select: {
                     id: true,
                     laporanStatus: true,
+                    userId: true,
+                    laporanDate: true,
                 }
             })
         } catch (error) {

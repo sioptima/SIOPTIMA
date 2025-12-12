@@ -6,6 +6,7 @@ import { ResponseError } from "@/src/lib/response-error";
 import { PresensiRepository } from "../presensi/presensi-repository";
 import { transformFormData } from "../../utils/helper";
 import { trackActivity } from "../../utils/trackUser";
+import { NotificationRepository } from "../notification/notification-repository";
 
 export class ReportService {
     
@@ -221,6 +222,12 @@ export class ReportService {
 
         const approvedReport = await ReportRepository.approve(validatedParam.id)
 
+        //create notification for related operator
+        await NotificationRepository.create({
+            userId: approvedReport.userId, 
+            type: "LAPORAN", 
+            title: `Laporan tanggal ${approvedReport.laporanDate.toLocaleDateString()} diterima`})
+
         return {
             id: approvedReport.id,
             status: approvedReport.laporanStatus
@@ -234,6 +241,12 @@ export class ReportService {
         if(!report){throw new ResponseError(200, "Report does not exist")}        
 
         const approvedReport = await ReportRepository.reject(validatedParam.id)
+
+        //create notification for related operator
+        await NotificationRepository.create({
+            userId: approvedReport.userId, 
+            type: "LAPORAN", 
+            title: `Laporan tanggal ${approvedReport.laporanDate.toLocaleDateString()} ditolak`})
 
         return {
             id: approvedReport.id,

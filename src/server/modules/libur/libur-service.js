@@ -2,6 +2,7 @@ import { ResponseError } from "@/src/lib/response-error";
 import { getUser } from "../../utils/auth";
 import { LiburRepository } from "./libur-repository";
 import { LiburValidation } from "./libur-validation";
+import { NotificationRepository } from "../notification/notification-repository";
 
 export class LiburService {
 
@@ -122,6 +123,12 @@ export class LiburService {
             reason: approved.reason
         }
 
+        //create notification for related operator
+        await NotificationRepository.create({
+            userId: approved.userId, 
+            type: "LIBUR", 
+            title: `Permintaan libur tanggal ${approved.liburDate.toLocaleDateString()} diterima`})
+
         return result
     }
 
@@ -139,6 +146,12 @@ export class LiburService {
             status: rejected.liburStatus,
             reason: rejected.reason
         }
+
+         //create notification for related operator
+         await NotificationRepository.create({
+            userId: rejected.userId, 
+            type: "LIBUR", 
+            title: `Permintaan libur tanggal ${rejected.liburEnd.toLocaleDateString()} ditolak`})
 
         return result
     }

@@ -7,6 +7,7 @@ import { ShiftRepository } from "../shift/shift-repository";
 import { calculateDistance, transformFormData } from "../../utils/helper";
 import { trackActivity } from "../../utils/trackUser";
 import ExifReader from "exifreader";
+import { NotificationRepository } from "../notification/notification-repository";
 
 export class PresensiService{
 
@@ -215,6 +216,7 @@ export class PresensiService{
             selfieCheckOut: (record.checkOut?.fotoDiri) ? record.checkOut.fotoDiri : "-",
             approvedBy: (record.approver?.username) ? record.approver.username : "-",
             approvedAt: (record.approvedAt) ? record.approvedAt : "-",
+            distanceToSite: (record.distanceToSite) ? record.distanceToSite : "-"
         }))
 
         return {
@@ -239,7 +241,8 @@ export class PresensiService{
             location: (record.shift?.site.name) ? record.shift.site.name : null,
             status: (record) ? record.statusPresensi : null,
             isCheckedIn: (record.presensiDate) ? true : false,
-            isCheckedOut: (record.checkOut) ? true : false
+            isCheckedOut: (record.checkOut) ? true : false,
+            distanceToSite: (record.distanceToSite) ? record.distanceToSite : "-",
         }
     }
 
@@ -283,7 +286,8 @@ export class PresensiService{
             selfieCheckOut: (record.checkOut?.fotoDiri) ? record.checkOut.fotoDiri : "-",
             approvedBy: (record.approver?.username) ? record.approver.username : "-",
             approvedAt: (record.approvedAt) ? record.approvedAt : "-",
-            notes: (record.approvedAt) ? `Attendance approved by ${record.approver.username}` : "Attendance not approved yet" 
+            notes: (record.approvedAt) ? `Attendance approved by ${record.approver.username}` : "Attendance not approved yet",
+            distanceToSite: (record.distanceToSite) ? record.distanceToSite : "-"
         }
 
         return recordTransform;
@@ -307,6 +311,12 @@ export class PresensiService{
             id: approvedRecord.id,
             approvedAt: approvedRecord.updatedAt,
         })
+
+        //create notification for related operator
+        await NotificationRepository.create({
+           userId: approvedRecord.userId, 
+           type: "PRESENSI", 
+           title: `Presensi tanggal ${approvedRecord.presensiDate.toLocaleDateString()} diterima`})
 
         return {
             id: approvedRecord.id,
@@ -335,6 +345,12 @@ export class PresensiService{
             id: rejectedRecord.id,
             approvedAt: rejectedRecord.updatedAt,
         })
+
+        //create notification for related operator
+        await NotificationRepository.create({
+            userId: rejectedRecord.userId, 
+            type: "PRESENSI", 
+            title: `Presensi tanggal ${rejectedRecord.presensiDate.toLocaleDateString()} ditolak`})
 
         return {
             id: rejectedRecord.id,
@@ -372,6 +388,7 @@ export class PresensiService{
             submittedBy: (a.user.profile?.name) ? a.user.profile.name : a.user.username,
             location: (a.shift?.site?.name) ? a.shift.site.name : "-",
             notes: (a.notes) ? a.notes : "-",
+            distanceToSite: (a.distanceToSite) ? a.distanceToSite : "-",
         }))
 
         return {
