@@ -35,6 +35,56 @@ import {
   DocumentTextIcon,
 } from "@heroicons/react/24/outline";
 
+// Data provinsi dan kota di Indonesia
+const provinsiList = [
+  "Aceh", "Sumatera Utara", "Sumatera Barat", "Riau", "Jambi", 
+  "Sumatera Selatan", "Bengkulu", "Lampung", "Kepulauan Bangka Belitung", 
+  "Kepulauan Riau", "DKI Jakarta", "Jawa Barat", "Jawa Tengah", 
+  "DI Yogyakarta", "Jawa Timur", "Banten", "Bali", 
+  "Nusa Tenggara Barat", "Nusa Tenggara Timur", "Kalimantan Barat", 
+  "Kalimantan Tengah", "Kalimantan Selatan", "Kalimantan Timur", 
+  "Kalimantan Utara", "Sulawesi Utara", "Sulawesi Tengah", 
+  "Sulawesi Selatan", "Sulawesi Tenggara", "Gorontalo", 
+  "Sulawesi Barat", "Maluku", "Maluku Utara", "Papua Barat", "Papua"
+];
+
+const kotaByProvinsi = {
+  "Aceh": ["Banda Aceh", "Langsa", "Lhokseumawe", "Sabang", "Subulussalam"],
+  "Sumatera Utara": ["Medan", "Binjai", "Padang Sidempuan", "Pematangsiantar", "Sibolga", "Tanjungbalai", "Tebing Tinggi"],
+  "Sumatera Barat": ["Padang", "Bukittinggi", "Padang Panjang", "Pariaman", "Payakumbuh", "Sawahlunto", "Solok"],
+  "Riau": ["Pekanbaru", "Dumai"],
+  "Jambi": ["Jambi", "Sungai Penuh"],
+  "Sumatera Selatan": ["Palembang", "Pagar Alam", "Prabumulih"],
+  "Bengkulu": ["Bengkulu"],
+  "Lampung": ["Bandar Lampung", "Metro"],
+  "Kepulauan Bangka Belitung": ["Pangkal Pinang"],
+  "Kepulauan Riau": ["Batam", "Tanjung Pinang"],
+  "DKI Jakarta": ["Jakarta Pusat", "Jakarta Utara", "Jakarta Selatan", "Jakarta Timur", "Jakarta Barat"],
+  "Jawa Barat": ["Bandung", "Bekasi", "Bogor", "Cimahi", "Cirebon", "Depok", "Sukabumi", "Tasikmalaya", "Banjar"],
+  "Jawa Tengah": ["Semarang", "Salatiga", "Surakarta", "Pekalongan", "Tegal", "Magelang"],
+  "DI Yogyakarta": ["Yogyakarta"],
+  "Jawa Timur": ["Surabaya", "Malang", "Batu", "Blitar", "Kediri", "Madiun", "Mojokerto", "Pasuruan", "Probolinggo"],
+  "Banten": ["Serang", "Cilegon", "Tangerang", "Tangerang Selatan"],
+  "Bali": ["Denpasar"],
+  "Nusa Tenggara Barat": ["Mataram", "Bima"],
+  "Nusa Tenggara Timur": ["Kupang"],
+  "Kalimantan Barat": ["Pontianak", "Singkawang"],
+  "Kalimantan Tengah": ["Palangka Raya"],
+  "Kalimantan Selatan": ["Banjarbaru", "Banjarmasin"],
+  "Kalimantan Timur": ["Balikpapan", "Bontang", "Samarinda"],
+  "Kalimantan Utara": ["Tarakan"],
+  "Sulawesi Utara": ["Manado", "Bitung", "Kotamobagu", "Tomohon"],
+  "Sulawesi Tengah": ["Palu"],
+  "Sulawesi Selatan": ["Makassar", "Palopo", "Parepare"],
+  "Sulawesi Tenggara": ["Kendari", "Bau-Bau"],
+  "Gorontalo": ["Gorontalo"],
+  "Sulawesi Barat": ["Mamuju"],
+  "Maluku": ["Ambon", "Tual"],
+  "Maluku Utara": ["Ternate", "Tidore Kepulauan"],
+  "Papua Barat": ["Manokwari", "Sorong"],
+  "Papua": ["Jayapura"]
+};
+
 export default function Admin() {
   const [selectedStatus, setSelectedStatus] = useState("All Status");
   const [selectedRole, setSelectedRole] = useState("all");
@@ -251,76 +301,120 @@ export default function Admin() {
   ];
 
   // ==================== MASTER DATA STATE ====================
-  const [sitesData, setSitesData] = useState([
+  // Initial sites data dengan 6 site (2 Surabaya, 2 Jakarta, 2 Kalimantan) + 2 site wajib
+  const initialSitesData = [
+    // 2 Site Surabaya
     {
       id: 1,
-      name: "Jakarta Utara - Site A",
-      city: "Jakarta Utara",
-      address: "Jl. Industri No. 123, Jakarta Utara",
-      province: "DKI Jakarta",
-      latitude: "-6.1333",
-      longitude: "106.8833",
+      name: "Surabaya - Site A",
+      city: "Surabaya",
+      address: "Jl. Basuki Rahmat No. 123, Surabaya",
+      province: "Jawa Timur",
+      latitude: "-7.2504",
+      longitude: "112.7688",
       operators: 3,
       status: "active",
       lastReport: "2 hours ago",
     },
     {
       id: 2,
-      name: "Bandung - Site B",
-      city: "Bandung",
-      address: "Jl. Soekarno Hatta No. 456, Bandung",
-      province: "Jawa Barat",
-      latitude: "-6.9147",
-      longitude: "107.6098",
-      operators: 2,
+      name: "Surabaya - Site B",
+      city: "Surabaya",
+      address: "Jl. Ahmad Yani No. 456, Surabaya",
+      province: "Jawa Timur",
+      latitude: "-7.2575",
+      longitude: "112.7521",
+      operators: 4,
       status: "active",
       lastReport: "3 hours ago",
     },
+    // 2 Site Jakarta
     {
       id: 3,
-      name: "Surabaya - Site C",
-      city: "Surabaya",
-      address: "Jl. Basuki Rahmat No. 789, Surabaya",
-      province: "Jawa Timur",
-      latitude: "-7.2504",
-      longitude: "112.7688",
-      operators: 4,
+      name: "Jakarta - Site A",
+      city: "Jakarta Utara",
+      address: "Jl. Industri No. 123, Jakarta Utara",
+      province: "DKI Jakarta",
+      latitude: "-6.1333",
+      longitude: "106.8833",
+      operators: 2,
       status: "active",
       lastReport: "5 hours ago",
     },
     {
       id: 4,
-      name: "Semarang - Site D",
-      city: "Semarang",
-      address: "Jl. Pemuda No. 321, Semarang",
-      province: "Jawa Tengah",
-      latitude: "-6.9667",
-      longitude: "110.4167",
+      name: "Jakarta - Site B",
+      city: "Jakarta Selatan",
+      address: "Jl. Sudirman No. 456, Jakarta Selatan",
+      province: "DKI Jakarta",
+      latitude: "-6.2088",
+      longitude: "106.8456",
+      operators: 3,
+      status: "active",
+      lastReport: "1 hour ago",
+    },
+    // 2 Site Kalimantan
+    {
+      id: 5,
+      name: "Kalimantan - Site A",
+      city: "Balikpapan",
+      address: "Jl. MT Haryono No. 789, Balikpapan",
+      province: "Kalimantan Timur",
+      latitude: "-1.2675",
+      longitude: "116.8289",
       operators: 2,
-      status: "inactive",
+      status: "active",
       lastReport: "2 days ago",
     },
     {
-      id: 5,
-      name: "Yogyakarta - Site E",
-      city: "Yogyakarta",
-      address: "Jl. Malioboro No. 654, Yogyakarta",
-      province: "DI Yogyakarta",
-      latitude: "-7.7971",
-      longitude: "110.3688",
+      id: 6,
+      name: "Kalimantan - Site B",
+      city: "Samarinda",
+      address: "Jl. Pangeran Hidayatullah No. 321, Samarinda",
+      province: "Kalimantan Timur",
+      latitude: "-0.5021",
+      longitude: "117.1536",
       operators: 3,
-      status: "maintenance",
-      lastReport: "1 hour ago",
+      status: "inactive",
+      lastReport: "2 days ago",
     },
-  ]);
+    // 2 Site Wajib
+    {
+      id: 7,
+      name: "Central Office",
+      city: "Jakarta Pusat",
+      address: "Jl. Jenderal Sudirman No. 1, Jakarta Pusat",
+      province: "DKI Jakarta",
+      latitude: "-6.2088",
+      longitude: "106.8456",
+      operators: 10,
+      status: "active",
+      lastReport: "Just now",
+    },
+    {
+      id: 8,
+      name: "Head Office",
+      city: "Surabaya",
+      address: "Jl. Tunjungan No. 100, Surabaya",
+      province: "Jawa Timur",
+      latitude: "-7.2658",
+      longitude: "112.7478",
+      operators: 15,
+      status: "active",
+      lastReport: "Just now",
+    },
+  ];
 
-  const [usersData, setUsersData] = useState([
+  const [sitesData, setSitesData] = useState(initialSitesData);
+
+  // Initial users data yang sudah terintegrasi dengan sitesData
+  const initialUsersData = [
     {
       id: 1,
       name: "Budi Santoso",
       email: "budi.santoso@email.com",
       role: "operator",
-      site: "Jakarta Utara - Site A",
+      site: "Surabaya - Site A",
       status: "active",
       lastActive: "2 hours ago",
       initial: "B",
@@ -350,19 +444,21 @@ export default function Admin() {
       name: "Operator 2",
       email: "operator2@email.com",
       role: "operator",
-      site: "Bandung - Site B",
+      site: "Jakarta - Site A",
       status: "inactive",
       lastActive: "3 days ago",
       initial: "O",
     },
-  ]);
+  ];
+
+  const [usersData, setUsersData] = useState(initialUsersData);
 
   const [reportsData, setReportsData] = useState([
     {
       id: 1,
       date: "2025-01-27",
       time: "08:30",
-      site: "Jakarta Utara - Site A",
+      site: "Surabaya - Site A",
       operator: "Budi Santoso",
       pH: 7.2,
       flowRate: "450 L/h",
@@ -380,7 +476,7 @@ export default function Admin() {
       id: 2,
       date: "2025-01-27",
       time: "08:15",
-      site: "Bandung - Site B",
+      site: "Jakarta - Site A",
       operator: "Siti Nurhaliza",
       pH: 6.8,
       flowRate: "380 L/h",
@@ -399,7 +495,7 @@ export default function Admin() {
       id: 3,
       date: "2025-01-27",
       time: "08:25",
-      site: "Surabaya - Site C",
+      site: "Surabaya - Site B",
       operator: "Ahmad Yani",
       pH: 7.5,
       flowRate: "520 L/h",
@@ -417,7 +513,7 @@ export default function Admin() {
       id: 4,
       date: "2025-01-26",
       time: "14:20",
-      site: "Jakarta Utara - Site A",
+      site: "Surabaya - Site A",
       operator: "Budi Santoso",
       pH: 7.1,
       flowRate: "430 L/h",
@@ -435,7 +531,7 @@ export default function Admin() {
       id: 5,
       date: "2025-01-26",
       time: "11:45",
-      site: "Bandung - Site B",
+      site: "Jakarta - Site B",
       operator: "Siti Nurhaliza",
       pH: 6.9,
       flowRate: "390 L/h",
@@ -691,7 +787,10 @@ export default function Admin() {
       lastReport: "No reports yet",
     };
 
-    setSitesData([...sitesData, newSite]);
+    const updatedSites = [...sitesData, newSite];
+    setSitesData(updatedSites);
+    
+    // Setelah menambahkan site, reset form
     setNewSiteData({
       name: "",
       city: "",
@@ -718,15 +817,24 @@ export default function Admin() {
       return;
     }
 
-    setSitesData(
-      sitesData.map((site) => (site.id === editingSite.id ? editingSite : site))
+    const updatedSites = sitesData.map((site) => 
+      site.id === editingSite.id ? editingSite : site
     );
+    setSitesData(updatedSites);
     setIsEditSiteModalOpen(false);
     setEditingSite(null);
     setFormErrors({});
   };
 
   const handleDeleteSite = (id) => {
+    // Cek apakah site sedang digunakan oleh user
+    const isSiteUsed = usersData.some(user => user.site === sitesData.find(s => s.id === id)?.name);
+    
+    if (isSiteUsed) {
+      alert("Site tidak dapat dihapus karena sedang digunakan oleh user. Silahkan ubah site user terlebih dahulu.");
+      return;
+    }
+
     if (window.confirm("Are you sure you want to delete this site?")) {
       setSitesData(sitesData.filter((site) => site.id !== id));
     }
@@ -736,6 +844,35 @@ export default function Admin() {
     setNewSiteData({ ...newSiteData, [field]: value });
     if (formErrors[field]) {
       setFormErrors({ ...formErrors, [field]: null });
+    }
+  };
+
+  // Handler untuk perubahan provinsi (reset kota saat provinsi berubah)
+  const handleProvinceChange = (value, isEditMode = false) => {
+    if (isEditMode) {
+      setEditingSite({ 
+        ...editingSite, 
+        province: value, 
+        city: "" // Reset kota saat provinsi berubah
+      });
+      if (formErrors.province) {
+        setFormErrors({ ...formErrors, province: null });
+      }
+      if (formErrors.city) {
+        setFormErrors({ ...formErrors, city: null });
+      }
+    } else {
+      setNewSiteData({ 
+        ...newSiteData, 
+        province: value, 
+        city: "" // Reset kota saat provinsi berubah
+      });
+      if (formErrors.province) {
+        setFormErrors({ ...formErrors, province: null });
+      }
+      if (formErrors.city) {
+        setFormErrors({ ...formErrors, city: null });
+      }
     }
   };
 
@@ -1218,8 +1355,10 @@ export default function Admin() {
     return config[status] || config.inactive;
   };
 
+  // Fungsi untuk mendapatkan daftar site options yang selalu update dari sitesData
   const getSiteOptions = () => {
     const siteNames = sitesData.map((site) => site.name);
+    // Tambahkan site dari usersData yang mungkin belum ada di sitesData
     const additionalSites = usersData
       .map((user) => user.site)
       .filter((site) => !siteNames.includes(site));
@@ -1320,20 +1459,92 @@ export default function Admin() {
     (ticket) => ticket.priority === "high"
   ).length;
 
-  // ==================== MODAL ADD USER ====================
+  // ==================== MODAL ADD USER (FIXED BISA DIKETIK) ====================
   const AddUserModal = () => {
+    // Gunakan state lokal untuk form dalam modal
+    const [formData, setFormData] = useState({
+      name: "",
+      email: "",
+      role: "operator",
+      site: "",
+      status: "active",
+    });
+
+    // Inisialisasi form data saat modal terbuka
+    useEffect(() => {
+      if (isAddUserModalOpen) {
+        setFormData({
+          name: newUserData.name,
+          email: newUserData.email,
+          role: newUserData.role,
+          site: newUserData.site,
+          status: newUserData.status,
+        });
+      }
+    }, [isAddUserModalOpen]);
+
+    const handleFormChange = (field, value) => {
+      setFormData(prev => ({
+        ...prev,
+        [field]: value
+      }));
+      
+      // Clear error jika ada
+      if (userFormErrors[field]) {
+        setUserFormErrors(prev => ({
+          ...prev,
+          [field]: null
+        }));
+      }
+    };
+
+    const handleSubmit = () => {
+      const errors = validateUserForm(formData);
+      if (Object.keys(errors).length > 0) {
+        setUserFormErrors(errors);
+        return;
+      }
+
+      // Update newUserData di parent component
+      setNewUserData({
+        name: formData.name,
+        email: formData.email,
+        role: formData.role,
+        site: formData.site,
+        status: formData.status,
+      });
+
+      // Panggil handleAddUser
+      const newUser = {
+        id: usersData.length + 1,
+        ...formData,
+        lastActive: "Just now",
+        initial: formData.name.charAt(0) || "U",
+      };
+
+      setUsersData([...usersData, newUser]);
+      setIsAddUserModalOpen(false);
+      setUserFormErrors({});
+      
+      // Reset form data
+      setFormData({
+        name: "",
+        email: "",
+        role: "operator",
+        site: "",
+        status: "active",
+      });
+    };
+
     return (
       isAddUserModalOpen && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-[9999] p-4">
-          <div className="bg-white rounded-2xl shadow-2xl w-full max-w-md max-h-[85vh] flex flex-col overflow-hidden">
+          <div className="bg-white rounded-xl shadow-xl w-full max-w-md max-h-[85vh] flex flex-col overflow-hidden">
+            {/* Header */}
             <div className="flex justify-between items-center px-6 py-4 border-b border-gray-200 bg-gray-50">
               <div>
-                <h2 className="text-xl font-bold text-gray-900">
-                  Add New User
-                </h2>
-                <p className="text-sm text-gray-600">
-                  Create a new user account
-                </p>
+                <h2 className="text-xl font-bold text-gray-900">Add New User</h2>
+                <p className="text-sm text-gray-600">Create a new user account</p>
               </div>
               <button
                 onClick={() => setIsAddUserModalOpen(false)}
@@ -1343,20 +1554,20 @@ export default function Admin() {
               </button>
             </div>
 
+            {/* Form Content */}
             <div className="p-6 overflow-y-auto flex-1">
               <div className="space-y-4">
+                {/* Full Name Field */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-900 mb-1">
+                  <label className="block text-sm font-medium text-gray-900 mb-2">
                     Full Name *
                   </label>
                   <input
                     type="text"
-                    value={newUserData.name}
-                    onChange={(e) =>
-                      handleUserInputChange("name", e.target.value)
-                    }
+                    value={formData.name}
+                    onChange={(e) => handleFormChange("name", e.target.value)}
                     placeholder="John Doe"
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500 bg-white text-gray-900"
+                    className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-900 bg-white"
                   />
                   {userFormErrors.name && (
                     <p className="text-red-500 text-xs mt-1">
@@ -1365,18 +1576,17 @@ export default function Admin() {
                   )}
                 </div>
 
+                {/* Email Field */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-900 mb-1">
+                  <label className="block text-sm font-medium text-gray-900 mb-2">
                     Email *
                   </label>
                   <input
                     type="email"
-                    value={newUserData.email}
-                    onChange={(e) =>
-                      handleUserInputChange("email", e.target.value)
-                    }
+                    value={formData.email}
+                    onChange={(e) => handleFormChange("email", e.target.value)}
                     placeholder="john@example.com"
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500 bg-white text-gray-900"
+                    className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-900 bg-white"
                   />
                   {userFormErrors.email && (
                     <p className="text-red-500 text-xs mt-1">
@@ -1385,16 +1595,15 @@ export default function Admin() {
                   )}
                 </div>
 
+                {/* Role Field */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-900 mb-1">
+                  <label className="block text-sm font-medium text-gray-900 mb-2">
                     Role
                   </label>
                   <select
-                    value={newUserData.role}
-                    onChange={(e) =>
-                      handleUserInputChange("role", e.target.value)
-                    }
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500 bg-white text-gray-900"
+                    value={formData.role}
+                    onChange={(e) => handleFormChange("role", e.target.value)}
+                    className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-900 bg-white"
                   >
                     <option value="operator">Operator</option>
                     <option value="hrd">HRD</option>
@@ -1402,16 +1611,15 @@ export default function Admin() {
                   </select>
                 </div>
 
+                {/* Site Field - MENGGUNAKAN DATA TERKINI DARI sitesData */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-900 mb-1">
+                  <label className="block text-sm font-medium text-gray-900 mb-2">
                     Site *
                   </label>
                   <select
-                    value={newUserData.site}
-                    onChange={(e) =>
-                      handleUserInputChange("site", e.target.value)
-                    }
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500 bg-white text-gray-900"
+                    value={formData.site}
+                    onChange={(e) => handleFormChange("site", e.target.value)}
+                    className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-900 bg-white"
                   >
                     <option value="">Select Site</option>
                     {siteOptions.map((site) => (
@@ -1427,16 +1635,15 @@ export default function Admin() {
                   )}
                 </div>
 
+                {/* Status Field */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-900 mb-1">
+                  <label className="block text-sm font-medium text-gray-900 mb-2">
                     Status
                   </label>
                   <select
-                    value={newUserData.status}
-                    onChange={(e) =>
-                      handleUserInputChange("status", e.target.value)
-                    }
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500 bg-white text-gray-900"
+                    value={formData.status}
+                    onChange={(e) => handleFormChange("status", e.target.value)}
+                    className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-900 bg-white"
                   >
                     <option value="active">Active</option>
                     <option value="inactive">Inactive</option>
@@ -1445,16 +1652,17 @@ export default function Admin() {
               </div>
             </div>
 
+            {/* Footer Actions */}
             <div className="px-6 py-4 border-t border-gray-200 bg-gray-50 flex justify-end gap-3">
               <button
                 onClick={() => setIsAddUserModalOpen(false)}
-                className="px-4 py-2 text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-100 transition font-medium"
+                className="px-4 py-2.5 text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-100 transition font-medium"
               >
                 Cancel
               </button>
               <button
-                onClick={handleAddUser}
-                className="px-4 py-2 bg-teal-600 text-white rounded-lg hover:bg-teal-700 transition flex items-center gap-2 font-medium"
+                onClick={handleSubmit}
+                className="px-4 py-2.5 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition flex items-center gap-2 font-medium"
               >
                 <PlusIcon className="w-4 h-4" />
                 Add User
@@ -1466,146 +1674,190 @@ export default function Admin() {
     );
   };
 
-  // ==================== MODAL EDIT USER ====================
+  // ==================== MODAL EDIT USER (FIXED BISA DIKETIK) ====================
   const EditUserModal = () => {
+    const [formData, setFormData] = useState(null);
+
+    // Inisialisasi form data saat modal terbuka
+    useEffect(() => {
+      if (isEditUserModalOpen && editingUser) {
+        setFormData({ ...editingUser });
+      }
+    }, [isEditUserModalOpen, editingUser]);
+
+    const handleFormChange = (field, value) => {
+      setFormData(prev => ({
+        ...prev,
+        [field]: value
+      }));
+      
+      // Clear error jika ada
+      if (userFormErrors[field]) {
+        setUserFormErrors(prev => ({
+          ...prev,
+          [field]: null
+        }));
+      }
+    };
+
+    const handleSubmit = () => {
+      if (!formData) return;
+
+      const errors = validateUserForm(formData);
+      if (Object.keys(errors).length > 0) {
+        setUserFormErrors(errors);
+        return;
+      }
+
+      // Update user di parent component
+      setUsersData(
+        usersData.map((user) => 
+          user.id === formData.id 
+            ? { 
+                ...formData, 
+                initial: formData.name.charAt(0) 
+              } 
+            : user
+        )
+      );
+      
+      setIsEditUserModalOpen(false);
+      setEditingUser(null);
+      setUserFormErrors({});
+    };
+
+    if (!isEditUserModalOpen || !formData) return null;
+
     return (
-      isEditUserModalOpen &&
-      editingUser && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-[9999] p-4">
-          <div className="bg-white rounded-2xl shadow-2xl w-full max-w-md max-h-[85vh] flex flex-col overflow-hidden">
-            <div className="flex justify-between items-center px-6 py-4 border-b border-gray-200 bg-gray-50">
+      <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-[9999] p-4">
+        <div className="bg-white rounded-xl shadow-xl w-full max-w-md max-h-[85vh] flex flex-col overflow-hidden">
+          <div className="flex justify-between items-center px-6 py-4 border-b border-gray-200 bg-gray-50">
+            <div>
+              <h2 className="text-xl font-bold text-gray-900">Edit User</h2>
+              <p className="text-sm text-gray-600">
+                Edit user account information
+              </p>
+            </div>
+            <button
+              onClick={() => setIsEditUserModalOpen(false)}
+              className="p-2 hover:bg-gray-200 rounded-lg transition"
+            >
+              <XMarkIcon className="w-6 h-6 text-gray-600" />
+            </button>
+          </div>
+
+          <div className="p-6 overflow-y-auto flex-1">
+            <div className="space-y-4">
+              {/* Full Name Field */}
               <div>
-                <h2 className="text-xl font-bold text-gray-900">Edit User</h2>
-                <p className="text-sm text-gray-600">
-                  Edit user account information
-                </p>
+                <label className="block text-sm font-medium text-gray-900 mb-2">
+                  Full Name *
+                </label>
+                <input
+                  type="text"
+                  value={formData.name || ""}
+                  onChange={(e) => handleFormChange("name", e.target.value)}
+                  className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-900 bg-white"
+                />
+                {userFormErrors.name && (
+                  <p className="text-red-500 text-xs mt-1">
+                    {userFormErrors.name}
+                  </p>
+                )}
               </div>
-              <button
-                onClick={() => setIsEditUserModalOpen(false)}
-                className="p-2 hover:bg-gray-200 rounded-lg transition"
-              >
-                <XMarkIcon className="w-6 h-6 text-gray-600" />
-              </button>
-            </div>
 
-            <div className="p-6 overflow-y-auto flex-1">
-              <div className="space-y-4">
-                <div>
-                  <label className="block text-sm font-medium text-gray-900 mb-1">
-                    Full Name *
-                  </label>
-                  <input
-                    type="text"
-                    value={editingUser.name}
-                    onChange={(e) =>
-                      handleEditUserInputChange("name", e.target.value)
-                    }
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500 bg-white text-gray-900"
-                  />
-                  {userFormErrors.name && (
-                    <p className="text-red-500 text-xs mt-1">
-                      {userFormErrors.name}
-                    </p>
-                  )}
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium text-gray-900 mb-1">
-                    Email *
-                  </label>
-                  <input
-                    type="email"
-                    value={editingUser.email}
-                    onChange={(e) =>
-                      handleEditUserInputChange("email", e.target.value)
-                    }
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500 bg-white text-gray-900"
-                  />
-                  {userFormErrors.email && (
-                    <p className="text-red-500 text-xs mt-1">
-                      {userFormErrors.email}
-                    </p>
-                  )}
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium text-gray-900 mb-1">
-                    Role
-                  </label>
-                  <select
-                    value={editingUser.role}
-                    onChange={(e) =>
-                      handleEditUserInputChange("role", e.target.value)
-                    }
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500 bg-white text-gray-900"
-                  >
-                    <option value="operator">Operator</option>
-                    <option value="hrd">HRD</option>
-                    <option value="admin">Admin</option>
-                  </select>
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium text-gray-900 mb-1">
-                    Site *
-                  </label>
-                  <select
-                    value={editingUser.site}
-                    onChange={(e) =>
-                      handleEditUserInputChange("site", e.target.value)
-                    }
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500 bg-white text-gray-900"
-                  >
-                    <option value="">Select Site</option>
-                    {siteOptions.map((site) => (
-                      <option key={site} value={site}>
-                        {site}
-                      </option>
-                    ))}
-                  </select>
-                  {userFormErrors.site && (
-                    <p className="text-red-500 text-xs mt-1">
-                      {userFormErrors.site}
-                    </p>
-                  )}
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium text-gray-900 mb-1">
-                    Status
-                  </label>
-                  <select
-                    value={editingUser.status}
-                    onChange={(e) =>
-                      handleEditUserInputChange("status", e.target.value)
-                    }
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500 bg-white text-gray-900"
-                  >
-                    <option value="active">Active</option>
-                    <option value="inactive">Inactive</option>
-                  </select>
-                </div>
+              {/* Email Field */}
+              <div>
+                <label className="block text-sm font-medium text-gray-900 mb-2">
+                  Email *
+                </label>
+                <input
+                  type="email"
+                  value={formData.email || ""}
+                  onChange={(e) => handleFormChange("email", e.target.value)}
+                  className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-900 bg-white"
+                />
+                {userFormErrors.email && (
+                  <p className="text-red-500 text-xs mt-1">
+                    {userFormErrors.email}
+                  </p>
+                )}
               </div>
-            </div>
 
-            <div className="px-6 py-4 border-t border-gray-200 bg-gray-50 flex justify-end gap-3">
-              <button
-                onClick={() => setIsEditUserModalOpen(false)}
-                className="px-4 py-2 text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-100 transition font-medium"
-              >
-                Cancel
-              </button>
-              <button
-                onClick={handleUpdateUser}
-                className="px-4 py-2 bg-teal-600 text-white rounded-lg hover:bg-teal-700 transition flex items-center gap-2 font-medium"
-              >
-                <PencilIcon className="w-4 h-4" />
-                Update User
-              </button>
+              {/* Role Field */}
+              <div>
+                <label className="block text-sm font-medium text-gray-900 mb-2">
+                  Role
+                </label>
+                <select
+                  value={formData.role || "operator"}
+                  onChange={(e) => handleFormChange("role", e.target.value)}
+                  className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-900 bg-white"
+                >
+                  <option value="operator">Operator</option>
+                  <option value="hrd">HRD</option>
+                  <option value="admin">Admin</option>
+                </select>
+              </div>
+
+              {/* Site Field - MENGGUNAKAN DATA TERKINI DARI sitesData */}
+              <div>
+                <label className="block text-sm font-medium text-gray-900 mb-2">
+                  Site *
+                </label>
+                <select
+                  value={formData.site || ""}
+                  onChange={(e) => handleFormChange("site", e.target.value)}
+                  className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-900 bg-white"
+                >
+                  <option value="">Select Site</option>
+                  {siteOptions.map((site) => (
+                    <option key={site} value={site}>
+                      {site}
+                    </option>
+                  ))}
+                </select>
+                {userFormErrors.site && (
+                  <p className="text-red-500 text-xs mt-1">
+                    {userFormErrors.site}
+                  </p>
+                )}
+              </div>
+
+              {/* Status Field */}
+              <div>
+                <label className="block text-sm font-medium text-gray-900 mb-2">
+                  Status
+                </label>
+                <select
+                  value={formData.status || "active"}
+                  onChange={(e) => handleFormChange("status", e.target.value)}
+                  className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-900 bg-white"
+                >
+                  <option value="active">Active</option>
+                  <option value="inactive">Inactive</option>
+                </select>
+              </div>
             </div>
           </div>
+
+          <div className="px-6 py-4 border-t border-gray-200 bg-gray-50 flex justify-end gap-3">
+            <button
+              onClick={() => setIsEditUserModalOpen(false)}
+              className="px-4 py-2.5 text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-100 transition font-medium"
+            >
+              Cancel
+            </button>
+            <button
+              onClick={handleSubmit}
+              className="px-4 py-2.5 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition flex items-center gap-2 font-medium"
+            >
+              <PencilIcon className="w-4 h-4" />
+              Update User
+            </button>
+          </div>
         </div>
-      )
+      </div>
     );
   };
 
@@ -1845,6 +2097,12 @@ export default function Admin() {
       handleInputChange("latitude", lat.toFixed(6));
       handleInputChange("longitude", lng.toFixed(6));
     }
+  };
+
+  // Fungsi untuk mendapatkan daftar kota berdasarkan provinsi yang dipilih
+  const getCityOptions = () => {
+    if (!newSiteData.province) return [];
+    return kotaByProvinsi[newSiteData.province] || [];
   };
 
   return (
@@ -2835,17 +3093,39 @@ export default function Admin() {
                     <input
                       type="text"
                       value={newSiteData.name}
-                      onChange={(e) =>
-                        handleInputChange("name", e.target.value)
-                      }
-                      placeholder="IPAL Jakarta Pusat"
+                      onChange={(e) => handleInputChange("name", e.target.value)}
+                      placeholder="Contoh: Surabaya - Site C"
                       className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500 bg-white text-gray-900 text-sm ${
                         formErrors.name ? "border-red-500" : "border-gray-300"
                       }`}
                     />
                     {formErrors.name && (
+                      <p className="text-red-500 text-xs mt-1">{formErrors.name}</p>
+                    )}
+                  </div>
+
+                  {/* Provinsi */}
+                  <div>
+                    <label className="block text-sm font-medium text-gray-900 mb-1 sm:mb-2">
+                      Provinsi <span className="text-red-500">*</span>
+                    </label>
+                    <select
+                      value={newSiteData.province}
+                      onChange={(e) => handleProvinceChange(e.target.value, false)}
+                      className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500 bg-white text-gray-900 text-sm ${
+                        formErrors.province ? "border-red-500" : "border-gray-300"
+                      }`}
+                    >
+                      <option value="">Pilih Provinsi</option>
+                      {provinsiList.map((provinsi) => (
+                        <option key={provinsi} value={provinsi}>
+                          {provinsi}
+                        </option>
+                      ))}
+                    </select>
+                    {formErrors.province && (
                       <p className="text-red-500 text-xs mt-1">
-                        {formErrors.name}
+                        {formErrors.province}
                       </p>
                     )}
                   </div>
@@ -2855,17 +3135,24 @@ export default function Admin() {
                     <label className="block text-sm font-medium text-gray-900 mb-1 sm:mb-2">
                       Kota <span className="text-red-500">*</span>
                     </label>
-                    <input
-                      type="text"
+                    <select
                       value={newSiteData.city}
-                      onChange={(e) =>
-                        handleInputChange("city", e.target.value)
-                      }
-                      placeholder="Jakarta Pusat"
+                      onChange={(e) => handleInputChange("city", e.target.value)}
+                      disabled={!newSiteData.province}
                       className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500 bg-white text-gray-900 text-sm ${
                         formErrors.city ? "border-red-500" : "border-gray-300"
-                      }`}
-                    />
+                      } ${!newSiteData.province ? "bg-gray-100 cursor-not-allowed" : ""}`}
+                    >
+                      <option value="">
+                        {newSiteData.province ? "Pilih Kota" : "Pilih provinsi terlebih dahulu"}
+                      </option>
+                      {newSiteData.province && 
+                        kotaByProvinsi[newSiteData.province]?.map((kota) => (
+                          <option key={kota} value={kota}>
+                            {kota}
+                          </option>
+                        ))}
+                    </select>
                     {formErrors.city && (
                       <p className="text-red-500 text-xs mt-1">
                         {formErrors.city}
@@ -2982,31 +3269,6 @@ export default function Admin() {
                     </div>
                   </div>
 
-                  {/* Provinsi */}
-                  <div>
-                    <label className="block text-sm font-medium text-gray-900 mb-1 sm:mb-2">
-                      Provinsi <span className="text-red-500">*</span>
-                    </label>
-                    <input
-                      type="text"
-                      value={newSiteData.province}
-                      onChange={(e) =>
-                        handleInputChange("province", e.target.value)
-                      }
-                      placeholder="DKI Jakarta"
-                      className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500 bg-white text-gray-900 text-sm ${
-                        formErrors.province
-                          ? "border-red-500"
-                          : "border-gray-300"
-                      }`}
-                    />
-                    {formErrors.province && (
-                      <p className="text-red-500 text-xs mt-1">
-                        {formErrors.province}
-                      </p>
-                    )}
-                  </div>
-
                   {/* Status */}
                   <div>
                     <label className="block text-sm font-medium text-gray-900 mb-1 sm:mb-2">
@@ -3105,21 +3367,55 @@ export default function Admin() {
                     )}
                   </div>
 
+                  {/* Provinsi */}
+                  <div>
+                    <label className="block text-sm font-medium text-gray-900 mb-1 sm:mb-2">
+                      Provinsi <span className="text-red-500">*</span>
+                    </label>
+                    <select
+                      value={editingSite.province}
+                      onChange={(e) => handleProvinceChange(e.target.value, true)}
+                      className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500 bg-white text-gray-900 text-sm ${
+                        formErrors.province ? "border-red-500" : "border-gray-300"
+                      }`}
+                    >
+                      <option value="">Pilih Provinsi</option>
+                      {provinsiList.map((provinsi) => (
+                        <option key={provinsi} value={provinsi}>
+                          {provinsi}
+                        </option>
+                      ))}
+                    </select>
+                    {formErrors.province && (
+                      <p className="text-red-500 text-xs mt-1">
+                        {formErrors.province}
+                      </p>
+                    )}
+                  </div>
+
                   {/* Kota */}
                   <div>
                     <label className="block text-sm font-medium text-gray-900 mb-1 sm:mb-2">
                       Kota <span className="text-red-500">*</span>
                     </label>
-                    <input
-                      type="text"
+                    <select
                       value={editingSite.city}
-                      onChange={(e) =>
-                        handleEditInputChange("city", e.target.value)
-                      }
+                      onChange={(e) => handleEditInputChange("city", e.target.value)}
+                      disabled={!editingSite.province}
                       className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500 bg-white text-gray-900 text-sm ${
                         formErrors.city ? "border-red-500" : "border-gray-300"
-                      }`}
-                    />
+                      } ${!editingSite.province ? "bg-gray-100 cursor-not-allowed" : ""}`}
+                    >
+                      <option value="">
+                        {editingSite.province ? "Pilih Kota" : "Pilih provinsi terlebih dahulu"}
+                      </option>
+                      {editingSite.province && 
+                        kotaByProvinsi[editingSite.province]?.map((kota) => (
+                          <option key={kota} value={kota}>
+                            {kota}
+                          </option>
+                        ))}
+                    </select>
                     {formErrors.city && (
                       <p className="text-red-500 text-xs mt-1">
                         {formErrors.city}
@@ -3241,30 +3537,6 @@ export default function Admin() {
                         Koordinat akan otomatis terisi saat mengklik peta
                       </p>
                     </div>
-                  </div>
-
-                  {/* Provinsi */}
-                  <div>
-                    <label className="block text-sm font-medium text-gray-900 mb-1 sm:mb-2">
-                      Provinsi <span className="text-red-500">*</span>
-                    </label>
-                    <input
-                      type="text"
-                      value={editingSite.province}
-                      onChange={(e) =>
-                        handleEditInputChange("province", e.target.value)
-                      }
-                      className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500 bg-white text-gray-900 text-sm ${
-                        formErrors.province
-                          ? "border-red-500"
-                          : "border-gray-300"
-                      }`}
-                    />
-                    {formErrors.province && (
-                      <p className="text-red-500 text-xs mt-1">
-                        {formErrors.province}
-                      </p>
-                    )}
                   </div>
 
                   {/* Status */}
@@ -5204,3 +5476,7 @@ export default function Admin() {
     </div>
   );
 }
+
+
+
+
