@@ -973,6 +973,48 @@ export default function Admin() {
     );
   };
 
+
+
+
+
+
+
+  // ==================== FUNGSI FILTER UNTUK EXPORT ====================
+const filterReportsForExport = () => {
+  let filtered = [...filteredReports]; // Gunakan data yang sudah difilter dari tabel
+
+  // Filter berdasarkan rentang waktu
+  const today = new Date();
+  const todayStr = today.toISOString().split('T')[0];
+
+  if (exportDateRange === "today") {
+    filtered = filtered.filter(report => report.date === todayStr);
+  } else if (exportDateRange === "week") {
+    const weekAgo = new Date();
+    weekAgo.setDate(weekAgo.getDate() - 7);
+    const weekAgoStr = weekAgo.toISOString().split('T')[0];
+    filtered = filtered.filter(report => report.date >= weekAgoStr);
+  } else if (exportDateRange === "month") {
+    const monthAgo = new Date();
+    monthAgo.setDate(monthAgo.getDate() - 30);
+    const monthAgoStr = monthAgo.toISOString().split('T')[0];
+    filtered = filtered.filter(report => report.date >= monthAgoStr);
+  }
+
+  // Filter berdasarkan status export
+  if (exportStatus !== "all") {
+    filtered = filtered.filter(report => report.status === exportStatus);
+  }
+
+  return filtered;
+};
+
+
+
+
+
+
+
   const handleExportReport = () => {
     setIsExportModalOpen(true);
   };
@@ -987,18 +1029,143 @@ export default function Admin() {
   };
 
   const exportToPDF = () => {
-    alert(
-      `Exporting to PDF with range: ${exportDateRange}, status: ${exportStatus}`
-    );
-    // Implement PDF export logic here
-  };
+  const reportsToExport = filterReportsForExport();
+  
+  if (reportsToExport.length === 0) {
+    alert("Tidak ada data untuk di-export!");
+    return;
+  }
+
+  // Buat jendela baru untuk cetak PDF
+  const printWindow = window.open('', '_blank');
+  if (!printWindow) {
+    alert("Popup diblokir! Izinkan popup untuk mencetak PDF.");
+    return;
+  }
+
+  // Buat konten HTML untuk PDF
+  const htmlContent = `
+    <html>
+      <head>
+        <title>Report Export - ${new Date().toLocaleDateString()}</title>
+        <style>
+          body { font-family: Arial, sans-serif; margin: 20px; }
+          h1 { text-align: center; color: #333; }
+          .info { margin-bottom: 20px; padding: 10px; background: #f5f5f5; border-radius: 5px; }
+          table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+          th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+          th { background-color: #4f46e5; color: white; }
+          tr:nth-child(even) { background-color: #f9f9f9; }
+          .status-approved { color: #10b981; font-weight: bold; }
+          .status-pending { color: #f59e0b; font-weight: bold; }
+          .status-rejected { color: #ef4444; font-weight: bold; }
+          .footer { margin-top: 30px; text-align: center; font-size: 12px; color: #666; }
+        </style>
+      </head>
+      <body>
+        <h1>Laporan IPAL Monitoring</h1>
+        <div class="info">
+          <p><strong>Tanggal Export:</strong> ${new Date().toLocaleDateString('id-ID')}</p>
+          <p><strong>Total Data:</strong> ${reportsToExport.length} laporan</p>
+          <p><strong>Filter:</strong> ${exportDateRange} | ${exportStatus === 'all' ? 'Semua Status' : exportStatus}</p>
+        </div>
+        <table>
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Tanggal</th>
+              <th>Waktu</th>
+              <th>Site</th>
+              <th>Operator</th>
+              <th>pH</th>
+              <th>Flow Rate</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${reportsToExport.map(report => `
+              <tr>
+                <td>${report.id}</td>
+                <td>${report.date}</td>
+                <td>${report.time}</td>
+                <td>${report.site}</td>
+                <td>${report.operator}</td>
+                <td>${report.pH}</td>
+                <td>${report.flowRate}</td>
+                <td class="status-${report.status}">
+                  ${report.status === 'approved' ? '✓ Disetujui' : 
+                    report.status === 'pending' ? '⏳ Pending' : 
+                    '✗ Ditolak'}
+                </td>
+              </tr>
+            `).join('')}
+          </tbody>
+        </table>
+        <div class="footer">
+          <p>Dokumen ini dihasilkan oleh SIOPTIMA IPAL Monitoring System</p>
+          <p>© ${new Date().getFullYear()} - All rights reserved</p>
+        </div>
+        <script>
+          // Cetak otomatis saat jendela terbuka
+          window.onload = function() {
+            window.print();
+            // Tutup jendela setelah cetak (opsional)
+            setTimeout(function() {
+              window.close();
+            }, 1000);
+          };
+        </script>
+      </body>
+    </html>
+  `;
+
+  printWindow.document.open();
+  printWindow.document.write(htmlContent);
+  printWindow.document.close();
+};
 
   const exportToCSV = () => {
-    alert(
-      `Exporting to CSV with range: ${exportDateRange}, status: ${exportStatus}`
-    );
-    // Implement CSV export logic here
-  };
+  const reportsToExport = filterReportsForExport();
+  
+  if (reportsToExport.length === 0) {
+    alert("Tidak ada data untuk di-export!");
+    return;
+  }
+
+  // Header CSV
+  const headers = ["ID", "Date", "Time", "Site", "Operator", "pH", "Flow Rate", "Status"];
+  
+  // Data
+  const csvData = reportsToExport.map(report => [
+    report.id,
+    report.date,
+    report.time,
+    `"${report.site}"`,
+    `"${report.operator}"`,
+    report.pH,
+    report.flowRate,
+    report.status
+  ]);
+
+  // Gabungkan header dan data
+  const csvContent = [headers, ...csvData]
+    .map(row => row.join(","))
+    .join("\n");
+
+  // Buat blob dan download
+  const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement("a");
+  link.href = url;
+  link.download = `laporan-ipal-${new Date().toISOString().split('T')[0]}.csv`;
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+  URL.revokeObjectURL(url);
+
+  // Tambah notifikasi
+  alert(`Berhasil mengekspor ${reportsToExport.length} laporan ke format CSV!`);
+};
 
   // ==================== FUNGSI DOWNLOAD ATTACHMENT ====================
   const downloadAttachment = (fileName, ticketId) => {
