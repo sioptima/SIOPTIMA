@@ -441,7 +441,7 @@ const config = {
       "value": "prisma-client-js"
     },
     "output": {
-      "value": "C:\\VSCode\\SIOPTIMA\\src\\server\\db\\generated\\prisma",
+      "value": "E:\\SIOPTIMA-Vercel\\src\\server\\db\\generated\\prisma",
       "fromEnvVar": null
     },
     "config": {
@@ -455,7 +455,7 @@ const config = {
       }
     ],
     "previewFeatures": [],
-    "sourceFilePath": "C:\\VSCode\\SIOPTIMA\\src\\server\\db\\prisma\\schema.prisma",
+    "sourceFilePath": "E:\\SIOPTIMA-Vercel\\src\\server\\db\\prisma\\schema.prisma",
     "isCustomOutput": true
   },
   "relativeEnvPaths": {
