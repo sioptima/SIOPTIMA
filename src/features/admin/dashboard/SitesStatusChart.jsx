@@ -171,9 +171,9 @@ function SitesStatusChart({setActiveMenu}) {
 
             <div className="text-center mt-2 sm:mt-4">
               <div className="text-xl sm:text-2xl font-bold text-gray-800">
-                {activePercentage}%
+                {!isUnavailable ? `${activePercentage}%` : "-"}
               </div>
-              <div className="text-sm text-gray-600">Active</div>
+              <div className="text-sm text-gray-600">{!isUnavailable ? "Active" : "Loading..."}</div>
             </div>
 
             {hoveredSitePie !== null && !loading && !error  && (
