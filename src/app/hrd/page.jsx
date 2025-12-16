@@ -30,6 +30,8 @@ import {
   DocumentArrowDownIcon,
   PhotoIcon,
   DocumentIcon,
+  CameraIcon,
+  MapIcon,
 } from "@heroicons/react/24/outline";
 
 // Storage keys untuk sinkronisasi
@@ -89,6 +91,39 @@ const getOperatorNameById = (operators, operatorId) => {
   return operator ? operator.name : `Operator ${operatorId}`;
 };
 
+// Fungsi untuk mendapatkan jadwal shift mendatang berdasarkan hari ini
+const getUpcomingShifts = (shifts, days = 7) => {
+  const today = new Date();
+  const upcoming = [];
+  const dayNames = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+  
+  for (let i = 0; i < days; i++) {
+    const date = new Date(today);
+    date.setDate(today.getDate() + i);
+    const dayOfWeek = dayNames[date.getDay()];
+    
+    const dayShifts = shifts.filter(shift => 
+      shift.dayOfWeek === dayOfWeek || 
+      (shift.dayOfWeek === "Everyday") ||
+      (shift.dayOfWeek === "Weekdays" && date.getDay() >= 1 && date.getDay() <= 5) ||
+      (shift.dayOfWeek === "Weekends" && (date.getDay() === 0 || date.getDay() === 6))
+    );
+    
+    if (dayShifts.length > 0) {
+      upcoming.push({
+        date: date.toISOString().split('T')[0],
+        dayName: date.toLocaleDateString('id-ID', { weekday: 'long' }),
+        displayDate: date.toLocaleDateString('id-ID', { day: 'numeric', month: 'long' }),
+        dayOfWeek,
+        shifts: dayShifts,
+        isToday: i === 0
+      });
+    }
+  }
+  
+  return upcoming;
+};
+
 export default function HRD() {
   const [selectedFilter, setSelectedFilter] = useState("All");
   const [selectedRange, setSelectedRange] = useState("Month");
@@ -111,9 +146,10 @@ export default function HRD() {
   const [editingShift, setEditingShift] = useState(null);
   const [editingSite, setEditingSite] = useState(null);
   const [selectedLeave, setSelectedLeave] = useState(null);
-  
-  // State untuk menyimpan data minggu ini
-  const [currentWeekSchedule, setCurrentWeekSchedule] = useState([]);
+  const [showPhotoModal, setShowPhotoModal] = useState(false);
+  const [selectedPhoto, setSelectedPhoto] = useState(null);
+  const [showMapModal, setShowMapModal] = useState(false);
+  const [selectedLocation, setSelectedLocation] = useState(null);
 
   // Form state untuk shift
   const [shiftForm, setShiftForm] = useState({
@@ -126,7 +162,7 @@ export default function HRD() {
     dayOfWeek: "Monday"
   });
   
-  // Form state untuk site
+  // Form state untuk site - PERUBAHAN: contact harus angka
   const [siteForm, setSiteForm] = useState({
     name: "",
     location: "",
@@ -275,10 +311,16 @@ export default function HRD() {
   };
 
   const isOperatorScheduledToday = (operatorId) => {
-    // Logika untuk mengecek apakah operator memiliki shift hari ini
-    // Ini adalah contoh sederhana - dalam implementasi nyata akan melibatkan jadwal shift
-    const today = new Date().getDay(); // 0 = Minggu, 1 = Senin, dst
-    return today >= 1 && today <= 5; // Senin-Jumat
+    const today = new Date();
+    const dayOfWeek = today.toLocaleDateString('en-US', { weekday: 'long' });
+    
+    return shifts.some(shift => 
+      shift.assignedOperators?.includes(operatorId) && 
+      (shift.dayOfWeek === dayOfWeek || 
+       shift.dayOfWeek === "Everyday" ||
+       (shift.dayOfWeek === "Weekdays" && today.getDay() >= 1 && today.getDay() <= 5) ||
+       (shift.dayOfWeek === "Weekends" && (today.getDay() === 0 || today.getDay() === 6)))
+    );
   };
 
   // ==================== DATA YANG DISINKRONISASI DENGAN LOGIKA REALISTIS ====================
@@ -341,14 +383,15 @@ export default function HRD() {
       // Pilih site secara acak
       const siteId = Math.floor(Math.random() * sites.length) + 1;
       
-      // Tentukan jumlah operator untuk shift ini (3-8 operator)
-      const maxOperators = Math.floor(Math.random() * 6) + 3;
+      // PERUBAHAN: Tentukan jumlah operator untuk shift ini (maksimal 12 operator)
+      const maxOperators = 12; // Selalu 12 operator per shift
       
       // Pilih operator secara acak untuk shift ini
       const assignedOperators = [];
       const availableOperators = operators.filter(op => op.status === "active");
       
-      for (let i = 0; i < Math.min(maxOperators, availableOperators.length); i++) {
+      // Pilih maksimal 12 operator
+      for (let i = 0; i < Math.min(12, availableOperators.length); i++) {
         const randomOp = availableOperators[Math.floor(Math.random() * availableOperators.length)];
         if (!assignedOperators.includes(randomOp.id)) {
           assignedOperators.push(randomOp.id);
@@ -359,7 +402,7 @@ export default function HRD() {
         id: index + 1,
         ...shiftType,
         siteId,
-        maxOperators,
+        maxOperators: 12, // Selalu 12 operator
         assignedOperators,
         dayOfWeek: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"][index % 6],
       });
@@ -371,23 +414,29 @@ export default function HRD() {
     getSynchronizedData(STORAGE_KEYS.SHIFTS, generateShifts())
   );
 
-  // Generate data attendance dengan logika realistis
+  // Generate data attendance dengan logika realistis - UPDATE: Kosong untuk hari ini jika tidak ada input
   const generateAttendanceData = () => {
     const attendanceList = [];
     let idCounter = 1;
     
-    // Generate data untuk 7 hari terakhir
+    // Generate data untuk 7 hari TERAKHIR (bukan mendatang)
     for (let dayOffset = 6; dayOffset >= 0; dayOffset--) {
       const date = new Date();
       date.setDate(date.getDate() - dayOffset);
       const dateStr = date.toISOString().split('T')[0];
       const dayOfWeek = date.getDay(); // 0 = Minggu, 1 = Senin, dst
       
+      // Untuk hari ini (dayOffset = 0), tidak generate data otomatis
+      if (dayOffset === 0) {
+        // Tidak generate data untuk hari ini - biarkan kosong sampai ada input
+        continue;
+      }
+      
       // Hanya generate untuk hari kerja (Senin-Jumat)
       if (dayOfWeek >= 1 && dayOfWeek <= 5) {
         // Untuk setiap shift yang aktif hari ini
         shifts.forEach(shift => {
-          // Untuk setiap operator yang ditugaskan di shift ini
+          // Untuk setiap operator yang ditugaskan di shift ini (maksimal 12)
           shift.assignedOperators?.forEach(operatorId => {
             const operator = operators.find(op => op.id === operatorId);
             if (operator && operator.status === "active") {
@@ -424,6 +473,22 @@ export default function HRD() {
               // Hitung total hours
               const totalHours = calculateTotalHours(checkIn, checkOut);
               
+              // Generate foto sample (gunakan Unsplash placeholder)
+              const photoUrls = [
+                "https://images.unsplash.com/photo-1568602471122-7832951cc4c5?auto=format&fit=crop&w=800",
+                "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w-800",
+                "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=800",
+                "https://images.unsplash.com/photo-1494790108755-2616b612b786?auto=format&fit=crop&w=800",
+              ];
+              
+              const geoLocations = [
+                "-6.200000,106.816666", // Jakarta
+                "-6.917500,107.619100", // Bandung
+                "-7.250000,112.750000", // Surabaya
+                "-6.966667,110.416667", // Semarang
+                "-7.797500,110.368600", // Yogyakarta
+              ];
+              
               attendanceList.push({
                 id: idCounter++,
                 operatorId: operatorId,
@@ -445,7 +510,8 @@ export default function HRD() {
                 totalHours: totalHours.toFixed(1),
                 lateMinutes,
                 shiftId: shift.id,
-                photoUrl: null,
+                photoUrl: status === "approved" ? photoUrls[Math.floor(Math.random() * photoUrls.length)] : null,
+                locationCoordinates: geoLocations[Math.floor(Math.random() * geoLocations.length)],
                 locationValid: Math.random() > 0.1, // 90% valid lokasi
                 timeValid: Math.random() > 0.05, // 95% valid waktu
               });
@@ -494,18 +560,20 @@ export default function HRD() {
     ])
   );
 
-  const [dashboardData, setDashboardData] = useState(() =>
-    getSynchronizedData(STORAGE_KEYS.DASHBOARD, {
+  // UPDATE: Dashboard data dengan perhitungan hari ini yang benar
+  const [dashboardData, setDashboardData] = useState(() => {
+    const today = new Date().toISOString().split('T')[0];
+    const todayAttendance = getSynchronizedData(STORAGE_KEYS.ATTENDANCE, []).filter(item => item.date === today);
+    const approvedToday = todayAttendance.filter(item => item.status === "approved").length;
+    
+    return getSynchronizedData(STORAGE_KEYS.DASHBOARD, {
       totalOperators: operators.length,
-      presentToday: attendanceData.filter(item => 
-        item.date === new Date().toISOString().split('T')[0] && 
-        item.status === "approved"
-      ).length,
+      presentToday: approvedToday,
       attendanceRate: 0,
-      pendingValidation: attendanceData.filter((item) => item.status === "pending").length,
+      pendingValidation: getSynchronizedData(STORAGE_KEYS.ATTENDANCE, []).filter((item) => item.status === "pending").length,
       operatorsWithShiftToday: 0,
-    })
-  );
+    });
+  });
 
   const [leaveRequests, setLeaveRequests] = useState(() =>
     getSynchronizedData(STORAGE_KEYS.LEAVE_REQUESTS, [
@@ -635,7 +703,6 @@ export default function HRD() {
   const handleApprove = (id) => {
     const attendanceToApprove = attendanceData.find(item => item.id === id);
     
-    // PERUBAHAN: Presensi valid meskipun terlambat, jadi semua ada opsi ACC
     const updatedData = attendanceData.map((item) =>
       item.id === id ? { ...item, status: "approved" } : item
     );
@@ -657,8 +724,6 @@ export default function HRD() {
   const handleReject = (id) => {
     const attendanceToReject = attendanceData.find(item => item.id === id);
     
-    // PERUBAHAN: Presensi valid meskipun terlambat, jadi semua ada opsi ACC
-    // HRD tetap bisa menolak jika memang perlu
     const updatedData = attendanceData.map((item) =>
       item.id === id ? { ...item, status: "rejected" } : item
     );
@@ -713,7 +778,6 @@ export default function HRD() {
 
   // Fungsi untuk ekspor data attendance ke Excel
   const exportAttendanceToExcel = () => {
-    // Buat header
     const headers = ["ID", "Operator", "Site", "Date", "Check-In", "Check-Out", "Status", "Total Hours", "Late Minutes", "Location", "Notes"];
     const csvData = attendanceData.map(item => [
       item.id,
@@ -765,7 +829,7 @@ export default function HRD() {
         shift.startTime,
         shift.endTime,
         site ? site.name : "Unknown",
-        shift.maxOperators,
+        12, // SELALU 12 OPERATOR PER SHIFT
         assignedOperatorNames
       ];
     });
@@ -794,7 +858,7 @@ export default function HRD() {
       startTime: "08:00",
       endTime: "17:00",
       siteId: "",
-      maxOperators: 5,
+      maxOperators: 12, // PERUBAHAN: Default 12 operator
       assignedOperators: [],
       dayOfWeek: "Monday"
     });
@@ -826,55 +890,13 @@ export default function HRD() {
   };
 
   const isDateInLeaveRange = (dayOfWeek, leaveRequest) => {
-    // Logika sederhana untuk mengecek apakah hari tertentu masuk dalam range cuti
-    // Dalam implementasi nyata, ini akan melibatkan perhitungan tanggal yang lebih kompleks
     const dayMapping = { "Monday": 1, "Tuesday": 2, "Wednesday": 3, "Thursday": 4, "Friday": 5, "Saturday": 6, "Sunday": 0 };
     return Math.random() < 0.1; // 10% kemungkinan operator cuti di hari tersebut
   };
 
-  // Fungsi untuk mengambil jadwal shift minggu ini
+  // UPDATE: Fungsi untuk mengambil jadwal shift minggu ini dimulai dari hari ini
   const getCurrentWeekSchedule = () => {
-    const weekDates = getCurrentWeekDates();
-    const today = new Date().toISOString().split('T')[0];
-    
-    const weekSchedule = weekDates.map(weekDay => {
-      // Filter shift untuk hari ini
-      const dayShifts = shifts.filter(shift => shift.dayOfWeek === weekDay.englishDayName);
-      
-      // Hitung total operator yang ditugaskan di hari ini
-      const totalAssignedOperators = dayShifts.reduce((total, shift) => {
-        return total + (shift.assignedOperators?.length || 0);
-      }, 0);
-      
-      // Ambil operator yang memiliki shift di hari ini
-      const assignedOperatorIds = dayShifts.flatMap(shift => shift.assignedOperators || []);
-      const uniqueOperatorIds = [...new Set(assignedOperatorIds)];
-      
-      // Ambil detail shift untuk hari ini
-      const shiftDetails = dayShifts.map(shift => {
-        const site = sites.find(s => s.id === shift.siteId);
-        return {
-          id: shift.id,
-          name: shift.name,
-          time: `${shift.startTime} - ${shift.endTime}`,
-          site: site ? site.name : "Unknown Site",
-          operators: (shift.assignedOperators || []).map(opId => getOperatorNameById(operators, opId)),
-          operatorCount: shift.assignedOperators?.length || 0,
-          maxOperators: shift.maxOperators
-        };
-      });
-      
-      return {
-        ...weekDay,
-        shiftCount: dayShifts.length,
-        totalAssignedOperators,
-        shiftDetails,
-        uniqueOperatorIds,
-        isToday: weekDay.date === today
-      };
-    });
-    
-    return weekSchedule;
+    return getUpcomingShifts(shifts, 7);
   };
 
   const handleAddShift = () => {
@@ -897,7 +919,8 @@ export default function HRD() {
           ...shift, 
           ...shiftForm, 
           id: editingShift.id,
-          siteId: parseInt(shiftForm.siteId)
+          siteId: parseInt(shiftForm.siteId),
+          maxOperators: 12 // SELALU 12 OPERATOR
         } : shift
       );
       setShifts(updatedShifts);
@@ -917,7 +940,8 @@ export default function HRD() {
       const newShift = {
         id: shifts.length > 0 ? Math.max(...shifts.map(s => s.id)) + 1 : 1,
         ...shiftForm,
-        siteId: parseInt(shiftForm.siteId)
+        siteId: parseInt(shiftForm.siteId),
+        maxOperators: 12 // SELALU 12 OPERATOR
       };
       setShifts([...shifts, newShift]);
       
@@ -944,7 +968,7 @@ export default function HRD() {
       startTime: shift.startTime,
       endTime: shift.endTime,
       siteId: shift.siteId.toString(),
-      maxOperators: shift.maxOperators,
+      maxOperators: 12, // SELALU 12 OPERATOR
       assignedOperators: shift.assignedOperators || [],
       dayOfWeek: shift.dayOfWeek || "Monday"
     });
@@ -983,22 +1007,35 @@ export default function HRD() {
     setEditingSite(null);
   };
 
-  const handleAddSite = () => {
-    if (!siteForm.name || !siteForm.location || !siteForm.address) {
+  // PERUBAHAN: Fungsi untuk validasi input hanya angka
+  const handleNumericInput = (e, field) => {
+    const value = e.target.value;
+    // Hanya menerima angka
+    if (/^\d*$/.test(value)) {
+      setSiteForm({ ...siteForm, [field]: value });
+    }
+  };
+
+  // Di dalam komponen utama, ubah fungsi handleAddSite:
+  const handleAddSite = (formData = null) => {
+    // Gunakan formData jika ada (dari modal), atau gunakan siteForm state
+    const dataToUse = formData || siteForm;
+    
+    if (!dataToUse.name || !dataToUse.location || !dataToUse.address) {
       alert("Please fill all required fields");
       return;
     }
 
     if (editingSite) {
       const updatedSites = sites.map(site =>
-        site.id === editingSite.id ? { ...site, ...siteForm, id: editingSite.id } : site
+        site.id === editingSite.id ? { ...site, ...dataToUse, id: editingSite.id } : site
       );
       setSites(updatedSites);
       
       const newNotification = {
         id: Date.now(),
         title: "Site Updated",
-        message: `Site ${siteForm.name} has been updated`,
+        message: `Site ${dataToUse.name} has been updated`,
         time: "Baru saja",
         read: false,
         type: "site",
@@ -1008,7 +1045,7 @@ export default function HRD() {
     } else {
       const newSite = {
         id: sites.length > 0 ? Math.max(...sites.map(s => s.id)) + 1 : 1,
-        ...siteForm,
+        ...dataToUse,
         status: "active",
       };
       setSites([...sites, newSite]);
@@ -1016,7 +1053,7 @@ export default function HRD() {
       const newNotification = {
         id: Date.now(),
         title: "New Site Added",
-        message: `Site ${siteForm.name} has been added`,
+        message: `Site ${dataToUse.name} has been added`,
         time: "Baru saja",
         read: false,
         type: "site",
@@ -1123,6 +1160,18 @@ export default function HRD() {
   const closeDetailModal = () => {
     setIsDetailModalOpen(false);
     setSelectedAttendance(null);
+  };
+
+  // Fungsi untuk membuka modal foto
+  const openPhotoModal = (photoUrl) => {
+    setSelectedPhoto(photoUrl);
+    setShowPhotoModal(true);
+  };
+
+  // Fungsi untuk membuka modal peta/lokasi
+  const openMapModal = (location, coordinates) => {
+    setSelectedLocation({ location, coordinates });
+    setShowMapModal(true);
   };
 
   const handleViewAllAttendance = () => {
@@ -1400,8 +1449,215 @@ export default function HRD() {
     );
   };
 
-  // SiteFormModal
-  const SiteFormModal = () => {
+  // Photo Modal
+  const PhotoModal = () => {
+    if (!selectedPhoto) return null;
+
+    return (
+      <div className="fixed inset-0 bg-black bg-opacity-75 z-[100] flex items-center justify-center p-4">
+        <div className="bg-white rounded-2xl shadow-2xl max-w-4xl w-full max-h-[90vh] overflow-y-auto">
+          <div className="p-4 sm:p-6">
+            <div className="flex justify-between items-center mb-6">
+              <div>
+                <h3 className="text-xl font-bold text-gray-900">
+                  Foto Presensi
+                </h3>
+                <p className="text-sm text-gray-600">
+                  Foto yang diambil saat check-in
+                </p>
+              </div>
+              <button
+                onClick={() => {
+                  setShowPhotoModal(false);
+                  setSelectedPhoto(null);
+                }}
+                className="text-gray-400 hover:text-gray-600 bg-gray-100 p-2 rounded-full"
+              >
+                <XMarkIcon className="w-6 h-6" />
+              </button>
+            </div>
+
+            <div className="border-2 border-gray-200 rounded-xl overflow-hidden">
+              <img
+                src={selectedPhoto}
+                alt="Foto Presensi"
+                className="w-full h-auto max-h-[60vh] object-contain"
+              />
+            </div>
+
+            <div className="mt-6 flex gap-3">
+              <a
+                href={selectedPhoto}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex-1 bg-blue-600 text-white py-3 px-4 rounded-lg hover:bg-blue-700 transition font-medium flex items-center justify-center gap-2"
+              >
+                <DocumentArrowDownIcon className="w-5 h-5" />
+                Unduh Gambar
+              </a>
+              <button
+                onClick={() => {
+                  setShowPhotoModal(false);
+                  setSelectedPhoto(null);
+                }}
+                className="flex-1 bg-gray-300 text-gray-700 py-3 px-4 rounded-lg hover:bg-gray-400 transition font-medium"
+              >
+                Tutup
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  };
+
+  // Map Modal
+  const MapModal = () => {
+    if (!selectedLocation) return null;
+
+    return (
+      <div className="fixed inset-0 bg-black bg-opacity-75 z-[100] flex items-center justify-center p-4">
+        <div className="bg-white rounded-2xl shadow-2xl max-w-4xl w-full max-h-[90vh] overflow-y-auto">
+          <div className="p-4 sm:p-6">
+            <div className="flex justify-between items-center mb-6">
+              <div>
+                <h3 className="text-xl font-bold text-gray-900">
+                  Geolokasi Presensi
+                </h3>
+                <p className="text-sm text-gray-600">
+                  {selectedLocation.location}
+                </p>
+              </div>
+              <button
+                onClick={() => {
+                  setShowMapModal(false);
+                  setSelectedLocation(null);
+                }}
+                className="text-gray-400 hover:text-gray-600 bg-gray-100 p-2 rounded-full"
+              >
+                <XMarkIcon className="w-6 h-6" />
+              </button>
+            </div>
+
+            <div className="border-2 border-gray-200 rounded-xl overflow-hidden h-96 bg-gray-100 flex items-center justify-center">
+              <div className="text-center p-8">
+                <MapPinIcon className="w-16 h-16 text-gray-400 mx-auto mb-4" />
+                <p className="text-lg font-medium text-gray-900 mb-2">Lokasi Presensi</p>
+                <p className="text-gray-600 mb-4">{selectedLocation.location}</p>
+                <p className="text-sm text-gray-500 mb-6">Koordinat: {selectedLocation.coordinates}</p>
+                
+                <a
+                  href={`https://maps.google.com/?q=${selectedLocation.coordinates}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition"
+                >
+                  <MapIcon className="w-5 h-5" />
+                  Buka di Google Maps
+                </a>
+              </div>
+            </div>
+
+            <div className="mt-6 flex gap-3">
+              <button
+                onClick={() => {
+                  setShowMapModal(false);
+                  setSelectedLocation(null);
+                }}
+                className="flex-1 bg-gray-300 text-gray-700 py-3 px-4 rounded-lg hover:bg-gray-400 transition font-medium"
+              >
+                Tutup
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  };
+
+  // SiteFormModal - KOMPONEN TERPISAH DENGAN PERBAIKAN
+  // PERUBAHAN: Input kontak harus angka
+  const SiteFormModal = React.memo(({ 
+    showSiteForm, 
+    setShowSiteForm, 
+    editingSite, 
+    setEditingSite, 
+    sites,
+    handleAddSite,
+    siteFormRef,
+    siteForm,
+    setSiteForm
+  }) => {
+    const [localSiteForm, setLocalSiteForm] = useState({
+      name: "",
+      location: "",
+      address: "",
+      capacity: 12,
+      supervisor: "",
+      contact: "",
+    });
+
+    // Reset form ketika editingSite berubah
+    useEffect(() => {
+      if (editingSite) {
+        setLocalSiteForm({
+          name: editingSite.name,
+          location: editingSite.location,
+          address: editingSite.address,
+          capacity: editingSite.capacity,
+          supervisor: editingSite.supervisor,
+          contact: editingSite.contact,
+        });
+      } else {
+        setLocalSiteForm({
+          name: "",
+          location: "",
+          address: "",
+          capacity: 12,
+          supervisor: "",
+          contact: "",
+        });
+      }
+    }, [editingSite, showSiteForm]);
+
+    const handleSubmit = (e) => {
+      e.preventDefault();
+      handleAddSite(localSiteForm);
+      setShowSiteForm(false);
+    };
+
+    const handleCancel = () => {
+      setShowSiteForm(false);
+      setEditingSite(null);
+    };
+
+    // PERUBAHAN: Fungsi untuk validasi input hanya angka untuk kontak
+    const handleInputChange = (field) => (e) => {
+      let value = e.target.value;
+      
+      // Validasi khusus untuk kapasitas (maksimal 12)
+      if (field === "capacity") {
+        value = parseInt(value);
+        if (value > 12) {
+          value = 12;
+        } else if (value < 1) {
+          value = 1;
+        }
+      }
+      
+      // Validasi khusus untuk kontak - hanya menerima angka
+      if (field === "contact") {
+        // Hanya menerima angka
+        if (!/^\d*$/.test(value)) {
+          return; // Tidak update jika bukan angka
+        }
+      }
+      
+      setLocalSiteForm({ ...localSiteForm, [field]: value });
+    };
+
+    if (!showSiteForm) return null;
+
     return (
       <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
         <div ref={siteFormRef} className="bg-white rounded-2xl shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
@@ -1411,9 +1667,148 @@ export default function HRD() {
                 {editingSite ? "Edit Site" : "Tambah Site Baru"}
               </h3>
               <button
+                type="button"
+                onClick={handleCancel}
+                className="text-gray-400 hover:text-gray-600"
+              >
+                <XMarkIcon className="w-6 h-6" />
+              </button>
+            </div>
+
+            <form onSubmit={handleSubmit}>
+              <div className="space-y-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Nama Site *
+                  </label>
+                  <input
+                    type="text"
+                    value={localSiteForm.name}
+                    onChange={handleInputChange("name")}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                    placeholder="Contoh: Site Jakarta A"
+                    required
+                    autoFocus
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Lokasi *
+                  </label>
+                  <input
+                    type="text"
+                    value={localSiteForm.location}
+                    onChange={handleInputChange("location")}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                    placeholder="Contoh: Jakarta Utara"
+                    required
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Alamat Lengkap *
+                  </label>
+                  <textarea
+                    value={localSiteForm.address}
+                    onChange={handleInputChange("address")}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors resize-none"
+                    rows={3}
+                    placeholder="Jl. Raya Jakarta No. 123"
+                    required
+                  />
+                </div>
+
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                      Kapasitas Operator (Maksimal 12)
+                    </label>
+                    <div className="relative">
+                      <input
+                        type="number"
+                        min="1"
+                        max="12"
+                        value={localSiteForm.capacity}
+                        onChange={handleInputChange("capacity")}
+                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors appearance-none"
+                      />
+                    </div>
+                    <p className="text-xs text-gray-500 mt-1">Maksimal 12 operator per site</p>
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                      Supervisor
+                    </label>
+                    <input
+                      type="text"
+                      value={localSiteForm.supervisor}
+                      onChange={handleInputChange("supervisor")}
+                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                      placeholder="Nama Supervisor"
+                    />
+                  </div>
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Kontak (Angka saja) *
+                  </label>
+                  <input
+                    type="text"
+                    inputMode="numeric"
+                    pattern="[0-9]*"
+                    value={localSiteForm.contact}
+                    onChange={handleInputChange("contact")}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                    placeholder="081234567890"
+                    required
+                  />
+                  <p className="text-xs text-gray-500 mt-1">Hanya angka (contoh: 081234567890)</p>
+                </div>
+              </div>
+
+              <div className="mt-8 flex gap-3">
+                <button
+                  type="submit"
+                  className="flex-1 bg-blue-600 text-white py-3 px-4 rounded-lg hover:bg-blue-700 transition font-medium"
+                >
+                  {editingSite ? "Update Site" : "Add Site"}
+                </button>
+                <button
+                  type="button"
+                  onClick={handleCancel}
+                  className="flex-1 bg-gray-300 text-gray-700 py-3 px-4 rounded-lg hover:bg-gray-400 transition font-medium"
+                >
+                  Cancel
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    );
+  });
+
+  SiteFormModal.displayName = 'SiteFormModal';
+
+  // LeaveDetailModal tanpa bagian Surat Keterangan Dokter
+  const LeaveDetailModal = () => {
+    if (!selectedLeave) return null;
+
+    return (
+      <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
+        <div className="bg-white rounded-2xl shadow-xl max-w-md w-full max-h-[90vh] overflow-y-auto">
+          <div className="p-6">
+            <div className="flex justify-between items-center mb-6">
+              <h3 className="text-xl font-bold text-gray-900">
+                Detail Permohonan Cuti/Izin
+              </h3>
+              <button
                 onClick={() => {
-                  setShowSiteForm(false);
-                  resetSiteForm();
+                  setShowLeaveModal(false);
+                  setSelectedLeave(null);
                 }}
                 className="text-gray-400 hover:text-gray-600"
               >
@@ -1423,271 +1818,126 @@ export default function HRD() {
 
             <div className="space-y-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Nama Site *
+                <label className="text-sm font-medium text-gray-700">
+                  Operator
                 </label>
-                <input
-                  type="text"
-                  value={siteForm.name}
-                  onChange={(e) =>
-                    setSiteForm({ ...siteForm, name: e.target.value })
-                  }
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                  placeholder="Contoh: Site Jakarta A"
-                />
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Lokasi *
-                </label>
-                <input
-                  type="text"
-                  value={siteForm.location}
-                  onChange={(e) =>
-                    setSiteForm({ ...siteForm, location: e.target.value })
-                  }
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                  placeholder="Contoh: Jakarta Utara"
-                />
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Alamat Lengkap *
-                </label>
-                <textarea
-                  value={siteForm.address}
-                  onChange={(e) =>
-                    setSiteForm({ ...siteForm, address: e.target.value })
-                  }
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                  rows={3}
-                  placeholder="Jl. Raya Jakarta No. 123"
-                />
+                <p className="mt-1 text-lg text-gray-900">
+                  {selectedLeave.operator}
+                </p>
               </div>
 
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Kapasitas Operator (Maksimal 12)
+                  <label className="text-sm font-medium text-gray-700">
+                    Jenis
                   </label>
-                  <div className="relative">
-                    <select
-                      value={siteForm.capacity}
-                      onChange={(e) => setSiteForm({ ...siteForm, capacity: parseInt(e.target.value) })}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 appearance-none bg-white"
-                    >
-                      {[1,2,3,4,5,6,7,8,9,10,11,12].map(num => (
-                        <option key={num} value={num}>{num} operator{num !== 1 ? 's' : ''}</option>
-                      ))}
-                    </select>
-                    <ChevronDownIcon className="w-5 h-5 text-gray-400 absolute right-3 top-1/2 transform -translate-y-1/2 pointer-events-none" />
-                  </div>
-                  <p className="text-xs text-gray-500 mt-1">Maksimal 12 operator per site</p>
+                  <p className="mt-1">
+                    <span className={`px-3 py-1 rounded-full text-sm font-medium ${
+                      selectedLeave.type === 'izin' ? 'bg-blue-100 text-blue-800' : 'bg-purple-100 text-purple-800'
+                    }`}>
+                      {selectedLeave.type === 'izin' ? 'Izin' : 'Cuti'}
+                    </span>
+                  </p>
+                </div>
+
+                <div>
+                  <label className="text-sm font-medium text-gray-700">
+                    Status
+                  </label>
+                  <p className="mt-1">
+                    <span className={`px-3 py-1 rounded-full text-sm font-medium ${
+                      selectedLeave.status === 'approved' ? 'bg-green-100 text-green-800' : 
+                      selectedLeave.status === 'rejected' ? 'bg-red-100 text-red-800' : 
+                      'bg-yellow-100 text-yellow-800'
+                    }`}>
+                      {selectedLeave.status === 'approved' ? 'Disetujui' : 
+                       selectedLeave.status === 'rejected' ? 'Ditolak' : 'Pending'}
+                    </span>
+                  </p>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className="text-sm font-medium text-gray-700">
+                    Tanggal Mulai
+                  </label>
+                  <p className="mt-1 text-gray-900">
+                    {selectedLeave.startDate}
+                  </p>
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Supervisor
+                  <label className="text-sm font-medium text-gray-700">
+                    Tanggal Selesai
                   </label>
-                  <input
-                    type="text"
-                    value={siteForm.supervisor}
-                    onChange={(e) =>
-                      setSiteForm({ ...siteForm, supervisor: e.target.value })
-                    }
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                    placeholder="Nama Supervisor"
-                  />
+                  <p className="mt-1 text-gray-900">
+                    {selectedLeave.endDate}
+                  </p>
                 </div>
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Kontak
+                <label className="text-sm font-medium text-gray-700">
+                  Alasan
                 </label>
-                <input
-                  type="text"
-                  value={siteForm.contact}
-                  onChange={(e) =>
-                    setSiteForm({ ...siteForm, contact: e.target.value })
-                  }
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                  placeholder="0812-3456-7890"
-                />
+                <p className="mt-1 text-gray-900 bg-gray-50 p-3 rounded-lg">
+                  {selectedLeave.reason}
+                </p>
+              </div>
+
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className="text-sm font-medium text-gray-700">
+                    Tanggal Pengajuan
+                  </label>
+                  <p className="mt-1 text-gray-900">
+                    {selectedLeave.submittedDate}
+                  </p>
+                </div>
               </div>
             </div>
 
-            <div className="mt-8 flex gap-3">
-              <button
-                onClick={handleAddSite}
-                className="flex-1 bg-blue-600 text-white py-3 px-4 rounded-lg hover:bg-blue-700 transition font-medium"
-              >
-                {editingSite ? "Update Site" : "Add Site"}
-              </button>
-              <button
-                onClick={() => {
-                  setShowSiteForm(false);
-                  resetSiteForm();
-                }}
-                className="flex-1 bg-gray-300 text-gray-700 py-3 px-4 rounded-lg hover:bg-gray-400 transition font-medium"
-              >
-                Cancel
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-    );
-  };
+            {selectedLeave.status === "pending" && (
+              <div className="mt-8 flex gap-3">
+                <button
+                  onClick={() => {
+                    handleApproveLeave(selectedLeave.id);
+                    setShowLeaveModal(false);
+                    setSelectedLeave(null);
+                  }}
+                  className="flex-1 bg-green-600 text-white py-3 px-4 rounded-lg hover:bg-green-700 transition font-medium flex items-center justify-center gap-2"
+                >
+                  <CheckCircleIcon className="w-5 h-5" />
+                  Setujui
+                </button>
+                <button
+                  onClick={() => {
+                    handleRejectLeave(selectedLeave.id);
+                    setShowLeaveModal(false);
+                    setSelectedLeave(null);
+                  }}
+                  className="flex-1 bg-red-600 text-white py-3 px-4 rounded-lg hover:bg-red-700 transition font-medium flex items-center justify-center gap-2"
+                >
+                  <XCircleIcon className="w-5 h-5" />
+                  Tolak
+                </button>
+              </div>
+            )}
 
-  // LeaveDetailModal dengan fitur gambar surat dokter
-  // LeaveDetailModal tanpa bagian Surat Keterangan Dokter
-const LeaveDetailModal = () => {
-  if (!selectedLeave) return null;
-
-  return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
-      <div className="bg-white rounded-2xl shadow-xl max-w-md w-full max-h-[90vh] overflow-y-auto">
-        <div className="p-6">
-          <div className="flex justify-between items-center mb-6">
-            <h3 className="text-xl font-bold text-gray-900">
-              Detail Permohonan Cuti/Izin
-            </h3>
             <button
               onClick={() => {
                 setShowLeaveModal(false);
                 setSelectedLeave(null);
               }}
-              className="text-gray-400 hover:text-gray-600"
+              className="w-full mt-4 bg-gray-300 text-gray-700 py-3 px-4 rounded-lg hover:bg-gray-400 transition font-medium"
             >
-              <XMarkIcon className="w-6 h-6" />
+              Tutup
             </button>
           </div>
-
-          <div className="space-y-4">
-            <div>
-              <label className="text-sm font-medium text-gray-700">
-                Operator
-              </label>
-              <p className="mt-1 text-lg text-gray-900">
-                {selectedLeave.operator}
-              </p>
-            </div>
-
-            <div className="grid grid-cols-2 gap-4">
-              <div>
-                <label className="text-sm font-medium text-gray-700">
-                  Jenis
-                </label>
-                <p className="mt-1">
-                  <span className={`px-3 py-1 rounded-full text-sm font-medium ${
-                    selectedLeave.type === 'izin' ? 'bg-blue-100 text-blue-800' : 'bg-purple-100 text-purple-800'
-                  }`}>
-                    {selectedLeave.type === 'izin' ? 'Izin' : 'Cuti'}
-                  </span>
-                </p>
-              </div>
-
-              <div>
-                <label className="text-sm font-medium text-gray-700">
-                  Status
-                </label>
-                <p className="mt-1">
-                  <span className={`px-3 py-1 rounded-full text-sm font-medium ${
-                    selectedLeave.status === 'approved' ? 'bg-green-100 text-green-800' : 
-                    selectedLeave.status === 'rejected' ? 'bg-red-100 text-red-800' : 
-                    'bg-yellow-100 text-yellow-800'
-                  }`}>
-                    {selectedLeave.status === 'approved' ? 'Disetujui' : 
-                     selectedLeave.status === 'rejected' ? 'Ditolak' : 'Pending'}
-                  </span>
-                </p>
-              </div>
-            </div>
-
-            <div className="grid grid-cols-2 gap-4">
-              <div>
-                <label className="text-sm font-medium text-gray-700">
-                  Tanggal Mulai
-                </label>
-                <p className="mt-1 text-gray-900">
-                  {selectedLeave.startDate}
-                </p>
-              </div>
-              <div>
-                <label className="text-sm font-medium text-gray-700">
-                  Tanggal Selesai
-                </label>
-                <p className="mt-1 text-gray-900">
-                  {selectedLeave.endDate}
-                </p>
-              </div>
-            </div>
-
-            <div>
-              <label className="text-sm font-medium text-gray-700">
-                Alasan
-              </label>
-              <p className="mt-1 text-gray-900 bg-gray-50 p-3 rounded-lg">
-                {selectedLeave.reason}
-              </p>
-            </div>
-
-            <div className="grid grid-cols-2 gap-4">
-              <div>
-                <label className="text-sm font-medium text-gray-700">
-                  Tanggal Pengajuan
-                </label>
-                <p className="mt-1 text-gray-900">
-                  {selectedLeave.submittedDate}
-                </p>
-              </div>
-              {/* Bagian Surat Keterangan Dokter telah dihapus */}
-            </div>
-          </div>
-
-          {selectedLeave.status === "pending" && (
-            <div className="mt-8 flex gap-3">
-              <button
-                onClick={() => {
-                  handleApproveLeave(selectedLeave.id);
-                  setShowLeaveModal(false);
-                  setSelectedLeave(null);
-                }}
-                className="flex-1 bg-green-600 text-white py-3 px-4 rounded-lg hover:bg-green-700 transition font-medium flex items-center justify-center gap-2"
-              >
-                <CheckCircleIcon className="w-5 h-5" />
-                Setujui
-              </button>
-              <button
-                onClick={() => {
-                  handleRejectLeave(selectedLeave.id);
-                  setShowLeaveModal(false);
-                  setSelectedLeave(null);
-                }}
-                className="flex-1 bg-red-600 text-white py-3 px-4 rounded-lg hover:bg-red-700 transition font-medium flex items-center justify-center gap-2"
-              >
-                <XCircleIcon className="w-5 h-5" />
-                Tolak
-              </button>
-            </div>
-          )}
-
-          <button
-            onClick={() => {
-              setShowLeaveModal(false);
-              setSelectedLeave(null);
-            }}
-            className="w-full mt-4 bg-gray-300 text-gray-700 py-3 px-4 rounded-lg hover:bg-gray-400 transition font-medium"
-          >
-            Tutup
-          </button>
         </div>
       </div>
-    </div>
-  );
-};
+    );
+  };
 
   // ==================== MODAL SHIFT FORM YANG DIPERBAIKI ====================
 
@@ -1697,8 +1947,8 @@ const LeaveDetailModal = () => {
       shiftForm.dayOfWeek || "Monday"
     );
     
-    // Ambil data jadwal minggu ini
-    const weekSchedule = getCurrentWeekSchedule();
+    // Ambil data jadwal minggu ini dimulai dari hari ini
+    const upcomingShifts = getUpcomingShifts(shifts, 7);
     
     // Mapping hari Inggris ke Indonesia
     const dayMapping = {
@@ -1734,39 +1984,38 @@ const LeaveDetailModal = () => {
             </div>
 
             <div className="space-y-6">
-              {/* SESUAI SRS: Sistem menampilkan jadwal shift pada minggu tersebut */}
+              {/* UPDATE: Sistem menampilkan jadwal shift MENDATANG dari hari ini */}
               <div>
-                <h4 className="font-medium text-gray-700 mb-3">Jadwal Shift Minggu Ini ({new Date().toLocaleDateString('id-ID', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })})</h4>
+                <h4 className="font-medium text-gray-700 mb-3">Jadwal Shift Mendatang (Mulai Hari Ini: {new Date().toLocaleDateString('id-ID', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' })})</h4>
                 <div className="bg-gray-50 p-4 rounded-lg border border-gray-200">
                   <div className="grid grid-cols-7 gap-2 mb-4">
-                    {weekSchedule.map((day, index) => {
-                      const isSelected = shiftForm.dayOfWeek === day.englishDayName;
-                      const isToday = day.isToday;
+                    {upcomingShifts.slice(0, 7).map((day, index) => {
+                      const isSelected = shiftForm.dayOfWeek === day.dayOfWeek;
                       
                       return (
                         <div 
                           key={index}
-                          className={`p-3 rounded-lg border cursor-pointer transition-all ${isSelected ? 'bg-blue-50 border-blue-300' : 'bg-white border-gray-200'} ${isToday ? 'ring-2 ring-blue-200' : ''}`}
+                          className={`p-3 rounded-lg border cursor-pointer transition-all ${isSelected ? 'bg-blue-50 border-blue-300' : 'bg-white border-gray-200'} ${day.isToday ? 'ring-2 ring-blue-200' : ''}`}
                           onClick={() => {
-                            setShiftForm({...shiftForm, dayOfWeek: day.englishDayName});
+                            setShiftForm({...shiftForm, dayOfWeek: day.dayOfWeek});
                           }}
                           title={`Klik untuk pilih ${day.dayName}`}
                         >
                           <div className="flex flex-col items-center">
                             <p className={`text-sm font-medium ${isSelected ? 'text-blue-700' : 'text-gray-700'}`}>
-                              {day.dayName}
+                              {day.dayName.substring(0, 3)}
                             </p>
-                            <p className="text-xs text-gray-500 mt-1">{day.displayDate}</p>
+                            <p className="text-xs text-gray-500 mt-1">{day.displayDate.split(' ')[0]}</p>
                             <div className="mt-2">
-                              {day.shiftCount > 0 ? (
+                              {day.shifts.length > 0 ? (
                                 <span className={`px-2 py-1 rounded-full text-xs font-medium ${isSelected ? 'bg-blue-100 text-blue-700' : 'bg-gray-100 text-gray-700'}`}>
-                                  {day.shiftCount} shift
+                                  {day.shifts.length} shift
                                 </span>
                               ) : (
-                                <span className="text-xs text-gray-400">Tidak ada shift</span>
+                                <span className="text-xs text-gray-400">-</span>
                               )}
                             </div>
-                            {isToday && (
+                            {day.isToday && (
                               <div className="mt-1">
                                 <span className="text-xs bg-green-100 text-green-700 px-2 py-0.5 rounded">Hari Ini</span>
                               </div>
@@ -1784,61 +2033,30 @@ const LeaveDetailModal = () => {
                         Detail Jadwal {currentDayName}
                       </h5>
                       <span className="text-sm text-gray-600">
-                        Total: {weekSchedule.find(d => d.englishDayName === shiftForm.dayOfWeek)?.shiftCount || 0} shift
+                        Total: {upcomingShifts.find(d => d.dayOfWeek === shiftForm.dayOfWeek)?.shifts.length || 0} shift
                       </span>
                     </div>
                     
-                    {weekSchedule.find(d => d.englishDayName === shiftForm.dayOfWeek)?.shiftCount > 0 ? (
+                    {upcomingShifts.find(d => d.dayOfWeek === shiftForm.dayOfWeek)?.shifts.length > 0 ? (
                       <div className="space-y-3">
-                        {weekSchedule
-                          .find(d => d.englishDayName === shiftForm.dayOfWeek)
-                          ?.shiftDetails.map((shift, idx) => {
-                            // Temukan shift asli berdasarkan ID
-                            const originalShift = shifts.find(s => s.id === shift.id);
+                        {upcomingShifts
+                          .find(d => d.dayOfWeek === shiftForm.dayOfWeek)
+                          ?.shifts.map((shift, idx) => {
+                            const site = sites.find(s => s.id === shift.siteId);
                             
                             return (
                               <div key={idx} className="flex items-center justify-between p-3 bg-gray-50 rounded border border-gray-200">
                                 <div className="flex-1">
                                   <div className="flex items-center gap-2">
                                     <span className="font-medium text-gray-900">{shift.name}</span>
-                                    <span className="text-sm text-gray-600">{shift.time}</span>
+                                    <span className="text-sm text-gray-600">{shift.startTime} - {shift.endTime}</span>
                                   </div>
                                   <div className="mt-1 flex items-center gap-3 text-sm text-gray-600">
-                                    <span>Site: {shift.site}</span>
+                                    <span>Site: {site ? site.name : "Unknown"}</span>
                                     <span>•</span>
-                                    <span>Operator: {shift.operatorCount}/{shift.maxOperators}</span>
+                                    <span>Operator: {shift.assignedOperators?.length || 0}/12 (maksimal 12)</span>
                                   </div>
-                                  {shift.operators.length > 0 && (
-                                    <div className="mt-2">
-                                      <p className="text-xs text-gray-500 mb-1">Operator Bertugas:</p>
-                                      <div className="flex flex-wrap gap-1">
-                                        {shift.operators.slice(0, 3).map((op, opIdx) => (
-                                          <span key={opIdx} className="text-xs bg-blue-100 text-blue-700 px-2 py-1 rounded">
-                                            {op.split(' ')[0]}
-                                          </span>
-                                        ))}
-                                        {shift.operators.length > 3 && (
-                                          <span className="text-xs bg-gray-100 text-gray-600 px-2 py-1 rounded">
-                                            +{shift.operators.length - 3} lainnya
-                                          </span>
-                                        )}
-                                      </div>
-                                    </div>
-                                  )}
                                 </div>
-                                {/* TOMBOL EDIT YANG SEKARANG AKTIF */}
-                                <button
-                                  type="button"
-                                  onClick={() => {
-                                    if (originalShift) {
-                                      handleEditShift(originalShift);
-                                    }
-                                  }}
-                                  className="ml-2 text-blue-600 hover:text-blue-800 p-2 rounded hover:bg-blue-50 transition-colors"
-                                  title="Edit shift ini"
-                                >
-                                 
-                                </button>
                               </div>
                             );
                           })}
@@ -1890,6 +2108,9 @@ const LeaveDetailModal = () => {
                       <option value="Friday">Jumat</option>
                       <option value="Saturday">Sabtu</option>
                       <option value="Sunday">Minggu</option>
+                      <option value="Weekdays">Weekdays (Senin-Jumat)</option>
+                      <option value="Weekends">Weekends (Sabtu-Minggu)</option>
+                      <option value="Everyday">Setiap Hari</option>
                     </select>
                     <ChevronDownIcon className="w-5 h-5 text-gray-400 absolute right-3 top-1/2 transform -translate-y-1/2 pointer-events-none" />
                   </div>
@@ -1951,19 +2172,19 @@ const LeaveDetailModal = () => {
                 </div>
               </div>
 
+              {/* PERUBAHAN: Maximum Operators selalu 12 */}
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
                   Maximum Operators (Maksimal 12)
                 </label>
                 <div className="relative">
                   <select
-                    value={shiftForm.maxOperators}
-                    onChange={(e) => setShiftForm({ ...shiftForm, maxOperators: parseInt(e.target.value) })}
+                    value={12} // SELALU 12
+                    onChange={(e) => setShiftForm({ ...shiftForm, maxOperators: 12 })}
                     className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 appearance-none bg-white"
+                    disabled
                   >
-                    {[1,2,3,4,5,6,7,8,9,10,11,12].map(num => (
-                      <option key={num} value={num}>{num} operator{num !== 1 ? 's' : ''} (maksimal 12)</option>
-                    ))}
+                    <option value={12}>12 operator (maksimal 12)</option>
                   </select>
                   <ChevronDownIcon className="w-5 h-5 text-gray-400 absolute right-3 top-1/2 transform -translate-y-1/2 pointer-events-none" />
                 </div>
@@ -1974,10 +2195,9 @@ const LeaveDetailModal = () => {
                 )}
               </div>
 
-              {/* SESUAI SRS: HRD menugaskan operator yang tersedia pada shift yang dipilih */}
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-3">
-                  Assign Operators ({shiftForm.assignedOperators.length} selected)
+                  Assign Operators ({shiftForm.assignedOperators.length} selected, maksimal 12)
                 </label>
                 <div className="border border-gray-200 rounded-lg p-4 max-h-60 overflow-y-auto">
                   {availableOperators.length === 0 ? (
@@ -2004,9 +2224,9 @@ const LeaveDetailModal = () => {
                                 checked={isAssigned}
                                 onChange={(e) => {
                                   if (e.target.checked) {
-                                    // Cek apakah sudah mencapai batas maksimal
-                                    if (shiftForm.assignedOperators.length >= shiftForm.maxOperators) {
-                                      alert(`Maksimal ${shiftForm.maxOperators} operator per shift`);
+                                    // Cek apakah sudah mencapai batas maksimal 12
+                                    if (shiftForm.assignedOperators.length >= 12) {
+                                      alert(`Maksimal 12 operator per shift`);
                                       return;
                                     }
                                     setShiftForm({
@@ -2051,7 +2271,7 @@ const LeaveDetailModal = () => {
                   )}
                 </div>
                 <p className="text-xs text-gray-500 mt-2">
-                  Operator yang sedang cuti atau telah melebihi waktu kerja tidak muncul dalam daftar.
+                  Operator yang sedang cuti atau telah melebihi waktu kerja tidak muncul dalam daftar. Maksimal 12 operator per shift.
                 </p>
               </div>
             </div>
@@ -2091,7 +2311,11 @@ const LeaveDetailModal = () => {
         />
       )}
 
-      {/* Modal Attendance Detail */}
+      {/* Modal baru untuk foto dan peta */}
+      {showPhotoModal && <PhotoModal />}
+      {showMapModal && <MapModal />}
+      
+      {/* Modal Attendance Detail dengan foto dan geolokasi */}
       {isDetailModalOpen && selectedAttendance && (
         <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
           <div className="bg-white rounded-2xl shadow-xl max-w-md w-full max-h-[90vh] overflow-y-auto">
@@ -2206,6 +2430,70 @@ const LeaveDetailModal = () => {
                   </div>
                 </div>
 
+                {/* UPDATE: Bagian Foto Presensi */}
+                {selectedAttendance.photoUrl && (
+                  <div>
+                    <label className="text-sm font-medium text-gray-700">
+                      Foto Presensi
+                    </label>
+                    <div className="mt-2">
+                      <div className="relative group">
+                        <img
+                          src={selectedAttendance.photoUrl}
+                          alt="Foto presensi"
+                          className="w-full h-48 object-cover rounded-lg cursor-pointer hover:opacity-90 transition"
+                          onClick={() => openPhotoModal(selectedAttendance.photoUrl)}
+                        />
+                        <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-20 transition flex items-center justify-center rounded-lg">
+                          <div className="opacity-0 group-hover:opacity-100 transition">
+                            <CameraIcon className="w-8 h-8 text-white" />
+                          </div>
+                        </div>
+                      </div>
+                      <button
+                        onClick={() => openPhotoModal(selectedAttendance.photoUrl)}
+                        className="mt-2 text-sm text-blue-600 hover:text-blue-800 flex items-center gap-1"
+                      >
+                        <EyeIcon className="w-4 h-4" />
+                        Lihat foto lengkap
+                      </button>
+                    </div>
+                  </div>
+                )}
+
+                {/* UPDATE: Bagian Geolokasi */}
+                <div>
+                  <label className="text-sm font-medium text-gray-700">
+                    Geolokasi
+                  </label>
+                  <div className="mt-2 p-3 bg-gray-50 rounded-lg border border-gray-200">
+                    <div className="flex items-start justify-between">
+                      <div>
+                        <p className="text-sm text-gray-900">{selectedAttendance.location}</p>
+                        {selectedAttendance.locationCoordinates && (
+                          <p className="text-xs text-gray-500 mt-1">
+                            Koordinat: {selectedAttendance.locationCoordinates}
+                          </p>
+                        )}
+                      </div>
+                      <button
+                        onClick={() => openMapModal(selectedAttendance.location, selectedAttendance.locationCoordinates)}
+                        className="text-blue-600 hover:text-blue-800 p-2 rounded-lg hover:bg-blue-50 transition"
+                        title="Lihat lokasi di peta"
+                      >
+                        <MapPinIcon className="w-5 h-5" />
+                      </button>
+                    </div>
+                    <button
+                      onClick={() => openMapModal(selectedAttendance.location, selectedAttendance.locationCoordinates)}
+                      className="mt-3 text-sm text-blue-600 hover:text-blue-800 flex items-center gap-1"
+                    >
+                      <MapIcon className="w-4 h-4" />
+                      Lihat di peta
+                    </button>
+                  </div>
+                </div>
+
                 <div>
                   <label className="text-sm font-medium text-gray-700">
                     Submitted By
@@ -2264,7 +2552,22 @@ const LeaveDetailModal = () => {
 
       {/* Modals untuk fitur baru */}
       {showShiftForm && <ShiftFormModal />}
-      {showSiteForm && <SiteFormModal />}
+      
+      {/* SiteFormModal dengan props yang diperlukan */}
+      {showSiteForm && (
+        <SiteFormModal
+          showSiteForm={showSiteForm}
+          setShowSiteForm={setShowSiteForm}
+          editingSite={editingSite}
+          setEditingSite={setEditingSite}
+          sites={sites}
+          handleAddSite={handleAddSite}
+          siteFormRef={siteFormRef}
+          siteForm={siteForm}
+          setSiteForm={setSiteForm}
+        />
+      )}
+      
       {showLeaveModal && selectedLeave && <LeaveDetailModal />}
       {showMedicalCertificateModal && <MedicalCertificateModal />}
 
@@ -2590,7 +2893,7 @@ const LeaveDetailModal = () => {
                 {
                   label: "Attendance Rate",
                   value: `${dashboardData.attendanceRate}%`,
-                  percent: ``, // PERUBAHAN: Hapus 'Target: 95%'
+                  percent: ``,
                   icon: ChartBarIcon,
                   bgColor: dashboardData.attendanceRate >= 95 ? "bg-green-50" : "bg-orange-50",
                   iconColor: dashboardData.attendanceRate >= 95 ? "text-green-600" : "text-orange-600",
@@ -2641,7 +2944,7 @@ const LeaveDetailModal = () => {
 
             {/* SECOND ROW - OTHER MENU SUMMARIES */}
 <div className="grid grid-cols-1 md:grid-cols-3 gap-3 sm:gap-4 mb-4 sm:mb-6">
-  {/* Shift Management Summary */}
+  {/* Shift Management Summary - UPDATE: Menampilkan jadwal mendatang */}
   <div
     className="bg-white p-3 sm:p-4 lg:p-6 rounded-lg sm:rounded-xl border border-gray-200 shadow-sm sm:shadow-md hover:shadow-md transition-shadow cursor-pointer flex flex-col h-full"
     onClick={() => setActiveMenu("shiftManagement")}
@@ -2653,7 +2956,7 @@ const LeaveDetailModal = () => {
             Shift Management
           </h3>
           <p className="text-xs sm:text-sm text-gray-600">
-            Total shifts: {shifts.length}
+            Jadwal mendatang: {getUpcomingShifts(shifts, 7).reduce((acc, day) => acc + day.shifts.length, 0)} shift
           </p>
         </div>
         <div className="p-2 bg-blue-50 rounded-lg">
@@ -2661,23 +2964,24 @@ const LeaveDetailModal = () => {
         </div>
       </div>
       <div className="space-y-2">
-        {shifts.slice(0, 3).map((shift, index) => {
-          const site = sites.find(s => s.id === shift.siteId);
-          const assignedCount = shift.assignedOperators?.length || 0;
-          return (
-            <div
-              key={index}
-              className="flex items-center justify-between p-2 bg-gray-50 rounded"
-            >
-              <div>
-                <p className="text-sm font-medium text-gray-900">{shift.name}</p>
-                <p className="text-xs text-gray-600">{shift.dayOfWeek} • {assignedCount}/{shift.maxOperators} ops (maksimal 12)</p>
+        {getUpcomingShifts(shifts, 3).map((day, index) => {
+          return day.shifts.slice(0, 1).map((shift, idx) => {
+            const site = sites.find(s => s.id === shift.siteId);
+            return (
+              <div
+                key={`${index}-${idx}`}
+                className="flex items-center justify-between p-2 bg-gray-50 rounded"
+              >
+                <div>
+                  <p className="text-sm font-medium text-gray-900">{day.dayName}</p>
+                  <p className="text-xs text-gray-600">{shift.name} • {site ? site.name.split(' ')[1] : 'Site'}</p>
+                </div>
+                <span className="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded">
+                  {shift.assignedOperators?.length || 0}/12 ops
+                </span>
               </div>
-              <span className="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded">
-                {site ? site.name.split(' ')[1] : 'Site'}
-              </span>
-            </div>
-          );
+            );
+          });
         })}
       </div>
     </div>
@@ -3011,7 +3315,7 @@ const LeaveDetailModal = () => {
 </div>
               </div>
 
-              {/* SESUAI SRS: Data presensi operator yang telah divalidasi (disetujui/ditolak) akan ditampilkan dalam bentuk tabel */}
+              {/* UPDATE: Data presensi operator yang telah divalidasi (disetujui/ditolak) akan ditampilkan dalam bentuk tabel */}
               <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 mb-6">
                 {[
                   {
@@ -3065,7 +3369,7 @@ const LeaveDetailModal = () => {
                 })}
               </div>
 
-              {/* SESUAI SRS: Alternative flows - Data presensi operator belum divalidasi sama sekali, maka sistem akan menampilkan data presensi kosong */}
+              {/* UPDATE: Alternative flows - Data presensi operator belum divalidasi sama sekali, maka sistem akan menampilkan data presensi kosong */}
               {attendanceData.length === 0 ? (
                 <div className="bg-white p-8 rounded-xl shadow-sm border border-gray-200 text-center">
                   <DocumentTextIcon className="w-16 h-16 text-gray-300 mx-auto mb-4" />
@@ -3164,6 +3468,43 @@ const LeaveDetailModal = () => {
                                   </div>
                                 </div>
                               </div>
+                              
+                              {/* UPDATE: Tambahkan foto dan geolokasi di mobile view */}
+                              <div className="grid grid-cols-2 gap-4">
+                                {item.photoUrl && (
+                                  <div>
+                                    <p className="text-gray-500 text-xs uppercase font-medium mb-1">Foto</p>
+                                    <button
+                                      onClick={() => openPhotoModal(item.photoUrl)}
+                                      className="w-full"
+                                    >
+                                      <div className="relative">
+                                        <img
+                                          src={item.photoUrl}
+                                          alt="Foto presensi"
+                                          className="w-full h-20 object-cover rounded-lg"
+                                        />
+                                        <div className="absolute inset-0 bg-black bg-opacity-0 hover:bg-opacity-20 transition flex items-center justify-center rounded-lg">
+                                          <CameraIcon className="w-6 h-6 text-white opacity-0 hover:opacity-100 transition" />
+                                        </div>
+                                      </div>
+                                    </button>
+                                  </div>
+                                )}
+                                <div>
+                                  <p className="text-gray-500 text-xs uppercase font-medium mb-1">Lokasi</p>
+                                  <button
+                                    onClick={() => openMapModal(item.location, item.locationCoordinates)}
+                                    className="w-full text-left"
+                                  >
+                                    <div className="flex items-center gap-2 p-2 bg-gray-50 rounded-lg hover:bg-gray-100 transition">
+                                      <MapPinIcon className="w-4 h-4 text-blue-600" />
+                                      <p className="text-xs text-gray-700 truncate">{item.location}</p>
+                                    </div>
+                                  </button>
+                                </div>
+                              </div>
+
                               <div className="flex justify-between items-center pt-3 border-t border-gray-200">
                                 <button onClick={() => openDetailModal(item)} className="flex items-center gap-2 text-blue-600 hover:text-blue-800 transition px-3 py-2 rounded-lg hover:bg-blue-50 text-sm font-medium">
                                   <EyeIcon className="w-4 h-4" /> Lihat Detail
@@ -3212,6 +3553,15 @@ const LeaveDetailModal = () => {
                                 <div className="flex gap-2">
                                   <button onClick={() => openDetailModal(item)} className="text-blue-600 hover:text-blue-800 transition p-2 rounded-lg hover:bg-blue-50" title="View Details">
                                     <EyeIcon className="w-5 h-5" />
+                                  </button>
+                                  {/* UPDATE: Tambahkan tombol foto dan lokasi di desktop view */}
+                                  {item.photoUrl && (
+                                    <button onClick={() => openPhotoModal(item.photoUrl)} className="text-purple-600 hover:text-purple-800 transition p-2 rounded-lg hover:bg-purple-50" title="View Photo">
+                                      <CameraIcon className="w-5 h-5" />
+                                    </button>
+                                  )}
+                                  <button onClick={() => openMapModal(item.location, item.locationCoordinates)} className="text-green-600 hover:text-green-800 transition p-2 rounded-lg hover:bg-green-50" title="View Location">
+                                    <MapPinIcon className="w-5 h-5" />
                                   </button>
                                   {item.status === "pending" && (
                                     <>
@@ -3289,7 +3639,7 @@ const LeaveDetailModal = () => {
               </div>
             </div>
 
-            {/* Shift Statistics */}
+            {/* UPDATE: Shift Statistics dengan data realtime */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
               <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-200">
                 <div className="flex items-center justify-between">
@@ -3305,31 +3655,78 @@ const LeaveDetailModal = () => {
               <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-200">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-sm text-gray-600">Operator Bertugas</p>
+                    <p className="text-sm text-gray-600">Shift Hari Ini</p>
                     <p className="text-2xl font-bold text-gray-900 mt-1">
-                      {new Set(shifts.flatMap(s => s.assignedOperators || [])).size}
+                      {getUpcomingShifts(shifts, 1)[0]?.shifts.length || 0}
                     </p>
                   </div>
                   <div className="p-3 bg-green-50 rounded-lg">
-                    <UsersIcon className="w-6 h-6 text-green-600" />
+                    <CalendarIcon className="w-6 h-6 text-green-600" />
                   </div>
                 </div>
               </div>
               <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-200">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-sm text-gray-600">Rata-rata Operator/Shift</p>
+                    <p className="text-sm text-gray-600">Operator Bertugas</p>
                     <p className="text-2xl font-bold text-gray-900 mt-1">
-                      {shifts.length > 0 
-                        ? Math.round(shifts.reduce((acc, shift) => acc + (shift.assignedOperators?.length || 0), 0) / shifts.length)
-                        : 0
-                      }
+                      {new Set(shifts.flatMap(s => s.assignedOperators || [])).size}
                     </p>
                   </div>
                   <div className="p-3 bg-purple-50 rounded-lg">
-                    <UserGroupIcon className="w-6 h-6 text-purple-600" />
+                    <UsersIcon className="w-6 h-6 text-purple-600" />
                   </div>
                 </div>
+              </div>
+            </div>
+
+            {/* UPDATE: Jadwal Shift Mendatang (7 hari ke depan) */}
+            <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden mb-6">
+              <div className="px-6 py-4 bg-gray-50 border-b border-gray-200">
+                <h3 className="font-semibold text-gray-800">Jadwal Shift Mendatang (7 Hari)</h3>
+                <p className="text-sm text-gray-600 mt-1">Mulai dari hari ini: {new Date().toLocaleDateString('id-ID', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' })}</p>
+              </div>
+              <div className="divide-y divide-gray-200">
+                {getUpcomingShifts(shifts, 7).map((day, index) => (
+                  <div key={index} className="px-6 py-4 hover:bg-gray-50 transition-colors">
+                    <div className="flex items-center justify-between mb-3">
+                      <div>
+                        <h4 className="font-medium text-gray-900">{day.dayName}, {day.displayDate}</h4>
+                        {day.isToday && (
+                          <span className="text-xs bg-green-100 text-green-800 px-2 py-1 rounded mt-1 inline-block">Hari Ini</span>
+                        )}
+                      </div>
+                      <span className="text-sm text-gray-600">{day.shifts.length} shift</span>
+                    </div>
+                    <div className="space-y-3">
+                      {day.shifts.map((shift, idx) => {
+                        const site = sites.find(s => s.id === shift.siteId);
+                        const assignedCount = shift.assignedOperators?.length || 0;
+                        return (
+                          <div key={idx} className="flex items-center justify-between p-3 bg-gray-50 rounded border border-gray-200">
+                            <div className="flex-1">
+                              <div className="flex items-center gap-3">
+                                <span className="font-medium text-gray-900">{shift.name}</span>
+                                <span className="text-sm text-gray-600">{shift.startTime} - {shift.endTime}</span>
+                              </div>
+                              <div className="mt-1 flex items-center gap-3 text-sm text-gray-600">
+                                <span>Site: {site ? site.name : 'Unknown'}</span>
+                                <span>•</span>
+                                <span>Operator: {assignedCount}/12 (maksimal 12)</span>
+                              </div>
+                            </div>
+                            <button
+                              onClick={() => handleEditShift(shift)}
+                              className="text-blue-600 hover:text-blue-800 p-2 rounded-lg hover:bg-blue-50 transition"
+                            >
+                              <PencilIcon className="w-5 h-5" />
+                            </button>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </div>
+                ))}
               </div>
             </div>
 
@@ -3381,7 +3778,7 @@ const LeaveDetailModal = () => {
                               </p>
                             </div>
                             <span className="bg-blue-100 text-blue-800 text-xs font-medium px-2 py-1 rounded flex-shrink-0">
-                              {(shift.assignedOperators?.length || 0)}/{shift.maxOperators} ops (maksimal 12)
+                              {(shift.assignedOperators?.length || 0)}/12 ops (maksimal 12)
                             </span>
                           </div>
                           
@@ -3449,7 +3846,7 @@ const LeaveDetailModal = () => {
                                 {assignedOperatorNames || "Belum ada operator"}
                               </p>
                               <p className="text-xs text-gray-500 mt-0.5">
-                                {(shift.assignedOperators?.length || 0)}/{shift.maxOperators} operators (maksimal 12)
+                                {(shift.assignedOperators?.length || 0)}/12 operators (maksimal 12)
                               </p>
                             </div>
                           </div>
@@ -3829,3 +4226,18 @@ const LeaveDetailModal = () => {
     </div>
   );
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
