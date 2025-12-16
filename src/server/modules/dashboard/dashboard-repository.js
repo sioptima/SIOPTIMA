@@ -287,30 +287,37 @@ export class DashboardRepository {
     static async adminSummary(){
         try {
             const date = new Date();
-            const startOfDay = new Date(date.getFullYear(),date.getMonth(),date.getDate())
-            const endOfDay = new Date(date.getFullYear(),date.getMonth(),date.getDate()+1)
-            const [activeSite, maintenanceSite, inactiveSite, activeOperator, approvedReport, pendingReport, rejectedReport] = 
+            const startOfMonth = new Date(date.getFullYear(), date.getMonth());
+            const endOfMonth = new Date(date.getFullYear(), date.getMonth() + 1);
+            const [activeSite, maintenanceSite, inactiveSite, totalOperators, activeOperator, approvedReport, pendingReport, rejectedReport, resolvedTicket, totalTicket] = 
                 await PrismaClient.$transaction([
                     PrismaClient.site.count({where: {status:"ACTIVE"}}),
                     PrismaClient.site.count({where: {status:"MAINTENANCE"}}),
                     PrismaClient.site.count({where: {status:"INACTIVE"}}),
+                    PrismaClient.user.count({where: {role: {name:"OPERATOR"}}}),
                     PrismaClient.user.count({where: {role: {name:"OPERATOR"},status:"ACTIVE"}}),
                     PrismaClient.laporan.count({where: {
                         laporanStatus:"APPROVED",
-                        laporanDate: {gte: startOfDay, lt:endOfDay}
+                        laporanDate: {gte: startOfMonth, lt:endOfMonth}
                     }}),
                     PrismaClient.laporan.count({where: {
                         laporanStatus:"PENDING",
-                        laporanDate: {gte: startOfDay, lt:endOfDay}
+                        laporanDate: {gte: startOfMonth, lt:endOfMonth}
                     }}),
                     PrismaClient.laporan.count({where: {
                         laporanStatus:"REJECTED",
-                        laporanDate: {gte: startOfDay, lt:endOfDay}
+                        laporanDate: {gte: startOfMonth, lt:endOfMonth}
+                    }}),
+                    PrismaClient.ticket.count({where: {
+                        status: "RESOLVED"
+                    }}),
+                    PrismaClient.ticket.count({where: {
+                        createdAt: {gte: startOfMonth, lt:endOfMonth}
                     }}),
                 ])
-            return {activeSite, maintenanceSite, inactiveSite, activeOperator, approvedReport, pendingReport, rejectedReport}
+            return {activeSite, maintenanceSite, inactiveSite, totalOperators, activeOperator, approvedReport, pendingReport, rejectedReport, resolvedTicket, totalTicket}
         } catch (error) {
-            throw new ResponseError(500, "Failed when retrieving dashboard information from database")
+            throw new ResponseError(500, "Failed when retrieving summary information")
         }
     }
 

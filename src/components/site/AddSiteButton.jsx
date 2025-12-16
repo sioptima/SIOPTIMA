@@ -4,7 +4,7 @@ import { useState } from "react";
 import dynamic from 'next/dynamic'
 import * as Dialog from '@radix-ui/react-dialog'
 import { PlusIcon } from '@heroicons/react/24/outline'
-import { Cross1Icon } from '@radix-ui/react-icons';
+import { Cross1Icon } from '@radix-ui/react-icons'
 
 const Map = dynamic(() => import('@/src/components/site/Map.jsx'),
 {
@@ -137,33 +137,15 @@ function AddSiteButton() {
   )
 }
 
-function SiteFields({name, lat, lng, address, setName, setLatitude, setLongitude, setAddress}) {
+export function MapField({ lat, lng, onChange }) {
   const handlePositionChange = (pos) => {
-    setLatitude(pos.lat)
-    setLongitude(pos.lng)
+    onChange({
+      latitude: pos.lat,
+      longitude: pos.lng,
+    })
   }
   return (
     <div className='space-y-6'>
-      <div>
-        <label className='text-sm font-medium text-gray-900'>Name</label>
-        <input
-          autoFocus
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-          className='mt-2 block w-full rounded-md border 
-          border-gray-300 px-2 py-1.5 text-sm text-gray-900 shadow-sm'/>
-      </div>
-     
-      <div>
-        <label className='text-sm font-medium text-gray-900'>Address</label>
-        <textarea
-          autoFocus
-          value={address}
-          onChange={(e) => setAddress(e.target.value)}
-          className='mt-2 block w-full min-h-20 rounded-md border 
-          border-gray-300 px-2 py-1.5 text-sm text-gray-900 shadow-sm'/>
-      </div>
-
       <div>
         <label className='text-sm font-medium text-gray-900'>Pinpoint</label>
         <Map onPositionChange={handlePositionChange}/>

@@ -1,7 +1,7 @@
 paths:
   /api/admin/dashboard/summary:
     get:
-      summary: Get dashboard information -  report information is daily
+      summary: Get dashboard information - Monthly report and ticket count
       tags:
         - Dashboard
       

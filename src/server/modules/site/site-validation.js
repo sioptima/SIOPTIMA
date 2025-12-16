@@ -7,9 +7,9 @@ export class SiteValidation {
         city: z.string().min(1, "City is required").max(50, "City character limit is 50"),
         province: z.string().min(1, "Province is required").max(50, "Province character limit is 50"),
         address: z.string().min(1, "Address is required").max(200, "Address max character limit is 200"),
-        latitude: z.number("Invalid latitude"),
-        longitude: z.number("Invalid longitude"),
-        capacity: z.number().int().optional(),
+        latitude: z.coerce.number("Invalid latitude"),
+        longitude: z.coerce.number("Invalid longitude"),
+        capacity: z.coerce.number().int().optional(),
     })
     
     static GET = z.object({

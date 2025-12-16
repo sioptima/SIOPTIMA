@@ -33,7 +33,8 @@ import {
   FilmIcon,
   DocumentTextIcon,
 } from "@heroicons/react/24/outline";
-import AddSiteButton from "@/src/components/site/AddSiteButton";
+import { MapField } from "@/src/components/site/AddSiteButton";
+import TopKpi from "@/src/features/admin/dashboard/topKpi";
 
 // Data provinsi dan kota di Indonesia
 const provinsiList = [
@@ -773,7 +774,7 @@ export default function Admin() {
   };
 
   // ==================== HANDLERS UNTUK SITE ====================
-  const handleAddSite = () => {
+  const handleAddSite = async () => {
     const errors = validateForm(newSiteData);
     if (Object.keys(errors).length > 0) {
       setFormErrors(errors);
@@ -787,9 +788,20 @@ export default function Admin() {
       lastReport: "No reports yet",
     };
 
+    
     const updatedSites = [...sitesData, newSite];
     setSitesData(updatedSites);
     
+    await createSite(
+      newSite.name, 
+      newSite.latitude, 
+      newSite.longitude, 
+      newSite.address, 
+      newSite.city, 
+      newSite.province,
+      newSite.operators,
+    );
+
     // Setelah menambahkan site, reset form
     setNewSiteData({
       name: "",
@@ -803,6 +815,36 @@ export default function Admin() {
     setIsAddSiteModalOpen(false);
     setFormErrors({});
     setMapClickPosition({ x: 50, y: 50 });
+  };
+
+  const createSite = async (name, lat, lng, address, city, province, operators) => {
+
+    try {
+      const res = await fetch("/api/admin/site", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: name.trim(),
+          address: address.trim(),
+          city: city.trim(),
+          province: province.trim(),
+          capacity: operators,
+          latitude: lat,
+          longitude: lng,
+        }),
+      });
+
+      const data = await res.json();
+ 
+      if (!res.ok) {
+        console.log(data.error || "Failed to create site");
+        return;
+      }
+      
+      console.log(res.json)
+    } catch (err) {
+      console.log("Error: ", err)
+    }
   };
 
   const handleEditSite = (site) => {
@@ -3364,39 +3406,17 @@ const filterReportsForExport = () => {
                       </p>
 
                       {/* Peta Simulasi */}
-                      <div className="relative border border-gray-300 rounded-lg overflow-hidden mb-3 sm:mb-4">
-                        <div
-                          className="w-full h-32 sm:h-48 bg-gradient-to-r from-blue-50 to-green-50 relative cursor-pointer"
-                          onClick={handleMapClick}
-                        >
-                          {/* Grid peta */}
-                          <div className="absolute inset-0 bg-grid-pattern opacity-10"></div>
-
-                          {/* Marker */}
-                          <div
-                            className="absolute w-6 h-6 transform -translate-x-1/2 -translate-y-1/2 transition-all duration-300"
-                            style={{
-                              left: `${mapClickPosition.x}%`,
-                              top: `${mapClickPosition.y}%`,
-                            }}
-                          >
-                            <MapPinIcon className="w-6 h-6 text-red-600 drop-shadow-lg" />
-                          </div>
-
-                          {/* Label koordinat */}
-                          <div
-                            className="absolute bg-white/90 backdrop-blur-sm px-2 py-1 rounded text-xs font-medium shadow-sm"
-                            style={{
-                              left: `${Math.min(mapClickPosition.x + 5, 85)}%`,
-                              top: `${Math.max(mapClickPosition.y - 15, 10)}%`,
-                            }}
-                          >
-                            {newSiteData.latitude && newSiteData.longitude
-                              ? `${newSiteData.latitude}, ${newSiteData.longitude}`
-                              : "Klik untuk memilih"}
-                          </div>
-                        </div>
-                      </div>
+                      <MapField
+                        lat={newSiteData.latitude}
+                        lng={newSiteData.longitude}
+                        onChange={({ latitude, longitude }) =>
+                          setNewSiteData(prev => ({
+                            ...prev,
+                            latitude,
+                            longitude,
+                          }))
+                        }
+                      />
 
                       {/* Input Koordinat */}
                       <div className="grid grid-cols-2 gap-3 sm:gap-4">
@@ -4089,66 +4109,7 @@ const filterReportsForExport = () => {
             </div>
 
             {/* TOP KPIs - Rangkuman Semua Menu */}
-            <div className="mb-6 lg:mb-8 grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
-              {[
-                {
-                  label: "Total Sites",
-                  value: totalSites,
-                  percent: `${Math.round((activeSites / totalSites) * 100)}% Active`,
-                  icon: MapPinIcon,
-                  color: "bg-teal-100 text-teal-600",
-                  menu: "sites",
-                },
-                {
-                  label: "Active Operators",
-                  value: totalOperators,
-                  percent: `${usersData.filter((u) => u.status === "active").length} Active Users`,
-                  icon: UsersIcon,
-                  color: "bg-blue-100 text-blue-600",
-                  menu: "users",
-                },
-                {
-                  label: "Daily Reports",
-                  value: totalReports,
-                  percent: `${complianceRate}% Approved`,
-                  icon: DocumentChartBarIcon,
-                  color: "bg-purple-100 text-purple-600",
-                  menu: "reports",
-                },
-                {
-                  label: "Help Tickets",
-                  value: ticketsData.length,
-                  percent: `${Math.round((resolvedTickets / ticketsData.length) * 100)}% Resolved`,
-                  icon: ChatBubbleLeftRightIcon,
-                  color: "bg-orange-100 text-orange-600",
-                  menu: "help",
-                },
-              ].map((item, i) => {
-                const Icon = item.icon;
-                return (
-                  <div
-                    key={i}
-                    className="bg-white p-3 sm:p-4 rounded-xl shadow-sm border border-gray-200 hover:shadow-md transition-shadow cursor-pointer"
-                    onClick={() => setActiveMenu(item.menu)}
-                  >
-                    <div className="flex justify-between items-start mb-2 sm:mb-3">
-                      <p className="text-xs sm:text-sm text-gray-600 font-medium">
-                        {item.label}
-                      </p>
-                      <div className={`p-1 sm:p-2 rounded-lg ${item.color}`}>
-                        <Icon className="w-3 h-3 sm:w-4 sm:h-4" />
-                      </div>
-                    </div>
-                    <p className="text-lg sm:text-xl lg:text-2xl font-bold text-gray-900 mb-1">
-                      {item.value}
-                    </p>
-                    <p className="text-xs text-gray-600 font-medium">
-                      {item.percent}
-                    </p>
-                  </div>
-                );
-              })}
-            </div>
+            <TopKpi/>
 
             {/* SECOND ROW - Detail Rangkuman dari Setiap Menu */}
             <div className="mb-6 lg:mb-8 grid grid-cols-1 xl:grid-cols-2 gap-4 sm:gap-6">

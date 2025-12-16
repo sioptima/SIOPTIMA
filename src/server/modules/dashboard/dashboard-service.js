@@ -114,11 +114,12 @@ export class DashboardService {
         const summary = await DashboardRepository.adminSummary()
 
 
-        const {activeSite, maintenanceSite, inactiveSite, activeOperator, approvedReport, pendingReport, rejectedReport} = summary
+        const {activeSite, maintenanceSite, inactiveSite, totalOperators, activeOperator, approvedReport, pendingReport, rejectedReport, resolvedTicket, totalTicket} = summary
         const complianceRate = (approvedReport/(approvedReport+pendingReport+rejectedReport))*100
 
         const result = {
             totalSites: activeSite+maintenanceSite+inactiveSite,
+            totalOperators,
             activeOperator,
             dailyReports: approvedReport+pendingReport+rejectedReport,
             complianceRate,
@@ -128,6 +129,8 @@ export class DashboardService {
             approvedReport,
             pendingReport,
             rejectedReport,
+            resolvedTicket,
+            totalTicket
         }
 
         return result
