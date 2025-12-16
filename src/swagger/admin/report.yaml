@@ -254,3 +254,29 @@ paths:
                       status:
                         type: string
                         enum: ["APPROVED", "PENDING", "REJECTED"]
+
+  /api/admin/report/daily-report:
+    get:
+      summary: Get daily report information
+      tags:
+        - Report
+
+      responses:
+        '200':
+          description: List of reports
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: Reports retrieved
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:

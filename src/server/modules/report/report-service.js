@@ -202,6 +202,27 @@ export class ReportService {
         }
     }
 
+    static async getToday(){
+        const reports = await ReportRepository.findToday();
+        if (reports.count === 0) {
+            throw new ResponseError (200, "No report found")
+        }
+
+        const reportTransform = reports.map((report) => ({
+            date: report.laporanDate.toLocaleString(),
+            pH: report.pH,
+            flowRate: report.flowRate,
+            volt: report.volt,
+            ampere: report.ampere,
+            tds: report.TDS,
+            ec: report.EC,
+            site: report.siteName,
+            status: report.laporanStatus
+        }))
+
+        return reportTransform
+    }
+
     static async export (parameter){
         //file validation
         const exportRequest = parameter;

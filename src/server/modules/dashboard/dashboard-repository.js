@@ -287,8 +287,8 @@ export class DashboardRepository {
     static async adminSummary(){
         try {
             const date = new Date();
-            const startOfMonth = new Date(date.getFullYear(), date.getMonth());
-            const endOfMonth = new Date(date.getFullYear(), date.getMonth() + 1);
+            const startOfDay = new Date(date.getFullYear(),date.getMonth(),date.getDate())
+            const endOfDay = new Date(date.getFullYear(),date.getMonth(),date.getDate()+1)
             const [activeSite, maintenanceSite, inactiveSite, totalOperators, activeOperator, approvedReport, pendingReport, rejectedReport, resolvedTicket, totalTicket] = 
                 await PrismaClient.$transaction([
                     PrismaClient.site.count({where: {status:"ACTIVE"}}),
@@ -298,21 +298,21 @@ export class DashboardRepository {
                     PrismaClient.user.count({where: {role: {name:"OPERATOR"},status:"ACTIVE"}}),
                     PrismaClient.laporan.count({where: {
                         laporanStatus:"APPROVED",
-                        laporanDate: {gte: startOfMonth, lt:endOfMonth}
+                        laporanDate: {gte: startOfDay, lt:endOfDay}
                     }}),
                     PrismaClient.laporan.count({where: {
                         laporanStatus:"PENDING",
-                        laporanDate: {gte: startOfMonth, lt:endOfMonth}
+                        laporanDate: {gte: startOfDay, lt:endOfDay}
                     }}),
                     PrismaClient.laporan.count({where: {
                         laporanStatus:"REJECTED",
-                        laporanDate: {gte: startOfMonth, lt:endOfMonth}
+                        laporanDate: {gte: startOfDay, lt:endOfDay}
                     }}),
                     PrismaClient.ticket.count({where: {
                         status: "RESOLVED"
                     }}),
                     PrismaClient.ticket.count({where: {
-                        createdAt: {gte: startOfMonth, lt:endOfMonth}
+                        createdAt: {gte: startOfDay, lt:endOfDay}
                     }}),
                 ])
             return {activeSite, maintenanceSite, inactiveSite, totalOperators, activeOperator, approvedReport, pendingReport, rejectedReport, resolvedTicket, totalTicket}

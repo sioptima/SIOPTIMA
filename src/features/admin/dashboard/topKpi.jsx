@@ -1,5 +1,7 @@
+'use client'
+
 import React, { useEffect, useState } from 'react'
-import { fetchSummaryData } from './helper';
+import { fetchSummaryData } from './fetchApi';
 import { ChatBubbleLeftRightIcon, DocumentChartBarIcon, MapPinIcon, UsersIcon } from '@heroicons/react/24/outline';
 
 function TopKpi({ setActiveMenu }) {

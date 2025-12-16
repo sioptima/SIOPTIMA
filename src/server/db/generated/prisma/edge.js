@@ -36,12 +36,12 @@ exports.Prisma = Prisma
 exports.$Enums = {}
 
 /**
- * Prisma Client JS version: 6.19.1
- * Query Engine version: c2990dca591cba766e3b7ef5d9e8a84796e47ab7
+ * Prisma Client JS version: 6.19.0
+ * Query Engine version: 2ba551f319ab1df4bc874a89965d8b3641056773
  */
 Prisma.prismaVersion = {
-  client: "6.19.1",
-  engine: "c2990dca591cba766e3b7ef5d9e8a84796e47ab7"
+  client: "6.19.0",
+  engine: "2ba551f319ab1df4bc874a89965d8b3641056773"
 }
 
 Prisma.PrismaClientKnownRequestError = PrismaClientKnownRequestError;
@@ -440,7 +440,7 @@ const config = {
       "value": "prisma-client-js"
     },
     "output": {
-      "value": "E:\\SIOPTIMA-Vercel\\src\\server\\db\\generated\\prisma",
+      "value": "C:\\VSCode\\SIOPTIMA\\src\\server\\db\\generated\\prisma",
       "fromEnvVar": null
     },
     "config": {
@@ -454,7 +454,7 @@ const config = {
       }
     ],
     "previewFeatures": [],
-    "sourceFilePath": "E:\\SIOPTIMA-Vercel\\src\\server\\db\\prisma\\schema.prisma",
+    "sourceFilePath": "C:\\VSCode\\SIOPTIMA\\src\\server\\db\\prisma\\schema.prisma",
     "isCustomOutput": true
   },
   "relativeEnvPaths": {
@@ -462,8 +462,8 @@ const config = {
     "schemaEnvPath": "../../../../../.env"
   },
   "relativePath": "../../prisma",
-  "clientVersion": "6.19.1",
-  "engineVersion": "c2990dca591cba766e3b7ef5d9e8a84796e47ab7",
+  "clientVersion": "6.19.0",
+  "engineVersion": "2ba551f319ab1df4bc874a89965d8b3641056773",
   "datasourceNames": [
     "db"
   ],

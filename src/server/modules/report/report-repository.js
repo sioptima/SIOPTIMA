@@ -182,6 +182,26 @@ export class ReportRepository {
         }
     }
 
+    static async findToday(){
+        try {
+            const date = new Date();
+            const startOfDay = new Date(date.getFullYear(),date.getMonth(),date.getDate())
+            const endOfDay = new Date(date.getFullYear(),date.getMonth(),date.getDate()+1)
+            const report = await PrismaClient.laporan.findMany({
+                where:{
+                    laporanDate: {gte:startOfDay, lt: endOfDay}
+                },
+                take: 10,
+                orderBy: {
+                    laporanDate: 'desc'
+                }
+            })
+            return report;
+        } catch (error) {
+            throw new ResponseError(500, "Failed when querying in database")
+        }
+    }
+
     static async approve(reportId){
         try {
             return await PrismaClient.laporan.update({
