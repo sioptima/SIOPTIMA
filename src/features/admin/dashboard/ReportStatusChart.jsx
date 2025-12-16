@@ -74,7 +74,7 @@ function ReportStatusChart() {
 
     let currentAngle = 0;
     const pieChartData = reportStatusData.map((item) => {
-      if (item.percentage === 100) {
+      if (item.value === 100) {
           return {
             ...item,
             isFullCircle: true,

@@ -176,7 +176,7 @@ function SitesStatusChart({setActiveMenu}) {
               <div className="text-sm text-gray-600">Active</div>
             </div>
 
-            {hoveredSitePie !== null && (
+            {hoveredSitePie !== null && !loading && !error  && (
               <div className="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-full bg-gray-800 text-white px-2 sm:px-3 py-1 sm:py-2 rounded-lg text-xs sm:text-sm z-10 shadow-lg">
                 <div className="flex items-center gap-1 sm:gap-2">
                   <div
