@@ -122,7 +122,7 @@ paths:
           type: integer
           description: Page to show
       - in: query
-        name: size
+        name: limit
         schema:
           type: integer
           description: Size of page

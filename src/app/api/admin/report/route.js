@@ -11,7 +11,7 @@ export async function GET(request) {
         status: searchParams.get("status") || undefined,
       }
 
-      const result = await ReportService.getAll(parameter);
+      const result = await ReportService.getMonthly(parameter);
       return Response.json({
          success: true, 
          message: "Reports retrieved" ,

@@ -5,6 +5,7 @@ import { TicketValidation } from "./ticket-validation";
 import { trackActivity } from "../../utils/trackUser";
 import { transformFormData } from "../../utils/helper";
 import { uploadImage } from "../../utils/uploadthing";
+import { NotificationRepository } from "../notification/notification-repository";
 
 export class TicketService {
 
@@ -51,15 +52,17 @@ export class TicketService {
 
         const result = query.tickets.map((ticket) => ({
             id: ticket.id,
+            ticketNumber: ticket.id,
             title: ticket.judul,
             priority: ticket.prioritas,
             status: ticket.status,
             assignee: (ticket.user.profile?.name) ? ticket.user.profile.name : ticket.user.username,
             site: ticket.site.name,
             description: ticket.deskripsi,
-            createdAt: ticket.createdAt,
+            createdAt: ticket.createdAt.toLocaleDateString(),
             category: ticket.kategori,
-            lastUpdate: ticket.updatedAt,
+            lastUpdate: ticket.updatedAt.toLocaleDateString(),
+            resolvedAt: ticket.resolvedAt?.toLocaleDateString() || "-"
         }))
 
         return {
@@ -86,7 +89,7 @@ export class TicketService {
         }
 
         let feedback;
-        if(ticket.feedback.length !== 0){
+        if(!!ticket.feedback.length){
             feedback = ticket.feedback.map((f) => ({
                 id: f.id,
                 user: (f.user.profile?.name) ? f.user.profile.name : f.user.username,
@@ -111,4 +114,75 @@ export class TicketService {
 
         return result;
     }
+
+    static async getAll(parameter) {
+        const getRequest = TicketValidation.GET.parse(parameter);
+        if(!getRequest){
+            throw new ResponseError(400, "Invalid request data");
+        }
+
+        const {page, size} = getRequest;
+
+        const tickets = await TicketRepository.getAll(getRequest);
+        if (tickets.count === 0) {
+            throw new ResponseError (200, "No report found")
+        }
+
+        const ticketsTransform = tickets.tickets.map((t) => ({
+            id: t.id,
+            operatorName: t.user.profile?.name || t.user.username,
+            operatorId: t.user.id,
+            site: t.site.name,
+            problem: t.deskripsi,
+            submittedDate: t.createdAt.toLocaleDateString(),
+            submittedTime: t.createdAt.toLocaleTimeString(),
+            status: t.status.toLowerCase(),
+            priority: t.prioritas.toLocaleLowerCase(),
+            category: t.kategori,
+            attachments: [t.gambar],
+            solution: t.feedback?.feedback,
+            resolvedDate: t.resolvedAt || "-",
+            resolvedBy: t.feedback?.user.profile?.name || t.feedback?.user.username || "-",
+        }))
+
+        return {
+            result: {
+                ticketsTransform,
+                totalTickets: tickets.count, 
+            },
+            paging: {
+                size: size,
+                total: tickets.count,
+                total_page: Math.ceil(tickets.count / size),
+                current_page: page,
+            }
+        }
+    }
+
+    static async respond(request){
+        const user = await getUser()
+
+        const validatedParam = TicketValidation.RESPOND.parse(request)
+        const {
+            ticketId = validatedParam.id, 
+            feedback = validatedParam.request.feedback, 
+            ticketStatus = validatedParam.request.ticketStatus
+        } = validatedParam
+        const result = await TicketRepository.respond({ticketId, feedback, ticketStatus, resolverId: user.userId})
+
+        //create notification for related operator
+        await NotificationRepository.create({
+            userId: result.userId, 
+            type: "TICKET", 
+            title: `Ticket anda "${result.judul}" telah dibalas`})
+
+        return {
+            id: result.id,
+            feedback: result.feedback?.feedback || "-",
+            status: result.status,
+            resolvedDate: result.resolvedAt?.toLocaleString() || result.feedback?.updatedAt.toLocaleString() || "-",
+            resolvedBy: result.feedback?.user.profile?.name || result.feedback?.user.username 
+        }
+    }
+
 }

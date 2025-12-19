@@ -39,11 +39,8 @@ import {
   CalendarDaysIcon,
   UserIcon,
 } from "@heroicons/react/24/outline";
-import { MapField } from "@/src/components/site/AddSiteButton";
-import TopKpi from "@/src/features/admin/dashboard/TopKpi";
-import SitesStatusChart from "@/src/features/admin/dashboard/SitesStatusChart";
-import ReportStatusChart from "@/src/features/admin/dashboard/ReportStatusChart";
-import WaterParameterGraph from "@/src/features/admin/dashboard/waterParameterGraph/WaterParameterGraph";
+import { fetchSitesData, fetchUsersData, fetchDailyReportsData, fetchTicketsData, createNewSite, updateSite, deleteSite, fetchAttendanceData, addNewUser, fetchReportsData, editUser, deleteUser, approveReport, rejectReport, respondTicket } from "@/src/lib/fetchApiAdmin";
+import { MapField } from "@/src/features/site/MapField";
 
 // Data provinsi dan kota di Indonesia
 const provinsiList = [
@@ -121,6 +118,8 @@ export default function Admin() {
     longitude: "",
   });
   const [formErrors, setFormErrors] = useState({});
+  const [loading, setLoading] = useState(false);
+  //const [error, setError] = useState(null);  
 
   // State untuk geolokasi
   const [mapClickPosition, setMapClickPosition] = useState({ x: 50, y: 50 });
@@ -153,120 +152,22 @@ export default function Admin() {
   const [selectedReport, setSelectedReport] = useState(null);
 
  // ==================== STATE UNTUK ATTENDANCE ====================
-const [attendanceData, setAttendanceData] = useState([
-  {
-    id: 1,
-    operatorName: "Budi Santoso",
-    operatorId: 1,
-    site: "Jakarta Utara - Site A",
-    date: "2025-12-05",
-    checkIn: "08:00",
-    checkOut: "16:00",
-    status: "present",
-    attendanceStatus: "rejected",
-    notes: "Ditolak: Data lokasi/waktu tidak valid",
-    location: "Jakarta Utara",
-    locationStatus: "Tidak Valid",
-    timeStatus: "Tidak Valid",
-    submittedBy: "admin",
-  },
-  {
-    id: 2,
-    operatorName: "Siti Nurhaliza",
-    operatorId: 2,
-    site: "Bandung - Site B",
-    date: "2025-12-05",
-    checkIn: "08:45",
-    checkOut: "17:15",
-    status: "late",
-    attendanceStatus: "pending",
-    notes: "Terlambat karena macet",
-    location: "Bandung, Jawa Barat",
-    locationStatus: "Valid",
-    timeStatus: "Tidak Valid",
-    submittedBy: "admin",
-  },
-  {
-    id: 3,
-    operatorName: "Ahmad Yani",
-    operatorId: 3,
-    site: "Surabaya - Site C",
-    date: "2025-12-05",
-    checkIn: "08:00",
-    checkOut: "16:45",
-    status: "sick",
-    attendanceStatus: "approved",
-    notes: "Ijin sakit",
-    location: "Surabaya, Jawa Timur",
-    locationStatus: "Valid",
-    timeStatus: "Valid",
-    submittedBy: "admin",
-  },
-  {
-    id: 4,
-    operatorName: "Operator 2",
-    operatorId: 4,
-    site: "Jakarta - Site A",
-    date: "2025-12-05",
-    checkIn: "-",
-    checkOut: "-",
-    status: "absent",
-    attendanceStatus: "rejected",
-    notes: "Tidak memberikan kabar",
-    location: "Jakarta, DKI Jakarta",
-    locationStatus: "Tidak Valid",
-    timeStatus: "Tidak Valid",
-    submittedBy: "admin",
-  },
-  {
-    id: 5,
-    operatorName: "Budi Santoso",
-    operatorId: 1,
-    site: "Surabaya - Site A",
-    date: "2025-12-04",
-    checkIn: "08:05",
-    checkOut: "17:25",
-    status: "present",
-    attendanceStatus: "approved",
-    notes: "Tepat waktu",
-    location: "Surabaya, Jawa Timur",
-    locationStatus: "Valid",
-    timeStatus: "Valid",
-    submittedBy: "admin",
-  },
-  {
-    id: 6,
-    operatorName: "Siti Nurhaliza",
-    operatorId: 2,
-    site: "Bandung - Site B",
-    date: "2025-12-04",
-    checkIn: "08:10",
-    checkOut: "17:20",
-    status: "present",
-    attendanceStatus: "approved",
-    notes: "Tepat waktu",
-    location: "Bandung, Jawa Barat",
-    locationStatus: "Valid",
-    timeStatus: "Valid",
-    submittedBy: "admin",
-  },
-  {
-    id: 7,
-    operatorName: "Ahmad Yani",
-    operatorId: 3,
-    site: "Surabaya - Site C",
-    date: "2025-12-04",
-    checkIn: "08:30",
-    checkOut: "17:00",
-    status: "late",
-    attendanceStatus: "pending",
-    notes: "Terlambat 30 menit",
-    location: "Surabaya, Jawa Timur",
-    locationStatus: "Valid",
-    timeStatus: "Tidak Valid",
-    submittedBy: "admin",
-  },
-]);
+  const [attendanceData, setAttendanceData] = useState([]);
+  useEffect(() => {
+    const loadData = async () => {
+        try {
+            const result = await fetchAttendanceData({limit: 50});
+            if (!result) throw new Error("No data returned");
+            setAttendanceData(result.attendanceTransform);
+        } catch (err) {
+          //setError(err)
+    } finally {
+      //setLoading(fasle)
+    }
+  };    
+
+  loadData();
+  }, []);  
 
   // State untuk modal attendance
   const [isAttendanceModalOpen, setIsAttendanceModalOpen] = useState(false);
@@ -275,88 +176,22 @@ const [attendanceData, setAttendanceData] = useState([
   const [attendanceStatusFilter, setAttendanceStatusFilter] = useState("all"); // all, approved, pending, rejected
 
   // ==================== STATE UNTUK HELP/TIKET ====================
-  const [ticketsData, setTicketsData] = useState([
-    {
-      id: 1,
-      operatorName: "Budi Santoso",
-      operatorId: 1,
-      site: "Jakarta Utara - Site A",
-      problem: "Mesin filter air mengalami kebocoran pada bagian inlet",
-      submittedDate: "2025-01-27",
-      submittedTime: "10:30",
-      status: "open", // open, pending, resolved
-      priority: "high", // high, medium, low
-      category: "equipment",
-      attachments: ["image1.jpg"],
-      solution: "",
-      resolvedDate: "",
-      resolvedBy: "",
-    },
-    {
-      id: 2,
-      operatorName: "Siti Nurhaliza",
-      operatorId: 2,
-      site: "Bandung - Site B",
-      problem: "Pembacaan pH meter tidak stabil, perlu kalibrasi",
-      submittedDate: "2025-01-26",
-      submittedTime: "14:15",
-      status: "pending", // open, pending, resolved
-      priority: "medium",
-      category: "instrument",
-      attachments: ["ph_meter.jpg", "reading.jpg"],
-      solution: "Sudah dikalibrasi dengan buffer solution pH 7 dan pH 4",
-      resolvedDate: "2025-01-27",
-      resolvedBy: "Admin",
-    },
-    {
-      id: 3,
-      operatorName: "Ahmad Yani",
-      operatorId: 3,
-      site: "Surabaya - Site C",
-      problem: "Suplai bahan kimia coagulant hampir habis",
-      submittedDate: "2025-01-25",
-      submittedTime: "09:45",
-      status: "resolved", // open, pending, resolved
-      priority: "medium",
-      category: "supply",
-      attachments: [],
-      solution: "Sudah dipesan 50kg coagulant, akan dikirim 2 hari lagi",
-      resolvedDate: "2025-01-26",
-      resolvedBy: "Admin",
-    },
-    {
-      id: 4,
-      operatorName: "Budi Santoso",
-      operatorId: 1,
-      site: "Jakarta Utara - Site A",
-      problem: "Software monitoring tidak bisa connect ke server",
-      submittedDate: "2025-01-27",
-      submittedTime: "11:20",
-      status: "open",
-      priority: "high",
-      category: "software",
-      attachments: ["error_screenshot.png"],
-      solution: "",
-      resolvedDate: "",
-      resolvedBy: "",
-    },
-    {
-      id: 5,
-      operatorName: "Operator 2",
-      operatorId: 4,
-      site: "Bandung - Site B",
-      problem: "Pompa air utama berisik dan vibrasi berlebihan",
-      submittedDate: "2025-01-24",
-      submittedTime: "16:30",
-      status: "pending",
-      priority: "high",
-      category: "equipment",
-      attachments: ["pump_video.mp4"],
-      solution: "Minta operator untuk cek bearing dan alignment pompa",
-      resolvedDate: "2025-01-25",
-      resolvedBy: "Admin",
-    },
-  ]);
+  const [ticketsData, setTicketsData] = useState([]);
+  useEffect(() => {
+    const loadData = async () => {
+        try {
+            const result = await fetchTicketsData({limit: 50});
+            if (!result) throw new Error("No data returned");
+            setTicketsData(result.ticketsTransform);
+        } catch (err) {
+          //setError(err)
+    } finally {
+      //setLoading(fasle)
+    }
+  };    
+
+  loadData();
+  }, []);  
 
   // State untuk modal Help/Tiket
   const [isTicketModalOpen, setIsTicketModalOpen] = useState(false);
@@ -443,157 +278,39 @@ const [attendanceData, setAttendanceData] = useState([
   ];
 
   // ==================== MASTER DATA STATE ====================
-  // Initial sites data dengan 6 site (2 Surabaya, 2 Jakarta, 2 Kalimantan) + 2 site wajib
-  const initialSitesData = [
-    // 2 Site Surabaya
-    {
-      id: 1,
-      name: "Surabaya - Site A",
-      city: "Surabaya",
-      address: "Jl. Basuki Rahmat No. 123, Surabaya",
-      province: "Jawa Timur",
-      latitude: "-7.2504",
-      longitude: "112.7688",
-      operators: 3,
-      status: "active",
-      lastReport: "2 hours ago",
-    },
-    {
-      id: 2,
-      name: "Surabaya - Site B",
-      city: "Surabaya",
-      address: "Jl. Ahmad Yani No. 456, Surabaya",
-      province: "Jawa Timur",
-      latitude: "-7.2575",
-      longitude: "112.7521",
-      operators: 4,
-      status: "active",
-      lastReport: "3 hours ago",
-    },
-    // 2 Site Jakarta
-    {
-      id: 3,
-      name: "Jakarta - Site A",
-      city: "Jakarta Utara",
-      address: "Jl. Industri No. 123, Jakarta Utara",
-      province: "DKI Jakarta",
-      latitude: "-6.1333",
-      longitude: "106.8833",
-      operators: 2,
-      status: "active",
-      lastReport: "5 hours ago",
-    },
-    {
-      id: 4,
-      name: "Jakarta - Site B",
-      city: "Jakarta Selatan",
-      address: "Jl. Sudirman No. 456, Jakarta Selatan",
-      province: "DKI Jakarta",
-      latitude: "-6.2088",
-      longitude: "106.8456",
-      operators: 3,
-      status: "active",
-      lastReport: "1 hour ago",
-    },
-    // 2 Site Kalimantan
-    {
-      id: 5,
-      name: "Kalimantan - Site A",
-      city: "Balikpapan",
-      address: "Jl. MT Haryono No. 789, Balikpapan",
-      province: "Kalimantan Timur",
-      latitude: "-1.2675",
-      longitude: "116.8289",
-      operators: 2,
-      status: "active",
-      lastReport: "2 days ago",
-    },
-    {
-      id: 6,
-      name: "Kalimantan - Site B",
-      city: "Samarinda",
-      address: "Jl. Pangeran Hidayatullah No. 321, Samarinda",
-      province: "Kalimantan Timur",
-      latitude: "-0.5021",
-      longitude: "117.1536",
-      operators: 3,
-      status: "inactive",
-      lastReport: "2 days ago",
-    },
-    // 2 Site Wajib
-    {
-      id: 7,
-      name: "Central Office",
-      city: "Jakarta Pusat",
-      address: "Jl. Jenderal Sudirman No. 1, Jakarta Pusat",
-      province: "DKI Jakarta",
-      latitude: "-6.2088",
-      longitude: "106.8456",
-      operators: 10,
-      status: "active",
-      lastReport: "Just now",
-    },
-    {
-      id: 8,
-      name: "Head Office",
-      city: "Surabaya",
-      address: "Jl. Tunjungan No. 100, Surabaya",
-      province: "Jawa Timur",
-      latitude: "-7.2658",
-      longitude: "112.7478",
-      operators: 15,
-      status: "active",
-      lastReport: "Just now",
-    },
-  ];
+  const [sitesData, setSitesData] = useState([]);
+  useEffect(() => {
+      const loadData = async () => {
+          try {
+              const result = await fetchSitesData({limit: 50});
+              if (!result) throw new Error("No data returned");
+              setSitesData(result.sites);
+          } catch (err) {
+            //setError
+      } finally {
+        //setLoading
+      }
+  };   
 
-  const [sitesData, setSitesData] = useState(initialSitesData);
+  loadData();
+  }, []);  
 
-  // Initial users data yang sudah terintegrasi dengan sitesData
-  const initialUsersData = [
-    {
-      id: 1,
-      name: "Budi Santoso",
-      email: "budi.santoso@email.com",
-      role: "operator",
-      site: "Surabaya - Site A",
-      status: "active",
-      lastActive: "2 hours ago",
-      initial: "B",
-    },
-    {
-      id: 2,
-      name: "Katira Sala",
-      email: "katira.sala@email.com",
-      role: "hrd",
-      site: "Central Office",
-      status: "active",
-      lastActive: "1 day ago",
-      initial: "K",
-    },
-    {
-      id: 3,
-      name: "Admin User",
-      email: "admin@sioptima.com",
-      role: "admin",
-      site: "Head Office",
-      status: "active",
-      lastActive: "5 minutes ago",
-      initial: "A",
-    },
-    {
-      id: 4,
-      name: "Operator 2",
-      email: "operator2@email.com",
-      role: "operator",
-      site: "Jakarta - Site A",
-      status: "inactive",
-      lastActive: "3 days ago",
-      initial: "O",
-    },
-  ];
+  const [usersData, setUsersData] = useState([]);
+  useEffect(() => {
+    const loadData = async () => {
+        try {
+            const result = await fetchUsersData({limit: 100});
+            if (!result) throw new Error("No data returned");
+            setUsersData(result.usersTransform);
+        } catch (err) {
+          //setError(err)
+    } finally {
+      //setLoading(fasle)
+    }
+  };    
 
-  const [usersData, setUsersData] = useState(initialUsersData);
+  loadData();
+  }, []);  
 
   // ==================== REPORTS DATA YANG DISESUAIKAN DENGAN REPORT OPERATOR ====================
   // Data live hari ini (menggunakan tanggal hari ini)
@@ -612,113 +329,23 @@ const [attendanceData, setAttendanceData] = useState([
     return `${hours}:${minutes}`;
   };
 
-  const [reportsData, setReportsData] = useState([
-    {
-      id: 1,
-      date: getTodayDate(),
-      time: getCurrentTime(),
-      site: "Surabaya - Site A",
-      operator: "Budi Santoso",
-      pH: 7.2,
-      flowRate: 450, // dalam L/h
-      volt: 220, // dalam V
-      ampere: 15, // dalam A
-      tds: 480, // dalam ppm
-      ec: 720, // dalam μS/cm
-      status: "pending",
-      equipmentStatus: {
-        agitator: "Normal",
-        settle: "Normal",
-        outFilter: "Normal"
-      },
-      notes: "Semua parameter dalam batas normal. Operasi berjalan lancar.",
-      images: ["sample1.jpg", "sample2.jpg"],
-    },
-    {
-      id: 2,
-      date: getTodayDate(),
-      time: "08:15",
-      site: "Jakarta - Site A",
-      operator: "Siti Nurhaliza",
-      pH: 6.8,
-      flowRate: 380,
-      volt: 220,
-      ampere: 12,
-      tds: 420,
-      ec: 680,
-      status: "approved",
-      equipmentStatus: {
-        agitator: "Normal",
-        settle: "Normal",
-        outFilter: "Normal"
-      },
-      notes: "Kondisi air cukup baik, sedikit penurunan pH namun masih dalam batas wajar.",
-      images: ["sample3.jpg"],
-    },
-    {
-      id: 3,
-      date: getTodayDate(),
-      time: "08:25",
-      site: "Surabaya - Site B",
-      operator: "Ahmad Yani",
-      pH: 7.5,
-      flowRate: 520,
-      volt: 210,
-      ampere: 18,
-      tds: 520,
-      ec: 800,
-      status: "rejected",
-      equipmentStatus: {
-        agitator: "Settle",
-        settle: "Normal",
-        outFilter: "Normal"
-      },
-      notes: "EC melebihi batas maksimal. Perlu pengecekan filter.",
-      images: ["sample4.jpg", "sample5.jpg", "sample6.jpg"],
-    },
-    {
-      id: 4,
-      date: getTodayDate(),
-      time: "14:20",
-      site: "Surabaya - Site A",
-      operator: "Budi Santoso",
-      pH: 7.1,
-      flowRate: 430,
-      volt: 220,
-      ampere: 14,
-      tds: 440,
-      ec: 700,
-      status: "approved",
-      equipmentStatus: {
-        agitator: "Normal",
-        settle: "Normal",
-        outFilter: "Normal"
-      },
-      notes: "Performa stabil, tidak ada kendala operasional.",
-      images: ["sample7.jpg"],
-    },
-    {
-      id: 5,
-      date: getTodayDate(),
-      time: "11:45",
-      site: "Jakarta - Site B",
-      operator: "Siti Nurhaliza",
-      pH: 6.9,
-      flowRate: 390,
-      volt: 215,
-      ampere: 13,
-      tds: 410,
-      ec: 650,
-      status: "pending",
-      equipmentStatus: {
-        agitator: "Normal",
-        settle: "Normal",
-        outFilter: "Normal"
-      },
-      notes: "Aliran air sedikit berkurang, perlu monitoring lebih lanjut.",
-      images: [],
-    },
-  ]);
+  const [reportsData, setReportsData] = useState([]);
+  useEffect(() => {
+    const loadData = async () => {
+        try {
+            const result = await fetchReportsData({limit: 50});
+            if (!result) throw new Error("No data returned");
+            setReportsData(result.reportTransform);
+        } catch (err) {
+          //setError(err)
+    } finally {
+      //setLoading(falsee)
+    }
+  };    
+
+  loadData();
+  }, []);  
+
 
   // ==================== DERIVED DATA ====================
   const totalSites = sitesData.length;
@@ -789,6 +416,12 @@ const [attendanceData, setAttendanceData] = useState([
   // Hitung pieChartData dari reportStatusData
   let currentAngle = 0;
   const pieChartData = reportStatusData.map((item) => {
+    if (item.value === 100) {
+      return {
+        ...item,
+        isFullCircle: true,
+      };
+    }
     const angle = (item.value / 100) * 360;
     const path = calculatePath(50, 50, 50, currentAngle, currentAngle + angle);
     currentAngle += angle;
@@ -821,6 +454,13 @@ const [attendanceData, setAttendanceData] = useState([
   // Hitung path untuk pie chart sites
   let currentSiteAngle = 0;
   const sitesPieChartPaths = sitesPieChartData.map((item) => {
+    if (item.percentage === 100) {
+      return {
+        ...item,
+        isFullCircle: true,
+      };
+    }
+
     const angle = (item.percentage / 100) * 360;
     const path = calculatePath(
       50,
@@ -871,12 +511,12 @@ const [attendanceData, setAttendanceData] = useState([
         (selectedRole === "all" || user.role === selectedRole)
     )
     .sort((a, b) => b.id - a.id);
-
+  
   const filteredReports = reportsData
     .filter(
       (report) =>
-        (report.site.toLowerCase().includes(searchQuery.toLowerCase()) ||
-          report.operator.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        (report.site?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+          report.operator?.toLowerCase().includes(searchQuery.toLowerCase()) ||
           report.date.includes(searchQuery)) &&
         (selectedStatus === "All Reports" ||
           (selectedStatus === "Approved" && report.status === "approved") ||
@@ -966,15 +606,25 @@ const [attendanceData, setAttendanceData] = useState([
     if (!data.city.trim()) errors.city = "Kota harus diisi";
     if (!data.address.trim()) errors.address = "Alamat harus diisi";
     if (!data.province.trim()) errors.province = "Provinsi harus diisi";
+    if (!data.latitude) errors.latitude = "Harus diisi";
+    if (!data.longitude) errors.longitude = "Harus diisi";
     return errors;
   };
 
   const validateUserForm = (data) => {
     const errors = {};
+    if (!data.username.trim()) errors.username = "Harus diisi";
+    if (!data.password.trim()) errors.password = "Harus diisi";
     if (!data.name.trim()) errors.name = "Nama user harus diisi";
     if (!data.email.trim()) errors.email = "Email harus diisi";
     if (!data.email.includes("@")) errors.email = "Format email tidak valid";
     if (!data.site.trim()) errors.site = "Site harus diisi";
+    return errors;
+  };
+
+  const validateEditUserForm = (data) => {
+    const errors = {};
+    if (!data.email.includes("@")) errors.email = "Format email tidak valid";
     return errors;
   };
 
@@ -986,26 +636,38 @@ const [attendanceData, setAttendanceData] = useState([
       return;
     }
 
-    const newSite = {
+    setLoading(true);
+
+    let newSite = {
       id: sitesData.length + 1,
       ...newSiteData,
-      operators: 0,
-      lastReport: "No reports yet",
+      lastReport: "-",
     };
-
     
-    const updatedSites = [...sitesData, newSite];
-    setSitesData(updatedSites);
-    
-    await createSite(
+    const response = await createNewSite(
       newSite.name, 
       newSite.latitude, 
       newSite.longitude, 
       newSite.address, 
       newSite.city, 
       newSite.province,
-      newSite.operators,
+      newSite.status
     );
+
+    if(!response){
+      setLoading(false);
+      setFormErrors({});
+      return
+    }
+
+    newSite = {
+      ...newSite,
+      id: response.id,
+      operators: response.operators,
+    }
+
+    const updatedSites = [...sitesData, newSite];
+    setSitesData(updatedSites);
 
     // Setelah menambahkan site, reset form
     setNewSiteData({
@@ -1020,36 +682,8 @@ const [attendanceData, setAttendanceData] = useState([
     setIsAddSiteModalOpen(false);
     setFormErrors({});
     setMapClickPosition({ x: 50, y: 50 });
-  };
-
-  const createSite = async (name, lat, lng, address, city, province, operators) => {
-
-    try {
-      const res = await fetch("/api/admin/site", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          name: name.trim(),
-          address: address.trim(),
-          city: city.trim(),
-          province: province.trim(),
-          capacity: operators,
-          latitude: lat,
-          longitude: lng,
-        }),
-      });
-
-      const data = await res.json();
- 
-      if (!res.ok) {
-        console.log(data.error || "Failed to create site");
-        return;
-      }
-      
-      console.log(res.json)
-    } catch (err) {
-      console.log("Error: ", err)
-    }
+    
+    setLoading(false);
   };
 
   const handleEditSite = (site) => {
@@ -1057,11 +691,30 @@ const [attendanceData, setAttendanceData] = useState([
     setIsEditSiteModalOpen(true);
   };
 
-  const handleUpdateSite = () => {
+  const handleUpdateSite = async () => {
     const errors = validateForm(editingSite);
     if (Object.keys(errors).length > 0) {
       setFormErrors(errors);
       return;
+    }
+
+    setLoading(true)
+
+    const response = await updateSite({
+      id: editingSite.id,
+      name: editingSite.name,
+      lat: editingSite.latitude,
+      lng: editingSite.longitude,
+      address: editingSite.address,
+      city: editingSite.city,
+      province: editingSite.province,
+      status: editingSite.status,
+    })
+    
+    if(!response){
+      setLoading(false)
+      setFormErrors({});
+      return
     }
 
     const updatedSites = sitesData.map((site) => 
@@ -1071,18 +724,16 @@ const [attendanceData, setAttendanceData] = useState([
     setIsEditSiteModalOpen(false);
     setEditingSite(null);
     setFormErrors({});
+
+    setLoading(false)
   };
 
-  const handleDeleteSite = (id) => {
-    // Cek apakah site sedang digunakan oleh user
-    const isSiteUsed = usersData.some(user => user.site === sitesData.find(s => s.id === id)?.name);
-    
-    if (isSiteUsed) {
-      alert("Site tidak dapat dihapus karena sedang digunakan oleh user. Silahkan ubah site user terlebih dahulu.");
-      return;
-    }
-
+  const handleDeleteSite = async (id) => {
     if (window.confirm("Are you sure you want to delete this site?")) {
+      const response = await deleteSite({id: id})
+
+      if (!response){return}
+
       setSitesData(sitesData.filter((site) => site.id !== id));
     }
   };
@@ -1131,32 +782,6 @@ const [attendanceData, setAttendanceData] = useState([
   };
 
   // ==================== HANDLERS UNTUK USER ====================
-  const handleAddUser = () => {
-    const errors = validateUserForm(newUserData);
-    if (Object.keys(errors).length > 0) {
-      setUserFormErrors(errors);
-      return;
-    }
-
-    const newUser = {
-      id: usersData.length + 1,
-      ...newUserData,
-      lastActive: "Just now",
-      initial: newUserData.name.charAt(0),
-    };
-
-    setUsersData([...usersData, newUser]);
-    setNewUserData({
-      name: "",
-      email: "",
-      role: "operator",
-      site: "",
-      status: "active",
-    });
-    setIsAddUserModalOpen(false);
-    setUserFormErrors({});
-  };
-
   const handleEditUser = (user) => {
     setEditingUser({ ...user });
     setIsEditUserModalOpen(true);
@@ -1177,9 +802,12 @@ const [attendanceData, setAttendanceData] = useState([
     setUserFormErrors({});
   };
 
-  const handleDeleteUser = (id) => {
+  const handleDeleteUser = async (id) => {
     if (window.confirm("Are you sure you want to delete this user?")) {
-      setUsersData(usersData.filter((user) => user.id !== id));
+      const response = await deleteUser({id})
+      if(response){
+        setUsersData(usersData.filter((user) => user.id !== id));
+      }
     }
   };
 
@@ -1204,20 +832,26 @@ const [attendanceData, setAttendanceData] = useState([
     setIsReviewModalOpen(true);
   };
 
-  const handleApprove = (reportId) => {
-    setReportsData(
-      reportsData.map((report) =>
-        report.id === reportId ? { ...report, status: "approved" } : report
-      )
-    );
+  const handleApprove = async (reportId) => {
+    const response = await approveReport({id:reportId})
+    if(response){
+      setReportsData(
+        reportsData.map((report) =>
+          report.id === reportId ? { ...report, status: "approved" } : report
+        )
+      );
+    }
   };
 
-  const handleReject = (reportId) => {
-    setReportsData(
-      reportsData.map((report) =>
-        report.id === reportId ? { ...report, status: "rejected" } : report
-      )
-    );
+  const handleReject = async (reportId) => {
+    const response = await rejectReport({id:reportId})
+    if(response){      
+      setReportsData(
+        reportsData.map((report) =>
+          report.id === reportId ? { ...report, status: "rejected" } : report
+        )
+      );
+    }
   };
 
   // ==================== HANDLERS UNTUK ATTENDANCE ====================
@@ -1563,18 +1197,32 @@ const [attendanceData, setAttendanceData] = useState([
     setSolutionText("");
   };
 
-  const handleReturnToOperator = () => {
+  const handleReturnToOperator = async () => {
     if (!solutionText.trim()) {
       alert("Harap berikan instruksi atau pertanyaan untuk operator!");
       return;
+    }
+
+    setLoading(true)
+    const response = await respondTicket({
+      ticketId: selectedTicket.id,
+      feedback: solutionText.trim(),
+      ticketStatus: "pending",
+    })
+
+    if(!response){
+      setLoading(false)
+      return
     }
 
     const updatedTickets = ticketsData.map((ticket) =>
       ticket.id === selectedTicket.id
         ? {
             ...ticket,
-            solution: solutionText.trim(),
+            solution: response.feedback || "-",
             status: "pending",
+            resolvedDate: response.resolvedDate,
+            resolvedBy: response.resolvedBy
           }
         : ticket
     );
@@ -1586,80 +1234,27 @@ const [attendanceData, setAttendanceData] = useState([
     setIsTicketModalOpen(false);
     setSelectedTicket(null);
     setSolutionText("");
+    setLoading(false)
   };
 
   // ==================== NOTIFICATION DATA ====================
   const [extendedNotifications, setExtendedNotifications] = useState([
-    {
-      id: 5,
-      type: "alert",
-      title: "Water quality alert - Site Jakarta",
-      description:
-        "pH levels outside normal range detected at Jakarta treatment plant",
-      time: "Just now",
-      icon: ExclamationTriangleIcon,
-      color: "text-red-600",
-      bgColor: "bg-red-100",
-      priority: "high",
-      unread: true,
-      action: "viewSites",
-    },
-    {
-      id: 4,
-      type: "system",
-      title: "System maintenance scheduled",
-      description: "Planned system maintenance scheduled for next weekend",
-      time: "10 mins ago",
-      icon: CogIcon,
-      color: "text-orange-600",
-      bgColor: "bg-orange-100",
-      priority: "low",
-      unread: true,
-      action: "viewDashboard",
-    },
-    {
-      id: 3,
-      type: "report",
-      title: "New daily reports submitted",
-      description:
-        "3 new daily operation reports have been submitted and require validation",
-      time: "2 hours ago",
-      icon: DocumentChartBarIcon,
-      color: "text-purple-600",
-      bgColor: "bg-purple-100",
-      priority: "high",
-      unread: true,
-      action: "viewReports",
-    },
-    {
-      id: 2,
-      type: "request",
-      title: "Friend requests pending approval",
-      description:
-        "8 new friend requests from operators awaiting your approval",
-      time: "1 day ago",
-      icon: UserPlusIcon,
-      color: "text-green-600",
-      bgColor: "bg-green-100",
-      priority: "medium",
-      unread: false,
-      action: "viewUsers",
-    },
-    {
-      id: 1,
-      type: "message",
-      title: "New messages from Site Operators",
-      description:
-        "You have 4 unread messages from various site operators requiring attention",
-      time: "2 days ago",
-      icon: EnvelopeIcon,
-      color: "text-blue-600",
-      bgColor: "bg-blue-100",
-      priority: "high",
-      unread: false,
-      action: "viewMessages",
-    },
+  //{
+  //  id: 5,
+  //  type: "enum",
+  //  title: "string",
+  //  description:
+  //    "string",
+  //  time: "Just now",
+  //  icon: ExclamationTriangleIcon,
+  //  color: "text-red-600",
+  //  bgColor: "bg-red-100",
+  //  priority: "high",
+  //  unread: true,
+  //  action: "viewSites",
+  //},
   ]);
+  
 
   const unreadCount = extendedNotifications.filter(
     (notification) => notification.unread
@@ -1977,6 +1572,8 @@ const [attendanceData, setAttendanceData] = useState([
   const AddUserModal = () => {
     // Gunakan state lokal untuk form dalam modal
     const [formData, setFormData] = useState({
+      username: "",
+      password: "",
       name: "",
       email: "",
       role: "operator",
@@ -1988,6 +1585,8 @@ const [attendanceData, setAttendanceData] = useState([
     useEffect(() => {
       if (isAddUserModalOpen) {
         setFormData({
+          username: newUserData.username,
+          password: newUserData.password,
           name: newUserData.name,
           email: newUserData.email,
           role: newUserData.role,
@@ -2012,15 +1611,18 @@ const [attendanceData, setAttendanceData] = useState([
       }
     };
 
-    const handleSubmit = () => {
+    const handleSubmit = async () => {
       const errors = validateUserForm(formData);
       if (Object.keys(errors).length > 0) {
         setUserFormErrors(errors);
         return;
       }
 
+      setLoading(true)
       // Update newUserData di parent component
       setNewUserData({
+        username: formData.username,
+        password: formData.password,
         name: formData.name,
         email: formData.email,
         role: formData.role,
@@ -2028,12 +1630,26 @@ const [attendanceData, setAttendanceData] = useState([
         status: formData.status,
       });
 
+      const response = await addNewUser({
+        username: formData.username,
+        password: formData.password,
+        name: formData.name,
+        email: formData.email,
+        role: formData.role,
+        site: formData.site,
+        status: formData.status,
+      })
+
+      if(!response){
+        setLoading(false)
+        setUserFormErrors({});
+        return
+      }
+
       // Panggil handleAddUser
       const newUser = {
-        id: usersData.length + 1,
+        id: response.id,
         ...formData,
-        lastActive: "Just now",
-        initial: formData.name.charAt(0) || "U",
       };
 
       setUsersData([...usersData, newUser]);
@@ -2048,6 +1664,7 @@ const [attendanceData, setAttendanceData] = useState([
         site: "",
         status: "active",
       });
+      setLoading(false)
     };
 
     return (
@@ -2071,6 +1688,44 @@ const [attendanceData, setAttendanceData] = useState([
             {/* Form Content */}
             <div className="p-6 overflow-y-auto flex-1">
               <div className="space-y-4">
+                {/* User Name Field */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-900 mb-2">
+                    Username *
+                  </label>
+                  <input
+                    type="text"
+                    value={formData.username}
+                    onChange={(e) => handleFormChange("username", e.target.value)}
+                    placeholder="John Doe"
+                    className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-900 bg-white"
+                  />
+                  {userFormErrors.username && (
+                    <p className="text-red-500 text-xs mt-1">
+                      {userFormErrors.username}
+                    </p>
+                  )}
+                </div>
+
+                {/* Password Field */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-900 mb-2">
+                    Password *
+                  </label>
+                  <input
+                    type="password"
+                    value={formData.password}
+                    onChange={(e) => handleFormChange("password", e.target.value)}
+                    placeholder="Password"
+                    className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-900 bg-white"
+                  />
+                  {userFormErrors.password && (
+                    <p className="text-red-500 text-xs mt-1">
+                      {userFormErrors.password}
+                    </p>
+                  )}
+                </div>
+
                 {/* Full Name Field */}
                 <div>
                   <label className="block text-sm font-medium text-gray-900 mb-2">
@@ -2176,7 +1831,10 @@ const [attendanceData, setAttendanceData] = useState([
               </button>
               <button
                 onClick={handleSubmit}
-                className="px-4 py-2.5 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition flex items-center gap-2 font-medium"
+                disabled={loading}
+                className={`px-4 py-2.5 text-white rounded-lg transition flex items-center gap-2 font-medium
+                  ${!loading ? "bg-blue-600 hover:bg-blue-700" : "bg-gray-400 cursor-not-allowed"}
+                  `}
               >
                 <PlusIcon className="w-4 h-4" />
                 Add User
@@ -2214,15 +1872,30 @@ const [attendanceData, setAttendanceData] = useState([
       }
     };
 
-    const handleSubmit = () => {
+    const handleSubmit = async () => {
       if (!formData) return;
 
-      const errors = validateUserForm(formData);
+      const errors = validateEditUserForm(formData);
       if (Object.keys(errors).length > 0) {
         setUserFormErrors(errors);
         return;
       }
 
+      setLoading(true)
+
+      const response = await editUser({
+        id: formData.id,
+        name: formData.name,
+        email: formData.email,
+        role: formData.role,
+        site: formData.site,
+        status: formData.status
+      })
+
+      if(!response){
+        setLoading(false)
+        return
+      }
       // Update user di parent component
       setUsersData(
         usersData.map((user) => 
@@ -2238,6 +1911,7 @@ const [attendanceData, setAttendanceData] = useState([
       setIsEditUserModalOpen(false);
       setEditingUser(null);
       setUserFormErrors({});
+      setLoading(false)
     };
 
     if (!isEditUserModalOpen || !formData) return null;
@@ -2364,7 +2038,10 @@ const [attendanceData, setAttendanceData] = useState([
             </button>
             <button
               onClick={handleSubmit}
-              className="px-4 py-2.5 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition flex items-center gap-2 font-medium"
+              disabled={loading}
+              className={`px-4 py-2.5 text-white rounded-lg transition flex items-center gap-2 font-medium ${
+                !loading ? "bg-blue-600 hover:bg-blue-700" : "bg-gray-400 cursor-not-allowed"} 
+                `}
             >
               <PencilIcon className="w-4 h-4" />
               Update User
@@ -2381,19 +2058,22 @@ const [attendanceData, setAttendanceData] = useState([
 
     // Fungsi untuk membuka attachment
     const openAttachment = (fileName) => {
-      // Simulasi membuka file
-      if (/\.(jpg|jpeg|png|gif|webp)$/i.test(fileName)) {
-        // Jika gambar, buka di tab baru
-        window.open(
-          `https://via.placeholder.com/800x600?text=${encodeURIComponent(
-            fileName
-          )}`,
-          "_blank"
-        );
-      } else {
-        // Jika file lain, download
-        downloadAttachment(fileName, 0);
-      }
+      window.open(
+        `${fileName}`
+      )
+      //// Simulasi membuka file
+      //if (/\.(jpg|jpeg|png|gif|webp)$/i.test(fileName)) {
+      //  // Jika gambar, buka di tab baru
+      //  window.open(
+      //    `https://via.placeholder.com/800x600?text=${encodeURIComponent(
+      //      fileName
+      //    )}`,
+      //    "_blank"
+      //  );
+      //} else {
+      //  // Jika file lain, download
+      //  downloadAttachment(fileName, 0);
+      //}
     };
 
     return (
@@ -2688,6 +2368,12 @@ const AttendanceModal = () => {
     return `${hours} hours`;
   };
 
+  const openAttachment = (fileName) => {
+    window.open(
+      `${fileName}`
+    )
+  };
+
   // Data untuk validation status
   const validationStatus = {
     location: selectedAttendance.locationStatus || 'Tidak Valid',
@@ -2814,7 +2500,7 @@ const AttendanceModal = () => {
               </div>
 
               {/* Validation Status */}
-              <div>
+              {/*<div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
                   Validation Status
                 </label>
@@ -2832,30 +2518,34 @@ const AttendanceModal = () => {
                     </span>
                   </div>
                 </div>
-              </div>
+              </div>*/}
 
-              {/* Geolocation */}
+
+              {/* Distance To Site */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Geolokasi
-                </label>
-                <div className="flex items-center justify-between bg-gray-50 border border-gray-300 rounded-lg p-3">
-                  <p className="text-sm text-gray-900">
-                    {selectedAttendance.location}
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Distance To Site
+                  </label>
+                  <p className="text-sm text-gray-900 bg-gray-50 p-2 rounded border">
+                    {`${Math.ceil(selectedAttendance.distanceToSite)} meter`}
                   </p>
-                  <button
-                    onClick={() => {
-                      // Simulasi membuka peta
-                      const location = encodeURIComponent(selectedAttendance.location);
-                      window.open(`https://www.google.com/maps/search/?api=1&query=${location}`, '_blank');
-                    }}
-                    className="text-blue-600 hover:text-blue-800 text-sm font-medium flex items-center gap-1"
-                  >
-                    <MapPinIcon className="w-4 h-4" />
-                    Lihat di peta
-                  </button>
                 </div>
-              </div>
+              
+              {/* Photo */}
+              <div>
+                    <label className="block text-sm font-medium text-gray-700">
+                      Supporting Photos
+                    </label>
+                    <div className="mt-2 flex flex-wrap gap-2">
+                        <button
+                          onClick={() => openAttachment(selectedAttendance.image)}
+                          className="bg-blue-50 border border-blue-200 rounded-lg px-3 py-2 hover:bg-blue-100 transition flex items-center gap-2"
+                        >
+                            <PhotoIcon className="w-4 h-4 text-blue-600" />
+                          <p className="text-sm text-blue-700">{`${selectedAttendance.image.substring(0,45)}...`}</p>
+                        </button>
+                    </div>
+                  </div>
 
               {/* Submitted By */}
               <div>
@@ -3951,90 +3641,13 @@ const AttendanceModal = () => {
                                 Attachments
                               </label>
                               <div className="space-y-2">
-                                {selectedTicket.attachments.map((file, index) => {
-                                  const isImage =
-                                    /\.(jpg|jpeg|png|gif|webp|bmp)$/i.test(file);
-                                  const isVideo =
-                                    /\.(mp4|mov|avi|wmv|flv|mkv)$/i.test(file);
-                                  const isPDF = /\.pdf$/i.test(file);
-                                  const isDocument =
-                                    /\.(doc|docx|txt|rtf)$/i.test(file);
-
-                                  return (
-                                    <div
-                                      key={index}
-                                      className="flex items-center justify-between bg-blue-50 border border-blue-200 rounded-lg px-4 py-3"
-                                    >
-                                      <div className="flex items-center gap-3">
-                                        {isImage ? (
-                                          <div className="p-2 bg-blue-100 rounded-lg">
-                                            <PhotoIcon className="w-5 h-5 text-blue-600" />
-                                          </div>
-                                        ) : isVideo ? (
-                                          <div className="p-2 bg-purple-100 rounded-lg">
-                                            <FilmIcon className="w-5 h-5 text-purple-600" />
-                                          </div>
-                                        ) : isPDF ? (
-                                          <div className="p-2 bg-red-100 rounded-lg">
-                                            <DocumentTextIcon className="w-5 h-5 text-red-600" />
-                                          </div>
-                                        ) : (
-                                          <div className="p-2 bg-gray-100 rounded-lg">
-                                            <DocumentChartBarIcon className="w-5 h-5 text-gray-600" />
-                                          </div>
-                                        )}
-
-                                        <div className="min-w-0">
-                                          <p className="text-sm font-medium text-blue-700 truncate">
-                                            {file}
-                                          </p>
-                                          <p className="text-xs text-blue-500">
-                                            {isImage
-                                              ? "Image"
-                                              : isVideo
-                                                ? "Video"
-                                                : isPDF
-                                                  ? "PDF"
-                                                  : isDocument
-                                                    ? "Document"
-                                                    : "File"}
-                                          </p>
-                                        </div>
-                                      </div>
-
-                                      <div className="flex items-center gap-2">
-                                        {isImage && (
-                                          <button
-                                            onClick={() => {
-                                              setPreviewImage(file);
-                                              setIsImagePreviewOpen(true);
-                                            }}
-                                            className="p-2 text-blue-600 hover:text-blue-800 hover:bg-blue-100 rounded-lg transition"
-                                            title="Preview"
-                                          >
-                                            <EyeIcon className="w-4 h-4" />
-                                          </button>
-                                        )}
-
-                                        <button
-                                          onClick={() =>
-                                            downloadAttachment(
-                                              file,
-                                              selectedTicket.id
-                                            )
-                                          }
-                                          className="p-2 text-green-600 hover:text-green-800 hover:bg-green-100 rounded-lg transition flex items-center gap-1"
-                                          title="Download"
-                                        >
-                                          <ArrowDownTrayIcon className="w-4 h-4" />
-                                          <span className="text-sm font-medium">
-                                            Download
-                                          </span>
-                                        </button>
-                                      </div>
-                                    </div>
-                                  );
-                                })}
+                              <button
+                                  onClick={() => openAttachment(selectedTicket.attachments[0])}
+                                  className="bg-blue-50 border border-blue-200 rounded-lg px-3 py-2 hover:bg-blue-100 transition flex items-center gap-2"
+                                >
+                                    <PhotoIcon className="w-4 h-4 text-blue-600" />
+                                  <p className="text-sm text-blue-700">{`${selectedTicket.attachments[0].substring(0,45)}...`}</p>
+                                </button>
                               </div>
                             </div>
                           )}
@@ -4132,7 +3745,11 @@ const AttendanceModal = () => {
                     {selectedTicket.status !== "resolved" && (
                       <button
                         onClick={handleReturnToOperator}
-                        className="flex items-center gap-2 px-4 py-2 bg-yellow-600 text-white rounded-lg hover:bg-yellow-700 transition font-medium"
+                        disabled= {loading}
+                        className={`flex items-center gap-2 px-4 py-2  text-white rounded-lg  transition font-medium 
+                          ${!loading ? "bg-yellow-600 hover:bg-yellow-700"
+                          : "bg-gray-400 cursor-not-allowed"
+                          }`}
                       >
                         <ArrowPathIcon className="w-4 h-4" />
                         Request More Info
@@ -4142,10 +3759,12 @@ const AttendanceModal = () => {
                     <button
                       onClick={handleSubmitSolution}
                       disabled={
-                        ticketStatus === "resolved" && !solutionText.trim()
+                        (ticketStatus === "resolved" && !solutionText.trim())
+                        ||
+                        loading
                       }
                       className={`flex items-center gap-2 px-4 py-2 text-white rounded-lg transition font-medium ${
-                        ticketStatus === "resolved" && !solutionText.trim()
+                        (ticketStatus === "resolved" && !solutionText.trim()) || loading
                           ? "bg-gray-400 cursor-not-allowed"
                           : "bg-teal-600 hover:bg-teal-700"
                       }`}
@@ -4587,9 +4206,6 @@ const AttendanceModal = () => {
 
                   {/* GEOLOKASI PINPOINT */}
                   <div>
-                    <label className="block text-sm font-medium text-gray-900 mb-1 sm:mb-2">
-                      Geolokasi (Opsional)
-                    </label>
                     <div className="border border-gray-300 rounded-lg p-3 sm:p-4 bg-white">
                       <p className="text-xs sm:text-sm text-gray-600 mb-2">
                         Klik pada peta untuk menentukan lokasi atau masukkan
@@ -4680,9 +4296,9 @@ const AttendanceModal = () => {
                 </button>
                 <button
                   onClick={handleAddSite}
-                  disabled={Object.keys(formErrors).length > 0}
+                  disabled={Object.keys(formErrors).length > 0 || loading}
                   className={`px-3 sm:px-4 py-2 text-white rounded-lg transition flex items-center gap-1 sm:gap-2 text-sm sm:text-base ${
-                    Object.keys(formErrors).length > 0
+                    Object.keys(formErrors).length > 0 || loading
                       ? "bg-gray-400 cursor-not-allowed"
                       : "bg-teal-600 hover:bg-teal-700"
                   }`}
@@ -4827,9 +4443,6 @@ const AttendanceModal = () => {
 
                   {/* GEOLOKASI PINPOINT */}
                   <div>
-                    <label className="block text-sm font-medium text-gray-900 mb-1 sm:mb-2">
-                      Geolokasi (Opsional)
-                    </label>
                     <div className="border border-gray-300 rounded-lg p-3 sm:p-4 bg-white">
                       <p className="text-xs sm:text-sm text-gray-600 mb-2">
                         Klik pada peta untuk menentukan lokasi atau masukkan
@@ -4837,47 +4450,17 @@ const AttendanceModal = () => {
                       </p>
 
                       {/* Peta Simulasi */}
-                      <div className="relative border border-gray-300 rounded-lg overflow-hidden mb-3 sm:mb-4">
-                        <div
-                          className="w-full h-32 sm:h-48 bg-gradient-to-r from-blue-50 to-green-50 relative cursor-pointer"
-                          onClick={(e) => handleMapClick(e, true)}
-                        >
-                          {/* Grid peta */}
-                          <div className="absolute inset-0 bg-grid-pattern opacity-10"></div>
-
-                          {/* Marker */}
-                          <div
-                            className="absolute w-6 h-6 transform -translate-x-1/2 -translate-y-1/2 transition-all duration-300"
-                            style={{
-                              left: `${
-                                editingSite.latitude
-                                  ? 50 + (parseFloat(editingSite.longitude) || 0) * 0.1
-                                  : 50
-                              }%`,
-                              top: `${
-                                editingSite.latitude
-                                  ? 50 - (parseFloat(editingSite.latitude) || 0) * 0.1
-                                  : 50
-                              }%`,
-                            }}
-                          >
-                            <MapPinIcon className="w-6 h-6 text-red-600 drop-shadow-lg" />
-                          </div>
-
-                          {/* Label koordinat */}
-                          <div
-                            className="absolute bg-white/90 backdrop-blur-sm px-2 py-1 rounded text-xs font-medium shadow-sm"
-                            style={{
-                              left: "60%",
-                              top: "20%",
-                            }}
-                          >
-                            {editingSite.latitude && editingSite.longitude
-                              ? `${editingSite.latitude}, ${editingSite.longitude}`
-                              : "Klik untuk memilih"}
-                          </div>
-                        </div>
-                      </div>
+                      <MapField
+                        lat={editingSite.latitude}
+                        lng={editingSite.longitude}
+                        onChange={({ latitude, longitude }) =>
+                          setEditingSite(prev => ({
+                            ...prev,
+                            latitude,
+                            longitude,
+                          }))
+                        }
+                      />
 
                       {/* Input Koordinat */}
                       <div className="grid grid-cols-2 gap-3 sm:gap-4">
@@ -4950,9 +4533,9 @@ const AttendanceModal = () => {
                 </button>
                 <button
                   onClick={handleUpdateSite}
-                  disabled={Object.keys(formErrors).length > 0}
+                  disabled={Object.keys(formErrors).length > 0 || loading}
                   className={`px-3 sm:px-4 py-2 text-white rounded-lg transition flex items-center gap-1 sm:gap-2 text-sm sm:text-base ${
-                    Object.keys(formErrors).length > 0
+                    Object.keys(formErrors).length > 0 || loading
                       ? "bg-gray-400 cursor-not-allowed"
                       : "bg-teal-600 hover:bg-teal-700"
                   }`}
@@ -4990,7 +4573,7 @@ const AttendanceModal = () => {
           <button
             onClick={() => {
               // Fungsi untuk ekspor data attendance ke Excel
-              const headers = ["ID", "Operator", "Site", "Tanggal", "Check-In", "Check-Out", "Status", "Status Persetujuan", "Catatan"];
+              const headers = ["ID", "Operator", "Site", "Tanggal", "Check-In", "Check-Out", "Status", "Distance To Site (m)","Status Persetujuan", "Catatan"];
               const csvData = attendanceData.map(item => [
                 item.id,
                 item.operatorName,
@@ -4999,8 +4582,9 @@ const AttendanceModal = () => {
                 item.checkIn,
                 item.checkOut,
                 item.status,
+                item.distanceToSite,
                 item.attendanceStatus,
-                item.notes
+                item.notes,
               ]);
               
               const csvContent = [
@@ -5012,7 +4596,7 @@ const AttendanceModal = () => {
               const link = document.createElement("a");
               const url = URL.createObjectURL(blob);
               link.setAttribute("href", url);
-              link.setAttribute("download", `attendance_data_${new Date().toISOString().split('T')[0]}.xlsx`);
+              link.setAttribute("download", `attendance_data_${new Date().toISOString().split('T')[0]}.csv`);
               link.style.visibility = 'hidden';
               document.body.appendChild(link);
               link.click();
@@ -5632,19 +5216,386 @@ const AttendanceModal = () => {
             </div>
 
             {/* TOP KPIs - Rangkuman Semua Menu */}
-            <TopKpi setActiveMenu={setActiveMenu}/>
+            <div className="mb-6 lg:mb-8 grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
+              {[
+                {
+                  label: "Total Sites",
+                  value: totalSites,
+                  percent: `${Math.round((activeSites / totalSites) * 100)}% Active`,
+                  icon: MapPinIcon,
+                  color: "bg-teal-100 text-teal-600",
+                  menu: "sites",
+                },
+                {
+                  label: "Active Operators",
+                  value: totalOperators,
+                  percent: `${usersData.filter((u) => u.status === "active").length} Active Users`,
+                  icon: UsersIcon,
+                  color: "bg-blue-100 text-blue-600",
+                  menu: "users",
+                },
+                {
+                  label: "Daily Reports",
+                  value: totalReports,
+                  percent: `${complianceRate}% Approved`,
+                  icon: DocumentChartBarIcon,
+                  color: "bg-purple-100 text-purple-600",
+                  menu: "reports",
+                },
+                {
+                  label: "Help Tickets",
+                  value: ticketsData.length,
+                  percent: `${Math.round((resolvedTickets / ticketsData.length) * 100)}% Resolved`,
+                  icon: ChatBubbleLeftRightIcon,
+                  color: "bg-orange-100 text-orange-600",
+                  menu: "help",
+                },
+              ].map((item, i) => {
+                const Icon = item.icon;
+                return (
+                  <div
+                    key={i}
+                    className="bg-white p-3 sm:p-4 rounded-xl shadow-sm border border-gray-200 hover:shadow-md transition-shadow cursor-pointer"
+                    onClick={() => setActiveMenu(item.menu)}
+                  >
+                    <div className="flex justify-between items-start mb-2 sm:mb-3">
+                      <p className="text-xs sm:text-sm text-gray-600 font-medium">
+                        {item.label}
+                      </p>
+                      <div className={`p-1 sm:p-2 rounded-lg ${item.color}`}>
+                        <Icon className="w-3 h-3 sm:w-4 sm:h-4" />
+                      </div>
+                    </div>
+                    <p className="text-lg sm:text-xl lg:text-2xl font-bold text-gray-900 mb-1">
+                      {item.value}
+                    </p>
+                    <p className="text-xs text-gray-600 font-medium">
+                      {item.percent}
+                    </p>
+                  </div>
+                );
+              })}
+            </div>
 
             {/* SECOND ROW - Detail Rangkuman dari Setiap Menu */}
             <div className="mb-6 lg:mb-8 grid grid-cols-1 xl:grid-cols-2 gap-4 sm:gap-6">
               {/* Sites Status dengan Pie Chart */}
-              <SitesStatusChart setActiveMenu={setActiveMenu}/>
+              <div className="bg-white p-4 sm:p-6 rounded-2xl border border-gray-200 shadow-md">
+                <div className="flex justify-between items-center mb-4 sm:mb-5">
+                  <h3 className="font-semibold text-base sm:text-lg text-gray-800">
+                    Sites Status
+                  </h3>
+                  <button
+                    onClick={() => setActiveMenu("sites")}
+                    className="text-teal-600 text-sm font-medium hover:underline"
+                  >
+                    View All →
+                  </button>
+                </div>
+
+                <div className="flex flex-col lg:flex-row items-center gap-4 sm:gap-6 lg:gap-8">
+                  <div className="relative flex flex-col items-center">
+                    {/* Container untuk pie chart dengan overflow visible dan ukuran yang cukup */}
+                    <div
+                      className="relative flex items-center justify-center"
+                      style={{
+                        width: "140px",
+                        height: "140px",
+                        overflow: "visible",
+                      }}
+                    >
+                      <svg
+                        width="120"
+                        height="120"
+                        className="absolute cursor-pointer transition-all duration-300"
+                        style={{
+                          transform:
+                            hoveredSitePie !== null ? "scale(1.1)" : "scale(1)",
+                        }}
+                        viewBox="0 0 100 100"
+                      >
+                        {sitesPieChartPaths.map((item, index) => {
+                          // Fungsi untuk membuat warna lebih gelap saat hover
+                          const darkenColor = (color) => {
+                            // Jika warna dalam format hex (#RRGGBB)
+                            if (color.startsWith("#")) {
+                              const hex = color.replace("#", "");
+                              const r = parseInt(hex.substr(0, 2), 16);
+                              const g = parseInt(hex.substr(2, 2), 16);
+                              const b = parseInt(hex.substr(4, 2), 16);
+
+                              // Gelapkan 20%
+                              const darkerR = Math.floor(r * 0.8);
+                              const darkerG = Math.floor(g * 0.8);
+                              const darkerB = Math.floor(b * 0.8);
+
+                              return `rgb(${darkerR}, ${darkerG}, ${darkerB})`;
+                            }
+                            return color; // Kembalikan warna asli jika bukan hex
+                          };
+
+                          return (
+                            item.isFullCircle ? (
+                                <circle
+                                  key={item.status}
+                                  cx="50"
+                                  cy="50"
+                                  r="45"
+                                  fill={item.color}
+                                  onMouseEnter={() => setHoveredSitePie(index)}
+                                  onMouseLeave={() => setHoveredSitePie(null)}
+                                />
+                              ) : (
+                                <path
+                                key={item.status}
+                                d={item.path}
+                                fill={
+                                  hoveredSitePie === index
+                                    ? darkenColor(item.color)
+                                    : item.color
+                                }
+                                className="transition-all duration-300"
+                                stroke="white"
+                                strokeWidth="2"
+                                onMouseEnter={() => setHoveredSitePie(index)}
+                                onMouseLeave={() => setHoveredSitePie(null)}
+                                />
+                              )
+                          );
+                        })}
+                      </svg>
+                    </div>
+
+                    <div className="text-center mt-2 sm:mt-4">
+                      <div className="text-xl sm:text-2xl font-bold text-gray-800">
+                        {activePercentage}%
+                      </div>
+                      <div className="text-sm text-gray-600">Active</div>
+                    </div>
+
+                    {hoveredSitePie !== null && (
+                      <div className="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-full bg-gray-800 text-white px-2 sm:px-3 py-1 sm:py-2 rounded-lg text-xs sm:text-sm z-10 shadow-lg">
+                        <div className="flex items-center gap-1 sm:gap-2">
+                          <div
+                            className="w-2 h-2 sm:w-3 sm:h-3 rounded"
+                            style={{
+                              backgroundColor:
+                                sitesPieChartPaths[hoveredSitePie].color,
+                            }}
+                          ></div>
+                          <span>
+                            {sitesPieChartPaths[hoveredSitePie].status}:{" "}
+                            {sitesPieChartPaths[hoveredSitePie].value} (
+                            {sitesPieChartPaths[hoveredSitePie].percentage}%)
+                          </span>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+
+                  <div className="space-y-2 sm:space-y-3 lg:space-y-4 flex-1 w-full">
+                    {sitesPieChartData.map((item, index) => (
+                      <div
+                        key={item.status}
+                        className={`flex items-center justify-between p-2 sm:p-3 rounded-lg transition-all duration-200 cursor-pointer ${
+                          hoveredSitePie === index
+                            ? "bg-gray-50 transform scale-105"
+                            : ""
+                        }`}
+                        onMouseEnter={() => setHoveredSitePie(index)}
+                        onMouseLeave={() => setHoveredSitePie(null)}
+                      >
+                        <div className="flex items-center gap-2 sm:gap-3">
+                          <div
+                            className="w-3 h-3 sm:w-4 sm:h-4 rounded transition-transform duration-200"
+                            style={{ backgroundColor: item.color }}
+                          ></div>
+                          <span className="text-sm text-gray-700 font-medium">
+                            {item.status}
+                          </span>
+                        </div>
+                        <span className="text-base sm:text-lg font-bold text-gray-900">
+                          {item.percentage}%
+                        </span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                <div className="mt-4 pt-4 border-t border-gray-200">
+                  <p className="text-xs text-gray-500">
+                    Total Sites: {totalSites} | Active: {activePercentage}%
+                  </p>
+                </div>
+              </div>
 
               {/* Report Status - DENGAN PIE CHART */}
-              <ReportStatusChart/>
+              <div className="bg-white p-4 sm:p-6 rounded-2xl border border-gray-200 shadow-md">
+                <div className="flex justify-between items-center mb-4 sm:mb-5">
+                  <h3 className="font-semibold text-base sm:text-lg text-gray-800">
+                    Report Status
+                  </h3>
+                  <div className="text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded hidden sm:block">
+                    {new Date().toLocaleDateString("en-US", {
+                      weekday: "long",
+                      year: "numeric",
+                      month: "long",
+                      day: "numeric",
+                    })}
+                  </div>
+                  <div className="text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded sm:hidden">
+                    {new Date().toLocaleDateString("en-US", {
+                      month: "short",
+                      day: "numeric",
+                    })}
+                  </div>
+                </div>
+
+                <div className="flex flex-col lg:flex-row items-center gap-4 sm:gap-6 lg:gap-8">
+                  <div className="relative flex flex-col items-center">
+                    {/* Container untuk pie chart dengan overflow visible dan ukuran yang cukup */}
+                    <div
+                      className="relative flex items-center justify-center"
+                      style={{
+                        width: "140px",
+                        height: "140px",
+                        overflow: "visible",
+                      }}
+                    >
+                      <svg
+                        width="120"
+                        height="120"
+                        className="absolute cursor-pointer transition-all duration-300"
+                        style={{
+                          transform:
+                            hoveredPie !== null ? "scale(1.1)" : "scale(1)",
+                        }}
+                        viewBox="0 0 100 100"
+                      >
+                        {pieChartData.map((item, index) => {
+                          // Fungsi untuk membuat warna lebih gelap saat hover
+                          const darkenColor = (color) => {
+                            // Jika warna dalam format hex (#RRGGBB)
+                            if (color.startsWith("#")) {
+                              const hex = color.replace("#", "");
+                              const r = parseInt(hex.substr(0, 2), 16);
+                              const g = parseInt(hex.substr(2, 2), 16);
+                              const b = parseInt(hex.substr(4, 2), 16);
+
+                              // Gelapkan 20%
+                              const darkerR = Math.floor(r * 0.8);
+                              const darkerG = Math.floor(g * 0.8);
+                              const darkerB = Math.floor(b * 0.8);
+
+                              return `rgb(${darkerR}, ${darkerG}, ${darkerB})`;
+                            }
+                            return color; // Kembalikan warna asli jika bukan hex
+                          };
+
+                          return (
+                            item.isFullCircle ? (
+                                <circle
+                                  key={item.status}
+                                  cx="50"
+                                  cy="50"
+                                  r="45"
+                                  fill={item.color}
+                                />
+                              ) : (
+                                <path
+                                  key={item.status}
+                                  d={item.path}
+                                  fill={item.color}
+                                  stroke="white"
+                                  strokeWidth="2"
+                                />
+                              )
+                          );
+                        })}
+                      </svg>
+                    </div>
+
+                    <div className="text-center mt-2 sm:mt-4">
+                      <div className="text-xl sm:text-2xl font-bold text-gray-800">
+                        {complianceRate}%
+                      </div>
+                      <div className="text-sm text-gray-600">Approved</div>
+                    </div>
+
+                    {hoveredPie !== null && (
+                      <div className="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-full bg-gray-800 text-white px-2 sm:px-3 py-1 sm:py-2 rounded-lg text-xs sm:text-sm z-10 shadow-lg">
+                        <div className="flex items-center gap-1 sm:gap-2">
+                          <div
+                            className="w-2 h-2 sm:w-3 sm:h-3 rounded"
+                            style={{
+                              backgroundColor: pieChartData[hoveredPie].color,
+                            }}
+                          ></div>
+                          <span>
+                            {pieChartData[hoveredPie].status}:{" "}
+                            {pieChartData[hoveredPie].value}%
+                          </span>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+
+                  <div className="space-y-2 sm:space-y-3 lg:space-y-4 flex-1 w-full">
+                    {reportStatusData.map((item, index) => (
+                      <div
+                        key={item.status}
+                        className={`flex items-center justify-between p-2 sm:p-3 rounded-lg transition-all duration-200 cursor-pointer ${
+                          hoveredPie === index
+                            ? "bg-gray-50 transform scale-105"
+                            : ""
+                        }`}
+                        onMouseEnter={() => setHoveredPie(index)}
+                        onMouseLeave={() => setHoveredPie(null)}
+                      >
+                        <div className="flex items-center gap-2 sm:gap-3">
+                          <div
+                            className="w-3 h-3 sm:w-4 sm:h-4 rounded transition-transform duration-200"
+                            style={{ backgroundColor: item.color }}
+                          ></div>
+                          <span className="text-sm text-gray-700 font-medium">
+                            {item.status}
+                          </span>
+                        </div>
+                        <span className="text-base sm:text-lg font-bold text-gray-900">
+                          {item.value}%
+                        </span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
             </div>
 
             {/* THIRD ROW - GRAFIK PARAMETER AIR YANG DIPERBAIKI */}
-            <WaterParameterGraph setActiveMenu={setActiveMenu}/>
+            <div className="mb-6 lg:mb-8">
+              <div className="bg-white p-4 sm:p-6 rounded-2xl border border-gray-200 shadow-md">
+                <div className="flex justify-between items-center mb-4 sm:mb-5">
+                  <h3 className="font-semibold text-base sm:text-lg text-gray-800">
+                    Water Parameters Monitoring - Live Today ({getTodayDate()})
+                  </h3>
+                  <button
+                    onClick={() => setActiveMenu("reports")}
+                    className="text-teal-600 text-sm font-medium hover:underline"
+                  >
+                    View All Reports →
+                  </button>
+                </div>
+                
+                {/* Render Water Parameters Chart */}
+                {renderWaterParametersChart()}
+                
+                <div className="mt-4 pt-4 border-t border-gray-200">
+                  <p className="text-xs text-gray-500">
+                    Data updated based on latest reports. Click "View All Reports" for detailed analysis.
+                  </p>
+                </div>
+              </div>
+            </div>
 
             {/* FOURTH ROW - Users & Tickets Summary */}
             <div className="mb-6 lg:mb-8 grid grid-cols-1 xl:grid-cols-2 gap-4 sm:gap-6">

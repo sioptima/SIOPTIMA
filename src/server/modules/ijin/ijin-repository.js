@@ -27,7 +27,8 @@ export class IzinRepository {
                         select: {
                             username: true
                         }
-                    }
+                    },
+                    createdAt: true,
                 }
             })
         } catch (error) {
@@ -47,7 +48,12 @@ export class IzinRepository {
                         createdAt: "desc",
                     },
                     take: data.size,
-                    skip: skip
+                    skip: skip,
+                    include: {
+                        user: {select: {
+                            username: true,
+                        }}
+                    }
                 }),
                 PrismaClient.ijin.count({
                     where: {

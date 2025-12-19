@@ -1,10 +1,3 @@
-//KODE DENGAN GEOLOKASI DEFAULT
-//KODE DENGAN GEOLOKASI DEFAULT
-//KODE DENGAN GEOLOKASI DEFAULT
-//KODE DENGAN GEOLOKASI DEFAULT
-//KODE DENGAN GEOLOKASI DEFAULT
-//KODE DENGAN GEOLOKASI DEFAULT
-
 "use client";
 import React, { useState, useRef, useEffect } from "react";
 import { useRouter } from "next/navigation";
@@ -49,6 +42,8 @@ import {
   DevicePhoneMobileIcon,
   ChevronRightIcon,
 } from "@heroicons/react/24/outline";
+import { checkIn, checkOut, createOperatorIjin, createOperatorLibur, createOperatorReport, createTicket, fetchCurrentUser, fetchOperatorActiveAttendance, fetchOperatorAttendance, fetchOperatorDashboardData, fetchOperatorIjin, fetchOperatorLibur, fetchOperatorReports, fetchOperatorShifts, fetchOperatorTicket } from "@/src/lib/fetchApiOperator";
+import { fetchSitesData } from "@/src/lib/fetchApiAdmin";
 
 // BAGIAN GEOLOKASI OR GEOLOCATION
 //rumus geolokasi
@@ -130,20 +125,25 @@ export default function Operator() {
   const router = useRouter();
   const dropdownRef = useRef(null);
   const notificationRef = useRef(null);
+  const [loading, setLoading] = useState(false)
 
   // ==================== DATA USER ====================
-  const [user, setUser] = useState({
-    name: "Budi Santoso",
-    email: "budi.santoso@email.com",
-    role: "Operator IPAL",
-    site: "Jakarta Utara - Site A",
-    initial: "B",
-    employeeId: "OPR-2024-001",
-    joinDate: "15 Januari 2024",
-    phone: "+62 812-3456-7890",
-    address: "Jl. Merdeka No. 123, Jakarta Utara",
-    shift: "Shift Pagi (08:00 - 16:00)",
-  });
+  const [user, setUser] = useState({});
+  useEffect(() => {
+    const loadData = async () => {
+        try {
+            const result = await fetchCurrentUser();
+            if (!result) throw new Error("No data returned");
+            setUser(result);
+        } catch (err) {
+          //setError
+    } finally {
+      //setLoading
+    }
+  };   
+
+  loadData();
+  }, []);  
 
   // Refs untuk berbagai keperluan
   const dateInputRef = useRef(null);
@@ -195,14 +195,12 @@ export default function Operator() {
   // State untuk Dashboard
   const [dashboardData, setDashboardData] = useState({
     reportsSubmitted: 0,
-    reportsSubmittedChange: "+0%",
     attendanceRate: "0%",
-    attendanceRateChange: "+0%",
     pHLevel: "0.0",
     flowRate: "0 L/h",
     tds: "0 ppm",
     ec: "0 μS/cm",
-  });
+  }); 
 
   const [pHData, setPHData] = useState([]);
   const [flowRateData, setFlowRateData] = useState([]);
@@ -221,10 +219,29 @@ export default function Operator() {
     settleStatus: "Normal",
     outFilterStatus: "Normal",
     additionalNotes: "",
+    images: [],
   });
 
   const [uploadedFiles, setUploadedFiles] = useState([]);
+
   const [reports, setReports] = useState([]);
+  useEffect(() => {
+    const loadData = async () => {
+        try {
+            const result = await fetchOperatorReports({limit: 50});
+            if (!result) throw new Error("No data returned");
+            setReports(result);
+        } catch (err) {
+          //setError
+    } finally {
+      //setLoading
+    }
+  };   
+
+  loadData();
+  }, []);  
+
+
   const [searchQuery, setSearchQuery] = useState("");
   const [errors, setErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -234,66 +251,71 @@ export default function Operator() {
   const [isImageModalOpen, setIsImageModalOpen] = useState(false);
   const [editingReportId, setEditingReportId] = useState(null);
 
+  const [sitesData, setSitesData] = useState([]);
+  useEffect(() => {
+      const loadData = async () => {
+          try {
+              const result = await fetchSitesData({limit: 50});
+              if (!result) throw new Error("No data returned");
+              setSitesData(result.sites);
+          } catch (err) {
+            //setError
+      } finally {
+        //setLoading
+      }
+  };   
+
+  loadData();
+  }, []); 
+
+  const getSiteOptions = () => {
+    const siteNames = sitesData.map((site) => site.name);
+    return siteNames.sort();
+  };
+
+  const siteOptions = getSiteOptions();
+
   // State untuk Presence
   const [attendanceData, setAttendanceData] = useState({
     checkInTime: "--:--",
     checkOutTime: "--:--",
-    location: "Not located yet",
-    status: "Not Checked In",
+    location: "-",
+    status: "-",
     isCheckedIn: false,
     isCheckedOut: false,
   });
+  useEffect(() => {
+    const loadData = async () => {
+        try {
+            const result = await fetchOperatorActiveAttendance();
+            if (!result) throw new Error("No data returned");
+            setAttendanceData(result);
+        } catch (err) {
+          //setError
+    } finally {
+      //setLoading
+    }
+  };    
 
-  const [attendanceHistory, setAttendanceHistory] = useState([
-    {
-      id: 1,
-      date: "2025-01-25",
-      checkIn: "08:00 AM",
-      checkOut: "16:00 PM",
-      location: "Jakarta Utara - Site A (Lat: -7.2375495, Long: 112.7271187)",
-      status: "On Time",
-      approvalStatus: "approved",
-      checkInStatus: "On Time",
-      checkInLocation: "Jakarta Utara - Site A (Lat: -7.2375495, Long: 112.7271187)",
-      checkOutLocation: "Jakarta Utara - Site A (Lat: -7.2375495, Long: 112.7271187)",
-      selfieCheckIn: null,
-      selfieCheckOut: null,
-      approvedBy: "Admin Utama",
-      approvedAt: "2025-01-25 16:30",
-    },
-    {
-      id: 2,
-      date: "2025-01-24",
-      checkIn: "08:15 AM",
-      checkOut: "16:05 PM",
-      location: "Jakarta Utara - Site A (Lat: -7.2375495, Long: 112.7271187)",
-      status: "Late",
-      approvalStatus: "approved",
-      checkInStatus: "Late",
-      checkInLocation: "Jakarta Utara - Site A (Lat: -7.2375495, Long: 112.7271187)",
-      checkOutLocation: "Jakarta Utara - Site A (Lat: -7.2375495, Long: 112.7271187)",
-      selfieCheckIn: null,
-      selfieCheckOut: null,
-      approvedBy: "Admin Utama",
-      approvedAt: "2025-01-24 16:45",
-    },
-    {
-      id: 3,
-      date: "2025-01-23",
-      checkIn: "08:05 AM",
-      checkOut: "--:--",
-      location: "Jakarta Utara - Site A (Lat: -7.2375495, Long: 112.7271187)",
-      status: "On Time",
-      approvalStatus: "pending",
-      checkInStatus: "On Time",
-      checkInLocation: "Jakarta Utara - Site A (Lat: -7.2375495, Long: 112.7271187)",
-      checkOutLocation: "--:--",
-      selfieCheckIn: null,
-      selfieCheckOut: null,
-      approvedBy: null,
-      approvedAt: null,
-    },
-  ]);
+  loadData();
+  }, []);  
+
+  const [attendanceHistory, setAttendanceHistory] = useState([]);
+  useEffect(() => {
+    const loadData = async () => {
+        try {
+            const result = await fetchOperatorAttendance({limit: 10});
+            if (!result) throw new Error("No data returned");
+            setAttendanceHistory(result);
+        } catch (err) {
+          //setError
+    } finally {
+      //setLoading
+    }
+  };   
+
+  loadData();
+  }, []);  
 
   // State untuk modal check-in/check-out
   const [isCheckInModalOpen, setIsCheckInModalOpen] = useState(false);
@@ -309,7 +331,7 @@ export default function Operator() {
     checkOut: "",
     checkInLocation: "",
     checkOutLocation: "",
-    checkInStatus: "On Time",
+    checkInStatus: "ontime",
   });
 
   const [locationCaptured, setLocationCaptured] = useState(false);
@@ -327,10 +349,25 @@ export default function Operator() {
   const [streamCheckOut, setStreamCheckOut] = useState(null);
 
   // State untuk Help Desk
-  const [tickets, setTickets] = useState([]); // Data dummy dihapus
+  const [tickets, setTickets] = useState([]);
+  useEffect(() => {
+    const loadData = async () => {
+        try {
+            const result = await fetchOperatorTicket({limit: 10});
+            if (!result) throw new Error("No data returned");
+            setTickets(result);
+        } catch (err) {
+          //setError
+    } finally {
+      //setLoading
+    }
+  };   
+
+  loadData();
+  }, []); 
 
   const [newTicket, setNewTicket] = useState({
-    site: "IPAL Jakarta Pusat",
+    site: "",
     category: "Technical",
     title: "",
     description: "",
@@ -351,6 +388,21 @@ export default function Operator() {
 
   // State untuk Lihat Shift
   const [shiftData, setShiftData] = useState([]);
+  useEffect(() => {
+    const loadData = async () => {
+        try {
+            const result = await fetchOperatorShifts({limit: 10});
+            if (!result) throw new Error("No data returned");
+            setShiftData(result);
+        } catch (err) {
+          //setError
+    } finally {
+      //setLoading
+    }
+  };   
+
+  loadData();
+  }, []);  
 
   const [isLiburModalOpen, setIsLiburModalOpen] = useState(false);
   const [isIzinModalOpen, setIsIzinModalOpen] = useState(false);
@@ -367,6 +419,24 @@ export default function Operator() {
 
   // State untuk riwayat pengajuan shift
   const [submissionHistory, setSubmissionHistory] = useState([]);
+  useEffect(() => {
+    const loadData = async () => {
+        try {
+            const result = await fetchOperatorIjin({limit: 10});
+            if (!result) throw new Error("No data returned");
+            const ijin = await fetchOperatorLibur({limit: 10});
+            if (!ijin) throw new Error("No data returned");
+            setSubmissionHistory(result);
+            setSubmissionHistory(ijin);
+        } catch (err) {
+          //setError
+    } finally {
+      //setLoading
+    }
+  };   
+
+  loadData();
+  }, []);  
 
   // Menu Items
   const menuItems = [
@@ -510,27 +580,30 @@ export default function Operator() {
 
   // ==================== FUNGSI SINKRONISASI DATA ====================
   const updateDashboardData = () => {
+    const loadData = async () => {
+        try {
+            const result = await fetchOperatorDashboardData();
+            if (!result) throw new Error("No data returned");
+            setDashboardData(result);
+        } catch (err) {
+          //setError
+      } finally {
+        //setLoading
+      }
+    };   
+  
+    loadData();
+    
     const submittedReports = reports.filter(
-      (report) => report.status === "Submitted"
+      (report) => report.status === "pending"
     );
     const latestReport = submittedReports[0];
 
     // Hitung data aktual
-    const attendanceData = calculateAttendanceRate();
-    const monthlyReports = calculateMonthlyReports();
+    //const attendanceData = calculateAttendanceRate();
+    //const monthlyReports = calculateMonthlyReports();
 
-    setDashboardData((prev) => ({
-      ...prev,
-      reportsSubmitted: monthlyReports.count,
-      reportsSubmittedChange: monthlyReports.change,
-      attendanceRate: attendanceData.rate,
-      attendanceRateChange: attendanceData.change,
-      pHLevel: latestReport ? latestReport.pHLevel || "0.0" : "0.0",
-      flowRate: latestReport ? `${latestReport.flowRate || "0"} L/h` : "0 L/h",
-      tds: latestReport ? `${latestReport.tds || "0"} ppm` : "0 ppm",
-      ec: latestReport ? `${latestReport.ec || "0"} μS/cm` : "0 μS/cm",
-    }));
-
+    
     if (submittedReports.length > 0) {
       const latestReports = submittedReports.slice(0, 7);
 
@@ -607,39 +680,6 @@ export default function Operator() {
   useEffect(() => {
     updateDashboardData();
   }, [reports, attendanceHistory, tickets]);
-
-  // Effect untuk update shift data berdasarkan tanggal hari ini
-  useEffect(() => {
-    const today = new Date();
-    const tomorrow = new Date(today);
-    tomorrow.setDate(tomorrow.getDate() + 1);
-    
-    const formatDate = (date) => {
-      return date.toISOString().split('T')[0];
-    };
-    
-    const days = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
-    
-    // Generate shift untuk 7 hari ke depan
-    const newShiftData = [];
-    for (let i = 1; i <= 7; i++) {
-      const date = new Date(today);
-      date.setDate(date.getDate() + i);
-      
-      newShiftData.push({
-        id: i,
-        date: formatDate(date),
-        day: days[date.getDay()],
-        startTime: "08:00",
-        endTime: "16:00",
-        location: "Jakarta Utara - Site A",
-        type: "Regular",
-        status: "Scheduled",
-      });
-    }
-    
-    setShiftData(newShiftData);
-  }, []);
 
   // ==================== DASHBOARD FUNCTIONS ====================
   const handleQuickAction = (action) => {
@@ -732,7 +772,7 @@ export default function Operator() {
       newErrors.ec = "EC harus berupa angka";
     }
 
-    if (uploadedFiles.length === 0) {
+    if (!formData.images) {
       newErrors.files = "Minimal 1 foto harus diupload";
     }
 
@@ -756,7 +796,7 @@ export default function Operator() {
 
     setTimeout(async () => {
       if (editingReportId) {
-        // Edit existing report
+        // Edit existing report; not yet implemented - no time to integrate;(
         setReports(prev => prev.map(report => 
           report.id === editingReportId 
             ? {
@@ -771,17 +811,7 @@ export default function Operator() {
         setEditingReportId(null);
         alert("Laporan berhasil diedit!");
       } else {
-        // Create new report
-        const newReport = {
-          id: Date.now(),
-          ...formData,
-          uploadedFiles: [...uploadedFiles],
-          timestamp: new Date().toISOString(),
-          location: user.site,
-          operator: user.name,
-          status: "Submitted",
-        };
-
+        const newReport = await createOperatorReport(formData)
         setReports((prev) => [newReport, ...prev]);
       }
 
@@ -798,6 +828,7 @@ export default function Operator() {
         settleStatus: "Normal",
         outFilterStatus: "Normal",
         additionalNotes: "",
+        images: []
       });
       setUploadedFiles([]);
       setErrors({});
@@ -1322,6 +1353,8 @@ export default function Operator() {
     const file = event.target.files[0];
     if (!file) return;
 
+    setUploadedFiles(file)
+
     if (!file.type.startsWith("image/")) {
       alert("Silakan pilih file gambar");
       return;
@@ -1400,69 +1433,48 @@ export default function Operator() {
   };
 
   // PERBAIKAN: Fungsi handleConfirmCheckIn yang sudah diperbaiki
-  const handleConfirmCheckIn = () => {
+  const handleConfirmCheckIn = async () => {
     console.log("handleConfirmCheckIn dipanggil");
     
     if (!selfieUploaded) {
       alert("Harap ambil atau upload selfie terlebih dahulu");
       return;
     }
-
+    setLoading(true)
     const now = new Date();
-    const hours = now.getHours();
-    const minutes = now.getMinutes().toString().padStart(2, "0");
-    const ampm = hours >= 12 ? "PM" : "AM";
-    const formattedHours = (hours % 12 || 12).toString().padStart(2, "0");
-    const checkInTime = `${formattedHours}:${minutes} ${ampm}`;
+    const formData = new FormData()
+    formData.append("selfie",uploadedFiles)
+    formData.append("timestamp",now.toISOString())
+    const response = await checkIn(formData)
+    if(!response){
+      setLoading(false)
+      return
+    }
 
-    let checkInStatus = "On Time";
-    const currentTime = hours * 60 + now.getMinutes();
-    const deadlineTime = 8 * 60 + 15; // 08:15
-    if (currentTime > deadlineTime) checkInStatus = "Late";
-
-    // Tentukan apakah lokasi dalam radius
-    const locationStatus = currentLocation.includes("Outside") ? "Outside Radius" : "Within Radius";
-
-    const newAttendance = {
-      id: Date.now(),
-      date: new Date().toISOString().split("T")[0],
-      checkIn: checkInTime,
-      checkOut: "--:--",
-      location: `${currentLocation} - ${locationStatus}`,
-      status: "pending",
-      approvalStatus: "pending",
-      checkInStatus: checkInStatus,
-      checkInLocation: currentLocation,
-      checkOutLocation: "--:--",
-      selfieCheckIn: selfiePreview,
-      selfieCheckOut: null,
-      approvedBy: null,
-      approvedAt: null,
-      locationStatus: locationStatus,
-    };
 
     setAttendanceData((prev) => ({
       ...prev,
-      checkInTime: checkInTime,
-      status: `${checkInStatus}${locationStatus === "Outside Radius" ? " (Outside Radius)" : ""}`,
+      checkInTime: response.checkIn.toLocaleTimeString(),
+      status: response.status,
       isCheckedIn: true,
       isCheckedOut: false,
       checkOutTime: "--:--",
       location: currentLocation,
     }));
 
-    setAttendanceHistory((prev) => [newAttendance, ...prev]);
+    setAttendanceHistory((prev) => [response, ...prev]);
     setIsCheckInModalOpen(false);
 
     updateDashboardData();
 
     alert(
-      `Check-in berhasil! Waktu: ${checkInTime} - Status: ${checkInStatus}${locationStatus === "Outside Radius" ? " (Outside Radius Warning)" : ""}. Menunggu approval admin.`
+      `Check-in berhasil! Jarak ke site: ${response.locationStatus}. Waktu: ${response.checkIn.toLocaleTimeString()} - Status: ${response.checkInStatus}. Menunggu approval admin.`
     );
+    setLoading(false)
   };
 
   // PERBAIKAN: Fungsi handleConfirmCheckOut yang sudah diperbaiki
-  const handleConfirmCheckOut = () => {
+  const handleConfirmCheckOut = async () => {
     console.log("handleConfirmCheckOut dipanggil");
     
     if (!selfieUploadedCheckOut) {
@@ -1470,34 +1482,33 @@ export default function Operator() {
       return;
     }
 
+    setLoading(true)
     const now = new Date();
-    const hours = now.getHours();
-    const minutes = now.getMinutes().toString().padStart(2, "0");
-    const ampm = hours >= 12 ? "PM" : "AM";
-    const formattedHours = (hours % 12 || 12).toString().padStart(2, "0");
-    const checkOutTime = `${formattedHours}:${minutes} ${ampm}`;
-
-    // Tentukan apakah lokasi dalam radius
-    const locationStatus = currentLocationCheckOut.includes("Outside") ? "Outside Radius" : "Within Radius";
+    const formData = new FormData()
+    formData.append("selfie",uploadedFiles)
+    formData.append("timestamp",now.toISOString())
+    const response = await checkOut(formData)
+    if(!response){
+      setLoading(false)
+      return;
+    }
 
     setAttendanceData((prev) => ({
       ...prev,
-      checkOutTime: checkOutTime,
+      checkOutTime: response.checkOutTime,
       isCheckedOut: true,
-      status: `${prev.status}${locationStatus === "Outside Radius" ? " (Check-out Outside Radius)" : ""}`,
     }));
 
-    const today = new Date().toISOString().split("T")[0];
     const updatedHistory = attendanceHistory.map((record) =>
-      record.date === today
+      record.id === response.id
         ? {
             ...record,
-            checkOut: checkOutTime,
-            checkOutLocation: `${currentLocationCheckOut} - ${locationStatus}`,
-            selfieCheckOut: selfiePreviewCheckOut,
-            status: "pending",
-            approvalStatus: "pending",
-            locationStatus: record.locationStatus || locationStatus,
+            checkOut: response.checkOutTime,
+            checkOutLocation: response.checkOutLocation,
+            selfieCheckOut: response.selfieCheckout,
+            status: response.status,
+            approvalStatus: response.approvalStatus,
+            locationStatus: response.locationStatus,
           }
         : record
     );
@@ -1507,14 +1518,15 @@ export default function Operator() {
 
     updateDashboardData();
 
-    alert(`Check-out berhasil!${locationStatus === "Outside Radius" ? " (Outside Radius Warning)" : ""} Menunggu approval admin.`);
+    alert(`Check-out berhasil! Jarak ke site: ${response.locationStatus}. Menunggu approval admin.`);
+    setLoading(false)
   };
 
   const getStatusColor = (status) => {
-    if (status.includes("On Time")) return "text-green-600 bg-green-100";
-    if (status.includes("Late")) return "text-red-600 bg-red-100";
+    if (status.includes("ontime")) return "text-green-600 bg-green-100";
+    if (status.includes("late")) return "text-red-600 bg-red-100";
     if (status.includes("Outside Radius")) return "text-orange-600 bg-orange-100";
-    if (status === "Approved") return "text-green-600 bg-green-100";
+    if (status === "approved") return "text-green-600 bg-green-100";
     if (status === "pending") return "text-yellow-600 bg-yellow-100";
     return "text-gray-600 bg-gray-100";
   };
@@ -1527,7 +1539,7 @@ export default function Operator() {
   };
 
   // ==================== HELP DESK FUNCTIONS ====================
-  const handleCreateTicket = () => {
+  const handleCreateTicket = async () => {
     const errors = {};
     if (!newTicket.title.trim()) errors.title = "Judul masalah harus diisi";
     if (!newTicket.description.trim())
@@ -1538,19 +1550,13 @@ export default function Operator() {
       return;
     }
 
-    const ticket = {
-      id: Date.now(),
-      ticketNumber: `TKT-${Date.now().toString().slice(-6)}`,
-      title: newTicket.title,
-      priority: newTicket.priority,
-      status: "Open",
-      assignee: user.name,
-      site: newTicket.site,
-      description: newTicket.description,
-      createdAt: new Date().toISOString().split("T")[0],
-      category: newTicket.category,
-      resolvedAt: null,
-    };
+    setLoading (true)
+    const ticket = await createTicket(newTicket)
+
+    if(!ticket){
+      setLoading(false)
+      return;
+    }
 
     setTickets((prev) => [ticket, ...prev]);
     setNewTicket({
@@ -1565,7 +1571,8 @@ export default function Operator() {
 
     updateDashboardData();
 
-    alert(`Tiket bantuan berhasil diajukan! Nomor tiket: ${ticket.ticketNumber}`);
+    alert(`Tiket bantuan berhasil diajukan! Nomor tiket: ${ticket.id}`);
+    setLoading(false)
   };
 
   useEffect(() => {
@@ -1619,30 +1626,26 @@ export default function Operator() {
   const priorityOptions = ["Semua Prioritas", "High", "Medium", "Low"];
 
   // ==================== FUNGSI LIHAT SHIFT ====================
-  const handleSubmitLibur = () => {
+  const handleSubmitLibur = async () => {
     if (!liburForm.startDate || !liburForm.reason) {
       alert("Tanggal dan alasan harus diisi");
       return;
     }
 
-    const newSubmission = {
-      id: Date.now(),
-      type: "libur",
-      date: new Date().toISOString().split("T")[0],
-      startDate: liburForm.startDate,
-      endDate: liburForm.endDate,
-      reason: liburForm.reason,
-      status: "pending",
-      submittedAt: new Date().toLocaleString("id-ID", {
-        year: 'numeric',
-        month: 'numeric',
-        day: 'numeric',
-        hour: '2-digit',
-        minute: '2-digit'
-      }),
-    };
+    setLoading(true)
 
-    setSubmissionHistory((prev) => [newSubmission, ...prev]);
+    const result = await createOperatorLibur({
+      start: liburForm.startDate,
+      end: liburForm.endDate,
+      reason: liburForm.reason,
+    });
+
+    if(!result){
+      setLoading(false)
+      return
+    }
+
+    setSubmissionHistory((prev) => [result, ...prev]);
     
     alert(`Pengajuan libur berhasil dikirim!\nTanggal: ${liburForm.startDate}${liburForm.endDate ? ` - ${liburForm.endDate}` : ''}\nAlasan: ${liburForm.reason}`);
     
@@ -1660,32 +1663,29 @@ export default function Operator() {
       },
       ...prev,
     ]);
+    setLoading(false)
   };
 
-  const handleSubmitIzin = () => {
+  const handleSubmitIzin = async () => {
     if (!izinForm.startDate || !izinForm.reason) {
       alert("Tanggal dan alasan harus diisi");
       return;
     }
 
-    const newSubmission = {
-      id: Date.now(),
-      type: "izin",
-      date: new Date().toISOString().split("T")[0],
-      startDate: izinForm.startDate,
-      endDate: izinForm.endDate,
-      reason: izinForm.reason,
-      status: "pending",
-      submittedAt: new Date().toLocaleString("id-ID", {
-        year: 'numeric',
-        month: 'numeric',
-        day: 'numeric',
-        hour: '2-digit',
-        minute: '2-digit'
-      }),
-    };
+    setLoading(true)
 
-    setSubmissionHistory((prev) => [newSubmission, ...prev]);
+    const result = await createOperatorIjin({
+      start: izinForm.startDate,
+      end: izinForm.endDate,
+      reason: izinForm.reason,
+    });
+
+    if(!result){
+      setLoading(false)
+      return
+    }
+
+    setSubmissionHistory((prev) => [result, ...prev]);
     
     alert(`Pengajuan izin berhasil dikirim!\nTanggal: ${izinForm.startDate}${izinForm.endDate ? ` - ${izinForm.endDate}` : ''}\nAlasan: ${izinForm.reason}`);
     
@@ -1703,6 +1703,8 @@ export default function Operator() {
       },
       ...prev,
     ]);
+
+    setLoading(false)
   };
 
   const getSubmissionStatusColor = (status) => {
@@ -1760,22 +1762,20 @@ export default function Operator() {
             {
               label: "Reports Submitted",
               value: dashboardData.reportsSubmitted,
-              percent: dashboardData.reportsSubmittedChange,
               icon: DocumentChartBarIcon,
             },
             {
               label: "Attendance Rate",
               value: dashboardData.attendanceRate,
-              percent: dashboardData.attendanceRateChange,
               icon: ChartBarIcon,
             },
             {
               label: "Next Shift",
-              value: "Tomorrow",
-              subValue: "08:00",
+              value: dashboardData.nextShift,
+              subValue: dashboardData.nextShiftTime,
               icon: ClockIcon,
             },
-            { label: "Current Site", value: user.site, icon: MapPinIcon },
+            { label: "Current Site", value: dashboardData.currentSite, icon: MapPinIcon },
           ].map((item, i) => {
             const Icon = item.icon;
             return (
@@ -1801,17 +1801,6 @@ export default function Operator() {
                     </p>
                   )}
                 </div>
-                {item.percent && (
-                  <p
-                    className={`text-xs font-medium mt-1 ${
-                      item.percent.startsWith("+")
-                        ? "text-green-600"
-                        : "text-red-600"
-                    }`}
-                  >
-                    {item.percent} vs last month
-                  </p>
-                )}
               </div>
             );
           })}
@@ -1819,7 +1808,7 @@ export default function Operator() {
 
         <div className="mb-6">
           <h3 className="text-lg font-bold text-gray-900 mb-4">
-            Today's Latest Readings
+            Site Latest Report
           </h3>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
             {[
@@ -1896,6 +1885,9 @@ export default function Operator() {
           </div>
         </div>
 
+        <h3 className="text-lg font-bold text-gray-900 mb-4">
+          Your Recent Report
+        </h3>
         <div className="mb-6 grid grid-cols-1 lg:grid-cols-2 gap-6">
           {/* pH Level Chart */}
           <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-200">
@@ -2106,7 +2098,7 @@ export default function Operator() {
                       Daily report submitted
                     </p>
                     <p className="text-sm text-gray-600">
-                      {new Date(report.timestamp).toLocaleTimeString()}
+                      {new Date(report.date).toLocaleTimeString()}
                     </p>
                   </div>
                   <div className="flex items-center gap-2">
@@ -2131,8 +2123,8 @@ export default function Operator() {
 
   const renderLihatProfil = () => {
     // Hitung statistik berdasarkan data aktual
-    const totalReports = reports.filter(r => r.status === "Submitted").length;
-    const attendanceRate = calculateAttendanceRate();
+    const totalReports = reports.filter(r => r.status === "pending").length;
+    //const attendanceRate = calculateAttendanceRate();
     const activeTickets = tickets.filter(t => t.status === 'Open').length;
     
     // Hitung performa bulan ini
@@ -2144,6 +2136,7 @@ export default function Operator() {
              reportDate.getFullYear() === currentYear;
     }).length;
 
+    const {attendanceRate} = dashboardData
     return (
       <div className="px-4 sm:px-6 lg:px-6 py-6 max-w-screen-2xl mx-auto bg-gradient-to-br from-gray-50 to-blue-50 min-h-screen">
         <div className="mb-6">
@@ -2264,12 +2257,12 @@ export default function Operator() {
                     </div>
                     <div className="bg-green-50 p-4 rounded-lg border border-green-100">
                       <p className="text-sm text-gray-600">Rate Kehadiran</p>
-                      <p className="text-2xl font-bold text-gray-900">{attendanceRate.rate}</p>
+                      <p className="text-2xl font-bold text-gray-900">{attendanceRate}</p>
                       <p className="text-xs text-gray-500 mt-1">30 hari terakhir</p>
                     </div>
                     <div className="bg-yellow-50 p-4 rounded-lg border border-yellow-100">
                       <p className="text-sm text-gray-600">Shift</p>
-                      <p className="text-2xl font-bold text-gray-900">{user.shift.split(" ")[1]}</p>
+                      <p className="text-2xl font-bold text-gray-900">{(user.shift ? user.shift : "-")}</p>
                       <p className="text-xs text-gray-500 mt-1">Jadwal reguler</p>
                     </div>
                     <div className="bg-purple-50 p-4 rounded-lg border border-purple-100">
@@ -2317,9 +2310,6 @@ export default function Operator() {
         <div className="p-6">
           <div className="flex justify-between items-center mb-6">
             <h3 className="font-semibold text-lg text-gray-800">Jadwal Shift Mendatang</h3>
-            <div className="text-sm text-gray-600">
-              {shiftData.filter(s => s.status === 'Scheduled').length} shift terjadwal
-            </div>
           </div>
           
           {shiftData.length === 0 ? (
@@ -2357,7 +2347,7 @@ export default function Operator() {
                         </div>
                       </div>
                     </div>
-                    <div className="flex flex-col md:items-end gap-2">
+                    {/*<div className="flex flex-col md:items-end gap-2">
                       <span className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-medium ${
                         shift.status === 'Scheduled' ? 'bg-green-100 text-green-800' : 
                         shift.status === 'Cancelled' ? 'bg-red-100 text-red-800' : 
@@ -2367,7 +2357,7 @@ export default function Operator() {
                          shift.status === 'Cancelled' ? '✗ Dibatalkan' : 
                          shift.status}
                       </span>
-                    </div>
+                    </div>*/}
                   </div>
                 </div>
               ))}
@@ -2639,13 +2629,6 @@ export default function Operator() {
                     appearance: 'none'
                   }}
                 />
-                <button
-                  type="button"
-                  onClick={handleDateIconClick}
-                  className="absolute right-3 top-1/2 transform -translate-y-1/2 p-2 hover:bg-gray-100 rounded transition-colors"
-                >
-                  <CalendarDaysIcon className="w-5 h-5 text-gray-600" />
-                </button>
               </div>
               {errors.date && (
                 <p className="text-red-500 text-sm mt-1 flex items-center gap-1">
@@ -2675,13 +2658,6 @@ export default function Operator() {
                     appearance: 'none'
                   }}
                 />
-                <button
-                  type="button"
-                  onClick={handleTimeIconClick}
-                  className="absolute right-3 top-1/2 transform -translate-y-1/2 p-2 hover:bg-gray-100 rounded transition-colors"
-                >
-                  <ClockIcon className="w-5 h-5 text-gray-600" />
-                </button>
               </div>
               {errors.time && (
                 <p className="text-red-500 text-sm mt-1 flex items-center gap-1">
@@ -2891,7 +2867,11 @@ export default function Operator() {
           <input
             type="file"
             ref={fileInputRef}
-            onChange={handleFileUpload}
+            onChange={(e) => {
+              const files = Array.from(e.target.files);
+              handleInputChange("images", files);
+              handleFileUpload(e); 
+            }}
             className="hidden"
             multiple
             accept="image/*"
@@ -2988,12 +2968,12 @@ export default function Operator() {
                 Batal Edit
               </button>
             )}
-            <button
+            {/*<button
               onClick={handleSaveDraft}
               className="w-full sm:w-auto px-8 py-3 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors font-medium"
             >
               Save as Draft
-            </button>
+            </button>*/}
             <button
               onClick={handleSubmitReport}
               disabled={isSubmitting}
@@ -3036,11 +3016,11 @@ export default function Operator() {
                 />
                 <MagnifyingGlassIcon className="w-5 h-5 text-gray-400 absolute left-3 top-1/2 transform -translate-y-1/2" />
               </div>
-              <select className="px-4 py-2 border text-gray-800 bg-white border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+              {/*<select className="px-4 py-2 border text-gray-800 bg-white border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
                 <option>Semua Status</option>
                 <option>Submitted</option>
                 <option>Draft</option>
-              </select>
+              </select>*/}
               <button
                 onClick={handleExportReports}
                 className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors flex items-center gap-2"
@@ -3426,7 +3406,7 @@ export default function Operator() {
                         <span>{record.checkIn}</span>
                         <span
                           className={`block text-xs mt-1 ${
-                            record.checkInStatus === "On Time"
+                            record.checkInStatus === "ontime"
                               ? "text-green-600"
                               : "text-red-600"
                           }`}
@@ -3672,8 +3652,8 @@ export default function Operator() {
               onChange={(e) => setEditPresenceForm({...editPresenceForm, checkInStatus: e.target.value})}
               className="w-full p-3 border border-gray-200 bg-white rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-900"
             >
-              <option value="On Time">On Time</option>
-              <option value="Late">Late</option>
+              <option value="ontime">ontime</option>
+              <option value="late">Late</option>
             </select>
           </div>
           
@@ -3747,43 +3727,11 @@ export default function Operator() {
       <div className="bg-white rounded-xl w-full max-w-md max-h-[90vh] overflow-y-auto">
         <div className="p-6 border-b border-gray-200">
           <h2 className="text-xl font-bold text-gray-900">Check In</h2>
-          <p className="text-gray-600 mt-1">Complete both steps to check in</p>
+          <p className="text-gray-600 mt-1">Upload photo to check in</p>
         </div>
         <div className="p-6 space-y-6">
           <div>
-            <h3 className="font-medium text-gray-900 mb-3">
-              1. Capture Location
-            </h3>
-            <button
-              onClick={() => getCurrentLocation(false)}
-              className={`w-full flex items-center gap-3 p-4 border rounded-lg ${
-                locationCaptured
-                  ? "border-green-500 bg-green-50 text-green-700"
-                  : "border-gray-300 bg-white text-gray-700 hover:bg-gray-50"
-              }`}
-            >
-              <MapPinIcon className="w-5 h-5" />
-              <div className="text-left flex-1">
-                <span className="block">
-                  {locationCaptured
-                    ? "Location Captured"
-                    : "Get Current Location"}
-                </span>
-                <span className="block text-xs mt-1 text-gray-500">
-                  {currentLocation}
-                </span>
-              </div>
-              {locationCaptured && (
-                <CheckCircleIcon className="w-5 h-5 ml-auto" />
-              )}
-            </button>
-            <p className="text-xs text-gray-500 mt-2">
-              Note: You can still check in even if outside allowed radius, but a warning will be recorded.
-            </p>
-          </div>
-
-          <div>
-            <h3 className="font-medium text-gray-900 mb-3">2. Upload Selfie</h3>
+            <h3 className="font-medium text-gray-900 mb-3">Upload Selfie</h3>
             {isCameraActive && (
               <div className="mb-4">
                 <div className="relative bg-black rounded-lg overflow-hidden">
@@ -3864,11 +3812,11 @@ export default function Operator() {
           </button>
           <button
             onClick={handleConfirmCheckIn}
-            disabled={!selfieUploaded}
+            disabled={!selfieUploaded || loading}
             className="flex-1 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:bg-gray-300 disabled:cursor-not-allowed flex items-center justify-center gap-2"
           >
             <CheckCircleIcon className="w-5 h-5" />
-            Confirm Check-In
+            Check-In
           </button>
         </div>
       </div>
@@ -3880,43 +3828,12 @@ export default function Operator() {
       <div className="bg-white rounded-xl w-full max-w-md max-h-[90vh] overflow-y-auto">
         <div className="p-6 border-b border-gray-200">
           <h2 className="text-xl font-bold text-gray-900">Check Out</h2>
-          <p className="text-gray-600 mt-1">Complete both steps to check out</p>
+          <p className="text-gray-600 mt-1">Upload photo to check out</p>
         </div>
         <div className="p-6 space-y-6">
-          <div>
-            <h3 className="font-medium text-gray-900 mb-3">
-              1. Capture Location
-            </h3>
-            <button
-              onClick={() => getCurrentLocation(true)}
-              className={`w-full flex items-center gap-3 p-4 border rounded-lg ${
-                locationCapturedCheckOut
-                  ? "border-green-500 bg-green-50 text-green-700"
-                  : "border-gray-300 bg-white text-gray-700 hover:bg-gray-50"
-              }`}
-            >
-              <MapPinIcon className="w-5 h-5" />
-              <div className="text-left flex-1">
-                <span className="block">
-                  {locationCapturedCheckOut
-                    ? "Location Captured"
-                    : "Get Current Location"}
-                </span>
-                <span className="block text-xs mt-1 text-gray-500">
-                  {currentLocationCheckOut}
-                </span>
-              </div>
-              {locationCapturedCheckOut && (
-                <CheckCircleIcon className="w-5 h-5 ml-auto" />
-              )}
-            </button>
-            <p className="text-xs text-gray-500 mt-2">
-              Note: You can still check out even if outside allowed radius, but a warning will be recorded.
-            </p>
-          </div>
 
           <div>
-            <h3 className="font-medium text-gray-900 mb-3">2. Upload Selfie</h3>
+            <h3 className="font-medium text-gray-900 mb-3">Upload Selfie</h3>
             {isCameraActiveCheckOut && (
               <div className="mb-4">
                 <div className="relative bg-black rounded-lg overflow-hidden">
@@ -3997,7 +3914,7 @@ export default function Operator() {
           </button>
           <button
             onClick={handleConfirmCheckOut}
-            disabled={!selfieUploadedCheckOut}
+            disabled={!selfieUploadedCheckOut || loading}
             className="flex-1 px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 disabled:bg-gray-300 disabled:cursor-not-allowed flex items-center justify-center gap-2"
           >
             <CheckCircleIcon className="w-5 h-5" />
@@ -4074,7 +3991,7 @@ export default function Operator() {
                 <p className="text-sm text-gray-600">Status</p>
                 <p
                   className={`font-medium ${
-                    selectedAttendance?.checkInStatus === "On Time"
+                    selectedAttendance?.checkInStatus === "ontime"
                       ? "text-green-600"
                       : "text-red-600"
                   }`}
@@ -4408,11 +4325,12 @@ export default function Operator() {
               }
               className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-900 bg-white"
             >
-              <option>IPAL Jakarta Pusat</option>
-              <option>IPAL Jakarta Utara</option>
-              <option>IPAL Jakarta Selatan</option>
-              <option>IPAL Jakarta Barat</option>
-              <option>IPAL Jakarta Timur</option>
+                    <option value="">Select Site</option>
+                    {siteOptions.map((site) => (
+                      <option key={site} value={site}>
+                        {site}
+                      </option>
+                    ))}
             </select>
           </div>
           <div>
@@ -4528,7 +4446,10 @@ export default function Operator() {
           </button>
           <button
             onClick={handleCreateTicket}
-            className="flex-1 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 flex items-center justify-center gap-2"
+            disabled={loading}
+            className={`flex-1 px-4 py-2  text-white rounded-lg  flex items-center justify-center gap-2
+              ${loading? "bg-gray-100 border-gray-300 cursor-not-allowed":"hover:bg-blue-700 bg-blue-600"}
+              `}
           >
             <PlusIcon className="w-5 h-5" />
             Ajukan Tiket
@@ -4657,40 +4578,24 @@ export default function Operator() {
             </div>
           </div>
 
-          {selectedReport?.uploadedFiles &&
-            selectedReport.uploadedFiles.length > 0 && (
+          {selectedReport?.images &&
+            selectedReport.images.length > 0 && (
               <div>
                 <h3 className="font-semibold text-lg text-gray-800 mb-3">
                   Foto Pendukung
                 </h3>
                 <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-                  {selectedReport.uploadedFiles.map((file, index) => (
+                  {selectedReport.images.map((image, index) => (
                     <div key={index} className="relative group">
-                      {file.type?.startsWith("image/") ? (
-                        <div
-                          className="cursor-pointer transform transition-transform hover:scale-105"
-                          onClick={() => openImageModal(file)}
+                        <button
+                          key={index}
+                          onClick={() => openAttachment(image)}
+                          className="bg-blue-50 border border-blue-200 rounded-lg px-3 py-2 hover:bg-blue-100 transition flex items-center gap-2"
                         >
-                          <img
-                            src={URL.createObjectURL(file)}
-                            alt={`Preview ${index + 1}`}
-                            className="w-full h-32 object-cover rounded-lg border border-gray-300 shadow-sm"
-                          />
-                          <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-20 transition-all rounded-lg flex items-center justify-center">
-                            <EyeIcon className="w-8 h-8 text-white opacity-0 group-hover:opacity-100 transition-opacity" />
-                          </div>
-                        </div>
-                      ) : (
-                        <div className="bg-gray-50 p-3 rounded-lg text-center border border-gray-300">
-                          <DocumentTextIcon className="w-8 h-8 text-gray-400 mx-auto mb-2" />
-                          <p className="text-sm text-gray-600 truncate">
-                            {file.name}
-                          </p>
-                        </div>
-                      )}
-                      <p className="text-xs text-gray-500 mt-1 truncate">
-                        {file.name}
-                      </p>
+                          <PhotoIcon className="w-4 h-4 text-blue-600" />
+                          <p className="text-sm text-blue-700">{`${image.substring(0,10)}...`}</p>
+                        </button>
+
                     </div>
                   ))}
                 </div>
@@ -4784,7 +4689,11 @@ export default function Operator() {
           </button>
           <button
             onClick={handleSubmitLibur}
-            className="flex-1 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+            disabled={loading}
+            className={`flex-1 px-4 py-2  text-white rounded-lg
+              ${!loading ? "bg-blue-600 hover:bg-blue-700"
+            :
+            "bg-gray-100 border-gray-300 cursor-not-allowed"}`}
           >
             Ajukan Libur
           </button>
@@ -4845,7 +4754,10 @@ export default function Operator() {
           </button>
           <button
             onClick={handleSubmitIzin}
-            className="flex-1 px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700"
+            disabled={loading}
+            className={`flex-1 px-4 py-2 text-white rounded-lg
+              ${!loading ? 'bg-green-600 hover:bg-green-700': "bg-gray-100 border-gray-300 cursor-not-allowed"}
+              `}
           >
             Ajukan Izin
           </button>

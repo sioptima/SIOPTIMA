@@ -8,7 +8,7 @@ export class ReportValidation {
     static CREATE = z.object({
         volt: z.coerce.number(),
         tds: z.coerce.number(),
-        phLevel: z.coerce.number(),
+        pHLevel: z.coerce.number(),
         flowRate: z.coerce.number(),
         ec: z.coerce.number(),
         time: z.string().time(),

@@ -22,4 +22,14 @@ export class ShiftValidation {
         date: z.string().date()
     })
 
+    static GET = z.object({
+        page: z.coerce.number("Invalid parameter").int(),
+        size: z.coerce.number("Invalid parameter").int()
+    })
+
+    static GETALL = z.object({
+        page: z.coerce.number("Invalid parameter").int(),
+        size: z.coerce.number("Invalid parameter").int()
+    })
+
 }

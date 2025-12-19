@@ -15,10 +15,14 @@ export class LiburService {
 
         return {
             id: libur.id,
-            start: libur.liburDate,
-            end: libur.liburEnd || "-",
+            type: "libur",
+            date: libur.liburDate.toLocaleDateString(),
+            startDate: libur.liburDate,
+            endDate: libur.liburEnd || "-",
             reason: libur.reason,
             user: libur.user.username,
+            status: libur.reason,
+            submittedAt: libur.createdAt.toLocaleString(),
         }
     }
 
@@ -30,12 +34,16 @@ export class LiburService {
         const query = await LiburRepository.getMine(validatedParam, user.userId)
         if(query.count === 0){throw new ResponseError(200, "No request for day off yet")}
 
-        const result = query.records.map(r => ({
-            id: r.id,
-            start: r.liburDate,
-            end: r.liburEnd,
-            status: r.liburStatus,
-            reason: r.reason
+        const result = query.records.map(libur => ({
+            id: libur.id,
+            type: "libur",
+            date: libur.liburDate.toLocaleDateString(),
+            startDate: libur.liburDate.toLocaleDateString(),
+            endDate: libur.liburEnd.toLocaleDateString() || "-",
+            reason: libur.reason,
+            user: libur.user.username,
+            status: libur.reason,
+            submittedAt: libur.createdAt.toLocaleString(),
         }))
 
         return {
@@ -80,6 +88,49 @@ export class LiburService {
                 size: validatedParam.size,
                 total: query.count,
                 total_page: Math.ceil(query.count / validatedParam.size),
+                current_page: validatedParam.page,
+            }
+        }
+    }
+
+    static async getIjinLibur(request){
+        const validatedParam = LiburValidation.GETMANY.parse(request)
+
+        const query = await LiburRepository.getIjinLibur(validatedParam)
+        if(query.count === 0){throw new ResponseError(200, "No request for day off yet")}
+
+        const liburData = query.libur.map(r => ({
+            id: `l-${r.id}`,
+            actualId: r.id,
+            operatorId: r.userId,
+            operator: r.user.profile?.name || r.user.username,
+            type: "libur",
+            startDate: r.liburDate.toISOString().split('T')[0],
+            end: r.liburEnd?.toISOString().split('T')[0] || 0,
+            status: r.liburStatus.toLowerCase(),
+            reason: r.reason,
+            submittedDate: r.createdAt.toISOString()
+        }))
+
+        const ijinData = query.ijin.map(r => ({
+            id: `i-${r.id}`,
+            actualId: r.id,
+            operatorId: r.userId,
+            operator: r.user.profile?.name || r.user.username,
+            type: "izin",
+            startDate: r.ijinDate.toISOString().split('T')[0],
+            end: r.ijinEnd?.toISOString().split('T')[0] || 0,
+            status: r.ijinStatus.toLowerCase(),
+            reason: r.reason,
+            submittedDate: r.createdAt.toISOString()
+        }))
+
+        return {
+            result : [...ijinData, ...liburData],  
+            paging: {
+                size: validatedParam.size,
+                total: query.ijinCount + query.liburCount,
+                total_page: Math.ceil((query.ijinCount + query.liburCount) / validatedParam.size),
                 current_page: validatedParam.page,
             }
         }

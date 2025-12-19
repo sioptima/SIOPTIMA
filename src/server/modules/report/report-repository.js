@@ -1,6 +1,5 @@
 import { ResponseError } from "@/src/lib/response-error.js";
 import PrismaClient from "../../db/db.js"
-import { daysOfWeek } from "../../utils/helper.js";
 
 export class ReportRepository {
 
@@ -49,10 +48,14 @@ export class ReportRepository {
                 data: {
                     fotoSampel: data.imageLink
                 },
-                select: {
-                    id: true,
-                    laporanDate: true,
-                    laporanStatus: true,
+                include: {
+                    user: {
+                        select: {
+                            profile: {
+                                select: {name: true,}
+                            }
+                        }
+                    }
                 }
             })
         } catch (error) {
@@ -60,19 +63,20 @@ export class ReportRepository {
         }
     }
 
-    static async findAll(data){
+    static async findMonthly(data){
         try {
             const skip = (data.page - 1) * data.size;
             
+            const date = new Date()
+            const startOfMonth = new Date(date.getFullYear(), date.getMonth());
+            const endOfMonth = new Date(date.getFullYear(), date.getMonth() + 1);
+
             const [reports, count] = await PrismaClient.$transaction([
-                PrismaClient.laporan.findMany({  
-                    select:{
-                        id: true,
-                        laporanDate: true,
-                        siteName: true,
-                        pH: true,
-                        flowRate: true,
-                        laporanStatus: true,
+                PrismaClient.laporan.findMany({
+                    where:{
+                        laporanDate: {gte: startOfMonth, lt: endOfMonth}
+                    },
+                    include:{
                         user: {
                             select: {
                                 username: true,
@@ -85,18 +89,18 @@ export class ReportRepository {
                         }
                     },
                     orderBy: {
-                            createdAt: 'desc',
+                        laporanDate: 'desc',
                     },
                     take: data.size,
                     skip: skip
                 }),
-                PrismaClient.laporan.count()
+                PrismaClient.laporan.count({})
             ])
             
             return {result: reports, count: count};
             
         } catch (error) {
-            throw new ResponseError(500, "Failed when querying in database")
+            throw new ResponseError(500, "Failed when trying to fetch weekly report")
         }
     }
 
@@ -130,7 +134,7 @@ export class ReportRepository {
             return {result: reports, count: count};
             
         } catch (error) {
-            throw new ResponseError(500, error.message)
+            throw new ResponseError(500, "Failed when trying to fetch report in database")
         }
     }
 
@@ -191,7 +195,18 @@ export class ReportRepository {
                 where:{
                     laporanDate: {gte:startOfDay, lt: endOfDay}
                 },
-                take: 10,
+                include:{
+                    user: {
+                        select: {
+                            username: true,
+                            profile: {
+                                select: {
+                                    name: true
+                                }
+                            }
+                        }
+                    }
+                },
                 orderBy: {
                     laporanDate: 'desc'
                 }

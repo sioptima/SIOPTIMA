@@ -11,14 +11,18 @@ export class IjinService {
 
         const validatedReq = IzinValidation.CREATE.parse(request);
 
-        const izin = await IzinRepository.create(validatedReq, user.userId);
+        const ijin = await IzinRepository.create(validatedReq, user.userId);
 
         return {
-            id: izin.id,
-            start: izin.ijinDate,
-            end: izin.ijinEnd || "-",
-            reason: izin.reason,
-            user: izin.user.username,
+            id: ijin.id,
+            type: "ijin",
+            date: ijin.ijinDate.toLocaleDateString(),
+            startDate: ijin.ijinDate,
+            endDate: ijin.ijinEnd || "-",
+            reason: ijin.reason,
+            user: ijin.user.username,
+            status: ijin.reason,
+            submittedAt: ijin.createdAt.toLocaleString(),
         }
     }
 
@@ -30,12 +34,16 @@ export class IjinService {
         const query = await IzinRepository.getMine(validatedParam, user.userId)
         if(query.count === 0){throw new ResponseError(200, "No request for day off yet")}
 
-        const result = query.records.map(r => ({
-            id: r.id,
-            start: r.ijinDate,
-            end: r.ijinEnd,
-            status: r.ijinStatus,
-            reason: r.reason
+        const result = query.records.map(ijin => ({
+            id: ijin.id,
+            type: "ijin",
+            date: ijin.ijinDate.toLocaleDateString(),
+            startDate: ijin.ijinDate.toLocaleDateString(),
+            endDate: ijin.ijinEnd.toLocaleDateString() || "-",
+            reason: ijin.reason,
+            user: ijin.user.username,
+            status: ijin.reason,
+            submittedAt: ijin.createdAt.toLocaleString(),
         }))
 
         return {

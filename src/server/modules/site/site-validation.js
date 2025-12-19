@@ -10,6 +10,8 @@ export class SiteValidation {
         latitude: z.coerce.number("Invalid latitude"),
         longitude: z.coerce.number("Invalid longitude"),
         capacity: z.coerce.number().int().optional(),
+        status: z.coerce.string().toUpperCase().
+                pipe(z.enum(["ACTIVE", "MAINTENANCE", "INACTIVE"])).optional()
     })
     
     static GET = z.object({

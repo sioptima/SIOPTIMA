@@ -53,9 +53,9 @@ export class UserService {
             name: (newUser.profile?.name) ? newUser.profile.name : "-",
             email: (newUser.profile?.email) ? newUser.profile.email : "-",
             role: newUser.role.name,
-            site: (newUser.sites.length !== 0) ? newUser.sites[0].name : "-",
+            site: (!!newUser.sites.length) ? newUser.sites[0].name : "-",
             status: newUser.status,
-            lastActive: (newUser.activity.length !== 0) ? timeSince(newUser.activity[0].createdAt) : "-",
+            lastActive: (newUser.activity.length) ? timeSince(newUser.activity[0].createdAt) : "-",
             initial: (newUser.profile?.name) ? newUser.profile.name.slice(0,1).toUpperCase() : newUser.username.slice(0,1).toUpperCase(),
         }
 
@@ -102,9 +102,10 @@ export class UserService {
         let users; //if role not specified then take all
         if (!queryData.roleName){
             users = await UserRepository.findAll(queryData);
+        } else {
+            users = await UserRepository.findByRole(queryData)
         }
 
-        users = await UserRepository.findByRole(queryData)
         if (!users) {
             throw new ResponseError (200, "No user found")
         }
@@ -113,12 +114,12 @@ export class UserService {
         const usersTransform = users.users.map(user => ({
             id: user.id,
             username: user.username,
-            name: (user.profile?.name) ? user.profile.name : "-",
+            name: (user.profile?.name) ? user.profile.name : user.username,
             email: (user.profile?.email) ? user.profile.email : "-",
-            role: user.role.name,
-            site: (user.sites.length !== 0) ? user.sites : "-",
-            status: (user.status) ? user.status : "-",
-            lastActive: (user.activity.length !== 0) ? timeSince(user.activity[0].createdAt) : "-",
+            role: user.role.name.toLowerCase(),
+            site: (!!user.sites.length) ? `${user.sites[0].name}` : "-", //frontend cannot handle array yet so just send a string; or map array to a string..
+            status: (user.status) ? user.status.toLowerCase() : "-",
+            lastActive: (!!user.activity.length) ? timeSince(user.activity[0].createdAt) : "-",
             initial: (user.profile?.name) ? user.profile.name.slice(0,1).toUpperCase() : user.username.slice(0,1).toUpperCase(),
             createdAt: user.createdAt,
             updatedAt: user.updatedAt,
@@ -126,7 +127,13 @@ export class UserService {
         )
 
         return {
-            data: usersTransform,
+            data: {
+                usersTransform,
+                totalUsers: users.total || "-",
+                operatorsCount: users.operatorCount || "-",
+                hrdsCount: users.hrdCount || "-",
+                adminsCount: users.adminCount || "-"
+            },
             paging: {
                 size: size,
                 total_page: Math.ceil(users.total / size),
@@ -134,6 +141,59 @@ export class UserService {
                 total: users.total
             }
         }
+    }
+
+    static async getAllForHrDashboard(page, size, roleName) {
+        const queryData = { page, size, roleName }
+        const getRequest = UserValidation.GET.parse(queryData);
+        if(!getRequest){
+            throw new ResponseError(400, "Invalid request data");
+        }
+
+        let users; //if role not specified then take all
+        if (!queryData.roleName){
+            users = await UserRepository.findAll(queryData);
+        } else {
+            users = await UserRepository.findByRole(queryData)
+        }
+
+        if (!users) {
+            throw new ResponseError (200, "No user found")
+        }
+
+        //format result
+        const usersTransform = users.users.map(user => ({
+            id: user.id,
+            name: user.profile?.name || user.username,
+            employeeId: user.id,
+            position: user.role.name,
+            joinDate: user.createdAt,
+            status: user.status.toLowerCase(),
+            contact: user.profile?.phone || "-",
+        })
+        )
+
+        return {
+            data: {
+                usersTransform,
+                totalUsers: users.total || "-",
+                operatorsCount: users.operatorCount || "-",
+                hrdsCount: users.hrdCount || "-",
+                adminsCount: users.adminCount || "-"
+            },
+            paging: {
+                size: size,
+                total_page: Math.ceil(users.total / size),
+                current_page: page,
+                total: users.total
+            }
+        }
+    }
+
+    static async getCount() {
+        const users = await UserRepository.getCount();
+
+        return users;
     }
 
     static async update(request){
@@ -174,16 +234,12 @@ export class UserService {
             role: (role.name) ? role.name : "-",
             site: (sites.length !== 0) ? sites[0].name : "-",
             status: (updatedUser.status) ? updatedUser.status : "-",
-            lastActive: (updatedUser.activity.length !== 0) ? timeSince(updatedUser.activity[0].createdAt) : "-",
+            lastActive: (!!updatedUser.activity.length) ? timeSince(updatedUser.activity[0].createdAt) : "-",
             initial: (profile?.name) ? profile.name.slice(0,1).toUpperCase() : updatedUser.username.slice(0,1).toUpperCase()
         };
 
         if(!site && validatedRequest.data.site){
             throw new ResponseError(200, "User updated but failed to update site information as it does not exist", true, result)
-        };
-
-        if(!image && validatedRequest.data.image){
-            throw new ResponseError(200, "User updated but failed to upload image", true, result)
         };
 
         return result;
@@ -236,7 +292,7 @@ export class UserService {
     }
 
     static async getById(parameter) {
-        const test = await getUser()
+
         //validate parameter
         const validatedParam = UserValidation.GETBYID.parse(parameter)
 
@@ -252,12 +308,41 @@ export class UserService {
             name: (user.profile?.name) ? user.profile.name : "-",
             email: (user.profile?.email) ? user.profile.email : "-",
             role: user.role.name,
-            site: (user.sites.length !== 0) ? user.sites : "-",
+            site: (!!user.sites?.length) ? user.sites[0] : "-", //frontend cannot handle array yet so just send a string
             status: (user.status) ? user.status : "-",
-            lastActive: (user.activity.length !== 0) ? timeSince(user.activity[0].createdAt) : "-",
+            lastActive: (!!user.activity?.length) ? timeSince(user.activity[0].createdAt) : "-",
             initial: (user.profile?.name) ? user.profile.name.slice(0,1).toUpperCase() : user.username.slice(0,1).toUpperCase(),
             createdAt: user.createdAt,
             updatedAt: user.updatedAt,
+        }
+
+        return transformUser
+    }
+
+    static async whoAmI() {
+        const current = await getUser()
+
+        //find userr
+        const user = await UserRepository.whoAmI({userId: current.userId})
+        if (!user){
+            throw new ResponseError(200, "User does not exist")
+        }
+
+        const transformUser= {
+            id: user.id,
+            employeeId: user.id,
+            username: user.username,
+            name: (user.profile?.name) ? user.profile.name : user.username,
+            email: (user.profile?.email) ? user.profile.email : "-",
+            role: user.role.name,
+            site: (user.shift.length !== 0) ? user.shift[0].site.name : "-", 
+            initial: (user.profile?.name) ? user.profile.name.slice(0,1).toUpperCase() : user.username.slice(0,1).toUpperCase(),
+            status: (user.status) ? user.status : "-",
+            lastActive: (!!user.activity?.length) ? timeSince(user.activity[0].createdAt) : "-",
+            joinDate: user.createdAt.toLocaleDateString(),
+            phone: user.profile?.phone || "-",
+            address: user.profile?.address || "-",
+            shift: (user.shift.length !== 0) ? `${user.shift[0].shiftDate.toLocaleTimeString() - user.shift[0].shiftDate.toLocaleTimeString()}` : "-"
         }
 
         return transformUser

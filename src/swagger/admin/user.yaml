@@ -98,7 +98,32 @@ paths:
                       totalPages:
                         type: integer
                         example: 1
-  
+
+  /api/admin/user/count:
+    get:
+        summary: Get all user  total count
+        tags:
+          - Users
+
+        responses:
+          '200':
+            description: User count
+            content:
+              application/json:
+                schema:
+                  type: object
+                  properties:
+                    success:
+                      type: boolean
+                      example: true
+                    message:
+                      type: string
+                      example: Users retrieved
+                    data:
+                      type: array
+                      items:
+                        type: object
+
   /api/admin/user/{id}:
     get:
       parameters:

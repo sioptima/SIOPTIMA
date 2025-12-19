@@ -78,7 +78,7 @@ export class ShiftRepository {
 
             return shift
         } catch (error) {
-            throw new ResponseError(500, error.message);
+            throw new ResponseError(500, "Failed when trying to create shift");
         }
     }
 
@@ -185,7 +185,7 @@ export class ShiftRepository {
 
             return {eligibleOperators, count};
         } catch (error) {
-            throw new ResponseError(500, error.message)
+            throw new ResponseError(500, "Failed when trying to fetch assignable operators")
         }
     }
 
@@ -235,7 +235,80 @@ export class ShiftRepository {
 
             return {shifts, count};
         } catch (error) {
-            throw new ResponseError(500, error.message)
+            throw new ResponseError(500, "Failed when trying to fetch shift by date")
+        }
+    }
+
+    static async findAllByUserId(data, userId){
+        try {
+            const skip = (data.page - 1) * data.size;
+            
+            const date = new Date();
+            const startOfDay = new Date(date.getFullYear(),date.getMonth(),date.getDate())
+            const [shifts, count] = await PrismaClient.$transaction([
+                PrismaClient.jadwalShift.findMany({
+                    where: {
+                        user: {some: {id: userId}},
+                        shiftDate: {gte: startOfDay}
+                    },
+                    select: {
+                        id: true,
+                        shiftDate: true,
+                        shiftEnd: true,
+                        site: {select:{name: true}}
+                    },
+                    orderBy: {
+                        shiftDate: 'asc',
+                    },
+                    take: data.size,
+                    skip: skip
+                }),
+                PrismaClient.laporan.count({where: {userId}})
+            ]);
+
+            return {result: shifts, count: count};
+            
+        } catch (error) {
+            throw new ResponseError(500, "Failed when trying to fetch shift in database")
+        }
+    }
+
+    static async getAll(data, userId){
+        try {
+            const skip = (data.page - 1) * data.size;
+            
+            const date = new Date();
+            const startOfDay = new Date(date.getFullYear(),date.getMonth(),date.getDate())
+            const [shifts, count] = await PrismaClient.$transaction([
+                PrismaClient.jadwalShift.findMany({
+                    where: {
+                        shiftDate: {gte: startOfDay}
+                    },
+                    select: {
+                        id: true,
+                        shiftDate: true,
+                        shiftEnd: true,
+                        site: {select:{name: true}},
+                        user: {
+                            select: {
+                                profile: {select: {name: true}},
+                                username: true,
+                            }
+                        },
+                    },
+                    orderBy: {
+                        shiftDate: 'asc',
+                    },
+                    take: data.size,
+                    skip: skip
+                }),
+                PrismaClient.laporan.count({where: {userId}})
+            ]);
+
+            return {result: shifts, count: count};
+            
+        } catch (error) {
+            throw new ResponseError(500, "Failed when trying to fetch shift list in database")
         }
     }
 }

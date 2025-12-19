@@ -12,7 +12,7 @@ export class TicketValidation {
         title: z.string().max(100),
         description: z.string().max(350),
         priority: z.string().toUpperCase()
-                    .pipe(z.enum(["HIGH", "MEDUIM", "LOW"])),
+                    .pipe(z.enum(["HIGH", "MEDIUM", "LOW"])),
         image: z.instanceof(File)
         .refine(
           (file) => file.size <= MAX_FILE_SIZE, 
@@ -37,5 +37,18 @@ export class TicketValidation {
 
     static GETBYID = z.object({
       id: z.coerce.number().int(),
+    })
+
+    static RESPOND = z.object({
+      id: z.coerce.number().int(),
+      request: z.object({
+        ticketStatus: z.coerce.string().toUpperCase(),
+        feedback: z.string().max(350)
+      })
+    })
+
+    static GET = z.object({
+      page: z.coerce.number("Invalid parameter").int(),
+      size: z.coerce.number("Invalid parameter").int(),
     })
 }

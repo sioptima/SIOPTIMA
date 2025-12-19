@@ -15,25 +15,31 @@ export class DashboardService {
 
         const shiftSummary = await DashboardRepository.shiftSummary({userId: user.userId});
         const { nextShift: shift, checkedInShift, missedShift } = shiftSummary;
-        const attendanceRate = (checkedInShift/(checkedInShift+missedShift))*100
 
-        const site = await SiteRepository.findById({siteId: shift.site.id});
+        const attendanceRate = (checkedInShift/(checkedInShift+missedShift))*100
+        
+        const site = (shift !== null ?
+            await SiteRepository.findById({siteId: shift.site.id})
+        :
+        null
+        );   
 
         const result = {
             reportsSubmitted: (report !== null) ? report.total : "-",
             attendanceRate: (attendanceRate !== null) ? `${attendanceRate}%` : "-",
             nextShift: (shift?.shiftDate) ? labelFuture(shift.shiftDate) : "No upcoming shift",
-            currentSite: (shift?.site.name) ? shift.site.name : "-",
-            pHLevel: (site?.report.length !== 0) ? site.report[0].pH : "-",
-            flowRate: (site?.report.length !== 0) ? `${site.report[0].flowRate} L/h` : "-",
-            tds: (site?.report.length !== 0) ? `${site.report[0].TDS} ppm` : "-",
-            ec: (site?.report.length !== 0) ? `${site.report[0].EC} μS/cm` : "-",
+            nextShiftTime: (shift?.shiftDate) ? shift.shiftDate.toLocaleTimeString() : "-",
+            currentSite: (shift?.site?.name) ? shift.site.name : "-",
+            pHLevel: (!!site?.report.length) ? `${site.report[0].pH}` : "0",
+            flowRate: (!!site?.report.length) ? `${site.report[0].flowRate} L/h` : "0",
+            tds: (!!site?.report.length) ? `${site.report[0].TDS} ppm` : "0",
+            ec: (!!site?.report.length) ? `${site.report[0].EC} μS/cm` : "0",
             activeSites: assignedSite,
             approvedReports: (report !== null) ? report.approved : "-",
             pendingReports: (report !== null) ? report.pending : "-",
             rejectedReports: (report !== null) ? report.rejected : "-"
         }
-
+        console.log()
         return result
     }
 
@@ -105,6 +111,7 @@ export class DashboardService {
             pendingValidation: (attendances.pendingCount !== null) ? attendances.pendingCount : "-",
             weeklyStats, 
             todayStatus,
+            operatorsWithShiftToday: 0, //TBA
         }
 
         return result;
@@ -113,26 +120,36 @@ export class DashboardService {
     static async adminSummary(){
         const summary = await DashboardRepository.adminSummary()
 
-
-        const {activeSite, maintenanceSite, inactiveSite, totalOperators, activeOperator, approvedReport, pendingReport, rejectedReport, resolvedTicket, totalTicket} = summary
-        const complianceRate = (approvedReport/(approvedReport+pendingReport+rejectedReport))*100
-
-        const result = {
-            totalSites: activeSite+maintenanceSite+inactiveSite,
-            totalOperators,
-            activeOperator,
-            dailyReports: approvedReport+pendingReport+rejectedReport,
-            complianceRate,
-            activeSite,
-            maintenanceSite,
+        const {
+            activeSites, 
+            maintenanceSite, 
             inactiveSite,
             approvedReport,
             pendingReport,
             rejectedReport,
-            resolvedTicket,
-            totalTicket
-        }
+            reportsData,
+            ticketsData
+        } = summary
+        const complianceRate = (approvedReport/(approvedReport+pendingReport+rejectedReport))*100
 
+        const result = {
+            ...summary,
+            totalSites: activeSites+maintenanceSite+inactiveSite,
+            dailyReports: approvedReport+pendingReport+rejectedReport,
+            complianceRate,
+            reportsData: reportsData.map(r => ({
+                id: r.id,
+                site: r.siteName,
+                status: r.laporanStatus,
+            })),
+            ticketsData: ticketsData.map(t => ({
+                id: t.id,
+                operatorName: (t.user.profile?.name ? t.user.profile.name : t.user.username),
+                status: t.status,
+            })),
+            totalReport: approvedReport+pendingReport+rejectedReport
+        }
+        
         return result
     }
 

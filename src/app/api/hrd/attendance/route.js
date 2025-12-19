@@ -7,15 +7,15 @@ export async function GET(request) {
     const searchParams = request.nextUrl.searchParams;
       const parameter = {
         page: searchParams.get("page") || 1,
-        size: searchParams.get("limit") || 10,
+        size: searchParams.get("limit") || 5,
         search: searchParams.get("search") || undefined,
         status: searchParams.get("status") || undefined,
       }
     const result = await PresensiService.getFiltered({parameter});
     return Response.json({
        success: true, 
-       message: "Dashboard data retrieved" ,
-       data: result.result,
+       message: "Data retrieved" ,
+       data: result.data,
        pagination: {
         page: result.paging.current_page,
         limit: result.paging.size,

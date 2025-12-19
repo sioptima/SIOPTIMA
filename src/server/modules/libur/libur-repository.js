@@ -27,11 +27,12 @@ export class LiburRepository {
                         select: {
                             username: true,
                         }
-                    }
+                    },
+                    createdAt: true,
                 }
             })
         } catch (error) {
-            throw new ResponseError(500, error.message)
+            throw new ResponseError(500, "Failed when trying to create libur submission")
         }
     }
 
@@ -46,8 +47,11 @@ export class LiburRepository {
                     orderBy: {
                         createdAt: "desc",
                     },
+                    include: {
+                        user: {select: {username: true,}}
+                    },
                     take: data.size,
-                    skip: skip
+                    skip: skip,
                 }),
                 PrismaClient.libur.count({
                     where: {
@@ -100,6 +104,54 @@ export class LiburRepository {
 
             const count = approved+pending+rejected
             return {records, count, approved, pending, rejected}
+        } catch (error) {
+            throw new ResponseError(500, "Failed when trying to read in database")
+        }
+    }
+
+    static async getIjinLibur(data){
+        try {
+            const skip = (data.page - 1) * data.size;
+            const [libur, liburCount, ijin, ijinCount] = await PrismaClient.$transaction([
+                PrismaClient.libur.findMany({
+                    orderBy: {
+                        createdAt: "desc",
+                    },
+                    take: data.size,
+                    skip: skip,
+                    include: {
+                        user: {
+                            select: {
+                                profile: {select: {name: true}},
+                                username: true,
+
+                            }
+                        }
+                    }
+                }),
+                PrismaClient.libur.count({
+                }),
+                PrismaClient.ijin.findMany({
+                    orderBy: {
+                        createdAt: "desc",
+                    },
+                    take: data.size,
+                    skip: skip,
+                    include: {
+                        user: {
+                            select: {
+                                profile: {select: {name: true}},
+                                username: true,
+
+                            }
+                        }
+                    }
+                }),
+                PrismaClient.ijin.count({
+                }),
+            ])
+
+            return {ijin, libur, ijinCount, liburCount}
         } catch (error) {
             throw new ResponseError(500, "Failed when trying to read in database")
         }

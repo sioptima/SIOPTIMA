@@ -54,7 +54,7 @@ export class SiteRepository {
                 },
             });
         } catch (error) {
-            throw new ResponseError(500, "Failed when querying site in database")
+            throw new ResponseError(500, "Failed when trying to find site in database")
         }
     }
 
@@ -62,32 +62,42 @@ export class SiteRepository {
         try {
             const skip = (data.page - 1) * data.size;
 
-            const query = {
-                select:{
-                    id: true,
-                    name: true,
-                    image: true,
-                    address: {
-                        select: {
-                            address:true,
+            const [sites, count, activeSites, maintenanceSites, totalOperators] = await PrismaClient.$transaction([
+                PrismaClient.site.findMany({
+                    select: {
+                        id: true,
+                        name: true,
+                        address: {select: {
+                            city: true,
+                            address: true,
+                            province: true,
                             latitude: true,
-                            longitude: true
+                            longitude: true,
+                            }
+                        },
+                        _count: {select: {users: true}},
+                        status: true,
+                        report: {
+                            take: 1,
+                            orderBy: {
+                                createdAt: "desc"
+                            },
+                            select: {laporanDate: true}
                         }
-                    }
-                },
-                orderBy: {
-                        createdAt: 'asc',
-                },
-                take: data.size,
-                skip: skip
-            }
-
-            const [sites, count] = await PrismaClient.$transaction([
-                PrismaClient.site.findMany(query),
-                PrismaClient.site.count()
+                    },
+                    orderBy: {
+                            createdAt: 'asc',
+                    },
+                    take: data.size,
+                    skip: skip
+                }),
+                PrismaClient.site.count(),
+                PrismaClient.site.count({where: {status:"ACTIVE"}}),
+                PrismaClient.site.count({where: {status:"MAINTENANCE"}}),
+                PrismaClient.user.count({where: {role: {name: "OPERATOR"}}}),
             ]) 
     
-            return {count, sites};
+            return {count, sites, activeSites, maintenanceSites, totalOperators};
             
         } catch (error) {
             throw new ResponseError(500, "Failed when querying sites in database")
@@ -100,6 +110,7 @@ export class SiteRepository {
                 data:{
                     name: data.name,
                     maxCapacity: data.capacity,
+                    status: data.status,
                     address: {
                         create: {
                             city: data.city,
@@ -108,10 +119,12 @@ export class SiteRepository {
                             latitude: data.latitude,
                             longitude: data.longitude,
                         }
-                    }
+                    },
                 },
                 select: {
+                    id: true,
                     name: true,
+                    _count: {select: {users: true}}
                 }
             })
             
@@ -129,7 +142,7 @@ export class SiteRepository {
                 data: {
                     ...(data.name && { name: data.name }),
                     ...(data.status && { status: data.status }),
-                    ...(data.city || data.address || data.province 
+                    ...(data.city || data.address || data.province || data.latitude || data.longitude 
                         ? 
                         {
                           address: {
@@ -137,6 +150,8 @@ export class SiteRepository {
                               ...(data.city && { city: data.city }),
                               ...(data.address && { address: data.address }),
                               ...(data.province && { province: data.province }),
+                              ...(data.latitude && { latitude: data.latitude }),
+                              ...(data.longitude && { longitude: data.longitude }),
                             }
                           }
                         }
@@ -153,6 +168,8 @@ export class SiteRepository {
                             address: true,
                             city: true,
                             province: true,
+                            latitude: true,
+                            longitude: true,
                         }
                     },
                     report: {

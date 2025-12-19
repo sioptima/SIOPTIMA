@@ -96,8 +96,11 @@ export class PresensiRepository {
                     shift: {
                         select: {
                             siteId: true,
+                            site: {select: {name: true}}
                         }
-                    }
+                    },
+                    presensiDate: true,
+                    statusPresensi: true,
                 },
                 orderBy: {
                     presensiDate: 'desc',
@@ -117,14 +120,13 @@ export class PresensiRepository {
                 data: {
                     fotoDiri: data.imageLink
                 },
-                select: {
-                    id: true,
-                    presensiDate: true,
-                    statusPresensi: true,
-                    statusApproval: true,
-                    distanceToSite: true,
+                include: {
+                    shift: {
+                        select: {
+                            site: {select: {name: true}}
+                        }
+                    }
                 }
-
             });
         } catch (error) {
             throw new ResponseError(500, "Failed when updating table in database")
@@ -133,7 +135,7 @@ export class PresensiRepository {
 
     static async updateCheckOutImage(data){
         try {
-            return PrismaClient.checkOut.update({
+            const checkout = PrismaClient.checkOut.update({
                 where: {
                     id: data.checkOutId
                 },
@@ -141,17 +143,15 @@ export class PresensiRepository {
                     fotoDiri: data.imageLink,
                     distanceToSite: data.distance
                 },
-                select: {
-                    id: true,
-                    checkOutDate: true,
-                    distanceToSite: true,
+                include: {
                     checkIn: {
-                        select: {
-                            statusApproval:true
+                        include: {
+                            shift: {select: {site: {select: {name: true}}}}
                         }
                     }
                 }
             })
+            return checkout
         } catch (error) {
             throw new ResponseError(500, "Failed when updating table in database")
         }
@@ -163,45 +163,50 @@ export class PresensiRepository {
             const endOfMonth = new Date(startOfMonth.getFullYear(), startOfMonth.getMonth()+1)
             const skip = (data.page - 1) * data.size;
 
-            const query = {
-                where: {
+            const [records, count] = await PrismaClient.$transaction([
+                PrismaClient.presensi.findMany({
+                    where: {
+                        userId,
+                        presensiDate: {
+                            gte: data.month != null ? startOfMonth : undefined,
+                            lt: data.month != null ? endOfMonth : undefined
+                        }
+                    },
+                    include:{
+                        approver: {
+                            select: {
+                                username: true
+                            }
+                        },
+                        shift: {
+                            select: {
+                                site: {
+                                    select: {
+                                        name: true
+                                    }
+                                }
+                            }
+                        },
+                        checkOut: {
+                            select: {
+                                checkOutDate: true,
+                            }
+                        }
+                    },
+                    orderBy: {
+                        presensiDate: 'desc',
+                    },
+                    take: data.size,
+                    skip: skip
+                }),
+                PrismaClient.presensi.count({                    
+                    where: {
                     userId,
                     presensiDate: {
                         gte: data.month != null ? startOfMonth : undefined,
                         lt: data.month != null ? endOfMonth : undefined
                     }
-                },
-                include:{
-                    approver: {
-                        select: {
-                            username: true
-                        }
-                    },
-                    shift: {
-                        select: {
-                            site: {
-                                select: {
-                                    name: true
-                                }
-                            }
-                        }
-                    },
-                    checkOut: {
-                        select: {
-                            checkOutDate: true,
-                        }
-                    }
-                },
-                orderBy: {
-                    presensiDate: 'desc',
-                },
-                take: data.size,
-                skip: skip
-            }
-
-            const [records, count] = await PrismaClient.$transaction([
-                PrismaClient.presensi.findMany(query),
-                PrismaClient.presensi.count({where: query.where})
+                },})
             ]);
             
             return {result: records, count: count};
@@ -385,7 +390,9 @@ export class PresensiRepository {
     }
 
     static async findFiltered(data){
-        try {
+        try {const date = new Date()
+            const startOfMonth = new Date(date.getFullYear(), date.getMonth()) 
+            const endOfMonth = new Date(startOfMonth.getFullYear(), startOfMonth.getMonth()+1)
             const skip = (data.page - 1) * data.size;
             let where;
             if (data.name || data.status){
@@ -417,6 +424,10 @@ export class PresensiRepository {
                         } : {},
                     ],
                 }
+            } else {
+                where = {
+                    presensiDate: {gte: startOfMonth, lt: endOfMonth}
+                }
             }
 
             const [presensi, count] = await PrismaClient.$transaction([
@@ -436,17 +447,17 @@ export class PresensiRepository {
                         checkOut: true, 
                     },
                     orderBy: {
-                            createdAt: 'desc',
+                        presensiDate: 'desc',
                     },
                     take: data.size,
                     skip: skip
                   }),
-                  PrismaClient.presensi.count({where})
+                  PrismaClient.presensi.count({where}),
             ])
 
               return {presensi, count}
         } catch (error) {
-            throw new ResponseError(500, "Failed when trying to search attendance by operator name")
+            throw new ResponseError(500, "Failed when trying to search attendance")
         }
     }
 }

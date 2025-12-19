@@ -31,12 +31,15 @@ export function timeSince(date) {
   }
 
   export function labelFuture(date) {
-
-    const startOfDay = new Date(new Date().toDateString());
+    const startOfDay = new Date();
     var seconds = Math.floor((date - startOfDay) / 1000);
+    
+    if(seconds < 0){
+      return timeSince(date)
+    }
 
     var interval = seconds / 31536000;
-  
+
     if (interval > 1) {
       return "in " + Math.floor(interval) + " years";
     }

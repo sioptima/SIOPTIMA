@@ -43,7 +43,7 @@ export class ReportService {
             tds: createRequest.tds,
             ec: createRequest.ec,
             notes: createRequest.additionalNotes,
-            pH: createRequest.phLevel,
+            pH: createRequest.pHLevel,
             siteId: activeCheckIn.shift.siteId,
             agitatorStatus: createRequest.agitatorStatus,
             outFilterStatus: createRequest.outFilterStatus,
@@ -70,11 +70,25 @@ export class ReportService {
             id: updatedReport.id,
             date: updatedReport.laporanDate.toLocaleDateString(),
             time: updatedReport.laporanDate.toLocaleTimeString(),
-            status: "submitted"
+            pHLevel: `${updatedReport.pH}`,
+            flowRate: `${updatedReport.flowRate}`,
+            volt: `${updatedReport.volt}`,
+            ampere: `${updatedReport.ampere}`,
+            tds: `${updatedReport.TDS}`,
+            ec: `${updatedReport.ec}`,
+            agitatorStatus: updatedReport.agitatorStatus.toLowerCase(),
+            settleStatus: updatedReport.settleStatus.toLowerCase(),
+            outFilterStatus: updatedReport.outFilterStatus.toLowerCase(),
+            additionalNotes: updatedReport.notes || "-",
+            uploadedFiles: updatedReport.fotoSampel,
+            timestamp: updatedReport.laporanDate,
+            location: updatedReport.siteName,
+            operator: updatedReport.user.profile?.name || updatedReport.user.username,
+            status: updatedReport.laporanStatus
         }
     }
 
-    static async getAll(parameter){
+    static async getMonthly(parameter){
         const getRequest = ReportValidation.GET.parse(parameter);
         if(!getRequest){
             throw new ResponseError(400, "Invalid request data");
@@ -82,7 +96,7 @@ export class ReportService {
 
         const {page, size} = getRequest;
 
-        const reports = await ReportRepository.findAll(getRequest);
+        const reports = await ReportRepository.findMonthly(getRequest);
         if (reports.count === 0) {
             throw new ResponseError (200, "No report found")
         }
@@ -95,11 +109,26 @@ export class ReportService {
             operator: (report.user.profile?.name) ? report.user.profile.name : report.user.username,
             pH: report.pH,
             flowRate: report.flowRate,
-            status: report.laporanStatus
+            volt: report.volt,
+            ampere: report.ampere,
+            tds: report.TDS,
+            ec: report.EC,
+            status: report.laporanStatus.toLowerCase(),
+            equipmentStatus: {
+                agitator: report.agitatorStatus,
+                settle: report.settleStatus,
+                outFilter: report.outFilterStatus
+            },
+            notes: report.notes,
+            images: report.fotoSampel,
+            uploadedFiles: report.fotoSampel,
         }))
 
         return {
-            result: reportTransform,
+            result: {
+                reportTransform,
+                totalReports: reports.count, 
+            },
             paging: {
                 size: size,
                 total: reports.count,
@@ -126,22 +155,24 @@ export class ReportService {
 
         const reportTransform = reports.result.map((report) => ({
             id: report.id,
-            date: report.laporanDate.toLocaleDateString(),
+            date: report.laporanDate,
             time: report.laporanDate.toLocaleTimeString(),
             site: report.siteName,
             operator: report.user.username,
-            pH: report.pH,
-            flowRate: report.flowRate,
+            pHLevel: `${report.pH}`,
+            flowRate: `${report.flowRate}`,
             volt: report.volt,
             ampere: report.ampere,
-            tds: report.TDS,
-            ec: report.EC,
+            tds: `${report.TDS}`,
+            ec: `${report.EC}`,
             agitatorStatus: report.agitatorStatus,
             settleStatus: report.settleStatus,
             outFilterStatus: report.outFilterStatus,
             additionalNotes: report.notes,
-            status: report.laporanStatus,
-            images: report.fotoSampel
+            status: report.laporanStatus.toLowerCase(),
+            images: report.fotoSampel,
+            additionalNotes: report.notes,
+            location: report.siteName,
         }))
 
         return {
@@ -209,15 +240,25 @@ export class ReportService {
         }
 
         const reportTransform = reports.map((report) => ({
-            date: report.laporanDate.toLocaleString(),
+            id: report.id,
+            date: report.laporanDate.toLocaleDateString(),
+            time: report.laporanDate.toLocaleTimeString(),
+            site: report.siteName,
+            operator: (report.user.profile?.name) ? report.user.profile.name : report.user.username,
             pH: report.pH,
             flowRate: report.flowRate,
             volt: report.volt,
             ampere: report.ampere,
             tds: report.TDS,
             ec: report.EC,
-            site: report.siteName,
-            status: report.laporanStatus
+            status: report.laporanStatus.toLowerCase(),
+            equipmentStatus: {
+                agitator: report.agitatorStatus,
+                settle: report.settleStatus,
+                outFilter: report.outFilterStatus
+            },
+            notes: report.notes,
+            images: report.fotoSampel
         }))
 
         return reportTransform

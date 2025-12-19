@@ -33,6 +33,8 @@ import {
   CameraIcon,
   MapIcon,
 } from "@heroicons/react/24/outline";
+import { addShift, approveAttendance, approveLeave, fetchAllShifts, fetchAttendance, fetchHrdSummary, fetchLeaveRequest, fetchUsersWithRoleData, rejectAttendance } from "@/src/lib/fetchApiHrd";
+import { fetchSitesData } from "@/src/lib/fetchApiAdmin";
 
 // Storage keys untuk sinkronisasi
 const STORAGE_KEYS = {
@@ -272,22 +274,22 @@ export default function HRD() {
     return Math.max(0, actualStart - expectedStart);
   };
 
-  const updateDashboardStats = (attendanceData) => {
+  const updateDashboardStats = (attendances) => {
     // Hitung total operator dari data aktual
-    const totalOperators = operators.length;
+    const totalOperators = operatorsData.length;
     
     // Hitung presensi hari ini berdasarkan data attendance
     const today = new Date().toISOString().split('T')[0];
-    const todayAttendance = attendanceData.filter(item => item.date === today);
+    const todayAttendance = attendances.filter(item => item.date === today);
     
     // Hitung yang sudah disetujui hari ini
     const approvedToday = todayAttendance.filter(item => item.status === "approved").length;
     
     // Hitung yang pending validasi
-    const pendingValidation = attendanceData.filter(item => item.status === "pending").length;
+    const pendingValidation = attendances.filter(item => item.status === "pending").length;
     
     // Hitung attendance rate berdasarkan operator yang memiliki shift hari ini
-    const operatorsWithShiftToday = operators.filter(op => {
+    const operatorsWithShiftToday = operatorsData.filter(op => {
       return shifts.some(shift => 
         shift.assignedOperators?.includes(op.id) && 
         isOperatorScheduledToday(op.id)
@@ -325,215 +327,81 @@ export default function HRD() {
 
   // ==================== DATA YANG DISINKRONISASI DENGAN LOGIKA REALISTIS ====================
 
-  // Generate data operator
-  const generateOperators = () => {
-    const operatorList = [];
-    for (let i = 1; i <= 50; i++) {
-      operatorList.push({
-        id: i,
-        name: generateIndonesianName(),
-        employeeId: `OP${String(i).padStart(3, '0')}`,
-        position: "Operator IPAL",
-        joinDate: `202${Math.floor(Math.random() * 4)}-${String(Math.floor(Math.random() * 12) + 1).padStart(2, '0')}-${String(Math.floor(Math.random() * 28) + 1).padStart(2, '0')}`,
-        status: Math.random() > 0.1 ? "active" : "inactive",
-        contact: `0812${String(Math.floor(Math.random() * 9000) + 1000)}${String(Math.floor(Math.random() * 9000) + 1000)}`,
-      });
+  const [operatorsData, setOperators] = useState([])
+  useEffect(() => {
+    const loadData = async () => {
+        try {
+            const result = await fetchUsersWithRoleData({limit: 50, role:"OPERATOR"});
+            if (!result) throw new Error("No data returned");
+            setOperators(result.usersTransform);
+        } catch (err) {
+          //setError
+    } finally {
+      //setLoading
     }
-    return operatorList;
-  };
+  };   
 
-  const [operators, setOperators] = useState(() =>
-    getSynchronizedData(STORAGE_KEYS.OPERATORS, generateOperators())
-  );
-
-  // Generate data site
-  const generateSites = () => {
-    const cityList = ["Jakarta Utara", "Bandung", "Surabaya", "Semarang", "Yogyakarta", "Medan", "Makassar", "Denpasar"];
-    const siteList = [];
-    
-    cityList.forEach((city, index) => {
-      siteList.push({
-        id: index + 1,
-        name: `Site ${city.split(' ')[0]} ${['A', 'B', 'C'][index % 3]}`,
-        location: city,
-        address: `Jl. Raya ${city} No. ${(index + 1) * 10}`,
-        capacity: 12, // Fixed to maximum 12 operators
-        supervisor: generateIndonesianName(),
-        contact: `0813${String(Math.floor(Math.random() * 9000) + 1000)}${String(Math.floor(Math.random() * 9000) + 1000)}`,
-        status: "active",
-      });
-    });
-    return siteList;
-  };
-
-  const [sites, setSites] = useState(() =>
-    getSynchronizedData(STORAGE_KEYS.SITES, generateSites())
-  );
-
-  // Generate data shift dengan logika penugasan operator
-  const generateShifts = () => {
-    const shiftTypes = [
-      { name: "Morning Shift", startTime: "07:00", endTime: "15:00" },
-      { name: "Afternoon Shift", startTime: "15:00", endTime: "23:00" },
-      { name: "Night Shift", startTime: "23:00", endTime: "07:00" },
-    ];
-    
-    const shiftList = [];
-    shiftTypes.forEach((shiftType, index) => {
-      // Pilih site secara acak
-      const siteId = Math.floor(Math.random() * sites.length) + 1;
-      
-      // PERUBAHAN: Tentukan jumlah operator untuk shift ini (maksimal 12 operator)
-      const maxOperators = 12; // Selalu 12 operator per shift
-      
-      // Pilih operator secara acak untuk shift ini
-      const assignedOperators = [];
-      const availableOperators = operators.filter(op => op.status === "active");
-      
-      // Pilih maksimal 12 operator
-      for (let i = 0; i < Math.min(12, availableOperators.length); i++) {
-        const randomOp = availableOperators[Math.floor(Math.random() * availableOperators.length)];
-        if (!assignedOperators.includes(randomOp.id)) {
-          assignedOperators.push(randomOp.id);
-        }
-      }
-      
-      shiftList.push({
-        id: index + 1,
-        ...shiftType,
-        siteId,
-        maxOperators: 12, // Selalu 12 operator
-        assignedOperators,
-        dayOfWeek: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"][index % 6],
-      });
-    });
-    return shiftList;
-  };
-
-  const [shifts, setShifts] = useState(() =>
-    getSynchronizedData(STORAGE_KEYS.SHIFTS, generateShifts())
-  );
-
-  // Generate data attendance dengan logika realistis - UPDATE: Kosong untuk hari ini jika tidak ada input
-  const generateAttendanceData = () => {
-    const attendanceList = [];
-    let idCounter = 1;
-    
-    // Generate data untuk 7 hari TERAKHIR (bukan mendatang)
-    for (let dayOffset = 6; dayOffset >= 0; dayOffset--) {
-      const date = new Date();
-      date.setDate(date.getDate() - dayOffset);
-      const dateStr = date.toISOString().split('T')[0];
-      const dayOfWeek = date.getDay(); // 0 = Minggu, 1 = Senin, dst
-      
-      // Untuk hari ini (dayOffset = 0), tidak generate data otomatis
-      if (dayOffset === 0) {
-        // Tidak generate data untuk hari ini - biarkan kosong sampai ada input
-        continue;
-      }
-      
-      // Hanya generate untuk hari kerja (Senin-Jumat)
-      if (dayOfWeek >= 1 && dayOfWeek <= 5) {
-        // Untuk setiap shift yang aktif hari ini
-        shifts.forEach(shift => {
-          // Untuk setiap operator yang ditugaskan di shift ini (maksimal 12)
-          shift.assignedOperators?.forEach(operatorId => {
-            const operator = operators.find(op => op.id === operatorId);
-            if (operator && operator.status === "active") {
-              // Tentukan status kehadiran (80% hadir, 15% terlambat, 5% absen)
-              const rand = Math.random();
-              let status = "pending";
-              let lateMinutes = 0;
-              
-              if (rand < 0.8) {
-                status = "approved";
-                // 20% kemungkinan terlambat
-                if (Math.random() < 0.2) {
-                  lateMinutes = Math.floor(Math.random() * 30) + 1; // 1-30 menit terlambat
-                }
-              } else if (rand < 0.95) {
-                status = "rejected"; // Absen
-              } else {
-                status = "pending"; // Belum divalidasi
-              }
-              
-              // Generate check-in dan check-out time
-              let checkIn = shift.startTime;
-              let checkOut = shift.endTime;
-              
-              if (lateMinutes > 0 && status === "approved") {
-                // Tambah menit keterlambatan ke check-in
-                const [hours, minutes] = checkIn.split(':').map(Number);
-                const totalMinutes = hours * 60 + minutes + lateMinutes;
-                const newHours = Math.floor(totalMinutes / 60);
-                const newMinutes = totalMinutes % 60;
-                checkIn = `${String(newHours).padStart(2, '0')}:${String(newMinutes).padStart(2, '0')}`;
-              }
-              
-              // Hitung total hours
-              const totalHours = calculateTotalHours(checkIn, checkOut);
-              
-              // Generate foto sample (gunakan Unsplash placeholder)
-              const photoUrls = [
-                "https://images.unsplash.com/photo-1568602471122-7832951cc4c5?auto=format&fit=crop&w=800",
-                "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w-800",
-                "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=800",
-                "https://images.unsplash.com/photo-1494790108755-2616b612b786?auto=format&fit=crop&w=800",
-              ];
-              
-              const geoLocations = [
-                "-6.200000,106.816666", // Jakarta
-                "-6.917500,107.619100", // Bandung
-                "-7.250000,112.750000", // Surabaya
-                "-6.966667,110.416667", // Semarang
-                "-7.797500,110.368600", // Yogyakarta
-              ];
-              
-              attendanceList.push({
-                id: idCounter++,
-                operatorId: operatorId,
-                operator: operator.name,
-                site: sites.find(s => s.id === shift.siteId)?.name || "Unknown Site",
-                date: dateStr,
-                checkIn,
-                checkOut,
-                status,
-                submittedBy: operatorId % 3 === 0 ? "admin" : "operator",
-                location: sites.find(s => s.id === shift.siteId)?.location || "Unknown",
-                notes: status === "approved" 
-                  ? lateMinutes > 0 
-                    ? `Check-in terlambat ${lateMinutes} menit` 
-                    : "Hadir tepat waktu"
-                  : status === "rejected"
-                  ? "Tidak hadir tanpa keterangan"
-                  : "Menunggu validasi HRD",
-                totalHours: totalHours.toFixed(1),
-                lateMinutes,
-                shiftId: shift.id,
-                photoUrl: status === "approved" ? photoUrls[Math.floor(Math.random() * photoUrls.length)] : null,
-                locationCoordinates: geoLocations[Math.floor(Math.random() * geoLocations.length)],
-                locationValid: Math.random() > 0.1, // 90% valid lokasi
-                timeValid: Math.random() > 0.05, // 95% valid waktu
-              });
-            }
-          });
-        });
-      }
+  loadData();
+  }, []); 
+  
+  const [sitesData, setSites] = useState ([])
+  useEffect(() => {
+    const loadData = async () => {
+        try {
+            const result = await fetchSitesData({limit: 50});
+            if (!result) throw new Error("No data returned");
+            setSites(result.sites);
+        } catch (err) {
+          //setError
+    } finally {
+      //setLoading
     }
-    
-    return attendanceList;
-  };
+  };   
 
-  const [attendanceData, setAttendanceData] = useState(() =>
-    getSynchronizedData(STORAGE_KEYS.ATTENDANCE, generateAttendanceData())
-  );
+  loadData();
+  }, []); 
+
+  const [shifts, setShifts] = useState([])
+  useEffect(() => {
+    const loadData = async () => {
+        try {
+            const result = await fetchAllShifts({limit: 50});
+            if (!result) throw new Error("No data returned");
+            setShifts(result);
+        } catch (err) {
+          //setError
+    } finally {
+      //setLoading
+    }
+  };   
+
+  loadData();
+  }, []); 
+
+  const [attendances, setAttendanceData] = useState([])
+  
+  useEffect(() => {
+    const loadData = async () => {
+        try {
+            const result = await fetchAttendance({limit: 50});
+            if (!result) throw new Error("No data returned");
+            setAttendanceData(result.attendanceTransform);
+        } catch (err) {
+          //setError
+    } finally {
+      //setLoading
+    }
+  };   
+
+  loadData();
+  }, []); 
 
   const [notifications, setNotifications] = useState(() =>
     getSynchronizedData(STORAGE_KEYS.NOTIFICATIONS, [
       {
         id: 1,
         title: "Attendance perlu validasi",
-        message: `${getSynchronizedData(STORAGE_KEYS.ATTENDANCE, []).filter((item) => item.status === "pending").length} data attendance menunggu validasi`,
+        message: `1 data attendance menunggu validasi`,
         time: "5 menit lalu",
         read: false,
         type: "validation",
@@ -560,67 +428,41 @@ export default function HRD() {
     ])
   );
 
-  // UPDATE: Dashboard data dengan perhitungan hari ini yang benar
-  const [dashboardData, setDashboardData] = useState(() => {
-    const today = new Date().toISOString().split('T')[0];
-    const todayAttendance = getSynchronizedData(STORAGE_KEYS.ATTENDANCE, []).filter(item => item.date === today);
-    const approvedToday = todayAttendance.filter(item => item.status === "approved").length;
-    
-    return getSynchronizedData(STORAGE_KEYS.DASHBOARD, {
-      totalOperators: operators.length,
-      presentToday: approvedToday,
-      attendanceRate: 0,
-      pendingValidation: getSynchronizedData(STORAGE_KEYS.ATTENDANCE, []).filter((item) => item.status === "pending").length,
-      operatorsWithShiftToday: 0,
-    });
-  });
+  const [dashboardData, setDashboardData] = useState({});
 
-  const [leaveRequests, setLeaveRequests] = useState(() =>
-    getSynchronizedData(STORAGE_KEYS.LEAVE_REQUESTS, [
-      {
-        id: 1,
-        operatorId: 1,
-        operator: generateIndonesianName(),
-        type: "izin",
-        startDate: new Date(Date.now() + 86400000 * 2).toISOString().split('T')[0],
-        endDate: new Date(Date.now() + 86400000 * 2).toISOString().split('T')[0],
-        reason: "Sakit demam dan flu",
-        status: "pending",
-        submittedDate: new Date().toISOString().split('T')[0],
-        medicalCertificate: true,
-        medicalCertificateUrl: "https://images.unsplash.com/photo-1579684385127-1ef15d508118?auto=format&fit=crop&w=800",
-        medicalCertificateName: "surat_dokter_1.jpg",
-      },
-      {
-        id: 2,
-        operatorId: 2,
-        operator: generateIndonesianName(),
-        type: "libur",
-        startDate: new Date(Date.now() + 86400000 * 7).toISOString().split('T')[0],
-        endDate: new Date(Date.now() + 86400000 * 9).toISOString().split('T')[0],
-        reason: "Cuti tahunan keluarga",
-        status: "pending",
-        submittedDate: new Date(Date.now() - 86400000 * 2).toISOString().split('T')[0],
-        medicalCertificate: false,
-        medicalCertificateUrl: null,
-        medicalCertificateName: null,
-      },
-      {
-        id: 3,
-        operatorId: 3,
-        operator: generateIndonesianName(),
-        type: "izin",
-        startDate: new Date(Date.now() - 86400000 * 1).toISOString().split('T')[0],
-        endDate: new Date(Date.now() - 86400000 * 1).toISOString().split('T')[0],
-        reason: "Keperluan keluarga mendadak",
-        status: "approved",
-        submittedDate: new Date(Date.now() - 86400000 * 3).toISOString().split('T')[0],
-        medicalCertificate: false,
-        medicalCertificateUrl: null,
-        medicalCertificateName: null,
-      },
-    ])
-  );
+  useEffect(() => {
+    const loadData = async () => {
+        try {
+            const result = await fetchHrdSummary();
+            if (!result) throw new Error("No data returned");
+            setDashboardData(result);
+        } catch (err) {
+          //setError
+    } finally {
+      //setLoading
+    }
+  };   
+
+  loadData();
+  }, []); 
+
+  const [leaveData, setLeaveRequests] = useState([])
+
+  useEffect(() => {
+    const loadData = async () => {
+        try {
+            const result = await fetchLeaveRequest();
+            if (!result) throw new Error("No data returned");
+            setLeaveRequests(result);
+        } catch (err) {
+          //setError
+    } finally {
+      //setLoading
+    }
+  };   
+
+  loadData();
+  }, []); 
 
   const hrdUser = {
     name: "Katira Sala",
@@ -660,34 +502,6 @@ export default function HRD() {
     };
   }, [showShiftForm, showSiteForm]);
 
-  useEffect(() => {
-    setSynchronizedData(STORAGE_KEYS.ATTENDANCE, attendanceData);
-    updateDashboardStats(attendanceData);
-  }, [attendanceData]);
-
-  useEffect(() => {
-    setSynchronizedData(STORAGE_KEYS.NOTIFICATIONS, notifications);
-  }, [notifications]);
-
-  useEffect(() => {
-    setSynchronizedData(STORAGE_KEYS.DASHBOARD, dashboardData);
-  }, [dashboardData]);
-
-  useEffect(() => {
-    setSynchronizedData(STORAGE_KEYS.SHIFTS, shifts);
-  }, [shifts]);
-
-  useEffect(() => {
-    setSynchronizedData(STORAGE_KEYS.SITES, sites);
-  }, [sites]);
-
-  useEffect(() => {
-    setSynchronizedData(STORAGE_KEYS.LEAVE_REQUESTS, leaveRequests);
-  }, [leaveRequests]);
-
-  useEffect(() => {
-    setSynchronizedData(STORAGE_KEYS.OPERATORS, operators);
-  }, [operators]);
 
   // ==================== FUNGSI UTAMA SESUAI SRS ====================
 
@@ -700,10 +514,14 @@ export default function HRD() {
   ];
  
   // Fungsi untuk handle approve attendance - SESUAI SRS (Approve Presensi Operator)
-  const handleApprove = (id) => {
-    const attendanceToApprove = attendanceData.find(item => item.id === id);
+  const handleApprove = async (id) => {
+    const attendanceToApprove = attendances.find(item => item.id === id);
     
-    const updatedData = attendanceData.map((item) =>
+    const response = await approveAttendance({id})
+    if(!response){
+        return
+    }
+    const updatedData = attendances.map((item) =>
       item.id === id ? { ...item, status: "approved" } : item
     );
     setAttendanceData(updatedData);
@@ -721,10 +539,15 @@ export default function HRD() {
   };
 
   // Fungsi untuk handle reject attendance - SESUAI SRS (Reject Presensi Operator)
-  const handleReject = (id) => {
-    const attendanceToReject = attendanceData.find(item => item.id === id);
+  const handleReject = async (id) => {
+    const attendanceToReject = attendances.find(item => item.id === id);
     
-    const updatedData = attendanceData.map((item) =>
+    const response = await rejectAttendance({id})
+    if(!response){
+        return
+    }
+
+    const updatedData = attendances.map((item) =>
       item.id === id ? { ...item, status: "rejected" } : item
     );
     setAttendanceData(updatedData);
@@ -746,7 +569,7 @@ export default function HRD() {
   // Fungsi untuk ekspor data attendance ke CSV
   const exportAttendanceToCSV = () => {
     const headers = ["ID", "Operator", "Site", "Date", "Check-In", "Check-Out", "Status", "Total Hours", "Late Minutes", "Location", "Notes"];
-    const csvData = attendanceData.map(item => [
+    const csvData = attendances.map(item => [
       item.id,
       item.operator,
       item.site,
@@ -778,8 +601,8 @@ export default function HRD() {
 
   // Fungsi untuk ekspor data attendance ke Excel
   const exportAttendanceToExcel = () => {
-    const headers = ["ID", "Operator", "Site", "Date", "Check-In", "Check-Out", "Status", "Total Hours", "Late Minutes", "Location", "Notes"];
-    const csvData = attendanceData.map(item => [
+    const headers = ["ID", "Operator", "Site", "Date", "Check-In", "Check-Out", "Status", "Distance To Site", "Late Minutes", "Location", "Notes"];
+    const csvData = attendances.map(item => [
       item.id,
       item.operator,
       item.site,
@@ -787,7 +610,7 @@ export default function HRD() {
       item.checkIn,
       item.checkOut,
       item.status,
-      item.totalHours,
+      item.distanceToSite,
       item.lateMinutes,
       item.location,
       item.notes
@@ -802,7 +625,7 @@ export default function HRD() {
     const link = document.createElement("a");
     const url = URL.createObjectURL(blob);
     link.setAttribute("href", url);
-    link.setAttribute("download", `attendance_data_${new Date().toISOString().split('T')[0]}.xlsx`);
+    link.setAttribute("download", `attendance_data_${new Date().toISOString().split('T')[0]}.csv`);
     link.style.visibility = 'hidden';
     document.body.appendChild(link);
     link.click();
@@ -814,10 +637,10 @@ export default function HRD() {
     const headers = ["ID", "Nama Shift", "Hari", "Waktu Mulai", "Waktu Selesai", "Site", "Maks Operator", "Operator Ditugaskan"];
     
     const csvData = shifts.map(shift => {
-      const site = sites.find(s => s.id === shift.siteId);
+      const site = sitesData.find(s => s.id === shift.siteId);
       const assignedOperatorNames = (shift.assignedOperators || [])
         .map(opId => {
-          const operator = operators.find(o => o.id === opId);
+          const operator = operatorsData.find(o => o.id === opId);
           return operator ? operator.name : `Operator ${opId}`;
         })
         .join("; ");
@@ -867,7 +690,7 @@ export default function HRD() {
 
   // Fungsi untuk mendapatkan operator yang tersedia untuk shift (SRS: Tambah Shift Operator)
   const getAvailableOperatorsForShift = (shiftId = null, dayOfWeek = null) => {
-    return operators.filter(operator => {
+    return operatorsData.filter(operator => {
       // Filter hanya operator aktif
       if (operator.status !== "active") return false;
       
@@ -879,7 +702,7 @@ export default function HRD() {
       });
       
       // Cek apakah operator memiliki cuti/izin
-      const hasLeave = leaveRequests.some(leave => 
+      const hasLeave = leaveData.some(leave => 
         leave.operatorId === operator.id && 
         leave.status === "approved" &&
         isDateInLeaveRange(dayOfWeek, leave)
@@ -902,13 +725,6 @@ export default function HRD() {
   const handleAddShift = () => {
     if (!shiftForm.name || !shiftForm.siteId || !shiftForm.dayOfWeek) {
       alert("Please fill all required fields");
-      return;
-    }
-
-    // Validasi jumlah operator tidak melebihi kapasitas site (maksimal 12)
-    const selectedSite = sites.find(s => s.id === parseInt(shiftForm.siteId));
-    if (selectedSite && shiftForm.maxOperators > 12) {
-      alert(`Jumlah operator melebihi kapasitas maksimal. Maksimal: 12 operator`);
       return;
     }
 
@@ -1027,7 +843,7 @@ export default function HRD() {
     }
 
     if (editingSite) {
-      const updatedSites = sites.map(site =>
+      const updatedSites = sitesData.map(site =>
         site.id === editingSite.id ? { ...site, ...dataToUse, id: editingSite.id } : site
       );
       setSites(updatedSites);
@@ -1044,11 +860,11 @@ export default function HRD() {
       setNotifications((prev) => [newNotification, ...prev]);
     } else {
       const newSite = {
-        id: sites.length > 0 ? Math.max(...sites.map(s => s.id)) + 1 : 1,
+        id: sitesData.length > 0 ? Math.max(...sitesData.map(s => s.id)) + 1 : 1,
         ...dataToUse,
         status: "active",
       };
-      setSites([...sites, newSite]);
+      setSites([...sitesData, newSite]);
       
       const newNotification = {
         id: Date.now(),
@@ -1081,8 +897,8 @@ export default function HRD() {
 
   const handleDeleteSite = (id) => {
     if (window.confirm("Are you sure you want to delete this site?")) {
-      const siteToDelete = sites.find(site => site.id === id);
-      setSites(sites.filter(site => site.id !== id));
+      const siteToDelete = sitesData.find(site => site.id === id);
+      setSites(sitesData.filter(site => site.id !== id));
       
       const newNotification = {
         id: Date.now(),
@@ -1099,13 +915,20 @@ export default function HRD() {
 
   // ==================== FUNGSI LEAVE MANAGEMENT ====================
 
-  const handleApproveLeave = (id) => {
-    const updatedLeaveRequests = leaveRequests.map(request =>
+  const handleApproveLeave = async (id) => {
+    const updatedLeaveRequests = leaveData.map(request =>
       request.id === id ? { ...request, status: "approved" } : request
     );
+    const leave = leaveData.find(item => item.id === id);
+    const type = (leave.type === "izin" ? "ijin" : "libur")
+    const actualId = leave.actualId 
+    const response = await approveLeave({id: actualId, type})
+    if(!response){
+        return
+    }
     setLeaveRequests(updatedLeaveRequests);
 
-    const approvedLeave = leaveRequests.find(request => request.id === id);
+    const approvedLeave = leaveData.find(request => request.id === id);
     const newNotification = {
       id: Date.now(),
       title: "Leave Request Approved",
@@ -1118,13 +941,22 @@ export default function HRD() {
     setNotifications((prev) => [newNotification, ...prev]);
   };
 
-  const handleRejectLeave = (id) => {
-    const updatedLeaveRequests = leaveRequests.map(request =>
+  const handleRejectLeave = async(id) => {
+    const updatedLeaveRequests = leaveData.map(request =>
       request.id === id ? { ...request, status: "rejected" } : request
     );
+    const leave = leaveData.find(item => item.id === id);
+    const type = (leave.type === "izin" ? "ijin" : "libur")
+    const actualId = leave.actualId 
+    const response = await approveLeave({id: actualId, type})
+    if(!response){
+        return
+    }
     setLeaveRequests(updatedLeaveRequests);
 
-    const rejectedLeave = leaveRequests.find(request => request.id === id);
+    setLeaveRequests(updatedLeaveRequests);
+
+    const rejectedLeave = leaveData.find(request => request.id === id);
     const newNotification = {
       id: Date.now(),
       title: "Leave Request Rejected",
@@ -1212,10 +1044,10 @@ export default function HRD() {
       const dayName = dayNames[date.getDay()];
 
       // Data attendance untuk hari tersebut
-      const dayAttendance = attendanceData.filter(item => item.date === dateStr);
+      const dayAttendance =attendances.filter(item => item.date === dateStr)
       
       // Hitung jumlah operator yang seharusnya bekerja hari itu
-      const expectedOperators = operators.filter(op => {
+      const expectedOperators = operatorsData.filter(op => {
         // Cek apakah operator memiliki shift di hari ini
         return shifts.some(shift => 
           shift.assignedOperators?.includes(op.id) && 
@@ -1251,19 +1083,19 @@ export default function HRD() {
   // Hitung data pie chart untuk hari ini berdasarkan perhitungan realistis
   const calculateTodayStatusData = () => {
     const today = new Date().toISOString().split('T')[0];
-    const todayAttendance = attendanceData.filter(item => item.date === today);
+    const todayAttendance = attendances.filter(item => item.date === today);
     
-    const approved = todayAttendance.filter(item => item.status === "approved");
+
     const pending = todayAttendance.filter(item => item.status === "pending");
     const rejected = todayAttendance.filter(item => item.status === "rejected");
     
-    const present = approved.length;
-    const late = approved.filter(item => item.lateMinutes > 0).length;
+    const present = todayAttendance.filter(item => item.attendanceStatus === "ontime" || item.status == "approved");
+    const late = todayAttendance.filter(item => item.attendanceStatus === "late");
     const absent = rejected.length;
     const notProcessed = pending.length;
     
     // Total operator yang dijadwalkan hari ini
-    const scheduledToday = dashboardData.operatorsWithShiftToday || operators.length * 0.7;
+    const scheduledToday = dashboardData.operatorsWithShiftToday || operatorsData.length * 0.7;
     
     return [
       { status: "Present", value: Math.round((present / scheduledToday) * 100), color: "#10B981" },
@@ -1280,7 +1112,7 @@ export default function HRD() {
     const operatorAttendanceMap = {};
     
     // Hitung kehadiran setiap operator
-    attendanceData.forEach(attendance => {
+    attendances.forEach(attendance => {
       if (!operatorAttendanceMap[attendance.operatorId]) {
         operatorAttendanceMap[attendance.operatorId] = { total: 0, present: 0 };
       }
@@ -1293,7 +1125,7 @@ export default function HRD() {
     // Hitung persentase dan urutkan
     const performers = Object.entries(operatorAttendanceMap)
       .map(([operatorId, stats]) => {
-        const operator = operators.find(op => op.id === parseInt(operatorId));
+        const operator = operatorsData.find(op => op.id === parseInt(operatorId));
         const percentage = stats.total > 0 ? Math.round((stats.present / stats.total) * 100) : 0;
         
         return {
@@ -1320,7 +1152,7 @@ export default function HRD() {
 
   const topPerformersData = calculateTopPerformers();
 
-  const recentAttendanceData = attendanceData
+  const recentAttendanceData = attendances
     .sort((a, b) => new Date(b.date) - new Date(a.date))
     .slice(0, 4)
     .map((item) => ({
@@ -1361,7 +1193,7 @@ export default function HRD() {
 
   const pieChartData = calculatePieChart();
 
-  const filteredData = attendanceData.filter((item) => {
+  const filteredData = attendances.filter((item) => {
     const matchesSearch =
       item.operator.toLowerCase().includes(searchQuery.toLowerCase()) ||
       item.site.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -1377,11 +1209,11 @@ export default function HRD() {
   });
 
   const stats = {
-    total: attendanceData.length,
-    pending: attendanceData.filter((item) => item.status === "pending").length,
-    approved: attendanceData.filter((item) => item.status === "approved")
+    total: attendances.length,
+    pending: attendances.filter((item) => item.status === "pending").length,
+    approved: attendances.filter((item) => item.status === "approved")
       .length,
-    rejected: attendanceData.filter((item) => item.status === "rejected")
+    rejected: attendances.filter((item) => item.status === "rejected")
       .length,
   };
 
@@ -1723,7 +1555,7 @@ export default function HRD() {
                 <div className="grid grid-cols-2 gap-4">
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-1">
-                      Kapasitas Operator (Maksimal 12)
+                      Kapasitas Operator
                     </label>
                     <div className="relative">
                       <input
@@ -2042,7 +1874,7 @@ export default function HRD() {
                         {upcomingShifts
                           .find(d => d.dayOfWeek === shiftForm.dayOfWeek)
                           ?.shifts.map((shift, idx) => {
-                            const site = sites.find(s => s.id === shift.siteId);
+                            const site = sitesData.find(s => s.id === shift.siteId);
                             
                             return (
                               <div key={idx} className="flex items-center justify-between p-3 bg-gray-50 rounded border border-gray-200">
@@ -2054,7 +1886,6 @@ export default function HRD() {
                                   <div className="mt-1 flex items-center gap-3 text-sm text-gray-600">
                                     <span>Site: {site ? site.name : "Unknown"}</span>
                                     <span>•</span>
-                                    <span>Operator: {shift.assignedOperators?.length || 0}/12 (maksimal 12)</span>
                                   </div>
                                 </div>
                               </div>
@@ -2154,7 +1985,7 @@ export default function HRD() {
                       setShiftForm({ ...shiftForm, siteId: newSiteId });
                       
                       // Update max operators berdasarkan kapasitas site (maksimal 12)
-                      const selectedSite = sites.find(s => s.id === parseInt(newSiteId));
+                      const selectedSite = sitesData.find(s => s.id === parseInt(newSiteId));
                       if (selectedSite && shiftForm.maxOperators > 12) {
                         setShiftForm(prev => ({ ...prev, maxOperators: 12 }));
                       }
@@ -2162,9 +1993,9 @@ export default function HRD() {
                     className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 appearance-none bg-white"
                   >
                     <option value="">Select Opsi</option>
-                    {sites.map((site) => (
+                    {sitesData.map((site) => (
                       <option key={site.id} value={site.id}>
-                        {site.name} - {site.location} (Kapasitas: maksimal 12 operator)
+                        {site.name} - {site.location}
                       </option>
                     ))}
                   </select>
@@ -2190,7 +2021,7 @@ export default function HRD() {
                 </div>
                 {shiftForm.siteId && (
                   <p className="text-xs text-gray-500 mt-1">
-                    Kapasitas site: {sites.find(s => s.id === parseInt(shiftForm.siteId))?.capacity || 0} operators (maksimal 12)
+                    Kapasitas site: {sitesData.find(s => s.id === parseInt(shiftForm.siteId))?.capacity || 0} operators (maksimal 12)
                   </p>
                 )}
               </div>
@@ -2408,10 +2239,10 @@ export default function HRD() {
                 <div className="grid grid-cols-2 gap-4">
                   <div>
                     <label className="text-sm font-medium text-gray-700">
-                      Total Hours
+                      Distance to Site
                     </label>
                     <p className="mt-1 text-sm text-gray-900">
-                      {selectedAttendance.totalHours} hours
+                      {selectedAttendance.distanceToSite} m
                     </p>
                   </div>
 
@@ -2560,7 +2391,7 @@ export default function HRD() {
           setShowSiteForm={setShowSiteForm}
           editingSite={editingSite}
           setEditingSite={setEditingSite}
-          sites={sites}
+          sites={sitesData}
           handleAddSite={handleAddSite}
           siteFormRef={siteFormRef}
           siteForm={siteForm}
@@ -2872,7 +2703,7 @@ export default function HRD() {
                 {
                   label: "Total Operators",
                   value: dashboardData.totalOperators,
-                  percent: `Aktif: ${operators.filter(op => op.status === 'active').length}`,
+                  percent: `Aktif: ${operatorsData.filter(op => op.status === 'active').length}`,
                   icon: UsersIcon,
                   bgColor: "bg-blue-50",
                   iconColor: "text-blue-600",
@@ -2892,7 +2723,7 @@ export default function HRD() {
                 },
                 {
                   label: "Attendance Rate",
-                  value: `${dashboardData.attendanceRate}%`,
+                  value: `${dashboardData.attendanceRate?.toFixed(2)}%`,
                   percent: ``,
                   icon: ChartBarIcon,
                   bgColor: dashboardData.attendanceRate >= 95 ? "bg-green-50" : "bg-orange-50",
@@ -2966,7 +2797,7 @@ export default function HRD() {
       <div className="space-y-2">
         {getUpcomingShifts(shifts, 3).map((day, index) => {
           return day.shifts.slice(0, 1).map((shift, idx) => {
-            const site = sites.find(s => s.id === shift.siteId);
+            const site = sitesData.find(s => s.id === shift.siteId);
             return (
               <div
                 key={`${index}-${idx}`}
@@ -3004,7 +2835,7 @@ export default function HRD() {
             Site Management
           </h3>
           <p className="text-xs sm:text-sm text-gray-600">
-            Total sites: {sites.length}
+            Total sites: {sitesData.length}
           </p>
         </div>
         <div className="p-2 bg-green-50 rounded-lg">
@@ -3012,7 +2843,7 @@ export default function HRD() {
         </div>
       </div>
       <div className="space-y-2">
-        {sites.slice(0, 3).map((site, index) => (
+        {sitesData.slice(0, 3).map((site, index) => (
           <div
             key={index}
             className="flex items-center justify-between p-2 bg-gray-50 rounded"
@@ -3023,9 +2854,6 @@ export default function HRD() {
               </p>
               <p className="text-xs text-gray-600">{site.location}</p>
             </div>
-            <span className="text-xs bg-green-100 text-green-800 px-2 py-1 rounded">
-              {site.capacity} ops (maksimal 12)
-            </span>
           </div>
         ))}
       </div>
@@ -3051,7 +2879,7 @@ export default function HRD() {
           <p className="text-xs sm:text-sm text-gray-600">
             Pending:{" "}
             {
-              leaveRequests.filter((r) => r.status === "pending")
+              leaveData.filter((r) => r.status === "pending")
                 .length
             }
           </p>
@@ -3061,7 +2889,7 @@ export default function HRD() {
         </div>
       </div>
       <div className="space-y-2">
-        {leaveRequests.slice(0, 3).map((request, index) => (
+        {leaveData.slice(0, 3).map((request, index) => (
           <div
             key={index}
             className="flex items-center justify-between p-2 bg-gray-50 rounded"
@@ -3100,7 +2928,7 @@ export default function HRD() {
             {/* CHARTS SECTION */}
             <div className="grid grid-cols-1 xl:grid-cols-2 gap-3 sm:gap-4 lg:gap-6 mb-4 sm:mb-6">
               {/* Weekly Attendance Chart */}
-              <div className="bg-white p-3 sm:p-4 lg:p-6 rounded-lg sm:rounded-xl lg:rounded-2xl border border-gray-200 shadow-sm sm:shadow-md">
+              {/*<div className="bg-white p-3 sm:p-4 lg:p-6 rounded-lg sm:rounded-xl lg:rounded-2xl border border-gray-200 shadow-sm sm:shadow-md">
                 <div className="flex justify-between items-center mb-3 sm:mb-4 lg:mb-5">
                   <h3 className="font-semibold text-base sm:text-lg text-gray-800">
                     Weekly Attendance Trends
@@ -3170,10 +2998,10 @@ export default function HRD() {
                     </div>
                   </div>
                 </div>
-              </div>
+              </div>*/}
 
               {/* Today's Status Pie Chart */}
-              <div className="bg-white p-3 sm:p-4 lg:p-6 rounded-lg sm:rounded-xl lg:rounded-2xl border border-gray-200 shadow-sm sm:shadow-md">
+              {/*<div className="bg-white p-3 sm:p-4 lg:p-6 rounded-lg sm:rounded-xl lg:rounded-2xl border border-gray-200 shadow-sm sm:shadow-md">
                 <div className="flex justify-between items-center mb-3 sm:mb-4 lg:mb-5">
                   <h3 className="font-semibold text-base sm:text-lg text-gray-800">
                     Today's Status Distribution
@@ -3227,7 +3055,7 @@ export default function HRD() {
                     ))}
                   </div>
                 </div>
-              </div>
+              </div>*/}
             </div>
 
         {/* RECENT ACTIVITIES SECTION */}
@@ -3252,7 +3080,7 @@ export default function HRD() {
           className="flex items-center justify-between p-2 sm:p-3 border-b border-gray-100 last:border-0 hover:bg-gray-50 transition-colors cursor-pointer"
           onClick={() =>
             openDetailModal(
-              attendanceData.find((a) => a.id === attendance.id)
+              attendances.find((a) => a.id === attendance.id)
             )
           }
         >
@@ -3293,12 +3121,12 @@ export default function HRD() {
                     Lihat Presensi Operator
                   </h1>
                   <p className="text-gray-600 text-sm sm:text-base">
-                    {attendanceData.filter(item => item.status === "pending").length === 0 
+                    {attendances.filter(item => item.status === "pending").length === 0 
                       ? "Semua data presensi telah divalidasi" 
                       : "Review and validate operator attendance records"}
                   </p>
                   <div className="text-sm text-blue-600 mt-1">
-                    {attendanceData.filter(item => item.status === "pending").length > 0 
+                    {attendances.filter(item => item.status === "pending").length > 0 
                       ? "Data perlu validasi HRD" 
                       : "Data tersinkronisasi dengan Admin & Operator"}
                   </div>
@@ -3358,7 +3186,7 @@ export default function HRD() {
                       </div>
                       <p className="text-2xl sm:text-3xl font-bold text-gray-900 mb-1">{item.value}</p>
                       <p className="text-xs sm:text-sm text-gray-500">
-                        {item.label === "Total Records" ? `Minggu ini: ${attendanceData.filter(a => {
+                        {item.label === "Total Records" ? `Minggu ini: ${attendances.filter(a => {
                           const weekAgo = new Date();
                           weekAgo.setDate(weekAgo.getDate() - 7);
                           return new Date(a.date) >= weekAgo;
@@ -3370,7 +3198,7 @@ export default function HRD() {
               </div>
 
               {/* UPDATE: Alternative flows - Data presensi operator belum divalidasi sama sekali, maka sistem akan menampilkan data presensi kosong */}
-              {attendanceData.length === 0 ? (
+              {attendances.length === 0 ? (
                 <div className="bg-white p-8 rounded-xl shadow-sm border border-gray-200 text-center">
                   <DocumentTextIcon className="w-16 h-16 text-gray-300 mx-auto mb-4" />
                   <h3 className="text-lg font-medium text-gray-900 mb-2">Data Presensi Kosong</h3>
@@ -3527,7 +3355,6 @@ export default function HRD() {
                               <div className="col-span-3 flex items-center">
                                 <div>
                                   <p className="font-medium text-gray-900">{item.operator}</p>
-                                  <p className="text-sm text-gray-500 mt-0.5">Dikirim oleh: {item.submittedBy === "admin" ? "Admin" : "Operator"}</p>
                                 </div>
                               </div>
                               <div className="col-span-2 flex items-center"><p className="text-gray-700 truncate">{item.site}</p></div>
@@ -3583,7 +3410,7 @@ export default function HRD() {
                   </div>
                 </>
               )}
-              {filteredData.length === 0 && attendanceData.length > 0 && (
+              {filteredData.length === 0 && attendances.length > 0 && (
                 <div className="text-center py-12">
                   <div className="max-w-md mx-auto">
                     <div className="w-24 h-24 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-6">
@@ -3700,7 +3527,7 @@ export default function HRD() {
                     </div>
                     <div className="space-y-3">
                       {day.shifts.map((shift, idx) => {
-                        const site = sites.find(s => s.id === shift.siteId);
+                        const site = sitesData.find(s => s.id === shift.siteId);
                         const assignedCount = shift.assignedOperators?.length || 0;
                         return (
                           <div key={idx} className="flex items-center justify-between p-3 bg-gray-50 rounded border border-gray-200">
@@ -3712,7 +3539,6 @@ export default function HRD() {
                               <div className="mt-1 flex items-center gap-3 text-sm text-gray-600">
                                 <span>Site: {site ? site.name : 'Unknown'}</span>
                                 <span>•</span>
-                                <span>Operator: {assignedCount}/12 (maksimal 12)</span>
                               </div>
                             </div>
                             <button
@@ -3759,10 +3585,10 @@ export default function HRD() {
 
                 <div className="divide-y divide-gray-200">
                   {shifts.map((shift) => {
-                    const site = sites.find(s => s.id === shift.siteId);
+                    const site = sitesData.find(s => s.id === shift.siteId);
                     const assignedOperatorNames = (shift.assignedOperators || [])
                       .map(opId => {
-                        const operator = operators.find(o => o.id === opId);
+                        const operator = operatorsData.find(o => o.id === opId);
                         return operator ? operator.name : `Operator ${opId}`;
                       })
                       .join(", ");
@@ -3777,9 +3603,6 @@ export default function HRD() {
                                 {site ? `${site.name}` : 'Unknown Site'} • {shift.dayOfWeek}
                               </p>
                             </div>
-                            <span className="bg-blue-100 text-blue-800 text-xs font-medium px-2 py-1 rounded flex-shrink-0">
-                              {(shift.assignedOperators?.length || 0)}/12 ops (maksimal 12)
-                            </span>
                           </div>
                           
                           <div className="grid grid-cols-2 gap-4">
@@ -3845,9 +3668,6 @@ export default function HRD() {
                               <p className="text-gray-700 truncate text-sm">
                                 {assignedOperatorNames || "Belum ada operator"}
                               </p>
-                              <p className="text-xs text-gray-500 mt-0.5">
-                                {(shift.assignedOperators?.length || 0)}/12 operators (maksimal 12)
-                              </p>
                             </div>
                           </div>
                           <div className="col-span-3 flex items-center justify-center gap-2">
@@ -3902,7 +3722,7 @@ export default function HRD() {
               </div>
             </div>
 
-            {sites.length === 0 ? (
+            {sitesData.length === 0 ? (
               <div className="bg-white p-8 rounded-xl shadow-sm border border-gray-200 text-center">
                 <BuildingOfficeIcon className="w-16 h-16 text-gray-300 mx-auto mb-4" />
                 <h3 className="text-lg font-medium text-gray-900 mb-2">Belum Ada Site Terdaftar</h3>
@@ -3929,7 +3749,7 @@ export default function HRD() {
                 </div>
 
                 <div className="divide-y divide-gray-200">
-                  {sites.map((site) => (
+                  {sitesData.map((site) => (
                     <div key={site.id} className="block lg:grid lg:grid-cols-12 lg:gap-4 px-4 sm:px-6 py-4 hover:bg-gray-50 transition-colors">
                       <div className="lg:hidden space-y-4">
                         <div className="flex justify-between items-start">
@@ -3937,9 +3757,6 @@ export default function HRD() {
                             <h3 className="font-semibold text-gray-900 text-base sm:text-lg truncate">{site.name}</h3>
                             <p className="text-gray-500 text-sm mt-1 truncate">{site.location}</p>
                           </div>
-                          <span className="bg-green-100 text-green-800 text-xs font-medium px-2 py-1 rounded flex-shrink-0">
-                            Kapasitas: {site.capacity} (maksimal 12)
-                          </span>
                         </div>
                         
                         <div>
@@ -3983,7 +3800,6 @@ export default function HRD() {
                         <div className="col-span-3 flex items-center">
                           <div>
                             <p className="font-medium text-gray-900">{site.name}</p>
-                            <p className="text-sm text-gray-500 mt-0.5">Kapasitas: {site.capacity} operators (maksimal 12)</p>
                           </div>
                         </div>
                         <div className="col-span-2 flex items-center">
@@ -4040,7 +3856,7 @@ export default function HRD() {
                 <div className="flex items-center justify-between mb-4">
                   <h3 className="font-semibold text-lg text-gray-800">Pending Requests</h3>
                   <span className="bg-yellow-100 text-yellow-800 text-sm font-medium px-3 py-1 rounded-full">
-                    {leaveRequests.filter(r => r.status === 'pending').length}
+                    {leaveData.filter(r => r.status === 'pending').length}
                   </span>
                 </div>
                 <p className="text-gray-600">Permohonan menunggu persetujuan</p>
@@ -4049,7 +3865,7 @@ export default function HRD() {
                 <div className="flex items-center justify-between mb-4">
                   <h3 className="font-semibold text-lg text-gray-800">Disetujui</h3>
                   <span className="bg-green-100 text-green-800 text-sm font-medium px-3 py-1 rounded-full">
-                    {leaveRequests.filter(r => r.status === 'approved').length}
+                    {leaveData.filter(r => r.status === 'approved').length}
                   </span>
                 </div>
                 <p className="text-gray-600">Permohonan yang telah disetujui</p>
@@ -4058,7 +3874,7 @@ export default function HRD() {
                 <div className="flex items-center justify-between mb-4">
                   <h3 className="font-semibold text-lg text-gray-800">Ditolak</h3>
                   <span className="bg-red-100 text-red-800 text-sm font-medium px-3 py-1 rounded-full">
-                    {leaveRequests.filter(r => r.status === 'rejected').length}
+                    {leaveData.filter(r => r.status === 'rejected').length}
                   </span>
                 </div>
                 <p className="text-gray-600">Permohonan yang telah ditolak</p>
@@ -4075,14 +3891,14 @@ export default function HRD() {
               </div>
 
               <div className="divide-y divide-gray-200">
-                {leaveRequests.length === 0 ? (
+                {leaveData.length === 0 ? (
                   <div className="text-center py-12 text-gray-500">
                     <CalendarIcon className="w-12 h-12 text-gray-300 mx-auto mb-4" />
                     <p className="text-lg font-medium text-gray-900 mb-2">Belum ada permohonan</p>
                     <p className="text-gray-600">Semua permohonan telah diproses</p>
                   </div>
                 ) : (
-                  leaveRequests.map((request) => (
+                  leaveData.map((request) => (
                     <div key={request.id} className="block lg:grid lg:grid-cols-12 lg:gap-4 px-4 sm:px-6 py-4 hover:bg-gray-50 transition-colors">
                       <div className="lg:hidden space-y-4">
                         <div className="flex justify-between items-start">
@@ -4226,18 +4042,3 @@ export default function HRD() {
     </div>
   );
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

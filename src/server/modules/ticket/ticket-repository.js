@@ -117,4 +117,114 @@ export class TicketRepository {
             throw new ResponseError(500, "Failed when trying to retrieve ticket from database")
         }
     }
+
+    static async getAll(data){
+        try {
+            const skip = (data.page - 1) * data.size;
+            
+
+            const [tickets, count] = await PrismaClient.$transaction([
+                PrismaClient.ticket.findMany({ 
+                    select:{
+                        id: true,
+                        user: {
+                            select: {
+                                id: true,
+                                username: true,
+                                profile: {
+                                    select: {name: true}
+                                },
+                            }
+                        },
+                        site: {select: { name: true }},
+                        deskripsi: true,
+                        createdAt: true,
+                        status: true,
+                        prioritas: true,
+                        kategori: true,
+                        gambar: true,
+                        feedback: {
+                            select: {
+                                feedback: true,
+                                user: {select: {
+                                    username: true,
+                                    profile: {select: {name: true}}
+                                }}
+                            }
+                        },
+                        resolvedAt: true,
+                        
+                    },
+                    orderBy: {
+                        createdAt: 'desc',
+                    },
+                    take: data.size,
+                    skip: skip
+                }),
+                PrismaClient.ticket.count({})
+            ])
+            
+            return {tickets, count};
+        } catch (error) {
+            throw new ResponseError(500, "Failed when trying to retrieve list of tickets")
+        }
+    }
+
+    static async respond({ticketId, feedback, ticketStatus, resolverId}){
+        try {
+            const ticket = await PrismaClient.ticket.count({where:{id: ticketId}})
+            if(!ticket){throw new ResponseError(500, "")}
+            
+            let resolvedAt
+            if(ticketStatus === "APPROVED"){
+                resolvedAt = new Date()
+            }
+            const updatedTicket = await PrismaClient.ticket.update({
+                where: {
+                    id: ticketId
+                },
+                
+                data: {
+                    status: ticketStatus,
+                    ...(resolvedAt && {resolvedAt}),
+                    feedback: {
+                        upsert: {
+                            where: {
+                                ticketId: ticketId,
+                            },
+                            update: {
+                                feedback,
+                            },
+                            create: {
+                                feedback,
+                                user: {
+                                    connect: {id: resolverId}
+                                }
+                            }
+                        }
+                    }
+                },
+                select: {
+                    id: true,
+                    status: true,
+                    resolvedAt: true,
+                    feedback: {select: {
+                        feedback: true,
+                        updatedAt: true,
+                        user: {
+                            select: {
+                                username: true,
+                                profile: { select: {name: true}}
+                            }
+                        }
+                    }},
+                    userId: true
+                }
+            })
+
+            return updatedTicket
+        } catch (error) {
+            throw new ResponseError(500, error)
+        }
+    }
 }

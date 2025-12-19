@@ -43,3 +43,6 @@ test.rest
 
 #prisma generated file
 /src/server/db/generated
+
+src/features/admin
+src/features/operator

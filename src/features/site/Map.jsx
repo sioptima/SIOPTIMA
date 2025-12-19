@@ -9,16 +9,16 @@ import { useMapEvents } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css'
 
 // init starting position(surabaya)
-const center = {
+const defaultCenter = {
   lat: -7.258498950611202,
   lng: 112.73263343599092
 }
 
-function Map({onPositionChange}) {
+function Map({onPositionChange, center}) {
     return (
         <div>
           <MapContainer
-              center={center}
+              center={center || defaultCenter}
               zoom={13}
               scrollWheelZoom={true}
               style={{
@@ -29,15 +29,15 @@ function Map({onPositionChange}) {
                 attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
               />
-              <DraggableMarker onPositionChange={onPositionChange}/> {/**callback */}
+              <DraggableMarker onPositionChange={onPositionChange} pos={center}/> {/**callback */}
           </MapContainer>
         </div>
     )
 }
 
 
-function DraggableMarker({onPositionChange}) {
-  const [position, setPosition] = useState(null)
+function DraggableMarker({onPositionChange, pos}) {
+  const [position, setPosition] = useState(pos || null)
   const markerRef = useRef(null)
 
   // Handle click events on the map

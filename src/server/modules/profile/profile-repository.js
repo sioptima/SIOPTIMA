@@ -37,7 +37,7 @@ export class ProfileRepository {
                 }
             })
         } catch (error) {
-            throw new ResponseError(500, error.message)
+            throw new ResponseError(500, "Failed when trying to get current user profile data")
         }
     }
 

@@ -1,5 +1,5 @@
 import { SiteService } from "@/src/server/modules/site/site-service";
-import { requireRole } from "@/src/server/utils/auth";
+import { getUser, requireRole } from "@/src/server/utils/auth";
 
 export async function POST(request) {
   try {
@@ -25,7 +25,7 @@ export async function POST(request) {
 
 export async function GET(request) {
   try {
-    await requireRole("ADMIN");
+    await getUser();
     const searchParams = request.nextUrl.searchParams;
     const parameter = {
       page: searchParams.get("page") || 1,
@@ -35,7 +35,7 @@ export async function GET(request) {
     return Response.json({
        success: true, 
        message: "Sites retrieved" ,
-       data: result.data.sites,
+       data: result.data,
        pagination: {
          page: result.paging.current_page,
          limit: result.paging.size,

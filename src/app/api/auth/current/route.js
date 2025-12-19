@@ -1,16 +1,13 @@
-import { getUser } from "@/src/server/utils/auth";
+import { UserService } from "@/src/server/modules/user/user-service";
 
 export async function GET() {
     try {
-      const session = await getUser();
+      const result = await UserService.whoAmI()
       return Response.json(
         {
          success: true, 
          message: "User retrieved" ,
-         data: {
-          userId: session?.userId,
-          role: session?.role,
-         }
+         data: result
         },
         { status: 200 }
       );

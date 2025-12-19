@@ -46,10 +46,14 @@ export class PresensiService{
         //if multiple grab oldest that is 'open'(no check in associated yet)
         const shift = await ShiftRepository.findToday({start: startOfDay, end: endOfDay, userId: user.userId})
         //check ontime/late status
-        let isLate; 
         if(!shift){
-            isLate = true; // if no shift found default to late
-        } else if (checkInDateUTC >= shift.shiftDate) {
+            throw new ResponseError(400, 
+                "No shift were found for this check-in, make sure you have been assigned a shift schedule for the checkin day",
+            )    
+        }
+
+        let isLate = false
+        if (checkInDateUTC >= shift.shiftDate) {
             isLate = true;
         }
 
@@ -88,17 +92,21 @@ export class PresensiService{
         const result = await PresensiRepository.updateCheckInImage({imageLink: imageLink, presensiId: checkIn.id})
         const transformedResult = {
             id: result.id,
-            shiftStart: (shift) ? shift.shiftDate.toLocaleTimeString() : "--:--",
-            checkInTime: result.presensiDate.toLocaleTimeString(),
-            status: result.statusPresensi,
-            approvalStatus: result.statusApproval,
-            distanceToSite: (result.distanceToSite !== null) ? `${Math.ceil(result.distanceToSite)} m` : "-",
-        }
-        if(!shift){
-            throw new ResponseError(200, 
-                "Attendance recorded but no shift were found for this check-in, make sure you have been assigned a shift schedule for the checkin day", 
-                true,
-                transformedResult)
+            date: result.presensiDate,
+            checkIn: result.presensiDate.toLocaleTimeString(),
+            checkOut: "--:--",
+            location: result.shift?.site.name || "-",
+            status: result.statusPresensi.toLowerCase(),
+            approvalStatus: result.statusApproval.toLowerCase(),
+            checkInStatus: result.statusPresensi.toLowerCase(),
+            checkInLocation: `${result.latitude} ${result.longitude}`,
+            checkOutLocation: "--:--",
+            selfieCheckIn: result.fotoDiri,
+            selfieCheckOut: null,
+            approvedBy: null,
+            approvedAt: null,
+            locationStatus: "-",
+            distanceToSite: Math.ceil(result.distanceToSite),
         }
         //return result
         return {
@@ -154,7 +162,7 @@ export class PresensiService{
                 {
                     id: checkOut.id,
                     checkOutTime: checkOut.checkOutDate.toLocaleTimeString(),
-                    approvalStatus: checkOut.checkIn.statusApproval
+                    approvalStatus: checkOut.checkIn.statusApproval.toLowerCase()
                 })
         }
         const imageLink = uploadImageData.data.ufsUrl;
@@ -174,9 +182,15 @@ export class PresensiService{
         //return result
         return {
             id: result.id,
-            checkOutTime: result.checkOutDate.toLocaleTimeString(),
-            approvalStatus: result.checkIn.statusApproval,
-            distanceToSite: (result.distanceToSite !== null) ? `${Math.ceil(result.distanceToSite)} m` : "-",
+            checkOut: result.checkOutDate.toLocaleTimeString(),
+            checkOutTime: result.checkOutDate.toLocaleTimeString(), //idek why fe use 2
+            checkOutLocation: result.checkIn.shift.site.name || "-",
+            status: result.checkIn.statusPresensi.toLowerCase(),
+            approvalStatus: result.checkIn.statusApproval.toLowerCase(),
+            selfieCheckOut: result.fotoDiri,
+            approvedAt: result.approvedAt,
+            locationStatus: `${Math.ceil(result.distanceToSite)} m`,
+            distanceToSite: Math.ceil(result.distanceToSite),
         }
     }
 
@@ -199,24 +213,22 @@ export class PresensiService{
             id: record.id,
             date: record.presensiDate.toLocaleDateString(),
             checkIn: record.presensiDate.toLocaleTimeString(),
-            checkOut: (record.checkOut) ? record.checkOut.checkOutDate.toLocaleTimeString() : null,
-            location: (record.shift?.site.name) ? record.shift.site.name : "-",
-            status: record.statusApproval,
-            approvalStatus: record.statusApproval,
-            checkInStatus: record.statusPresensi,
-            checkInLocation: {
-                Lat: record.latitude,
-                Long: record. longitude
-            },
-            checkOutLocation: {
-                Lat: (record.checkOut?.latitude) ? record.checkOut.latitude : "-",
-                Long: (record.checkOut?.longitude) ? record. checkOut.longitude : "-"
-            },
-            selfieCheckIn: (record.fotoDiri) ? record.fotoDiri : "-",
-            selfieCheckOut: (record.checkOut?.fotoDiri) ? record.checkOut.fotoDiri : "-",
+            IscheckedIn: true,
+            IscheckedOut: (record.checkOut) ? true : false,
+            checkOut: (record.checkOut) ? record.checkOut.checkOutDate.toLocaleTimeString() : "--:--",
+            location: (record.shift?.site.name) ? record.shift.site.name : "blank",
+            status: record.statusApproval.toLowerCase(),
+            approvalStatus: record.statusApproval.toLowerCase(),
+            checkInStatus: record.statusPresensi.toLowerCase(),
+            checkInLatitude: record.latitude,
+            checkInLongitude: record. longitude,
+            checkOutLatitude: (record.checkOut?.latitude) ? record.checkOut.latitude : "-",
+            checkOutLongitude: (record.checkOut?.longitude) ? record. checkOut.longitude : "-",
+            selfieCheckIn: (record.fotoDiri) ? record.fotoDiri : null,
+            selfieCheckOut: (record.checkOut?.fotoDiri) ? record.checkOut.fotoDiri : null,
             approvedBy: (record.approver?.username) ? record.approver.username : "-",
             approvedAt: (record.approvedAt) ? record.approvedAt : "-",
-            distanceToSite: (record.distanceToSite) ? record.distanceToSite : "-"
+            distanceToSite: (record.distanceToSite) ? Math.ceil(record.distanceToSite) : "-"
         }))
 
         return {
@@ -239,10 +251,10 @@ export class PresensiService{
             checkInTime: (record) ? record.presensiDate.toLocaleTimeString() : "--:--",
             checkOutTime: (record?.checkOut) ? record.checkOut.checkOutDate.toLocaleTimeString() : "--:--",
             location: (record.shift?.site.name) ? record.shift.site.name : null,
-            status: (record) ? record.statusPresensi : null,
+            status: (record) ? record.statusPresensi.toLowerCase() : null,
             isCheckedIn: (record.presensiDate) ? true : false,
             isCheckedOut: (record.checkOut) ? true : false,
-            distanceToSite: (record.distanceToSite) ? record.distanceToSite : "-",
+            distanceToSite: (record.distanceToSite) ? Math.ceil(record.distanceToSite) : "-",
         }
     }
 
@@ -271,9 +283,9 @@ export class PresensiService{
             checkIn: record.presensiDate.toLocaleTimeString(),
             checkOut: (record.checkOut?.checkOutDate) ? record.checkOut.checkOutDate.toLocaleTimeString() : "--:--",
             location: (record.shift?.site.name) ? record.shift.site.name : "-",
-            status: record.statusApproval,
-            approvalStatus: record.statusApproval,
-            checkInStatus: record.statusPresensi,
+            status: record.statusApproval.toLowerCase(),
+            approvalStatus: record.statusApproval.toLowerCase(),
+            checkInStatus: record.statusPresensi.toLowerCase(),
             checkInLocation: {
                 Lat: record.latitude,
                 Long: record. longitude
@@ -287,7 +299,7 @@ export class PresensiService{
             approvedBy: (record.approver?.username) ? record.approver.username : "-",
             approvedAt: (record.approvedAt) ? record.approvedAt : "-",
             notes: (record.approvedAt) ? `Attendance approved by ${record.approver.username}` : "Attendance not approved yet",
-            distanceToSite: (record.distanceToSite) ? record.distanceToSite : "-"
+            distanceToSite: (record.distanceToSite) ? Math.ceil(record.distanceToSite) : "-"
         }
 
         return recordTransform;
@@ -320,7 +332,7 @@ export class PresensiService{
 
         return {
             id: approvedRecord.id,
-            status: approvedRecord.statusApproval,
+            status: approvedRecord.statusApproval.toLowerCase(),
             approvedAt: approvedRecord.updatedAt,
             approvedBy: approvedRecord.approver.username,
             notes: approvedRecord.notes,
@@ -354,7 +366,7 @@ export class PresensiService{
 
         return {
             id: rejectedRecord.id,
-            status: rejectedRecord.statusApproval,
+            status: rejectedRecord.statusApproval.toLowerCase(),
             rejectedAt: rejectedRecord.updatedAt,
             rejectedBy: rejectedRecord.approver.username,
             notes: (rejectedRecord.notes) ? rejectedRecord.notes : undefined,
@@ -371,28 +383,38 @@ export class PresensiService{
             status: validatedReq.parameter.status,
         });
 
-        const result = attendance.presensi.map((a) => ({
+        const attendanceTransform = attendance.presensi.map((a) => ({
             id: a.id,
-            operator: {
-                id: a.userId,
-                name: (a.user.profile?.name) ? a.user.profile.name : "-",
-            },
-            site: {
-                id: (a.shift?.siteId) ? a.shift.siteId : "-",
-                name: (a.shift?.site.name) ? a.shift.site.name : "-"
-            },
-            date: a.presensiDate.toLocaleDateString(),
+            operatorName: (a.user.profile?.name) ? a.user.profile.name : a.user.username,
+            operator: (a.user.profile?.name) ? a.user.profile.name : a.user.username,
+            operatorId: a.userId,
+            site: (a.shift?.site.name) ? a.shift.site.name : "-",
+            date: a.presensiDate.toISOString().split('T')[0],
             checkIn: a.presensiDate.toLocaleTimeString(),
             checkOut: (a.checkOut?.checkOutDate) ? a.checkOut.checkOutDate.toLocaleTimeString() : "-",
-            status: a.statusApproval,
-            submittedBy: (a.user.profile?.name) ? a.user.profile.name : a.user.username,
-            location: (a.shift?.site?.name) ? a.shift.site.name : "-",
+            status: a.statusApproval.toLowerCase(),
+            attendanceStatus: a.statusPresensi.toLowerCase(),
             notes: (a.notes) ? a.notes : "-",
-            distanceToSite: (a.distanceToSite) ? a.distanceToSite : "-",
+            location: (a.shift?.site?.name) ? a.shift.site.name : "-",
+            locationStatus: "-",
+            timeStatus: "-",
+            submittedBy: (a.user.profile?.name) ? a.user.profile.name : a.user.username,
+            distanceToSite: (a.distanceToSite) ? (Math.ceil(a.distanceToSite)) : "-",
+            image: a.fotoDiri || "-",
+            totalHours: "TBA",
+            lateMinutes: 0,
+            shiftId: a.shiftid || "-",
+            photoUrl: a.fotoDiri || "-",
+            locationCoordinates: `${a.latitude},${a.longitude}`,
+            locationValid: true,
+            timeValid: true,
         }))
 
         return {
-            result,
+            data: {
+                attendanceTransform,
+                totalAttendance: attendance.count,
+            },
             paging: {
                 size: validatedReq.parameter.size,
                 total_page: Math.ceil(attendance.count / validatedReq.parameter.size),
@@ -400,5 +422,22 @@ export class PresensiService{
                 total: attendance.count
             }
         }; 
+    }
+
+    static async getActiveCheckIn(){
+        const user = await getUser()
+        //check if theres an active checkin session
+        const isActive = await PresensiRepository.getActiveCheckIn({userId: user.userId}) 
+        if(isActive){
+            const transform = {
+                checkInTime: isActive.presensiDate.toLocaleTimeString(),
+                checkOutTime: "-",
+                location: isActive.shift.site.name, //idfk whta location refer to in fe
+                status: isActive.statusPresensi.toLowerCase(),
+                isCheckedIn: true,
+                isCheckedOut: false,
+            }
+            return transform
+        }
     }
 }

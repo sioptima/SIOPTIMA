@@ -1,4 +1,4 @@
-import { ReportService } from "@/src/server/modules/report/report-service";
+import { ShiftService } from "@/src/server/modules/shift/shift-service";
 import { requireRole } from "@/src/server/utils/auth";
 
 export async function GET(request) {
@@ -6,16 +6,21 @@ export async function GET(request) {
       await requireRole("OPERATOR");
       const searchParams = request.nextUrl.searchParams;
       const parameter = {
-        format: searchParams.get("format") || "pdf",
-        startDate: searchParams.get("startDate") || null,
-        endDate: searchParams.get("endDate") || null,
-        status: searchParams.get("status") || all,
+        page: searchParams.get("page") || 1,
+        size: searchParams.get("limit") || 5,
       }
-      const result = await ReportService.export(parameter);
+
+      const result = await ShiftService.getAllByUserId(parameter);
       return Response.json({
          success: true, 
-         message: `Report exported to ${format}` ,
-         data: result
+         message: "Shifts retrieved" ,
+         data: result.result,
+         pagination: {
+          page: result.paging.current_page,
+          limit: result.paging.size,
+          total: result.paging.total,
+          totalPage: result.paging.total_page
+         }
         },
         { status: 200 }
       );

@@ -2815,37 +2815,6 @@ export namespace Prisma {
 
 
   /**
-   * Count Type TicketCountOutputType
-   */
-
-  export type TicketCountOutputType = {
-    feedback: number
-  }
-
-  export type TicketCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    feedback?: boolean | TicketCountOutputTypeCountFeedbackArgs
-  }
-
-  // Custom InputTypes
-  /**
-   * TicketCountOutputType without action
-   */
-  export type TicketCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the TicketCountOutputType
-     */
-    select?: TicketCountOutputTypeSelect<ExtArgs> | null
-  }
-
-  /**
-   * TicketCountOutputType without action
-   */
-  export type TicketCountOutputTypeCountFeedbackArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: FeedbackWhereInput
-  }
-
-
-  /**
    * Models
    */
 
@@ -20143,7 +20112,6 @@ export namespace Prisma {
     user?: boolean | UserDefaultArgs<ExtArgs>
     site?: boolean | SiteDefaultArgs<ExtArgs>
     feedback?: boolean | Ticket$feedbackArgs<ExtArgs>
-    _count?: boolean | TicketCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["ticket"]>
 
   export type TicketSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -20203,7 +20171,6 @@ export namespace Prisma {
     user?: boolean | UserDefaultArgs<ExtArgs>
     site?: boolean | SiteDefaultArgs<ExtArgs>
     feedback?: boolean | Ticket$feedbackArgs<ExtArgs>
-    _count?: boolean | TicketCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type TicketIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | UserDefaultArgs<ExtArgs>
@@ -20219,7 +20186,7 @@ export namespace Prisma {
     objects: {
       user: Prisma.$UserPayload<ExtArgs>
       site: Prisma.$SitePayload<ExtArgs>
-      feedback: Prisma.$FeedbackPayload<ExtArgs>[]
+      feedback: Prisma.$FeedbackPayload<ExtArgs> | null
     }
     scalars: $Extensions.GetPayloadResult<{
       id: number
@@ -20631,7 +20598,7 @@ export namespace Prisma {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     site<T extends SiteDefaultArgs<ExtArgs> = {}>(args?: Subset<T, SiteDefaultArgs<ExtArgs>>): Prisma__SiteClient<$Result.GetResult<Prisma.$SitePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
-    feedback<T extends Ticket$feedbackArgs<ExtArgs> = {}>(args?: Subset<T, Ticket$feedbackArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$FeedbackPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    feedback<T extends Ticket$feedbackArgs<ExtArgs> = {}>(args?: Subset<T, Ticket$feedbackArgs<ExtArgs>>): Prisma__FeedbackClient<$Result.GetResult<Prisma.$FeedbackPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -21086,11 +21053,6 @@ export namespace Prisma {
      */
     include?: FeedbackInclude<ExtArgs> | null
     where?: FeedbackWhereInput
-    orderBy?: FeedbackOrderByWithRelationInput | FeedbackOrderByWithRelationInput[]
-    cursor?: FeedbackWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: FeedbackScalarFieldEnum | FeedbackScalarFieldEnum[]
   }
 
   /**
@@ -26259,7 +26221,7 @@ export namespace Prisma {
     siteId?: IntFilter<"Ticket"> | number
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
     site?: XOR<SiteScalarRelationFilter, SiteWhereInput>
-    feedback?: FeedbackListRelationFilter
+    feedback?: XOR<FeedbackNullableScalarRelationFilter, FeedbackWhereInput> | null
   }
 
   export type TicketOrderByWithRelationInput = {
@@ -26278,7 +26240,7 @@ export namespace Prisma {
     siteId?: SortOrder
     user?: UserOrderByWithRelationInput
     site?: SiteOrderByWithRelationInput
-    feedback?: FeedbackOrderByRelationAggregateInput
+    feedback?: FeedbackOrderByWithRelationInput
   }
 
   export type TicketWhereUniqueInput = Prisma.AtLeast<{
@@ -26300,7 +26262,7 @@ export namespace Prisma {
     siteId?: IntFilter<"Ticket"> | number
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
     site?: XOR<SiteScalarRelationFilter, SiteWhereInput>
-    feedback?: FeedbackListRelationFilter
+    feedback?: XOR<FeedbackNullableScalarRelationFilter, FeedbackWhereInput> | null
   }, "id">
 
   export type TicketOrderByWithAggregationInput = {
@@ -26372,6 +26334,7 @@ export namespace Prisma {
 
   export type FeedbackWhereUniqueInput = Prisma.AtLeast<{
     id?: number
+    ticketId?: number
     AND?: FeedbackWhereInput | FeedbackWhereInput[]
     OR?: FeedbackWhereInput[]
     NOT?: FeedbackWhereInput | FeedbackWhereInput[]
@@ -26379,11 +26342,10 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"Feedback"> | Date | string
     updatedAt?: DateTimeFilter<"Feedback"> | Date | string
     deletedAt?: DateTimeNullableFilter<"Feedback"> | Date | string | null
-    ticketId?: IntFilter<"Feedback"> | number
     userId?: IntFilter<"Feedback"> | number
     ticket?: XOR<TicketScalarRelationFilter, TicketWhereInput>
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
-  }, "id">
+  }, "id" | "ticketId">
 
   export type FeedbackOrderByWithAggregationInput = {
     id?: SortOrder
@@ -27843,7 +27805,7 @@ export namespace Prisma {
     deletedAt?: Date | string | null
     user: UserCreateNestedOneWithoutTicketInput
     site: SiteCreateNestedOneWithoutTicketInput
-    feedback?: FeedbackCreateNestedManyWithoutTicketInput
+    feedback?: FeedbackCreateNestedOneWithoutTicketInput
   }
 
   export type TicketUncheckedCreateInput = {
@@ -27860,7 +27822,7 @@ export namespace Prisma {
     deletedAt?: Date | string | null
     userId: number
     siteId: number
-    feedback?: FeedbackUncheckedCreateNestedManyWithoutTicketInput
+    feedback?: FeedbackUncheckedCreateNestedOneWithoutTicketInput
   }
 
   export type TicketUpdateInput = {
@@ -27876,7 +27838,7 @@ export namespace Prisma {
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     user?: UserUpdateOneRequiredWithoutTicketNestedInput
     site?: SiteUpdateOneRequiredWithoutTicketNestedInput
-    feedback?: FeedbackUpdateManyWithoutTicketNestedInput
+    feedback?: FeedbackUpdateOneWithoutTicketNestedInput
   }
 
   export type TicketUncheckedUpdateInput = {
@@ -27893,7 +27855,7 @@ export namespace Prisma {
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     userId?: IntFieldUpdateOperationsInput | number
     siteId?: IntFieldUpdateOperationsInput | number
-    feedback?: FeedbackUncheckedUpdateManyWithoutTicketNestedInput
+    feedback?: FeedbackUncheckedUpdateOneWithoutTicketNestedInput
   }
 
   export type TicketCreateManyInput = {
@@ -29405,6 +29367,11 @@ export namespace Prisma {
     in?: $Enums.TicketStatus[] | ListEnumTicketStatusFieldRefInput<$PrismaModel>
     notIn?: $Enums.TicketStatus[] | ListEnumTicketStatusFieldRefInput<$PrismaModel>
     not?: NestedEnumTicketStatusFilter<$PrismaModel> | $Enums.TicketStatus
+  }
+
+  export type FeedbackNullableScalarRelationFilter = {
+    is?: FeedbackWhereInput | null
+    isNot?: FeedbackWhereInput | null
   }
 
   export type TicketCountOrderByAggregateInput = {
@@ -31007,18 +30974,16 @@ export namespace Prisma {
     connect?: SiteWhereUniqueInput
   }
 
-  export type FeedbackCreateNestedManyWithoutTicketInput = {
-    create?: XOR<FeedbackCreateWithoutTicketInput, FeedbackUncheckedCreateWithoutTicketInput> | FeedbackCreateWithoutTicketInput[] | FeedbackUncheckedCreateWithoutTicketInput[]
-    connectOrCreate?: FeedbackCreateOrConnectWithoutTicketInput | FeedbackCreateOrConnectWithoutTicketInput[]
-    createMany?: FeedbackCreateManyTicketInputEnvelope
-    connect?: FeedbackWhereUniqueInput | FeedbackWhereUniqueInput[]
+  export type FeedbackCreateNestedOneWithoutTicketInput = {
+    create?: XOR<FeedbackCreateWithoutTicketInput, FeedbackUncheckedCreateWithoutTicketInput>
+    connectOrCreate?: FeedbackCreateOrConnectWithoutTicketInput
+    connect?: FeedbackWhereUniqueInput
   }
 
-  export type FeedbackUncheckedCreateNestedManyWithoutTicketInput = {
-    create?: XOR<FeedbackCreateWithoutTicketInput, FeedbackUncheckedCreateWithoutTicketInput> | FeedbackCreateWithoutTicketInput[] | FeedbackUncheckedCreateWithoutTicketInput[]
-    connectOrCreate?: FeedbackCreateOrConnectWithoutTicketInput | FeedbackCreateOrConnectWithoutTicketInput[]
-    createMany?: FeedbackCreateManyTicketInputEnvelope
-    connect?: FeedbackWhereUniqueInput | FeedbackWhereUniqueInput[]
+  export type FeedbackUncheckedCreateNestedOneWithoutTicketInput = {
+    create?: XOR<FeedbackCreateWithoutTicketInput, FeedbackUncheckedCreateWithoutTicketInput>
+    connectOrCreate?: FeedbackCreateOrConnectWithoutTicketInput
+    connect?: FeedbackWhereUniqueInput
   }
 
   export type EnumTicketCategoryFieldUpdateOperationsInput = {
@@ -31049,32 +31014,24 @@ export namespace Prisma {
     update?: XOR<XOR<SiteUpdateToOneWithWhereWithoutTicketInput, SiteUpdateWithoutTicketInput>, SiteUncheckedUpdateWithoutTicketInput>
   }
 
-  export type FeedbackUpdateManyWithoutTicketNestedInput = {
-    create?: XOR<FeedbackCreateWithoutTicketInput, FeedbackUncheckedCreateWithoutTicketInput> | FeedbackCreateWithoutTicketInput[] | FeedbackUncheckedCreateWithoutTicketInput[]
-    connectOrCreate?: FeedbackCreateOrConnectWithoutTicketInput | FeedbackCreateOrConnectWithoutTicketInput[]
-    upsert?: FeedbackUpsertWithWhereUniqueWithoutTicketInput | FeedbackUpsertWithWhereUniqueWithoutTicketInput[]
-    createMany?: FeedbackCreateManyTicketInputEnvelope
-    set?: FeedbackWhereUniqueInput | FeedbackWhereUniqueInput[]
-    disconnect?: FeedbackWhereUniqueInput | FeedbackWhereUniqueInput[]
-    delete?: FeedbackWhereUniqueInput | FeedbackWhereUniqueInput[]
-    connect?: FeedbackWhereUniqueInput | FeedbackWhereUniqueInput[]
-    update?: FeedbackUpdateWithWhereUniqueWithoutTicketInput | FeedbackUpdateWithWhereUniqueWithoutTicketInput[]
-    updateMany?: FeedbackUpdateManyWithWhereWithoutTicketInput | FeedbackUpdateManyWithWhereWithoutTicketInput[]
-    deleteMany?: FeedbackScalarWhereInput | FeedbackScalarWhereInput[]
+  export type FeedbackUpdateOneWithoutTicketNestedInput = {
+    create?: XOR<FeedbackCreateWithoutTicketInput, FeedbackUncheckedCreateWithoutTicketInput>
+    connectOrCreate?: FeedbackCreateOrConnectWithoutTicketInput
+    upsert?: FeedbackUpsertWithoutTicketInput
+    disconnect?: FeedbackWhereInput | boolean
+    delete?: FeedbackWhereInput | boolean
+    connect?: FeedbackWhereUniqueInput
+    update?: XOR<XOR<FeedbackUpdateToOneWithWhereWithoutTicketInput, FeedbackUpdateWithoutTicketInput>, FeedbackUncheckedUpdateWithoutTicketInput>
   }
 
-  export type FeedbackUncheckedUpdateManyWithoutTicketNestedInput = {
-    create?: XOR<FeedbackCreateWithoutTicketInput, FeedbackUncheckedCreateWithoutTicketInput> | FeedbackCreateWithoutTicketInput[] | FeedbackUncheckedCreateWithoutTicketInput[]
-    connectOrCreate?: FeedbackCreateOrConnectWithoutTicketInput | FeedbackCreateOrConnectWithoutTicketInput[]
-    upsert?: FeedbackUpsertWithWhereUniqueWithoutTicketInput | FeedbackUpsertWithWhereUniqueWithoutTicketInput[]
-    createMany?: FeedbackCreateManyTicketInputEnvelope
-    set?: FeedbackWhereUniqueInput | FeedbackWhereUniqueInput[]
-    disconnect?: FeedbackWhereUniqueInput | FeedbackWhereUniqueInput[]
-    delete?: FeedbackWhereUniqueInput | FeedbackWhereUniqueInput[]
-    connect?: FeedbackWhereUniqueInput | FeedbackWhereUniqueInput[]
-    update?: FeedbackUpdateWithWhereUniqueWithoutTicketInput | FeedbackUpdateWithWhereUniqueWithoutTicketInput[]
-    updateMany?: FeedbackUpdateManyWithWhereWithoutTicketInput | FeedbackUpdateManyWithWhereWithoutTicketInput[]
-    deleteMany?: FeedbackScalarWhereInput | FeedbackScalarWhereInput[]
+  export type FeedbackUncheckedUpdateOneWithoutTicketNestedInput = {
+    create?: XOR<FeedbackCreateWithoutTicketInput, FeedbackUncheckedCreateWithoutTicketInput>
+    connectOrCreate?: FeedbackCreateOrConnectWithoutTicketInput
+    upsert?: FeedbackUpsertWithoutTicketInput
+    disconnect?: FeedbackWhereInput | boolean
+    delete?: FeedbackWhereInput | boolean
+    connect?: FeedbackWhereUniqueInput
+    update?: XOR<XOR<FeedbackUpdateToOneWithWhereWithoutTicketInput, FeedbackUpdateWithoutTicketInput>, FeedbackUncheckedUpdateWithoutTicketInput>
   }
 
   export type TicketCreateNestedOneWithoutFeedbackInput = {
@@ -31962,7 +31919,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     deletedAt?: Date | string | null
     site: SiteCreateNestedOneWithoutTicketInput
-    feedback?: FeedbackCreateNestedManyWithoutTicketInput
+    feedback?: FeedbackCreateNestedOneWithoutTicketInput
   }
 
   export type TicketUncheckedCreateWithoutUserInput = {
@@ -31978,7 +31935,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     deletedAt?: Date | string | null
     siteId: number
-    feedback?: FeedbackUncheckedCreateNestedManyWithoutTicketInput
+    feedback?: FeedbackUncheckedCreateNestedOneWithoutTicketInput
   }
 
   export type TicketCreateOrConnectWithoutUserInput = {
@@ -33202,7 +33159,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     deletedAt?: Date | string | null
     user: UserCreateNestedOneWithoutTicketInput
-    feedback?: FeedbackCreateNestedManyWithoutTicketInput
+    feedback?: FeedbackCreateNestedOneWithoutTicketInput
   }
 
   export type TicketUncheckedCreateWithoutSiteInput = {
@@ -33218,7 +33175,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     deletedAt?: Date | string | null
     userId: number
-    feedback?: FeedbackUncheckedCreateNestedManyWithoutTicketInput
+    feedback?: FeedbackUncheckedCreateNestedOneWithoutTicketInput
   }
 
   export type TicketCreateOrConnectWithoutSiteInput = {
@@ -34837,11 +34794,6 @@ export namespace Prisma {
     create: XOR<FeedbackCreateWithoutTicketInput, FeedbackUncheckedCreateWithoutTicketInput>
   }
 
-  export type FeedbackCreateManyTicketInputEnvelope = {
-    data: FeedbackCreateManyTicketInput | FeedbackCreateManyTicketInput[]
-    skipDuplicates?: boolean
-  }
-
   export type UserUpsertWithoutTicketInput = {
     update: XOR<UserUpdateWithoutTicketInput, UserUncheckedUpdateWithoutTicketInput>
     create: XOR<UserCreateWithoutTicketInput, UserUncheckedCreateWithoutTicketInput>
@@ -34942,20 +34894,32 @@ export namespace Prisma {
     shift?: JadwalShiftUncheckedUpdateManyWithoutSiteNestedInput
   }
 
-  export type FeedbackUpsertWithWhereUniqueWithoutTicketInput = {
-    where: FeedbackWhereUniqueInput
+  export type FeedbackUpsertWithoutTicketInput = {
     update: XOR<FeedbackUpdateWithoutTicketInput, FeedbackUncheckedUpdateWithoutTicketInput>
     create: XOR<FeedbackCreateWithoutTicketInput, FeedbackUncheckedCreateWithoutTicketInput>
+    where?: FeedbackWhereInput
   }
 
-  export type FeedbackUpdateWithWhereUniqueWithoutTicketInput = {
-    where: FeedbackWhereUniqueInput
+  export type FeedbackUpdateToOneWithWhereWithoutTicketInput = {
+    where?: FeedbackWhereInput
     data: XOR<FeedbackUpdateWithoutTicketInput, FeedbackUncheckedUpdateWithoutTicketInput>
   }
 
-  export type FeedbackUpdateManyWithWhereWithoutTicketInput = {
-    where: FeedbackScalarWhereInput
-    data: XOR<FeedbackUpdateManyMutationInput, FeedbackUncheckedUpdateManyWithoutTicketInput>
+  export type FeedbackUpdateWithoutTicketInput = {
+    feedback?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    user?: UserUpdateOneRequiredWithoutFeedbackNestedInput
+  }
+
+  export type FeedbackUncheckedUpdateWithoutTicketInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    feedback?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    userId?: IntFieldUpdateOperationsInput | number
   }
 
   export type TicketCreateWithoutFeedbackInput = {
@@ -35920,7 +35884,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     site?: SiteUpdateOneRequiredWithoutTicketNestedInput
-    feedback?: FeedbackUpdateManyWithoutTicketNestedInput
+    feedback?: FeedbackUpdateOneWithoutTicketNestedInput
   }
 
   export type TicketUncheckedUpdateWithoutUserInput = {
@@ -35936,7 +35900,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     siteId?: IntFieldUpdateOperationsInput | number
-    feedback?: FeedbackUncheckedUpdateManyWithoutTicketNestedInput
+    feedback?: FeedbackUncheckedUpdateOneWithoutTicketNestedInput
   }
 
   export type TicketUncheckedUpdateManyWithoutUserInput = {
@@ -36393,7 +36357,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     user?: UserUpdateOneRequiredWithoutTicketNestedInput
-    feedback?: FeedbackUpdateManyWithoutTicketNestedInput
+    feedback?: FeedbackUpdateOneWithoutTicketNestedInput
   }
 
   export type TicketUncheckedUpdateWithoutSiteInput = {
@@ -36409,7 +36373,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     userId?: IntFieldUpdateOperationsInput | number
-    feedback?: FeedbackUncheckedUpdateManyWithoutTicketNestedInput
+    feedback?: FeedbackUncheckedUpdateOneWithoutTicketNestedInput
   }
 
   export type TicketUncheckedUpdateManyWithoutSiteInput = {
@@ -36421,41 +36385,6 @@ export namespace Prisma {
     prioritas?: EnumPriorityFieldUpdateOperationsInput | $Enums.Priority
     status?: EnumTicketStatusFieldUpdateOperationsInput | $Enums.TicketStatus
     resolvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    userId?: IntFieldUpdateOperationsInput | number
-  }
-
-  export type FeedbackCreateManyTicketInput = {
-    id?: number
-    feedback?: string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    deletedAt?: Date | string | null
-    userId: number
-  }
-
-  export type FeedbackUpdateWithoutTicketInput = {
-    feedback?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    user?: UserUpdateOneRequiredWithoutFeedbackNestedInput
-  }
-
-  export type FeedbackUncheckedUpdateWithoutTicketInput = {
-    id?: IntFieldUpdateOperationsInput | number
-    feedback?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    userId?: IntFieldUpdateOperationsInput | number
-  }
-
-  export type FeedbackUncheckedUpdateManyWithoutTicketInput = {
-    id?: IntFieldUpdateOperationsInput | number
-    feedback?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null

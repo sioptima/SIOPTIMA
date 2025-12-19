@@ -24,14 +24,17 @@ export class SiteService {
             province: createRequest.province,
             latitude: createRequest.latitude,
             longitude: createRequest.longitude,
-            capacity: createRequest.capacity
+            capacity: createRequest.capacity,
+            status: createRequest.status
         });
         if (!newSite) {
             throw new ResponseError(500, "Failed to create site");
         }
 
         return {
+            id: newSite.id,
             name: newSite.name,
+            operators: newSite._count.users,
         }
     }
 
@@ -48,8 +51,31 @@ export class SiteService {
             throw new ResponseError (200, "No site found")
         }
 
+        const sitesData = sites.sites.map(s => ({
+            id: s.id,
+            name: s.name,
+            city: s.address?.city || "-",
+            location: s.address?.city || "-",
+            address: s.address?.address || "-",
+            capacity: "0",
+            province: s.address?.province || "-",
+            latitude: s.address?.latitude || "-",
+            longitude: s.address?.longitude || "-",
+            supervisor: "...",
+            contact: "...",
+            operators: s._count.users,
+            status: s.status.toLowerCase(),
+            lastReport: !!s.report.length ? timeSince(s.report[0]?.laporanDate) : "-"
+        }))
+
         return {
-            data: sites,
+            data: {
+                sites: sitesData,
+                totalSites: sites.count,
+                activeSites: sites.activeSites,
+                maintenanceSites: sites.maintenanceSites,
+                totalOperators: sites.totalOperators
+            },
             paging: {
                 size: size,
                 total_page: Math.ceil(sites.count / size),
@@ -74,7 +100,7 @@ export class SiteService {
             province: site.address.province,
             operators: site._count.users,
             status: site.status,
-            lastReport: (site.report?.length !== 0 ) ? timeSince(site.report[0].laporanDate) : "No report yet",
+            lastReport: (!!site.report?.length) ? timeSince(site.report[0].laporanDate) : "No report yet",
             createdAt: site.createdAt,
             updatedAt: site.updatedAt,
         }
@@ -111,7 +137,7 @@ export class SiteService {
             province: updatedSite.address.province,
             operators: updatedSite._count,
             status: updatedSite.status,
-            lastReport: (site.report?.length !== 0 ) ? timeSince(site.report[0].laporanDate) : "No report yet",
+            lastReport: (!site.report?.length) ? timeSince(site.report[0].laporanDate) : "No report yet",
         }
 
         return  siteTransform;

@@ -4,6 +4,8 @@ import { ShiftRepository } from "./shift-repository";
 import { ShiftValidation } from "./shift-validation";
 import { SiteRepository } from "../site/site-repository";
 import { NotificationRepository } from "../notification/notification-repository";
+import { daysOfWeek } from "../../utils/helper";
+import { getUser } from "../../utils/auth";
 
 export class ShiftService {
 
@@ -95,4 +97,73 @@ export class ShiftService {
             }
         }
     }
+    
+    static async getAll(request) {
+        // validate request
+        const createRequest = ShiftValidation.GETALL.parse(request);
+
+        //get array of shifts
+        const shifts = await ShiftRepository.getAll(createRequest);
+
+        const dayNames = ["Minggu", "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu"];
+        const result = shifts.result.map(shift => ({
+            id: shift.id,
+            siteId: shift.id,
+            name: `${shift.shiftDate.toLocaleTimeString()} - ${shift.shiftEnd.toLocaleTimeString()}`,
+            startTime: shift.shiftDate.toLocaleTimeString(),
+            endTime: shift.shiftEnd.toLocaleTimeString(),
+            site: shift.site.name,
+            assignedOperators: shift.user.map(user =>  user.profile?.name || user.username),
+            daysOfWeek: dayNames[shift.shiftDate.getDay()],
+            maxOperators: 12,
+        }))
+
+        return {
+            result,
+            paging: {
+                size: createRequest.size,
+                total: shifts.count,
+                total_page: Math.ceil(shifts.count / createRequest.size),
+                current_page: createRequest.page,
+            }
+        }
+    }
+
+    //fetch upcoming shifts
+    static async getAllByUserId(parameter){
+        const user = await getUser()
+
+        const getRequest = ShiftValidation.GET.parse(parameter);
+        if(!getRequest){
+            throw new ResponseError(400, "Invalid request data");
+        }
+
+        const {page, size} = getRequest;
+
+        const shifts = await ShiftRepository.findAllByUserId(getRequest, user.userId);
+        if (shifts.count === 0) {
+            throw new ResponseError (200, "No report found")
+        }
+
+        const dayNames = ["Minggu", "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu"];
+        const shiftTransform = shifts.result.map((s) => ({
+            id: s.id,
+            date: s.shiftDate.toLocaleDateString(),
+            day: dayNames[s.shiftDate.getDay()],
+            startTime: s.shiftDate.toLocaleTimeString(),
+            endTime: s.shiftEnd.toLocaleTimeString(),
+            location: s.site.name,
+        }))
+
+        return {
+            result: shiftTransform,
+            paging: {
+                size: size,
+                total: shifts.count,
+                total_page: Math.ceil(shifts.count / size),
+                current_page: page,
+            }
+        }
+    }
+
 }

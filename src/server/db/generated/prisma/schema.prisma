@@ -357,7 +357,7 @@ model Ticket {
   site   Site @relation(fields: [siteId], references: [id], onDelete: Cascade)
   siteId Int
 
-  feedback Feedback[]
+  feedback Feedback?
 }
 
 //for replying ticket
@@ -370,7 +370,7 @@ model Feedback {
   deletedAt DateTime?
 
   ticket   Ticket @relation(fields: [ticketId], references: [id])
-  ticketId Int
+  ticketId Int    @unique
 
   user   User @relation(fields: [userId], references: [id])
   userId Int

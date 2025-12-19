@@ -31,7 +31,6 @@ export default async function proxy(request) {
 async function middlewareAuth(request) {
 
   const path = request.nextUrl.pathname;
-  console.log("path: ", path)
   const isProtectedRoute = protectedRoutes.includes(path);
   const isPublicRoute = publicRoutes.includes(path);
   const isAdminRoute = adminRoutes.includes(path);

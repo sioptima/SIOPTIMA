@@ -122,7 +122,7 @@ model Site {
   name              String          @unique
   image             String?
   status            SiteStatus      @default(ACTIVE)
-  maxCapacity       Int             @default(10)
+  maxCapacity       Int             @default(0) //deprecated
 
   createdAt         DateTime        @default(now())
   updatedAt         DateTime        @updatedAt
@@ -266,10 +266,10 @@ model Laporan {
   updatedAt         DateTime        @updatedAt
   deletedAt         DateTime?
   
-  site              Site?            @relation(fields: [siteName], references: [name], onDelete: SetNull)
-  siteName          String?
+  site              Site?           @relation(fields: [siteName], references: [name], onDelete: SetNull)
+  siteName          String?          
 
-  user              User?            @relation(fields: [userId], references: [id], onDelete: SetNull)
+  user              User?           @relation(fields: [userId], references: [id], onDelete: SetNull)
   userId            Int?
 }
 
@@ -357,7 +357,7 @@ model Ticket {
   site              Site            @relation(fields: [siteId], references: [id], onDelete: Cascade)
   siteId            Int
 
-  feedback          Feedback[]
+  feedback          Feedback?
 }
 
 //for replying ticket
@@ -370,7 +370,7 @@ model Feedback {
   deletedAt         DateTime?
 
   ticket            Ticket          @relation(fields: [ticketId], references: [id])
-  ticketId          Int
+  ticketId          Int             @unique
 
   user              User            @relation(fields: [userId], references: [id])
   userId            Int

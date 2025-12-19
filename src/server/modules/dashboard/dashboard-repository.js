@@ -1,6 +1,7 @@
 import PrismaClient from "../../db/db.js"
 import { ResponseError } from "@/src/lib/response-error.js";
-import { daysOfWeek } from "../../utils/helper.js";
+import { daysOfWeek, timeSince } from "../../utils/helper.js";
+import { user } from "../../db/prisma/data.js";
 
 export class DashboardRepository {
     static async countAssignedSite(data){
@@ -87,7 +88,7 @@ export class DashboardRepository {
 
             return { Mon, Tue, Wed, Thu, Fri, Sat, Sun };
         } catch (error) {
-            throw new ResponseError(500, error.message)
+            throw new ResponseError(500, "Failed when trying to find weekly report data")
         }
     }
 
@@ -102,10 +103,17 @@ export class DashboardRepository {
             // find shift that has active check in
             const queryActive = {
                 where: {
-                    userId,
+                    user: {
+                        every: {
+                            id: userId
+                        }
+                    },
                     presensi: {
                         checkOut: null,
-                    } 
+                    },
+                    shiftDate: {
+                        gte: startOfDay, 
+                    },
                 },
                 select: {
                     shiftDate:true,
@@ -125,7 +133,11 @@ export class DashboardRepository {
             //find upcoming shift
             const queryUpcoming = {
                     where: { 
-                        userId,
+                        user: {
+                            every: {
+                                id: userId
+                            }
+                        },
                         shiftDate: {
                             gte: startOfDay, 
                         },
@@ -135,7 +147,8 @@ export class DashboardRepository {
                         shiftDate:true,
                         site: {
                             select: {
-                                name: true
+                                name: true,
+                                id: true
                             }
                         },
                         id: true,
@@ -151,7 +164,11 @@ export class DashboardRepository {
                 PrismaClient.jadwalShift.findFirst(queryUpcoming),
                 PrismaClient.jadwalShift.count({
                     where: {
-                        userId,
+                        user: {
+                            every: {
+                                id: userId
+                            }
+                        },
                         presensi: { isNot: null },
                         shiftDate: {
                             lte: date
@@ -160,7 +177,11 @@ export class DashboardRepository {
                 }),
                 PrismaClient.jadwalShift.count({
                     where: {
-                        userId,
+                        user: {
+                            every: {
+                                id: userId
+                            }
+                        },
                         presensi: null,
                         shiftDate: {
                             lte: date
@@ -178,7 +199,7 @@ export class DashboardRepository {
 
             return {nextShift, checkedInShift, missedShift}
         } catch (error) {
-            throw new ResponseError(500, error.message)
+            throw new ResponseError(500, "Failed when trying to fetch shift summary data")
         }
     }
 
@@ -289,7 +310,29 @@ export class DashboardRepository {
             const date = new Date();
             const startOfDay = new Date(date.getFullYear(),date.getMonth(),date.getDate())
             const endOfDay = new Date(date.getFullYear(),date.getMonth(),date.getDate()+1)
-            const [activeSite, maintenanceSite, inactiveSite, totalOperators, activeOperator, approvedReport, pendingReport, rejectedReport, resolvedTicket, totalTicket] = 
+            const startOfMonth = new Date(date.getFullYear(), date.getMonth());
+            const endOfMonth = new Date(date.getFullYear(), date.getMonth() + 1);
+            const [
+                activeSites, 
+                maintenanceSite, 
+                inactiveSite, 
+                totalOperators, 
+                activeOperator, 
+                approvedReport, 
+                pendingReport, 
+                rejectedReport, 
+                resolvedTicket, 
+                pendingTicket, 
+                openTicket, 
+                totalTicket,
+                highPriorityTicket,
+                adminCount,
+                hrdCount,
+                activeCount,
+                lastActiveDate,
+                reportsData,
+                ticketsData,
+            ] = 
                 await PrismaClient.$transaction([
                     PrismaClient.site.count({where: {status:"ACTIVE"}}),
                     PrismaClient.site.count({where: {status:"MAINTENANCE"}}),
@@ -309,13 +352,78 @@ export class DashboardRepository {
                         laporanDate: {gte: startOfDay, lt:endOfDay}
                     }}),
                     PrismaClient.ticket.count({where: {
-                        status: "RESOLVED"
+                        status: "RESOLVED",
+                        createdAt: {gte: startOfMonth, lt:endOfMonth}
                     }}),
                     PrismaClient.ticket.count({where: {
-                        createdAt: {gte: startOfDay, lt:endOfDay}
+                        status: "PENDING",
+                        createdAt: {gte: startOfMonth, lt:endOfMonth}
                     }}),
+                    PrismaClient.ticket.count({where: {
+                        status: "OPEN",
+                        createdAt: {gte: startOfMonth, lt:endOfMonth}
+                    }}),
+                    PrismaClient.ticket.count({where: {
+                        createdAt: {gte: startOfMonth, lt:endOfMonth}
+                    }}),
+                    PrismaClient.ticket.count({where: {
+                        prioritas: "HIGH",
+                        createdAt: {gte: startOfMonth, lt:endOfMonth}
+                    }}),
+                    PrismaClient.user.count({where: {role: {name: "ADMIN"}}}),
+                    PrismaClient.user.count({where: {role: {name: "HRD"}}}),
+                    PrismaClient.user.count({where: {status: "ACTIVE"}}),
+                    PrismaClient.activity.findFirst({orderBy: {createdAt: 'desc'}, select: {createdAt: true}}),
+                    PrismaClient.laporan.findMany({
+                        orderBy: {createdAt: "desc"},
+                        take: 4,
+                        select: {
+                            id: true,
+                            siteName: true,
+                            laporanStatus: true,
+                        }
+                    }),
+                    PrismaClient.ticket.findMany({
+                        orderBy: {createdAt: "desc"},
+                        take: 3,
+                        select: {
+                            id: true,
+                            user: {select: {
+                                username: true,
+                                profile: {
+                                    select: {
+                                        name: true,
+                                    }
+                                }
+                            }},
+                            status: true,
+                        }
+                    }),
                 ])
-            return {activeSite, maintenanceSite, inactiveSite, totalOperators, activeOperator, approvedReport, pendingReport, rejectedReport, resolvedTicket, totalTicket}
+
+            const lastActive = timeSince(lastActiveDate.createdAt)    
+
+            return {
+                activeSites, 
+                maintenanceSite, 
+                inactiveSite, 
+                totalOperators, 
+                activeOperator, 
+                approvedReport, 
+                pendingReport, 
+                rejectedReport, 
+                resolvedTicket, 
+                pendingTicket, 
+                openTicket, 
+                totalTicket,
+                highPriorityTicket,
+                adminCount,
+                hrdCount,
+                activeCount,
+                lastActive,
+                reportsData,
+                ticketsData,
+            }
         } catch (error) {
             throw new ResponseError(500, "Failed when retrieving summary information")
         }

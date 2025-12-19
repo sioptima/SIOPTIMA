@@ -1,0 +1,42 @@
+paths:
+  /api/hrd/user:
+    get:
+      parameters:
+      - in: query
+        name: page
+        schema:
+          type: integer
+          description: Which page to show
+      - in: query
+        name: limit
+        schema:
+          type: integer
+          description: Number of user to return
+      - in: query
+        name: role
+        schema:
+          type: string
+          description: Specify role name
+      summary: Get all user information and total count
+      tags:
+        - Users
+
+      responses:
+        '200':
+          description: List of users
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: Users retrieved
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:

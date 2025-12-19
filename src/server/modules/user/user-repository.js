@@ -1,5 +1,6 @@
 import { ResponseError } from "@/src/lib/response-error.js";
 import PrismaClient from "../../db/db.js"
+import { timeSince } from "../../utils/helper.js";
 
 export class UserRepository {
 
@@ -26,7 +27,7 @@ export class UserRepository {
                 }
             });
         } catch (error) {
-            throw new ResponseError(500, error.message)
+            throw new ResponseError(500, "Failed when trying to fetch multiple user")
         }
     }
 
@@ -68,6 +69,57 @@ export class UserRepository {
             throw new ResponseError(500, "Failed when querying in database")
         }
     }
+
+    static async whoAmI(data){
+        try {
+            const targetDate = new Date()
+            const startOfDay = new Date(targetDate.getFullYear(), targetDate.getMonth(), targetDate.getDate())
+            const endOfDay = new Date(targetDate.getFullYear(), targetDate.getMonth(), targetDate.getDate()+1)
+            return await PrismaClient.user.findUnique({
+                where: { 
+                    id: data.userId
+                },
+                select: {
+                    id: true,
+                    username: true,
+                    profile: {select:{
+                        name: true,
+                        email: true,
+                        phone: true,
+                        address: true,
+                    }},
+                    role: true,
+                    shift: {
+                        where: {
+                            shiftDate: {
+                                gte: startOfDay,
+                                lt: endOfDay
+                            },
+                            presensi: {
+                                checkOut: null
+                            }
+                        },
+                        take: 1,
+                        orderBy: {shiftDate: "asc"},
+                        select: {
+                            site: {select: {name: true}},
+                            shiftDate:true,
+                            shiftEnd:true,
+                        }
+                    },
+                    createdAt: true,
+                    activity: {
+                        take: 1,
+                        orderBy: {createdAt: "desc"},
+                        select:{createdAt:true}
+                    }
+                }
+            });
+        } catch (error) {
+            throw new ResponseError(500, "Failed when querying in database")
+        }
+    }
+    
     
     static async create(data){
         try {
@@ -132,7 +184,7 @@ export class UserRepository {
                 }
             });
         } catch (error) {
-            throw new ResponseError(500, error.message)
+            throw new ResponseError(500, "Failed when trying to register user in database")
         }
     }
 
@@ -170,6 +222,7 @@ export class UserRepository {
                     profile: {
                         select: {
                             name: true,
+                            email: true,
                         }
                     },
                     role: {
@@ -199,14 +252,35 @@ export class UserRepository {
                 skip: skip
             }
 
-            const [users, total] = await PrismaClient.$transaction([
+            const [users, total, adminCount, operatorCount, hrdCount] = await PrismaClient.$transaction([
                 PrismaClient.user.findMany(query),
-                PrismaClient.user.count()
+                PrismaClient.user.count(),
+                PrismaClient.user.count({where: {role: {name: "ADMIN"}}}),
+                PrismaClient.user.count({where: {role: {name: "OPERATOR"}}}),
+                PrismaClient.user.count({where: {role: {name: "HRD"}}})
             ]);
     
-            return {total, users};
+            return {total, users, adminCount, operatorCount, hrdCount};
         } catch (error) {
-            throw new ResponseError(500, error.message)
+            throw new ResponseError(500, "Failed when trying to fetch users in database")
+        }
+    }
+
+    static async getCount(){
+        try {
+            const [adminCount, operatorCount, hrdCount, activeCount, lastActiveDate] = await PrismaClient.$transaction([
+                PrismaClient.user.count({where: {role: {name: "ADMIN"}}}),
+                PrismaClient.user.count({where: {role: {name: "OPERATOR"}}}),
+                PrismaClient.user.count({where: {role: {name: "HRD"}}}),
+                PrismaClient.user.count({where: {status: "ACTIVE"}}),
+                PrismaClient.activity.findFirst({orderBy: {createdAt: 'desc'}, select: {createdAt: true}}),
+            ]);
+
+            const lastActive = timeSince(lastActiveDate.createdAt);
+
+            return {adminCount, operatorCount, hrdCount, activeCount, lastActive};
+        } catch (error) {
+            throw new ResponseError(500, "Failed when trying to fetch users count")
         }
     }
 
@@ -224,6 +298,7 @@ export class UserRepository {
                         select: {
                             name: true,
                             email: true,
+                            phone: true,
                         }
                     },
                     role: {
