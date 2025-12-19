@@ -35,6 +35,7 @@ import {
 } from "@heroicons/react/24/outline";
 import { addShift, approveAttendance, approveLeave, fetchAllShifts, fetchAttendance, fetchHrdSummary, fetchLeaveRequest, fetchUsersWithRoleData, rejectAttendance } from "@/src/lib/fetchApiHrd";
 import { fetchSitesData } from "@/src/lib/fetchApiAdmin";
+import { fetchCurrentUser } from "@/src/lib/fetchApiOperator";
 
 // Storage keys untuk sinkronisasi
 const STORAGE_KEYS = {
@@ -463,15 +464,23 @@ export default function HRD() {
 
   loadData();
   }, []); 
+  
+  const [hrdUser, setHrdUser] = useState({})
+  useEffect(() => {
+    const loadData = async () => {
+        try {
+            const result = await fetchCurrentUser();
+            if (!result) throw new Error("No data returned");
+            setLeaveRequests(result);
+        } catch (err) {
+          //setError
+    } finally {
+      //setLoading
+    }
+  };   
 
-  const hrdUser = {
-    name: "Katira Sala",
-    email: "katira.sala@email.com",
-    site: "Central Office",
-    initial: "K",
-    role: "HRD Manager",
-  };
-
+  loadData();
+  }, []); 
   // ==================== USE EFFECT ====================
 
   useEffect(() => {

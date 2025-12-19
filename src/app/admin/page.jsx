@@ -41,6 +41,7 @@ import {
 } from "@heroicons/react/24/outline";
 import { fetchSitesData, fetchUsersData, fetchDailyReportsData, fetchTicketsData, createNewSite, updateSite, deleteSite, fetchAttendanceData, addNewUser, fetchReportsData, editUser, deleteUser, approveReport, rejectReport, respondTicket } from "@/src/lib/fetchApiAdmin";
 import { MapField } from "@/src/features/site/MapField";
+import { fetchCurrentUser } from "@/src/lib/fetchApiOperator";
 
 // Data provinsi dan kota di Indonesia
 const provinsiList = [
@@ -311,6 +312,23 @@ export default function Admin() {
 
   loadData();
   }, []);  
+
+  const [currentUser, setCurrentUser] = useState([]);
+  useEffect(() => {
+    const loadData = async () => {
+        try {
+            const result = await fetchCurrentUser();
+            if (!result) throw new Error("No data returned");
+            setCurrentUser(result);
+        } catch (err) {
+          //setError
+    } finally {
+      //setLoading
+    }
+  };   
+
+  loadData();
+  }, []); 
 
   // ==================== REPORTS DATA YANG DISESUAIKAN DENGAN REPORT OPERATOR ====================
   // Data live hari ini (menggunakan tanggal hari ini)
@@ -3263,23 +3281,19 @@ const AttendanceModal = () => {
                 className="w-12 h-12 bg-gradient-to-r from-teal-500 to-cyan-600 rounded-full
         flex items-center justify-center text-white font-bold text-lg shadow-md"
               >
-                {usersData.find((user) => user.role === "admin")?.initial ||
-                  "A"}
+                {currentUser.initial}
               </div>
               <div className="flex-1 min-w-0">
                 <p className="font-semibold text-gray-900 truncate text-sm">
-                  {usersData.find((user) => user.role === "admin")?.name ||
-                    "Admin User"}
+                  {currentUser.name || currentUser.username}
                 </p>
                 <p className="text-gray-600 truncate text-xs mt-0.5">
-                  {usersData.find((user) => user.role === "admin")?.email ||
-                    "admin@sioptima.com"}
+                  {currentUser.email || "-"}
                 </p>
                 <div className="flex items-center gap-1 mt-1">
                   <div className="w-2 h-2 bg-green-500 rounded-full"></div>
                   <p className="text-gray-500 text-xs truncate">
-                    {usersData.find((user) => user.role === "admin")?.role ||
-                      "Admin"}
+                      {currentUser.role}
                   </p>
                 </div>
               </div>
