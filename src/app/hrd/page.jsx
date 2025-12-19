@@ -471,7 +471,7 @@ export default function HRD() {
         try {
             const result = await fetchCurrentUser();
             if (!result) throw new Error("No data returned");
-            setLeaveRequests(result);
+            setHrdUser(result);
         } catch (err) {
           //setError
     } finally {
@@ -2543,7 +2543,7 @@ export default function HRD() {
                   <BellIcon className="w-6 h-6 text-gray-800" />
                   {unreadNotifications > 0 && (
                     <span className="absolute top-0 right-0 w-4 h-4 bg-red-500 rounded-full text-xs text-white flex items-center justify-center animate-pulse">
-                      {unreadNotifications}
+
                     </span>
                   )}
                 </button>
