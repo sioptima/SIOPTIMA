@@ -8,7 +8,7 @@ export async function fetchSitesData({limit}){
       const data = await res.json();
   
       if (!res.ok || !data.success) {
-        alert(data.message || "Failed to fetch sites data");
+        console.log(data.message || "Failed to fetch sites data");
         return;
       }
       
@@ -29,7 +29,7 @@ export async function fetchUsersData({limit}){
       const data = await res.json();
   
       if (!res.ok || !data.success) {
-        alert(data.message || "Failed to fetch users data");
+        console.log(data.message || "Failed to fetch users data");
         return;
       }
 
@@ -50,7 +50,7 @@ export async function fetchDailyReportsData(){
       const data = await res.json();
   
       if (!res.ok || !data.success) {
-        alert(data.message || "Failed to fetch reports data");
+        console.log(data.message || "Failed to fetch reports data");
         return;
       }
       
@@ -71,7 +71,7 @@ export async function fetchReportsData({limit}){
       const data = await res.json();
   
       if (!res.ok || !data.success) {
-        alert(data.message || "Failed to fetch reports data");
+        console.log(data.message || "Failed to fetch reports data");
         return;
       }
       
@@ -92,7 +92,7 @@ export async function fetchTicketsData({limit}){
       const data = await res.json();
   
       if (!res.ok || !data.success) {
-        alert(data || "Failed to fetch tickets data");
+        console.log(data || "Failed to fetch tickets data");
         return;
       }
       
@@ -113,7 +113,7 @@ export async function fetchTicketsData({limit}){
       const data = await res.json();
   
       if (!res.ok || !data.success) {
-        alert(data || "Failed to fetch tickets data");
+        console.log(data || "Failed to fetch tickets data");
         return;
       }
       
@@ -143,7 +143,7 @@ export async function fetchTicketsData({limit}){
       const data = await res.json();
  
       if (!res.ok) {
-        alert(data.message || "Failed to create site");
+        console.log(data.message || "Failed to create site");
         return;
       }
       return data.data
@@ -171,7 +171,7 @@ export async function fetchTicketsData({limit}){
       const data = await res.json();
  
       if (!res.ok) {
-        alert(data.message || "Failed to update site");
+        console.log(data.message || "Failed to update site");
         return;
       }
       return data.data
@@ -190,7 +190,7 @@ export async function fetchTicketsData({limit}){
       const data = await res.json();
 
       if (!res.ok) {
-        alert(data.message || "Failed to delete site");
+        console.log(data.message || "Failed to delete site");
         return;
       }
       return data
@@ -225,7 +225,7 @@ export async function fetchTicketsData({limit}){
       const data = await res.json();
  
       if (!res.ok) {
-        alert(data.message || "Failed to register user");
+        console.log(data.message || "Failed to register user");
         return;
       }
       return data.data
@@ -257,7 +257,7 @@ export async function fetchTicketsData({limit}){
       const data = await res.json();
  
       if (!res.ok) {
-        alert(data.message || "Failed to edit user");
+        console.log(data.message || "Failed to edit user");
         return;
       }
 
@@ -277,7 +277,7 @@ export async function fetchTicketsData({limit}){
       const data = await res.json();
  
       if (!res.ok) {
-        alert(data.message || "Failed to delete user");
+        console.log(data.message || "Failed to delete user");
         return;
       }
       return data.success
@@ -296,7 +296,7 @@ export async function fetchTicketsData({limit}){
       const data = await res.json();
  
       if (!res.ok) {
-        alert(data.message || "Failed to approve a report");
+        console.log(data.message || "Failed to approve a report");
         return;
       }
       return data.success
@@ -315,7 +315,7 @@ export async function fetchTicketsData({limit}){
       const data = await res.json();
  
       if (!res.ok) {
-        alert(data.message || "Failed to reject a report");
+        console.log(data.message || "Failed to reject a report");
         return;
       }
       return data.success
@@ -338,7 +338,7 @@ export async function fetchTicketsData({limit}){
       const data = await res.json();
 
       if (!res.ok) {
-        alert(data.message || "Failed to reject a report");
+        console.log(data.message || "Failed to reject a report");
         return;
       }
       return data.data

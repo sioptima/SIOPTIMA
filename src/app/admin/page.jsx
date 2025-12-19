@@ -3207,7 +3207,12 @@ const AttendanceModal = () => {
       </div>
     );
   };
-
+  const openAttachment = (fileName) => {
+    console.log(fileName)
+    window.open(
+      `${fileName}`
+    )
+  } 
   return (
     <div className="flex flex-col lg:flex-row min-h-screen bg-gray-50">
       {/* Overlay mobile */}
@@ -3648,8 +3653,7 @@ const AttendanceModal = () => {
                           </div>
                         </div>
 
-                        {selectedTicket.attachments &&
-                          selectedTicket.attachments.length > 0 && (
+                        {selectedTicket.attachments && (
                             <div>
                               <label className="block text-sm font-medium text-gray-700 mb-2">
                                 Attachments
@@ -3657,10 +3661,13 @@ const AttendanceModal = () => {
                               <div className="space-y-2">
                               <button
                                   onClick={() => openAttachment(selectedTicket.attachments[0])}
-                                  className="bg-blue-50 border border-blue-200 rounded-lg px-3 py-2 hover:bg-blue-100 transition flex items-center gap-2"
+                                  disabled={!!selectedTicket.attachments}
+                                  className={`bg-blue-50 border border-blue-200 rounded-lg px-3 py-2 hover:bg-blue-100 transition flex items-center gap-2
+                                    ${!selectedTicket.attachments ? "hidden" : ""}
+                                  `}
                                 >
                                     <PhotoIcon className="w-4 h-4 text-blue-600" />
-                                  <p className="text-sm text-blue-700">{`${selectedTicket.attachments[0].substring(0,45)}...`}</p>
+                                  <p className="text-sm text-blue-700">{selectedTicket.attachment ? selectedTicket.attachments.substring(0,45) : "-"}</p>
                                 </button>
                               </div>
                             </div>

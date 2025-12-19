@@ -731,7 +731,7 @@ export default function HRD() {
     return getUpcomingShifts(shifts, 7);
   };
 
-  const handleAddShift = () => {
+  const handleAddShift = async () => {
     if (!shiftForm.name || !shiftForm.siteId || !shiftForm.dayOfWeek) {
       alert("Please fill all required fields");
       return;
@@ -748,6 +748,12 @@ export default function HRD() {
           maxOperators: 12 // SELALU 12 OPERATOR
         } : shift
       );
+      console.log(shiftForm)
+      return
+     // const response = await addShift({
+     //    
+     // })
+
       setShifts(updatedShifts);
       
       const newNotification = {

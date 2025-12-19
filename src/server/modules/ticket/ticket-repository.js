@@ -166,7 +166,7 @@ export class TicketRepository {
             
             return {tickets, count};
         } catch (error) {
-            throw new ResponseError(500, "Failed when trying to retrieve list of tickets")
+            throw new ResponseError(500, error.message)
         }
     }
 

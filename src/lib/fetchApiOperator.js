@@ -8,7 +8,7 @@ export async function fetchOperatorDashboardData(){
       const data = await res.json();
   
       if (!res.ok || !data.success) {
-        alert(data.message || "Failed to fetch dashboard data");
+        console.log(data.message || "Failed to fetch dashboard data");
         return;
       }
 
@@ -29,7 +29,7 @@ export async function fetchOperatorReports({limit}){
       const data = await res.json();
   
       if (!res.ok || !data.success) {
-        alert(data.message || "Failed to fetch reports data");
+        console.log(data.message || "Failed to fetch reports data");
         return;
       }
 
@@ -50,7 +50,7 @@ export async function fetchOperatorShifts({limit}){
       const data = await res.json();
   
       if (!res.ok || !data.success) {
-        alert(data.message || "Failed to fetch shifts data");
+        console.log(data.message || "Failed to fetch shifts data");
         return;
       }
 
@@ -71,7 +71,7 @@ export async function fetchOperatorAttendance({limit}){
       const data = await res.json();
   
       if (!res.ok || !data.success) {
-        alert(data.message || "Failed to fetch attendance data");
+        console.log(data.message || "Failed to fetch attendance data");
         return;
       }
 
@@ -92,7 +92,7 @@ export async function fetchOperatorActiveAttendance(){
       const data = await res.json();
   
       if (!res.ok || !data.success) {
-        alert(data.message || "Failed to fetch attendance data");
+        console.log(data.message || "Failed to fetch attendance data");
         return;
       }
 
@@ -118,7 +118,7 @@ export async function createOperatorLibur({start, end, reason}){
       const data = await res.json();
  
       if (!res.ok) {
-        alert(data.message || "Failed to create libur submission");
+        console.log(data.message || "Failed to create libur submission");
         return;
       }
       return data.data
@@ -142,7 +142,7 @@ export async function createOperatorIjin({start, end, reason}){
       const data = await res.json();
  
       if (!res.ok) {
-        alert(data.message || "Failed to create ijin submission");
+        console.log(data.message || "Failed to create ijin submission");
         return;
       }
       return data.data
@@ -161,7 +161,7 @@ export async function createOperatorIjin({start, end, reason}){
       const data = await res.json();
   
       if (!res.ok || !data.success) {
-        alert(data.message || "Failed to fetch libur submission data");
+        console.log(data.message || "Failed to fetch libur submission data");
         return;
       }
 
@@ -204,7 +204,7 @@ export async function createOperatorIjin({start, end, reason}){
       const data = await res.json();
   
       if (!res.ok || !data.success) {
-        alert(data.message || "Failed to fetch current user data");
+        console.log(data.message || "Failed to fetch current user data");
         return;
       }
 
@@ -225,7 +225,7 @@ export async function createOperatorIjin({start, end, reason}){
       const data = await res.json();
   
       if (!res.ok || !data.success) {
-        alert(data.message || "Failed to fetch ijin submission data");
+        console.log(data.message || "Failed to fetch ijin submission data");
         return;
       }
 
@@ -260,7 +260,7 @@ export async function createOperatorReport(body){
     const data = await res.json();
 
     if (!res.ok) {
-      alert(data.message || "Failed to create report");
+      console.log(data.message || "Failed to create report");
       return;
     }
     return data.data
@@ -279,7 +279,7 @@ export async function checkIn(body){
     const data = await res.json();
 
     if (!res.ok) {
-      alert(data.message || "Failed checkin");
+      console.log(data.message || "Failed checkin");
       return;
     }
     return data.data
@@ -298,7 +298,7 @@ export async function checkOut(body){
     const data = await res.json();
 
     if (!res.ok) {
-      alert(data.message || "Failed checkout");
+      console.log(data.message || "Failed checkout");
       return;
     }
     return data.data
@@ -331,7 +331,7 @@ export async function createTicket(body){
     const data = await res.json();
 
     if (!res.ok) {
-      alert(data.message || "Failed checkout");
+      console.log(data.message || "Failed checkout");
       return;
     }
     return data.data

@@ -8,7 +8,7 @@ export async function fetchUsersWithRoleData({limit, role}){
       const data = await res.json();
   
       if (!res.ok || !data.success) {
-        alert(data.message || "Failed to fetch users data");
+        console.log(data.message || "Failed to fetch users data");
         return;
       }
 
@@ -50,7 +50,7 @@ export async function fetchAttendance({limit=50}){
       const data = await res.json();
   
       if (!res.ok || !data.success) {
-        alert(data.message || "Failed to fetch attendance data");
+        console.log(data.message || "Failed to fetch attendance data");
         return;
       }
 
@@ -71,7 +71,7 @@ export async function fetchHrdSummary(){
       const data = await res.json();
   
       if (!res.ok || !data.success) {
-        alert(data.message || "Failed to fetch attendance data");
+        console.log(data.message || "Failed to fetch attendance data");
         return;
       }
 
@@ -92,7 +92,7 @@ export async function fetchLeaveRequest(){
       const data = await res.json();
   
       if (!res.ok || !data.success) {
-        alert(data.message || "Failed to fetch attendance data");
+        console.log(data.message || "Failed to fetch attendance data");
         return;
       }
 
@@ -126,7 +126,7 @@ export async function addShift({
     const data = await res.json();
 
     if (!res.ok) {
-      alert(data.message || "Failed to approve a report");
+      console.log(data.message || "Failed to approve a report");
       return;
     }
     return data.success
@@ -146,7 +146,7 @@ export async function approveAttendance({id}){
     const data = await res.json();
 
     if (!res.ok) {
-      alert(data.message || "Failed to approve a report");
+      console.log(data.message || "Failed to approve a report");
       return;
     }
     return data.success
@@ -166,7 +166,7 @@ export async function rejectAttendance({id}){
     const data = await res.json();
 
     if (!res.ok) {
-      alert(data.message || "Failed to reject a report");
+      console.log(data.message || "Failed to reject a report");
       return;
     }
     return data.success
@@ -185,7 +185,7 @@ export async function approveLeave({id, type}){
     const data = await res.json();
 
     if (!res.ok) {
-      alert(data.message || "Failed to approve leave");
+      console.log(data.message || "Failed to approve leave");
       return;
     }
     return data.success
@@ -204,7 +204,7 @@ export async function rejectLeave({id, type}){
     const data = await res.json();
 
     if (!res.ok) {
-      alert(data.message || "Failed to reject leve");
+      console.log(data.message || "Failed to reject leve");
       return;
     }
     return data.success
