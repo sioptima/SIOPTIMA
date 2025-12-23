@@ -402,7 +402,6 @@ export default function Operator() {
             if (!result) throw new Error("No data returned");
             const ijin = await fetchOperatorLibur({limit: 50});
             if (!ijin) throw new Error("No data returned");
-            console.log("aaaaa",[result])
             setSubmissionHistory([...result, ...ijin]);
         } catch (err) {
           //setError
