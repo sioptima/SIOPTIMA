@@ -280,7 +280,7 @@ export async function checkIn(body){
       console.log(data.message || "Failed checkin");
       return;
     }
-    return data.data
+    return data.data.transformedResult
   } catch (err) {
     console.log("Error: ", err)
   }

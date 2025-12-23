@@ -263,7 +263,7 @@ export class ShiftRepository {
             await PrismaClient.jadwalShift.delete({where:{id:shiftId}})
             return oldShift
         } catch (error) {
-            throw new ResponseError(500, error.message);
+            throw new ResponseError(500, "Failed when trying to delete shift");
         }
     }
 
@@ -461,7 +461,7 @@ export class ShiftRepository {
             return {result: shifts, count: count};
             
         } catch (error) {
-            throw new ResponseError(500, error.message)
+            throw new ResponseError(500, "Failed when fetching shift by user id")
         }
     }
 
@@ -504,7 +504,7 @@ export class ShiftRepository {
             return {result: shifts, count: count};
             
         } catch (error) {
-            throw new ResponseError(500, error.message)
+            throw new ResponseError(500, "Failed when fetching shift list")
         }
     }
 }

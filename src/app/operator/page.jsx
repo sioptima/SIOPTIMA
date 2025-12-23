@@ -280,7 +280,7 @@ export default function Operator() {
   useEffect(() => {
     const loadData = async () => {
         try {
-            const result = await fetchOperatorAttendance({limit: 10});
+            const result = await fetchOperatorAttendance({limit: 50});
             if (!result) throw new Error("No data returned");
             setAttendanceHistory(result);
         } catch (err) {
@@ -329,7 +329,7 @@ export default function Operator() {
   useEffect(() => {
     const loadData = async () => {
         try {
-            const result = await fetchOperatorTicket({limit: 10});
+            const result = await fetchOperatorTicket({limit: 50});
             if (!result) throw new Error("No data returned");
             setTickets(result);
         } catch (err) {
@@ -398,9 +398,9 @@ export default function Operator() {
   useEffect(() => {
     const loadData = async () => {
         try {
-            const result = await fetchOperatorIjin({limit: 10});
+            const result = await fetchOperatorIjin({limit: 50});
             if (!result) throw new Error("No data returned");
-            const ijin = await fetchOperatorLibur({limit: 10});
+            const ijin = await fetchOperatorLibur({limit: 50});
             if (!ijin) throw new Error("No data returned");
 
             setSubmissionHistory([...result, ...ijin]);
@@ -1424,13 +1424,14 @@ export default function Operator() {
     const response = await checkIn(formData)
     if(!response){
       setLoading(false)
+      alert("Gagal checkin, pastikan anda punya jadwal shift hari ini")
       return
     }
 
 
     setAttendanceData((prev) => ({
       ...prev,
-      checkInTime: response.checkIn.toLocaleTimeString(),
+      checkInTime: response.checkIn,
       status: response.status,
       isCheckedIn: true,
       isCheckedOut: false,
@@ -1444,7 +1445,7 @@ export default function Operator() {
     updateDashboardData();
 
     alert(
-      `Check-in berhasil! Jarak ke site: ${response.locationStatus}. Waktu: ${response.checkIn.toLocaleTimeString()} - Status: ${response.checkInStatus}. Menunggu approval admin.`
+      `Check-in berhasil! Jarak ke site: ${response.locationStatus}. Waktu: ${response.checkIn} - Status: ${response.checkInStatus}. Menunggu approval admin.`
     );
     setLoading(false)
   };
@@ -3155,7 +3156,7 @@ export default function Operator() {
           </p>
         </div>
         <div className="flex-shrink-0">
-          {!attendanceData.isCheckedIn && !dashboardData.nextShiftTime === "-" ? (
+          {!attendanceData.isCheckedIn || !dashboardData.nextShiftTime === "-" ? (
             <button
               onClick={() => {
                 console.log("Check In button clicked");
@@ -3166,7 +3167,7 @@ export default function Operator() {
               <CheckCircleIcon className="w-5 h-5" />
               Check In Now
             </button>
-          ) : !attendanceData.isCheckedOut && !dashboardData.nextShiftTime === "-" ? (
+          ) : !attendanceData.isCheckedOut || !dashboardData.nextShiftTime === "-" ? (
             <button
               onClick={() => {
                 console.log("Check Out button clicked");
@@ -3179,7 +3180,7 @@ export default function Operator() {
             </button>
           ) : (
             <div className="text-center px-4 py-3 bg-gray-100 text-gray-600 rounded-lg text-sm lg:text-base">
-              Tidak ada shift lagi untuk hari ini
+              Checkout Berhasil!
             </div>
           )}
         </div>
