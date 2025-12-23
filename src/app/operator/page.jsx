@@ -4748,7 +4748,7 @@ export default function Operator() {
             </div>
             <div className="flex items-center gap-4">
               {/* NOTIFIKASI */}
-              <div ref={notificationRef} className="relative">
+              {/*<div ref={notificationRef} className="relative">
                 <button
                   onClick={() => setIsNotificationOpen(!isNotificationOpen)}
                   className="p-2 text-gray-800 hover:text-teal-600 relative transition-colors"
@@ -4763,7 +4763,7 @@ export default function Operator() {
                   )}
                 </button>
                 {isNotificationOpen && renderNotificationDropdown()}
-              </div>
+              </div>*/}
 
               {/* PROFILE DROPDOWN */}
               <div
