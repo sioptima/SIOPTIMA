@@ -42,7 +42,23 @@ import {
   DevicePhoneMobileIcon,
   ChevronRightIcon,
 } from "@heroicons/react/24/outline";
-import { checkIn, checkOut, createOperatorIjin, createOperatorLibur, createOperatorReport, createTicket, fetchCurrentUser, fetchOperatorActiveAttendance, fetchOperatorAttendance, fetchOperatorDashboardData, fetchOperatorIjin, fetchOperatorLibur, fetchOperatorReports, fetchOperatorShifts, fetchOperatorTicket } from "@/src/lib/fetchApiOperator";
+import {
+  checkIn,
+  checkOut,
+  createOperatorIjin,
+  createOperatorLibur,
+  createOperatorReport,
+  createTicket,
+  fetchCurrentUser,
+  fetchOperatorActiveAttendance,
+  fetchOperatorAttendance,
+  fetchOperatorDashboardData,
+  fetchOperatorIjin,
+  fetchOperatorLibur,
+  fetchOperatorReports,
+  fetchOperatorShifts,
+  fetchOperatorTicket,
+} from "@/src/lib/fetchApiOperator";
 import { fetchSitesData } from "@/src/lib/fetchApiAdmin";
 
 // BAGIAN GEOLOKASI OR GEOLOCATION
@@ -62,16 +78,16 @@ const DEMO_MODE = true; // Aktifkan demo mode untuk testing
 const DEMO_SITE_COORDINATES = {
   "Jakarta Utara - Site A": {
     lat: -7.2375495,
-    lng: 112.7271187
+    lng: 112.7271187,
   },
   "Jakarta Utara - Site B": {
-    lat: -7.2380000,
-    lng: 112.7275000
+    lat: -7.238,
+    lng: 112.7275,
   },
   "Jakarta Utara - Site C": {
-    lat: -7.2370000,
-    lng: 112.7280000
-  }
+    lat: -7.237,
+    lng: 112.728,
+  },
 };
 
 // Fungsi untuk menghitung jarak antara dua koordinat (rumus Haversine)
@@ -125,25 +141,25 @@ export default function Operator() {
   const router = useRouter();
   const dropdownRef = useRef(null);
   const notificationRef = useRef(null);
-  const [loading, setLoading] = useState(false)
+  const [loading, setLoading] = useState(false);
 
   // ==================== DATA USER ====================
   const [user, setUser] = useState({});
   useEffect(() => {
     const loadData = async () => {
-        try {
-            const result = await fetchCurrentUser();
-            if (!result) throw new Error("No data returned");
-            setUser(result);
-        } catch (err) {
-          //setError
-    } finally {
-      //setLoading
-    }
-  };   
+      try {
+        const result = await fetchCurrentUser();
+        if (!result) throw new Error("No data returned");
+        setUser(result);
+      } catch (err) {
+        //setError
+      } finally {
+        //setLoading
+      }
+    };
 
-  loadData();
-  }, []);  
+    loadData();
+  }, []);
 
   // Refs untuk berbagai keperluan
   const dateInputRef = useRef(null);
@@ -165,7 +181,7 @@ export default function Operator() {
       time: "2 jam yang lalu",
       type: "success",
       read: false,
-    }
+    },
   ]);
 
   // State untuk Dashboard
@@ -176,7 +192,7 @@ export default function Operator() {
     flowRate: "0 L/h",
     tds: "0 ppm",
     ec: "0 μS/cm",
-  }); 
+  });
 
   const [pHData, setPHData] = useState([]);
   const [flowRateData, setFlowRateData] = useState([]);
@@ -203,20 +219,19 @@ export default function Operator() {
   const [reports, setReports] = useState([]);
   useEffect(() => {
     const loadData = async () => {
-        try {
-            const result = await fetchOperatorReports({limit: 50});
-            if (!result) throw new Error("No data returned");
-            setReports(result);
-        } catch (err) {
-          //setError
-    } finally {
-      //setLoading
-    }
-  };   
+      try {
+        const result = await fetchOperatorReports({ limit: 50 });
+        if (!result) throw new Error("No data returned");
+        setReports(result);
+      } catch (err) {
+        //setError
+      } finally {
+        //setLoading
+      }
+    };
 
-  loadData();
-  }, []);  
-
+    loadData();
+  }, []);
 
   const [searchQuery, setSearchQuery] = useState("");
   const [errors, setErrors] = useState({});
@@ -229,20 +244,20 @@ export default function Operator() {
 
   const [sitesData, setSitesData] = useState([]);
   useEffect(() => {
-      const loadData = async () => {
-          try {
-              const result = await fetchSitesData({limit: 50});
-              if (!result) throw new Error("No data returned");
-              setSitesData(result.sites);
-          } catch (err) {
-            //setError
+    const loadData = async () => {
+      try {
+        const result = await fetchSitesData({ limit: 50 });
+        if (!result) throw new Error("No data returned");
+        setSitesData(result.sites);
+      } catch (err) {
+        //setError
       } finally {
         //setLoading
       }
-  };   
+    };
 
-  loadData();
-  }, []); 
+    loadData();
+  }, []);
 
   const getSiteOptions = () => {
     const siteNames = sitesData.map((site) => site.name);
@@ -262,36 +277,36 @@ export default function Operator() {
   });
   useEffect(() => {
     const loadData = async () => {
-        try {
-            const result = await fetchOperatorActiveAttendance();
-            if (!result) throw new Error("No data returned");
-            setAttendanceData(result);
-        } catch (err) {
-          //setError
-    } finally {
-      //setLoading
-    }
-  };    
+      try {
+        const result = await fetchOperatorActiveAttendance();
+        if (!result) throw new Error("No data returned");
+        setAttendanceData(result);
+      } catch (err) {
+        //setError
+      } finally {
+        //setLoading
+      }
+    };
 
-  loadData();
-  }, []);  
+    loadData();
+  }, []);
 
   const [attendanceHistory, setAttendanceHistory] = useState([]);
   useEffect(() => {
     const loadData = async () => {
-        try {
-            const result = await fetchOperatorAttendance({limit: 50});
-            if (!result) throw new Error("No data returned");
-            setAttendanceHistory(result);
-        } catch (err) {
-          //setError
-    } finally {
-      //setLoading
-    }
-  };   
+      try {
+        const result = await fetchOperatorAttendance({ limit: 50 });
+        if (!result) throw new Error("No data returned");
+        setAttendanceHistory(result);
+      } catch (err) {
+        //setError
+      } finally {
+        //setLoading
+      }
+    };
 
-  loadData();
-  }, []);  
+    loadData();
+  }, []);
 
   // State untuk modal check-in/check-out
   const [isCheckInModalOpen, setIsCheckInModalOpen] = useState(false);
@@ -313,14 +328,19 @@ export default function Operator() {
   const [locationCaptured, setLocationCaptured] = useState(false);
   const [selfieUploaded, setSelfieUploaded] = useState(false);
   const [selfiePreview, setSelfiePreview] = useState(null);
-  const [currentLocation, setCurrentLocation] = useState("Click to get location");
+  const [currentLocation, setCurrentLocation] = useState(
+    "Click to get location"
+  );
   const [isCameraActive, setIsCameraActive] = useState(false);
   const [stream, setStream] = useState(null);
 
-  const [locationCapturedCheckOut, setLocationCapturedCheckOut] = useState(false);
+  const [locationCapturedCheckOut, setLocationCapturedCheckOut] =
+    useState(false);
   const [selfieUploadedCheckOut, setSelfieUploadedCheckOut] = useState(false);
   const [selfiePreviewCheckOut, setSelfiePreviewCheckOut] = useState(null);
-  const [currentLocationCheckOut, setCurrentLocationCheckOut] = useState("Click to get location");
+  const [currentLocationCheckOut, setCurrentLocationCheckOut] = useState(
+    "Click to get location"
+  );
   const [isCameraActiveCheckOut, setIsCameraActiveCheckOut] = useState(false);
   const [streamCheckOut, setStreamCheckOut] = useState(null);
 
@@ -328,19 +348,19 @@ export default function Operator() {
   const [tickets, setTickets] = useState([]);
   useEffect(() => {
     const loadData = async () => {
-        try {
-            const result = await fetchOperatorTicket({limit: 50});
-            if (!result) throw new Error("No data returned");
-            setTickets(result);
-        } catch (err) {
-          //setError
-    } finally {
-      //setLoading
-    }
-  };   
+      try {
+        const result = await fetchOperatorTicket({ limit: 50 });
+        if (!result) throw new Error("No data returned");
+        setTickets(result);
+      } catch (err) {
+        //setError
+      } finally {
+        //setLoading
+      }
+    };
 
-  loadData();
-  }, []); 
+    loadData();
+  }, []);
 
   const [newTicket, setNewTicket] = useState({
     site: "",
@@ -359,38 +379,39 @@ export default function Operator() {
   const [formErrors, setFormErrors] = useState({});
 
   // State untuk modal detail pengajuan
-  const [isSubmissionDetailModalOpen, setIsSubmissionDetailModalOpen] = useState(false);
+  const [isSubmissionDetailModalOpen, setIsSubmissionDetailModalOpen] =
+    useState(false);
   const [selectedSubmission, setSelectedSubmission] = useState(null);
 
   // State untuk Lihat Shift
   const [shiftData, setShiftData] = useState([]);
   useEffect(() => {
     const loadData = async () => {
-        try {
-            const result = await fetchOperatorShifts({limit: 50});
-            if (!result) throw new Error("No data returned");
-            setShiftData(result);
-        } catch (err) {
-          //setError
-    } finally {
-      //setLoading
-    }
-  };   
+      try {
+        const result = await fetchOperatorShifts({ limit: 50 });
+        if (!result) throw new Error("No data returned");
+        setShiftData(result);
+      } catch (err) {
+        //setError
+      } finally {
+        //setLoading
+      }
+    };
 
-  loadData();
-  }, []);  
+    loadData();
+  }, []);
 
   const [isLiburModalOpen, setIsLiburModalOpen] = useState(false);
   const [isIzinModalOpen, setIsIzinModalOpen] = useState(false);
   const [liburForm, setLiburForm] = useState({
     startDate: "",
     endDate: "",
-    reason: ""
+    reason: "",
   });
   const [izinForm, setIzinForm] = useState({
     startDate: "",
     endDate: "",
-    reason: ""
+    reason: "",
   });
 
   // State untuk riwayat pengajuan shift
@@ -410,8 +431,8 @@ export default function Operator() {
     }
   };   
 
-  loadData();
-  }, []);  
+    loadData();
+  }, []);
 
   // Menu Items
   const menuItems = [
@@ -423,33 +444,36 @@ export default function Operator() {
   ];
 
   // ==================== FUNGSI PERHITUNGAN ====================
-  
+
   // Fungsi untuk menghitung rate kehadiran berdasarkan data aktual
   const calculateAttendanceRate = () => {
     if (attendanceHistory.length === 0) return { rate: "0%", change: "+0%" };
-    
+
     // Ambil data 30 hari terakhir
     const thirtyDaysAgo = new Date();
     thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
-    
-    const recentAttendance = attendanceHistory.filter(att => {
+
+    const recentAttendance = attendanceHistory.filter((att) => {
       const attDate = new Date(att.date);
       return attDate >= thirtyDaysAgo;
     });
-    
+
     if (recentAttendance.length === 0) return { rate: "0%", change: "+0%" };
-    
+
     // Hitung persentase kehadiran yang disetujui
-    const approvedCount = recentAttendance.filter(att =>
-      att.approvalStatus === "approved"
+    const approvedCount = recentAttendance.filter(
+      (att) => att.approvalStatus === "approved"
     ).length;
-    
+
     const rate = (approvedCount / recentAttendance.length) * 100;
-    
+
     // Hitung perubahan dari bulan sebelumnya (dummy calculation)
     const previousMonthRate = Math.max(0, rate - 10);
-    const change = rate > 0 ? `+${Math.round(((rate - previousMonthRate) / previousMonthRate) * 100)}%` : "+0%";
-    
+    const change =
+      rate > 0
+        ? `+${Math.round(((rate - previousMonthRate) / previousMonthRate) * 100)}%`
+        : "+0%";
+
     return { rate: `${Math.round(rate)}%`, change };
   };
 
@@ -458,28 +482,35 @@ export default function Operator() {
     const now = new Date();
     const currentMonth = now.getMonth();
     const currentYear = now.getFullYear();
-    
-    const currentMonthReports = reports.filter(report => {
+
+    const currentMonthReports = reports.filter((report) => {
       const reportDate = new Date(report.date);
-      return reportDate.getMonth() === currentMonth &&
-             reportDate.getFullYear() === currentYear;
+      return (
+        reportDate.getMonth() === currentMonth &&
+        reportDate.getFullYear() === currentYear
+      );
     }).length;
-    
+
     // Hitung laporan bulan sebelumnya
     const previousMonth = currentMonth === 0 ? 11 : currentMonth - 1;
     const previousYear = currentMonth === 0 ? currentYear - 1 : currentYear;
-    
-    const previousMonthReports = reports.filter(report => {
+
+    const previousMonthReports = reports.filter((report) => {
       const reportDate = new Date(report.date);
-      return reportDate.getMonth() === previousMonth &&
-             reportDate.getFullYear() === previousYear;
+      return (
+        reportDate.getMonth() === previousMonth &&
+        reportDate.getFullYear() === previousYear
+      );
     }).length;
-    
+
     // Hitung persentase perubahan
-    const change = previousMonthReports > 0 
-      ? `+${Math.round(((currentMonthReports - previousMonthReports) / previousMonthReports) * 100)}%`
-      : currentMonthReports > 0 ? "+100%" : "+0%";
-    
+    const change =
+      previousMonthReports > 0
+        ? `+${Math.round(((currentMonthReports - previousMonthReports) / previousMonthReports) * 100)}%`
+        : currentMonthReports > 0
+          ? "+100%"
+          : "+0%";
+
     return { count: currentMonthReports, change };
   };
 
@@ -487,21 +518,21 @@ export default function Operator() {
   const getParameterCategory = (type, value) => {
     const numValue = parseFloat(value);
     if (isNaN(numValue)) return "no data";
-    
-    switch(type) {
-      case 'pHLevel':
+
+    switch (type) {
+      case "pHLevel":
         if (numValue >= 6.5 && numValue <= 8.5) return "normal";
         if (numValue < 6.5) return "low";
         return "high";
-      case 'flowRate':
+      case "flowRate":
         if (numValue >= 400 && numValue <= 600) return "normal";
         if (numValue < 400) return "low";
         return "high";
-      case 'tds':
+      case "tds":
         if (numValue <= 500) return "normal";
         if (numValue <= 1000) return "high";
         return "very high";
-      case 'ec':
+      case "ec":
         if (numValue <= 800) return "normal";
         if (numValue <= 1500) return "high";
         return "very high";
@@ -556,19 +587,19 @@ export default function Operator() {
   // ==================== FUNGSI SINKRONISASI DATA ====================
   const updateDashboardData = () => {
     const loadData = async () => {
-        try {
-            const result = await fetchOperatorDashboardData();
-            if (!result) throw new Error("No data returned");
-            setDashboardData(result);
-        } catch (err) {
-          //setError
+      try {
+        const result = await fetchOperatorDashboardData();
+        if (!result) throw new Error("No data returned");
+        setDashboardData(result);
+      } catch (err) {
+        //setError
       } finally {
         //setLoading
       }
-    };   
-  
+    };
+
     loadData();
-    
+
     const submittedReports = reports.filter(
       (report) => report.status === "pending"
     );
@@ -578,7 +609,6 @@ export default function Operator() {
     //const attendanceData = calculateAttendanceRate();
     //const monthlyReports = calculateMonthlyReports();
 
-    
     if (submittedReports.length > 0) {
       const latestReports = submittedReports.slice(0, 7);
 
@@ -772,21 +802,28 @@ export default function Operator() {
     setTimeout(async () => {
       if (editingReportId) {
         // Edit existing report; not yet implemented - no time to integrate;(
-        setReports(prev => prev.map(report => 
-          report.id === editingReportId 
-            ? {
-                ...report,
-                ...formData,
-                uploadedFiles: [...uploadedFiles],
-                timestamp: new Date().toISOString(),
-                status: "Draft"
-              }
-            : report
-        ));
+        setReports((prev) =>
+          prev.map((report) =>
+            report.id === editingReportId
+              ? {
+                  ...report,
+                  ...formData,
+                  uploadedFiles: [...uploadedFiles],
+                  timestamp: new Date().toISOString(),
+                  status: "Draft",
+                }
+              : report
+          )
+        );
         setEditingReportId(null);
         alert("Laporan berhasil diedit!");
       } else {
-        const newReport = await createOperatorReport(formData)
+        const newReport = await createOperatorReport(formData);
+        if (!newReport) {
+          setLoading(false);
+          alert("Gagal membuat laporan. Silakan coba lagi.");
+          return;
+        }
         setReports((prev) => [newReport, ...prev]);
       }
 
@@ -803,7 +840,7 @@ export default function Operator() {
         settleStatus: "Normal",
         outFilterStatus: "Normal",
         additionalNotes: "",
-        images: []
+        images: [],
       });
       setUploadedFiles([]);
       setErrors({});
@@ -814,8 +851,10 @@ export default function Operator() {
       setNotifications((prev) => [
         {
           id: Date.now(),
-          title: editingReportId ? "Laporan Berhasil Diedit" : "Laporan Berhasil Disubmit",
-          message: `Laporan harian ${formData.date} telah berhasil ${editingReportId ? 'diedit' : 'disubmit'}`,
+          title: editingReportId
+            ? "Laporan Berhasil Diedit"
+            : "Laporan Berhasil Disubmit",
+          message: `Laporan harian ${formData.date} telah berhasil ${editingReportId ? "diedit" : "disubmit"}`,
           time: "Baru saja",
           type: "success",
           read: false,
@@ -850,20 +889,23 @@ export default function Operator() {
   };
 
   const handleDeleteReport = (reportId) => {
-    const reportToDelete = reports.find(r => r.id === reportId);
-    
+    const reportToDelete = reports.find((r) => r.id === reportId);
+
     if (!reportToDelete) {
       alert("Laporan tidak ditemukan");
       return;
     }
-    
-    if (reportToDelete.status === "Submitted" || reportToDelete.status === "Approved") {
+
+    if (
+      reportToDelete.status === "Submitted" ||
+      reportToDelete.status === "Approved"
+    ) {
       alert("Laporan yang sudah disubmit/telah disetujui tidak dapat dihapus");
       return;
     }
-    
+
     if (window.confirm("Apakah Anda yakin ingin menghapus laporan ini?")) {
-      setReports(prev => prev.filter(r => r.id !== reportId));
+      setReports((prev) => prev.filter((r) => r.id !== reportId));
       alert("Laporan berhasil dihapus");
       updateDashboardData();
     }
@@ -886,8 +928,8 @@ export default function Operator() {
     });
     setUploadedFiles(report.uploadedFiles || []);
     setEditingReportId(report.id);
-    
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+
+    window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   const handleDateIconClick = () => {
@@ -1020,13 +1062,16 @@ export default function Operator() {
 
     // Validasi format waktu
     const timeRegex = /^(0[0-9]|1[0-9]|2[0-3]):[0-5][0-9] (AM|PM)$/;
-    if (!timeRegex.test(editPresenceForm.checkIn) || !timeRegex.test(editPresenceForm.checkOut)) {
+    if (
+      !timeRegex.test(editPresenceForm.checkIn) ||
+      !timeRegex.test(editPresenceForm.checkOut)
+    ) {
       alert("Format waktu tidak valid. Gunakan format: HH:MM AM/PM");
       return;
     }
 
     // Update attendance history
-    const updatedHistory = attendanceHistory.map(att =>
+    const updatedHistory = attendanceHistory.map((att) =>
       att.id === editingPresence.id
         ? {
             ...att,
@@ -1038,10 +1083,10 @@ export default function Operator() {
 
     setAttendanceHistory(updatedHistory);
     setIsEditPresenceModalOpen(false);
-    
+
     // Update dashboard data
     updateDashboardData();
-    
+
     // Tambah notifikasi
     setNotifications((prev) => [
       {
@@ -1054,25 +1099,26 @@ export default function Operator() {
       },
       ...prev,
     ]);
-    
+
     alert("Presensi berhasil diedit!");
   };
 
   // PERBAIKAN: Fungsi getCurrentLocation yang sudah diperbaiki
   const getCurrentLocation = (isCheckOut = false) => {
     console.log("getCurrentLocation dipanggil, isCheckOut:", isCheckOut);
-    
+
     // Jika DEMO_MODE aktif, gunakan koordinat dummy dari site
     if (DEMO_MODE) {
       const userSite = user.site || "Jakarta Utara - Site A";
-      const siteData = DEMO_SITE_COORDINATES[userSite] || 
-                       DEMO_SITE_COORDINATES["Jakarta Utara - Site A"];
-      
+      const siteData =
+        DEMO_SITE_COORDINATES[userSite] ||
+        DEMO_SITE_COORDINATES["Jakarta Utara - Site A"];
+
       // Buat koordinat random dalam radius 50-200 meter dari site
-      const randomOffset = () => (Math.random() * 0.003 - 0.0015); // ~50-200 meter
+      const randomOffset = () => Math.random() * 0.003 - 0.0015; // ~50-200 meter
       const demoLat = siteData.lat + randomOffset();
       const demoLng = siteData.lng + randomOffset();
-      
+
       // Hitung jarak dari perusahaan (simulasi)
       const distance = calculateDistance(
         demoLat,
@@ -1080,17 +1126,17 @@ export default function Operator() {
         COMPANY_COORDINATES.latitude,
         COMPANY_COORDINATES.longitude
       );
-      
+
       const isWithinRadius = distance <= ALLOWED_RADIUS_METERS;
-      
+
       // Format lokasi demo
       const locationString = `Lat: ${demoLat.toFixed(6)}, Long: ${demoLng.toFixed(6)}`;
       const statusMessage = isWithinRadius
         ? `✓ Within allowed radius (${Math.round(distance)} m from company)`
         : `✗ Outside allowed radius (${Math.round(distance)} m from company) - DEMO MODE`;
-      
+
       const fullLocationString = `${locationString}\n${statusMessage}`;
-      
+
       if (isCheckOut) {
         setCurrentLocationCheckOut(fullLocationString);
         setLocationCapturedCheckOut(true); // Selalu true agar bisa presensi
@@ -1202,7 +1248,9 @@ export default function Operator() {
           setCurrentLocation("Location unavailable");
           setLocationCaptured(true); // Tetap izinkan presinsi
         }
-        alert(`Warning: ${errorMessage}\n\nAnda masih bisa melakukan presensi tanpa lokasi.`);
+        alert(
+          `Warning: ${errorMessage}\n\nAnda masih bisa melakukan presensi tanpa lokasi.`
+        );
       },
       options
     );
@@ -1210,7 +1258,7 @@ export default function Operator() {
 
   const startCamera = (isCheckOut = false) => {
     console.log("startCamera dipanggil, isCheckOut:", isCheckOut);
-    
+
     if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
       alert("Browser tidak mendukung akses kamera");
       return;
@@ -1218,23 +1266,23 @@ export default function Operator() {
 
     // Gunakan videoRef yang sesuai
     const videoElement = isCheckOut ? videoRef.current : videoRef.current;
-    
+
     if (!videoElement) {
       console.log("Video element tidak ditemukan");
       return;
     }
 
     navigator.mediaDevices
-      .getUserMedia({ 
-        video: { 
+      .getUserMedia({
+        video: {
           facingMode: "user",
           width: { ideal: 1280 },
-          height: { ideal: 720 }
-        } 
+          height: { ideal: 720 },
+        },
       })
       .then((mediaStream) => {
         console.log("Camera accessed successfully");
-        
+
         if (isCheckOut) {
           setStreamCheckOut(mediaStream);
           setIsCameraActiveCheckOut(true);
@@ -1242,9 +1290,11 @@ export default function Operator() {
           setStream(mediaStream);
           setIsCameraActive(true);
         }
-        
+
         videoElement.srcObject = mediaStream;
-        videoElement.play().catch(err => console.log("Error playing video:", err));
+        videoElement
+          .play()
+          .catch((err) => console.log("Error playing video:", err));
       })
       .catch((error) => {
         console.log("Error accessing camera:", error);
@@ -1254,10 +1304,10 @@ export default function Operator() {
 
   const capturePhoto = (isCheckOut = false) => {
     console.log("capturePhoto dipanggil, isCheckOut:", isCheckOut);
-    
+
     const videoElement = videoRef.current;
     const canvasElement = canvasRef.current;
-    
+
     if (!videoElement || !canvasElement) {
       console.log("Video atau canvas element tidak ditemukan");
       return;
@@ -1272,10 +1322,16 @@ export default function Operator() {
     // Set canvas size sama dengan video
     canvasElement.width = videoElement.videoWidth;
     canvasElement.height = videoElement.videoHeight;
-    
+
     // Gambar frame video ke canvas
-    context.drawImage(videoElement, 0, 0, canvasElement.width, canvasElement.height);
-    
+    context.drawImage(
+      videoElement,
+      0,
+      0,
+      canvasElement.width,
+      canvasElement.height
+    );
+
     // Dapatkan data URL dari canvas
     const photoDataUrl = canvasElement.toDataURL("image/png");
 
@@ -1288,14 +1344,14 @@ export default function Operator() {
       setSelfieUploaded(true);
       console.log("Selfie check-in diambil");
     }
-    
+
     // Hentikan kamera
     stopCamera(isCheckOut);
   };
 
   const stopCamera = (isCheckOut = false) => {
     console.log("stopCamera dipanggil, isCheckOut:", isCheckOut);
-    
+
     if (isCheckOut) {
       if (streamCheckOut) {
         streamCheckOut.getTracks().forEach((track) => {
@@ -1315,7 +1371,7 @@ export default function Operator() {
       }
       setIsCameraActive(false);
     }
-    
+
     // Clear video source
     if (videoRef.current) {
       videoRef.current.srcObject = null;
@@ -1324,22 +1380,22 @@ export default function Operator() {
 
   const handleSelfieUpload = (event, isCheckOut = false) => {
     console.log("handleSelfieUpload dipanggil, isCheckOut:", isCheckOut);
-    
+
     const file = event.target.files[0];
     if (!file) return;
 
-    setUploadedFiles(file)
+    setUploadedFiles(file);
 
     if (!file.type.startsWith("image/")) {
       alert("Silakan pilih file gambar");
       return;
     }
-    
+
     if (file.size > 5 * 1024 * 1024) {
       alert("Silakan pilih gambar yang lebih kecil dari 5MB");
       return;
     }
-    
+
     const reader = new FileReader();
     reader.onload = (e) => {
       if (isCheckOut) {
@@ -1361,7 +1417,7 @@ export default function Operator() {
 
   const triggerFileInput = (isCheckOut = false) => {
     console.log("triggerFileInput dipanggil, isCheckOut:", isCheckOut);
-    
+
     const input = document.createElement("input");
     input.type = "file";
     input.accept = "image/*";
@@ -1382,10 +1438,10 @@ export default function Operator() {
     setSelfiePreview(null);
     setCurrentLocation("Click to get location");
     setIsCameraActive(false);
-    
+
     // Pastikan stream sebelumnya dihentikan
     if (stream) {
-      stream.getTracks().forEach(track => track.stop());
+      stream.getTracks().forEach((track) => track.stop());
       setStream(null);
     }
   };
@@ -1399,10 +1455,10 @@ export default function Operator() {
     setSelfiePreviewCheckOut(null);
     setCurrentLocationCheckOut("Click to get location");
     setIsCameraActiveCheckOut(false);
-    
+
     // Pastikan stream sebelumnya dihentikan
     if (streamCheckOut) {
-      streamCheckOut.getTracks().forEach(track => track.stop());
+      streamCheckOut.getTracks().forEach((track) => track.stop());
       setStreamCheckOut(null);
     }
   };
@@ -1410,23 +1466,22 @@ export default function Operator() {
   // PERBAIKAN: Fungsi handleConfirmCheckIn yang sudah diperbaiki
   const handleConfirmCheckIn = async () => {
     console.log("handleConfirmCheckIn dipanggil");
-    
+
     if (!selfieUploaded) {
       alert("Harap ambil atau upload selfie terlebih dahulu");
       return;
     }
-    setLoading(true)
+    setLoading(true);
     const now = new Date();
-    const formData = new FormData()
-    formData.append("selfie",uploadedFiles)
-    formData.append("timestamp",now.toISOString())
-    const response = await checkIn(formData)
-    if(!response){
-      setLoading(false)
-      alert("Gagal checkin, pastikan anda punya jadwal shift hari ini")
-      return
+    const formData = new FormData();
+    formData.append("selfie", uploadedFiles);
+    formData.append("timestamp", now.toISOString());
+    const response = await checkIn(formData);
+    if (!response) {
+      setLoading(false);
+      alert("Gagal checkin, pastikan anda punya jadwal shift hari ini");
+      return;
     }
-
 
     setAttendanceData((prev) => ({
       ...prev,
@@ -1446,26 +1501,26 @@ export default function Operator() {
     alert(
       `Check-in berhasil! Jarak ke site: ${response.locationStatus}. Waktu: ${response.checkIn} - Status: ${response.checkInStatus}. Menunggu approval admin.`
     );
-    setLoading(false)
+    setLoading(false);
   };
 
   // PERBAIKAN: Fungsi handleConfirmCheckOut yang sudah diperbaiki
   const handleConfirmCheckOut = async () => {
     console.log("handleConfirmCheckOut dipanggil");
-    
+
     if (!selfieUploadedCheckOut) {
       alert("Harap ambil atau upload selfie terlebih dahulu");
       return;
     }
 
-    setLoading(true)
+    setLoading(true);
     const now = new Date();
-    const formData = new FormData()
-    formData.append("selfie",uploadedFiles)
-    formData.append("timestamp",now.toISOString())
-    const response = await checkOut(formData)
-    if(!response){
-      setLoading(false)
+    const formData = new FormData();
+    formData.append("selfie", uploadedFiles);
+    formData.append("timestamp", now.toISOString());
+    const response = await checkOut(formData);
+    if (!response) {
+      setLoading(false);
       return;
     }
 
@@ -1494,14 +1549,17 @@ export default function Operator() {
 
     updateDashboardData();
 
-    alert(`Check-out berhasil! Jarak ke site: ${response.locationStatus}. Menunggu approval admin.`);
-    setLoading(false)
+    alert(
+      `Check-out berhasil! Jarak ke site: ${response.locationStatus}. Menunggu approval admin.`
+    );
+    setLoading(false);
   };
 
   const getStatusColor = (status) => {
     if (status.includes("ontime")) return "text-green-600 bg-green-100";
     if (status.includes("late")) return "text-red-600 bg-red-100";
-    if (status.includes("Outside Radius")) return "text-orange-600 bg-orange-100";
+    if (status.includes("Outside Radius"))
+      return "text-orange-600 bg-orange-100";
     if (status === "approved") return "text-green-600 bg-green-100";
     if (status === "pending") return "text-yellow-600 bg-yellow-100";
     return "text-gray-600 bg-gray-100";
@@ -1526,11 +1584,11 @@ export default function Operator() {
       return;
     }
 
-    setLoading (true)
-    const ticket = await createTicket(newTicket)
+    setLoading(true);
+    const ticket = await createTicket(newTicket);
 
-    if(!ticket){
-      setLoading(false)
+    if (!ticket) {
+      setLoading(false);
       return;
     }
 
@@ -1548,7 +1606,7 @@ export default function Operator() {
     updateDashboardData();
 
     alert(`Tiket bantuan berhasil diajukan! Nomor tiket: ${ticket.id}`);
-    setLoading(false)
+    setLoading(false);
   };
 
   useEffect(() => {
@@ -1608,7 +1666,7 @@ export default function Operator() {
       return;
     }
 
-    setLoading(true)
+    setLoading(true);
 
     const result = await createOperatorLibur({
       start: liburForm.startDate,
@@ -1616,30 +1674,21 @@ export default function Operator() {
       reason: liburForm.reason,
     });
 
-    if(!result){
-      setLoading(false)
-      return
+    if (!result) {
+      setLoading(false);
+      return;
     }
 
     setSubmissionHistory((prev) => [result, ...prev]);
-    
-    alert(`Pengajuan libur berhasil dikirim!\nTanggal: ${liburForm.startDate}${liburForm.endDate ? ` - ${liburForm.endDate}` : ''}\nAlasan: ${liburForm.reason}`);
-    
+
+    alert(
+      `Pengajuan libur berhasil dikirim!\nTanggal: ${liburForm.startDate}${liburForm.endDate ? ` - ${liburForm.endDate}` : ""}\nAlasan: ${liburForm.reason}`
+    );
+
     setLiburForm({ startDate: "", endDate: "", reason: "" });
     setIsLiburModalOpen(false);
-    
-    setNotifications((prev) => [
-      {
-        id: Date.now(),
-        title: "Pengajuan Libur Dikirim",
-        message: "Pengajuan libur Anda sedang menunggu persetujuan",
-        time: "Baru saja",
-        type: "info",
-        read: false,
-      },
-      ...prev,
-    ]);
-    setLoading(false)
+
+    setLoading(false);
   };
 
   const handleSubmitIzin = async () => {
@@ -1648,7 +1697,7 @@ export default function Operator() {
       return;
     }
 
-    setLoading(true)
+    setLoading(true);
 
     const result = await createOperatorIjin({
       start: izinForm.startDate,
@@ -1656,18 +1705,20 @@ export default function Operator() {
       reason: izinForm.reason,
     });
 
-    if(!result){
-      setLoading(false)
-      return
+    if (!result) {
+      setLoading(false);
+      return;
     }
 
     setSubmissionHistory((prev) => [result, ...prev]);
-    
-    alert(`Pengajuan izin berhasil dikirim!\nTanggal: ${izinForm.startDate}${izinForm.endDate ? ` - ${izinForm.endDate}` : ''}\nAlasan: ${izinForm.reason}`);
-    
+
+    alert(
+      `Pengajuan izin berhasil dikirim!\nTanggal: ${izinForm.startDate}${izinForm.endDate ? ` - ${izinForm.endDate}` : ""}\nAlasan: ${izinForm.reason}`
+    );
+
     setIzinForm({ startDate: "", endDate: "", reason: "" });
     setIsIzinModalOpen(false);
-    
+
     setNotifications((prev) => [
       {
         id: Date.now(),
@@ -1680,7 +1731,7 @@ export default function Operator() {
       ...prev,
     ]);
 
-    setLoading(false)
+    setLoading(false);
   };
 
   const getSubmissionStatusColor = (status) => {
@@ -1729,7 +1780,8 @@ export default function Operator() {
             Operator Dashboard
           </h2>
           <p className="text-gray-600 mt-1">
-            Welcome back, {user.name}! Monitor your daily activities and IPAL status
+            Welcome back, {user.name}! Monitor your daily activities and IPAL
+            status
           </p>
         </div>
 
@@ -1751,7 +1803,11 @@ export default function Operator() {
               subValue: dashboardData.nextShiftTime,
               icon: ClockIcon,
             },
-            { label: "Current Site", value: dashboardData.currentSite, icon: MapPinIcon },
+            {
+              label: "Current Site",
+              value: dashboardData.currentSite,
+              icon: MapPinIcon,
+            },
           ].map((item, i) => {
             const Icon = item.icon;
             return (
@@ -1791,25 +1847,28 @@ export default function Operator() {
               {
                 label: "pH Level",
                 value: dashboardData.pHLevel,
-                type: 'pHLevel',
+                type: "pHLevel",
               },
               {
                 label: "Flow Rate",
                 value: dashboardData.flowRate,
-                type: 'flowRate',
+                type: "flowRate",
               },
               {
                 label: "TDS",
                 value: dashboardData.tds,
-                type: 'tds',
+                type: "tds",
               },
               {
                 label: "EC",
                 value: dashboardData.ec,
-                type: 'ec',
+                type: "ec",
               },
             ].map((item, index) => {
-              const category = getParameterCategory(item.type, item.value.replace(/[^\d.-]/g, ''));
+              const category = getParameterCategory(
+                item.type,
+                item.value.replace(/[^\d.-]/g, "")
+              );
               return (
                 <div
                   key={index}
@@ -1831,12 +1890,12 @@ export default function Operator() {
                         category === "normal"
                           ? "bg-green-500"
                           : category === "no data"
-                          ? "bg-gray-400"
-                          : category === "low"
-                          ? "bg-yellow-500"
-                          : category === "high"
-                          ? "bg-orange-500"
-                          : "bg-red-500"
+                            ? "bg-gray-400"
+                            : category === "low"
+                              ? "bg-yellow-500"
+                              : category === "high"
+                                ? "bg-orange-500"
+                                : "bg-red-500"
                       }`}
                     ></div>
                     <span
@@ -1844,12 +1903,12 @@ export default function Operator() {
                         category === "normal"
                           ? "text-green-600"
                           : category === "no data"
-                          ? "text-gray-600"
-                          : category === "low"
-                          ? "text-yellow-600"
-                          : category === "high"
-                          ? "text-orange-600"
-                          : "text-red-600"
+                            ? "text-gray-600"
+                            : category === "low"
+                              ? "text-yellow-600"
+                              : category === "high"
+                                ? "text-orange-600"
+                                : "text-red-600"
                       }`}
                     >
                       {category}
@@ -2099,24 +2158,28 @@ export default function Operator() {
 
   const renderLihatProfil = () => {
     // Hitung statistik berdasarkan data aktual
-    const totalReports = reports.filter(r => r.status === "pending").length;
+    const totalReports = reports.filter((r) => r.status === "pending").length;
     //const attendanceRate = calculateAttendanceRate();
-    const activeTickets = tickets.filter(t => t.status === 'Open').length;
-    
+    const activeTickets = tickets.filter((t) => t.status === "Open").length;
+
     // Hitung performa bulan ini
     const currentMonth = new Date().getMonth();
     const currentYear = new Date().getFullYear();
-    const monthlyReports = reports.filter(report => {
+    const monthlyReports = reports.filter((report) => {
       const reportDate = new Date(report.date);
-      return reportDate.getMonth() === currentMonth && 
-             reportDate.getFullYear() === currentYear;
+      return (
+        reportDate.getMonth() === currentMonth &&
+        reportDate.getFullYear() === currentYear
+      );
     }).length;
 
-    const {attendanceRate} = dashboardData
+    const { attendanceRate } = dashboardData;
     return (
       <div className="px-4 sm:px-6 lg:px-6 py-6 max-w-screen-2xl mx-auto bg-gradient-to-br from-gray-50 to-blue-50 min-h-screen">
         <div className="mb-6">
-          <h2 className="text-2xl lg:text-3xl font-bold text-gray-900">Lihat Profil</h2>
+          <h2 className="text-2xl lg:text-3xl font-bold text-gray-900">
+            Lihat Profil
+          </h2>
           <p className="text-gray-600 mt-1">Informasi profil operator</p>
         </div>
 
@@ -2135,12 +2198,16 @@ export default function Operator() {
                   </span>
                 </div>
               </div>
-              
+
               {/* Informasi Profil */}
               <div className="flex-1">
                 <div className="mb-6">
-                  <h1 className="text-3xl font-bold text-gray-900">{user.name}</h1>
-                  <p className="text-gray-600 text-lg">{user.role} • {user.site}</p>
+                  <h1 className="text-3xl font-bold text-gray-900">
+                    {user.name}
+                  </h1>
+                  <p className="text-gray-600 text-lg">
+                    {user.role} • {user.site}
+                  </p>
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
@@ -2150,8 +2217,12 @@ export default function Operator() {
                         <IdentificationIcon className="w-5 h-5 text-blue-600" />
                       </div>
                       <div>
-                        <p className="text-sm font-medium text-gray-600">ID Operator</p>
-                        <p className="text-lg font-semibold text-gray-900">{user.employeeId}</p>
+                        <p className="text-sm font-medium text-gray-600">
+                          ID Operator
+                        </p>
+                        <p className="text-lg font-semibold text-gray-900">
+                          {user.employeeId}
+                        </p>
                       </div>
                     </div>
 
@@ -2160,8 +2231,12 @@ export default function Operator() {
                         <EnvelopeIcon className="w-5 h-5 text-green-600" />
                       </div>
                       <div>
-                        <p className="text-sm font-medium text-gray-600">Email</p>
-                        <p className="text-lg font-semibold text-gray-900">{user.email}</p>
+                        <p className="text-sm font-medium text-gray-600">
+                          Email
+                        </p>
+                        <p className="text-lg font-semibold text-gray-900">
+                          {user.email}
+                        </p>
                       </div>
                     </div>
 
@@ -2170,8 +2245,12 @@ export default function Operator() {
                         <DevicePhoneMobileIcon className="w-5 h-5 text-purple-600" />
                       </div>
                       <div>
-                        <p className="text-sm font-medium text-gray-600">Telepon</p>
-                        <p className="text-lg font-semibold text-gray-900">{user.phone}</p>
+                        <p className="text-sm font-medium text-gray-600">
+                          Telepon
+                        </p>
+                        <p className="text-lg font-semibold text-gray-900">
+                          {user.phone}
+                        </p>
                       </div>
                     </div>
                   </div>
@@ -2182,8 +2261,12 @@ export default function Operator() {
                         <CalendarDaysIcon className="w-5 h-5 text-yellow-600" />
                       </div>
                       <div>
-                        <p className="text-sm font-medium text-gray-600">Tanggal Bergabung</p>
-                        <p className="text-lg font-semibold text-gray-900">{user.joinDate}</p>
+                        <p className="text-sm font-medium text-gray-600">
+                          Tanggal Bergabung
+                        </p>
+                        <p className="text-lg font-semibold text-gray-900">
+                          {user.joinDate}
+                        </p>
                       </div>
                     </div>
 
@@ -2192,8 +2275,12 @@ export default function Operator() {
                         <ClockOutlineIcon className="w-5 h-5 text-orange-600" />
                       </div>
                       <div>
-                        <p className="text-sm font-medium text-gray-600">Shift</p>
-                        <p className="text-lg font-semibold text-gray-900">{user.shift}</p>
+                        <p className="text-sm font-medium text-gray-600">
+                          Shift
+                        </p>
+                        <p className="text-lg font-semibold text-gray-900">
+                          {user.shift}
+                        </p>
                       </div>
                     </div>
 
@@ -2202,8 +2289,12 @@ export default function Operator() {
                         <MapPinIcon className="w-5 h-5 text-cyan-600" />
                       </div>
                       <div>
-                        <p className="text-sm font-medium text-gray-600">Site/Lokasi</p>
-                        <p className="text-lg font-semibold text-gray-900">{user.site}</p>
+                        <p className="text-sm font-medium text-gray-600">
+                          Site/Lokasi
+                        </p>
+                        <p className="text-lg font-semibold text-gray-900">
+                          {user.site}
+                        </p>
                       </div>
                     </div>
                   </div>
@@ -2216,34 +2307,54 @@ export default function Operator() {
                       <HomeIcon className="w-5 h-5 text-orange-600" />
                     </div>
                     <div>
-                      <p className="text-sm font-medium text-gray-600">Alamat</p>
-                      <p className="text-lg font-semibold text-gray-900">{user.address}</p>
+                      <p className="text-sm font-medium text-gray-600">
+                        Alamat
+                      </p>
+                      <p className="text-lg font-semibold text-gray-900">
+                        {user.address}
+                      </p>
                     </div>
                   </div>
                 </div>
 
                 {/* Statistik Kinerja */}
                 <div className="pt-8 border-t border-gray-200">
-                  <h3 className="text-xl font-bold text-gray-800 mb-6">Statistik Kinerja</h3>
+                  <h3 className="text-xl font-bold text-gray-800 mb-6">
+                    Statistik Kinerja
+                  </h3>
                   <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                     <div className="bg-blue-50 p-4 rounded-lg border border-blue-100">
                       <p className="text-sm text-gray-600">Total Laporan</p>
-                      <p className="text-2xl font-bold text-gray-900">{totalReports}</p>
-                      <p className="text-xs text-gray-500 mt-1">{monthlyReports} bulan ini</p>
+                      <p className="text-2xl font-bold text-gray-900">
+                        {totalReports}
+                      </p>
+                      <p className="text-xs text-gray-500 mt-1">
+                        {monthlyReports} bulan ini
+                      </p>
                     </div>
                     <div className="bg-green-50 p-4 rounded-lg border border-green-100">
                       <p className="text-sm text-gray-600">Rate Kehadiran</p>
-                      <p className="text-2xl font-bold text-gray-900">{attendanceRate}</p>
-                      <p className="text-xs text-gray-500 mt-1">30 hari terakhir</p>
+                      <p className="text-2xl font-bold text-gray-900">
+                        {attendanceRate}
+                      </p>
+                      <p className="text-xs text-gray-500 mt-1">
+                        30 hari terakhir
+                      </p>
                     </div>
                     <div className="bg-yellow-50 p-4 rounded-lg border border-yellow-100">
                       <p className="text-sm text-gray-600">Shift</p>
-                      <p className="text-2xl font-bold text-gray-900">{(user.shift ? user.shift : "-")}</p>
-                      <p className="text-xs text-gray-500 mt-1">Jadwal reguler</p>
+                      <p className="text-2xl font-bold text-gray-900">
+                        {user.shift ? user.shift : "-"}
+                      </p>
+                      <p className="text-xs text-gray-500 mt-1">
+                        Jadwal reguler
+                      </p>
                     </div>
                     <div className="bg-purple-50 p-4 rounded-lg border border-purple-100">
                       <p className="text-sm text-gray-600">Tiket Aktif</p>
-                      <p className="text-2xl font-bold text-gray-900">{activeTickets}</p>
+                      <p className="text-2xl font-bold text-gray-900">
+                        {activeTickets}
+                      </p>
                       <p className="text-xs text-gray-500 mt-1">Dalam proses</p>
                     </div>
                   </div>
@@ -2259,8 +2370,12 @@ export default function Operator() {
   const renderLihatShift = () => (
     <div className="px-4 sm:px-6 lg:px-6 py-6 max-w-screen-2xl mx-auto bg-gradient-to-br from-gray-50 to-blue-50 min-h-screen">
       <div className="mb-6">
-        <h2 className="text-2xl lg:text-3xl font-bold text-gray-900">Lihat Shift</h2>
-        <p className="text-gray-600 mt-1">Jadwal shift dan pengajuan libur/izin</p>
+        <h2 className="text-2xl lg:text-3xl font-bold text-gray-900">
+          Lihat Shift
+        </h2>
+        <p className="text-gray-600 mt-1">
+          Jadwal shift dan pengajuan libur/izin
+        </p>
       </div>
 
       {/* Tombol Aksi */}
@@ -2285,20 +2400,27 @@ export default function Operator() {
       <div className="bg-white rounded-xl shadow-sm border border-gray-200 mb-8">
         <div className="p-6">
           <div className="flex justify-between items-center mb-6">
-            <h3 className="font-semibold text-lg text-gray-800">Jadwal Shift Mendatang</h3>
+            <h3 className="font-semibold text-lg text-gray-800">
+              Jadwal Shift Mendatang
+            </h3>
           </div>
-          
+
           {shiftData.length === 0 ? (
             <div className="text-center py-8">
               <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
                 <CalendarDaysIcon className="w-8 h-8 text-gray-400" />
               </div>
-              <p className="text-gray-500">Belum ada shift yang ditugaskan untuk Anda saat ini</p>
+              <p className="text-gray-500">
+                Belum ada shift yang ditugaskan untuk Anda saat ini
+              </p>
             </div>
           ) : (
             <div className="space-y-4">
               {shiftData.map((shift) => (
-                <div key={shift.id} className="border border-gray-200 rounded-lg p-6 hover:shadow-md transition-shadow">
+                <div
+                  key={shift.id}
+                  className="border border-gray-200 rounded-lg p-6 hover:shadow-md transition-shadow"
+                >
                   <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
                     <div className="flex items-center gap-4">
                       <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
@@ -2306,7 +2428,9 @@ export default function Operator() {
                       </div>
                       <div>
                         <div className="flex items-center gap-3 mb-1">
-                          <h4 className="font-bold text-gray-900">{shift.date}</h4>
+                          <h4 className="font-bold text-gray-900">
+                            {shift.date}
+                          </h4>
                           <span className="px-2 py-1 bg-blue-100 text-blue-800 rounded-full text-xs font-medium">
                             {shift.day}
                           </span>
@@ -2346,12 +2470,14 @@ export default function Operator() {
       <div className="bg-white rounded-xl shadow-sm border border-gray-200">
         <div className="p-6">
           <div className="flex justify-between items-center mb-6">
-            <h3 className="font-semibold text-lg text-gray-800">Riwayat Pengajuan</h3>
+            <h3 className="font-semibold text-lg text-gray-800">
+              Riwayat Pengajuan
+            </h3>
             <div className="text-sm text-gray-600">
               {submissionHistory.length} total pengajuan
             </div>
           </div>
-          
+
           {submissionHistory.length === 0 ? (
             <div className="text-center py-8">
               <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
@@ -2365,15 +2491,17 @@ export default function Operator() {
           ) : (
             <div className="space-y-4">
               {submissionHistory.map((submission) => (
-                <div 
-                  key={submission.id} 
+                <div
+                  key={submission.id}
                   className="border border-gray-200 rounded-lg p-6 hover:shadow-md transition-shadow cursor-pointer"
                   onClick={() => openSubmissionDetailModal(submission)}
                 >
                   <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
                     <div className="flex items-start gap-4">
-                      <div className={`w-12 h-12 rounded-lg flex items-center justify-center ${submission.type === 'libur' ? 'bg-blue-100' : 'bg-purple-100'}`}>
-                        {submission.type === 'libur' ? (
+                      <div
+                        className={`w-12 h-12 rounded-lg flex items-center justify-center ${submission.type === "libur" ? "bg-blue-100" : "bg-purple-100"}`}
+                      >
+                        {submission.type === "libur" ? (
                           <CalendarDaysIcon className="w-6 h-6 text-blue-600" />
                         ) : (
                           <CheckBadgeIcon className="w-6 h-6 text-purple-600" />
@@ -2382,21 +2510,30 @@ export default function Operator() {
                       <div>
                         <div className="flex flex-wrap items-center gap-3 mb-1">
                           <h4 className="font-bold text-gray-900">
-                            {submission.type === 'libur' ? 'Pengajuan Libur' : 'Pengajuan Izin'}
+                            {submission.type === "libur"
+                              ? "Pengajuan Libur"
+                              : "Pengajuan Izin"}
                           </h4>
-                          <span className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-medium ${getSubmissionTypeColor(submission.type)}`}>
-                            {submission.type === 'libur' ? 'Libur' : 'Izin'}
+                          <span
+                            className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-medium ${getSubmissionTypeColor(submission.type)}`}
+                          >
+                            {submission.type === "libur" ? "Libur" : "Izin"}
                           </span>
-                          <span className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-medium ${getSubmissionStatusColor(submission.status)}`}>
-                            {submission.status === 'approved' ? '✓ Disetujui' : 
-                             submission.status === 'rejected' ? '✗ Ditolak' : 
-                             '⏳ Menunggu'}
+                          <span
+                            className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-medium ${getSubmissionStatusColor(submission.status)}`}
+                          >
+                            {submission.status === "approved"
+                              ? "✓ Disetujui"
+                              : submission.status === "rejected"
+                                ? "✗ Ditolak"
+                                : "⏳ Menunggu"}
                           </span>
                         </div>
                         <div className="flex flex-col md:flex-row md:items-center gap-4 text-sm text-gray-600">
                           <span className="flex items-center gap-1">
                             <CalendarDaysIcon className="w-4 h-4" />
-                            {submission.startDate} {submission.endDate && `- ${submission.endDate}`}
+                            {submission.startDate}{" "}
+                            {submission.endDate && `- ${submission.endDate}`}
                           </span>
                           <span className="hidden md:block">•</span>
                           <span className="text-gray-700 font-medium">
@@ -2406,7 +2543,9 @@ export default function Operator() {
                       </div>
                     </div>
                     <div className="flex items-center gap-2">
-                      <span className="text-gray-400 text-sm">Lihat detail</span>
+                      <span className="text-gray-400 text-sm">
+                        Lihat detail
+                      </span>
                       <ChevronRightIcon className="w-5 h-5 text-gray-400" />
                     </div>
                   </div>
@@ -2424,7 +2563,9 @@ export default function Operator() {
       <div className="bg-white rounded-xl w-full max-w-md max-h-[90vh] overflow-y-auto">
         <div className="p-6 border-b border-gray-200">
           <div className="flex items-center justify-between">
-            <h2 className="text-xl font-bold text-gray-900">Detail Pengajuan</h2>
+            <h2 className="text-xl font-bold text-gray-900">
+              Detail Pengajuan
+            </h2>
             <button
               onClick={() => setIsSubmissionDetailModalOpen(false)}
               className="text-gray-400 hover:text-gray-600"
@@ -2433,7 +2574,9 @@ export default function Operator() {
             </button>
           </div>
           <p className="text-gray-600 mt-1">
-            {selectedSubmission?.type === 'libur' ? 'Pengajuan Libur' : 'Pengajuan Izin'}
+            {selectedSubmission?.type === "libur"
+              ? "Pengajuan Libur"
+              : "Pengajuan Izin"}
           </p>
         </div>
         <div className="p-6 space-y-4">
@@ -2441,14 +2584,21 @@ export default function Operator() {
           <div className="bg-gray-50 p-4 rounded-lg">
             <h3 className="font-medium text-gray-700 mb-2">Status Pengajuan</h3>
             <div className="flex items-center gap-3">
-              <span className={`inline-flex items-center px-3 py-1 rounded-full text-sm font-medium ${getSubmissionStatusColor(selectedSubmission?.status)}`}>
-                {selectedSubmission?.status === 'approved' ? '✓ Disetujui' : 
-                 selectedSubmission?.status === 'rejected' ? '✗ Ditolak' : 
-                 '⏳ Menunggu Persetujuan'}
+              <span
+                className={`inline-flex items-center px-3 py-1 rounded-full text-sm font-medium ${getSubmissionStatusColor(selectedSubmission?.status)}`}
+              >
+                {selectedSubmission?.status === "approved"
+                  ? "✓ Disetujui"
+                  : selectedSubmission?.status === "rejected"
+                    ? "✗ Ditolak"
+                    : "⏳ Menunggu Persetujuan"}
               </span>
               {selectedSubmission?.processedAt && (
                 <span className="text-sm text-gray-600">
-                  {selectedSubmission.status === 'approved' ? 'Disetujui' : 'Ditolak'} pada {selectedSubmission.processedAt}
+                  {selectedSubmission.status === "approved"
+                    ? "Disetujui"
+                    : "Ditolak"}{" "}
+                  pada {selectedSubmission.processedAt}
                 </span>
               )}
             </div>
@@ -2456,28 +2606,38 @@ export default function Operator() {
 
           {/* Informasi Pengajuan */}
           <div>
-            <h3 className="font-medium text-gray-700 mb-2">Informasi Pengajuan</h3>
+            <h3 className="font-medium text-gray-700 mb-2">
+              Informasi Pengajuan
+            </h3>
             <div className="space-y-3">
               <div className="flex justify-between">
                 <span className="text-gray-600">Jenis</span>
-                <span className={`font-medium ${selectedSubmission?.type === 'libur' ? 'text-blue-600' : 'text-purple-600'}`}>
-                  {selectedSubmission?.type === 'libur' ? 'Libur' : 'Izin'}
+                <span
+                  className={`font-medium ${selectedSubmission?.type === "libur" ? "text-blue-600" : "text-purple-600"}`}
+                >
+                  {selectedSubmission?.type === "libur" ? "Libur" : "Izin"}
                 </span>
               </div>
               <div className="flex justify-between">
                 <span className="text-gray-600">Periode</span>
                 <span className="font-medium">
-                  {selectedSubmission?.startDate} {selectedSubmission?.endDate && `- ${selectedSubmission.endDate}`}
+                  {selectedSubmission?.startDate}{" "}
+                  {selectedSubmission?.endDate &&
+                    `- ${selectedSubmission.endDate}`}
                 </span>
               </div>
               <div className="flex justify-between">
                 <span className="text-gray-600">Tanggal Pengajuan</span>
-                <span className="font-medium">{selectedSubmission?.submittedAt}</span>
+                <span className="font-medium">
+                  {selectedSubmission?.submittedAt}
+                </span>
               </div>
               {selectedSubmission?.processedAt && (
                 <div className="flex justify-between">
                   <span className="text-gray-600">Tanggal Persetujuan</span>
-                  <span className="font-medium">{selectedSubmission.processedAt}</span>
+                  <span className="font-medium">
+                    {selectedSubmission.processedAt}
+                  </span>
                 </div>
               )}
             </div>
@@ -2495,15 +2655,19 @@ export default function Operator() {
           {selectedSubmission?.notes && (
             <div>
               <h3 className="font-medium text-gray-700 mb-2">Catatan Admin</h3>
-              <div className={`p-3 rounded-lg ${selectedSubmission?.status === 'approved' ? 'bg-green-50 border border-green-200' : 'bg-red-50 border border-red-200'}`}>
+              <div
+                className={`p-3 rounded-lg ${selectedSubmission?.status === "approved" ? "bg-green-50 border border-green-200" : "bg-red-50 border border-red-200"}`}
+              >
                 <div className="flex items-start gap-2">
-                  {selectedSubmission?.status === 'approved' ? (
+                  {selectedSubmission?.status === "approved" ? (
                     <CheckCircleIcon className="w-5 h-5 text-green-600 mt-0.5 flex-shrink-0" />
                   ) : (
                     <ExclamationCircleIcon className="w-5 h-5 text-red-600 mt-0.5 flex-shrink-0" />
                   )}
                   <div>
-                    <p className={`${selectedSubmission?.status === 'approved' ? 'text-green-800' : 'text-red-800'}`}>
+                    <p
+                      className={`${selectedSubmission?.status === "approved" ? "text-green-800" : "text-red-800"}`}
+                    >
                       {selectedSubmission.notes}
                     </p>
                     {selectedSubmission?.processedBy && (
@@ -2551,7 +2715,8 @@ export default function Operator() {
                 Sedang Mengedit Laporan
               </h3>
               <p className="text-yellow-800 text-sm">
-                Anda sedang dalam mode edit. Setelah selesai, klik "Submit Report" untuk menyimpan perubahan.
+                Anda sedang dalam mode edit. Setelah selesai, klik "Submit
+                Report" untuk menyimpan perubahan.
               </p>
             </div>
           </div>
@@ -2599,10 +2764,10 @@ export default function Operator() {
                   className={`w-full p-3 pr-10 border ${
                     errors.date ? "border-red-500" : "border-gray-200"
                   } bg-white rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition placeholder-gray-400 text-gray-900`}
-                  style={{ 
-                    WebkitAppearance: 'none',
-                    MozAppearance: 'textfield',
-                    appearance: 'none'
+                  style={{
+                    WebkitAppearance: "none",
+                    MozAppearance: "textfield",
+                    appearance: "none",
                   }}
                 />
               </div>
@@ -2613,7 +2778,7 @@ export default function Operator() {
                 </p>
               )}
             </div>
-            
+
             {/* Input Time */}
             <div id="time">
               <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -2628,10 +2793,10 @@ export default function Operator() {
                   className={`w-full p-3 pr-10 border ${
                     errors.time ? "border-red-500" : "border-gray-200"
                   } bg-white rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition placeholder-gray-400 text-gray-900`}
-                  style={{ 
-                    WebkitAppearance: 'none',
-                    MozAppearance: 'textfield',
-                    appearance: 'none'
+                  style={{
+                    WebkitAppearance: "none",
+                    MozAppearance: "textfield",
+                    appearance: "none",
                   }}
                 />
               </div>
@@ -2846,7 +3011,7 @@ export default function Operator() {
             onChange={(e) => {
               const files = Array.from(e.target.files);
               handleInputChange("images", files);
-              handleFileUpload(e); 
+              handleFileUpload(e);
             }}
             className="hidden"
             multiple
@@ -3039,8 +3204,8 @@ export default function Operator() {
                             report.status === "Submitted"
                               ? "bg-green-100 text-green-800"
                               : report.status === "Draft"
-                              ? "bg-yellow-100 text-yellow-800"
-                              : "bg-blue-100 text-blue-800"
+                                ? "bg-yellow-100 text-yellow-800"
+                                : "bg-blue-100 text-blue-800"
                           }`}
                         >
                           {report.status}
@@ -3109,7 +3274,7 @@ export default function Operator() {
                         <MagnifyingGlassIcon className="w-4 h-4" />
                         Detail
                       </button>
-                      
+
                       {/* Tombol Edit - hanya untuk draft */}
                       {report.status === "Draft" && (
                         <button
@@ -3120,7 +3285,7 @@ export default function Operator() {
                           Edit
                         </button>
                       )}
-                      
+
                       {/* Tombol Hapus - hanya untuk draft */}
                       {report.status === "Draft" && (
                         <button
@@ -3155,7 +3320,8 @@ export default function Operator() {
           </p>
         </div>
         <div className="flex-shrink-0">
-          {!attendanceData.isCheckedIn || !dashboardData.nextShiftTime === "-" ? (
+          {!attendanceData.isCheckedIn ||
+          !dashboardData.nextShiftTime === "-" ? (
             <button
               onClick={() => {
                 console.log("Check In button clicked");
@@ -3166,7 +3332,8 @@ export default function Operator() {
               <CheckCircleIcon className="w-5 h-5" />
               Check In Now
             </button>
-          ) : !attendanceData.isCheckedOut || !dashboardData.nextShiftTime === "-" ? (
+          ) : !attendanceData.isCheckedOut ||
+            !dashboardData.nextShiftTime === "-" ? (
             <button
               onClick={() => {
                 console.log("Check Out button clicked");
@@ -3327,7 +3494,7 @@ export default function Operator() {
                     <EyeIcon className="w-4 h-4" />
                     Detail
                   </button>
-                  
+
                   {/* Tombol Edit sesuai SRS - hanya untuk status pending */}
                   {/*{record.approvalStatus === "pending" && (
                     <button
@@ -3420,7 +3587,7 @@ export default function Operator() {
                           <EyeIcon className="w-4 h-4" />
                           Detail
                         </button>
-                        
+
                         {/* Tombol Edit sesuai SRS - hanya untuk status pending */}
                         {/*{record.approvalStatus === "pending" && (
                           <button
@@ -3470,9 +3637,7 @@ export default function Operator() {
               {editingPresence?.date}
             </p>
           </div>
-          
-        
-          
+
           <div className="bg-yellow-50 p-4 rounded-lg border border-yellow-200">
             <div className="flex items-start gap-3">
               <ExclamationTriangleIcon className="w-5 h-5 text-yellow-600 mt-0.5" />
@@ -3481,8 +3646,9 @@ export default function Operator() {
                   Catatan Edit Presensi
                 </p>
                 <p className="text-yellow-700 text-sm">
-                  Presensi hanya dapat diedit jika statusnya belum disetujui (pending).
-                  Setelah diedit, presensi akan kembali menunggu approval admin.
+                  Presensi hanya dapat diedit jika statusnya belum disetujui
+                  (pending). Setelah diedit, presensi akan kembali menunggu
+                  approval admin.
                 </p>
               </div>
             </div>
@@ -3615,7 +3781,6 @@ export default function Operator() {
           <p className="text-gray-600 mt-1">Upload photo to check out</p>
         </div>
         <div className="p-6 space-y-6">
-
           <div>
             <h3 className="font-medium text-gray-900 mb-3">Upload Selfie</h3>
             {isCameraActiveCheckOut && (
@@ -4112,12 +4277,12 @@ export default function Operator() {
               }
               className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-900 bg-white"
             >
-                    <option value="">Select Site</option>
-                    {siteOptions.map((site) => (
-                      <option key={site} value={site}>
-                        {site}
-                      </option>
-                    ))}
+              <option value="">Select Site</option>
+              {siteOptions.map((site) => (
+                <option key={site} value={site}>
+                  {site}
+                </option>
+              ))}
             </select>
           </div>
           <div>
@@ -4235,7 +4400,7 @@ export default function Operator() {
             onClick={handleCreateTicket}
             disabled={loading}
             className={`flex-1 px-4 py-2  text-white rounded-lg  flex items-center justify-center gap-2
-              ${loading? "bg-gray-100 border-gray-300 cursor-not-allowed":"hover:bg-blue-700 bg-blue-600"}
+              ${loading ? "bg-gray-100 border-gray-300 cursor-not-allowed" : "hover:bg-blue-700 bg-blue-600"}
               `}
           >
             <PlusIcon className="w-5 h-5" />
@@ -4365,29 +4530,27 @@ export default function Operator() {
             </div>
           </div>
 
-          {selectedReport?.images &&
-            selectedReport.images.length > 0 && (
-              <div>
-                <h3 className="font-semibold text-lg text-gray-800 mb-3">
-                  Foto Pendukung
-                </h3>
-                <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-                  {selectedReport.images.map((image, index) => (
-                    <div key={index} className="relative group">
-                        <button
-                          key={index}
-                          onClick={() => openAttachment(image)}
-                          className="bg-blue-50 border border-blue-200 rounded-lg px-3 py-2 hover:bg-blue-100 transition flex items-center gap-2"
-                        >
-                          <PhotoIcon className="w-4 h-4 text-blue-600" />
-                          <p className="text-sm text-blue-700">{`${image.substring(0,10)}...`}</p>
-                        </button>
-
-                    </div>
-                  ))}
-                </div>
+          {selectedReport?.images && selectedReport.images.length > 0 && (
+            <div>
+              <h3 className="font-semibold text-lg text-gray-800 mb-3">
+                Foto Pendukung
+              </h3>
+              <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+                {selectedReport.images.map((image, index) => (
+                  <div key={index} className="relative group">
+                    <button
+                      key={index}
+                      onClick={() => openAttachment(image)}
+                      className="bg-blue-50 border border-blue-200 rounded-lg px-3 py-2 hover:bg-blue-100 transition flex items-center gap-2"
+                    >
+                      <PhotoIcon className="w-4 h-4 text-blue-600" />
+                      <p className="text-sm text-blue-700">{`${image.substring(0, 10)}...`}</p>
+                    </button>
+                  </div>
+                ))}
               </div>
-            )}
+            </div>
+          )}
         </div>
         <div className="p-6 border-t border-gray-200">
           <button
@@ -4439,7 +4602,9 @@ export default function Operator() {
             <input
               type="date"
               value={liburForm.startDate}
-              onChange={(e) => setLiburForm({...liburForm, startDate: e.target.value})}
+              onChange={(e) =>
+                setLiburForm({ ...liburForm, startDate: e.target.value })
+              }
               className="w-full p-3 border border-gray-200 bg-white rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-900"
             />
           </div>
@@ -4450,7 +4615,9 @@ export default function Operator() {
             <input
               type="date"
               value={liburForm.endDate}
-              onChange={(e) => setLiburForm({...liburForm, endDate: e.target.value})}
+              onChange={(e) =>
+                setLiburForm({ ...liburForm, endDate: e.target.value })
+              }
               className="w-full p-3 border border-gray-200 bg-white rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-900"
             />
           </div>
@@ -4461,7 +4628,9 @@ export default function Operator() {
             <textarea
               rows={3}
               value={liburForm.reason}
-              onChange={(e) => setLiburForm({...liburForm, reason: e.target.value})}
+              onChange={(e) =>
+                setLiburForm({ ...liburForm, reason: e.target.value })
+              }
               placeholder="Masukkan alasan mengajukan libur..."
               className="w-full p-3 border border-gray-200 bg-white rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-900"
             />
@@ -4478,9 +4647,11 @@ export default function Operator() {
             onClick={handleSubmitLibur}
             disabled={loading}
             className={`flex-1 px-4 py-2  text-white rounded-lg
-              ${!loading ? "bg-blue-600 hover:bg-blue-700"
-            :
-            "bg-gray-100 border-gray-300 cursor-not-allowed"}`}
+              ${
+                !loading
+                  ? "bg-blue-600 hover:bg-blue-700"
+                  : "bg-gray-100 border-gray-300 cursor-not-allowed"
+              }`}
           >
             Ajukan Libur
           </button>
@@ -4504,7 +4675,9 @@ export default function Operator() {
             <input
               type="date"
               value={izinForm.startDate}
-              onChange={(e) => setIzinForm({...izinForm, startDate: e.target.value})}
+              onChange={(e) =>
+                setIzinForm({ ...izinForm, startDate: e.target.value })
+              }
               className="w-full p-3 border border-gray-200 bg-white rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-900"
             />
           </div>
@@ -4515,7 +4688,9 @@ export default function Operator() {
             <input
               type="date"
               value={izinForm.endDate}
-              onChange={(e) => setIzinForm({...izinForm, endDate: e.target.value})}
+              onChange={(e) =>
+                setIzinForm({ ...izinForm, endDate: e.target.value })
+              }
               className="w-full p-3 border border-gray-200 bg-white rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-900"
             />
           </div>
@@ -4526,7 +4701,9 @@ export default function Operator() {
             <textarea
               rows={3}
               value={izinForm.reason}
-              onChange={(e) => setIzinForm({...izinForm, reason: e.target.value})}
+              onChange={(e) =>
+                setIzinForm({ ...izinForm, reason: e.target.value })
+              }
               placeholder="Masukkan alasan mengajukan izin..."
               className="w-full p-3 border border-gray-200 bg-white rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-900"
             />
@@ -4543,7 +4720,7 @@ export default function Operator() {
             onClick={handleSubmitIzin}
             disabled={loading}
             className={`flex-1 px-4 py-2 text-white rounded-lg
-              ${!loading ? 'bg-green-600 hover:bg-green-700': "bg-gray-100 border-gray-300 cursor-not-allowed"}
+              ${!loading ? "bg-green-600 hover:bg-green-700" : "bg-gray-100 border-gray-300 cursor-not-allowed"}
               `}
           >
             Ajukan Izin
@@ -4602,16 +4779,16 @@ export default function Operator() {
                       notification.type === "success"
                         ? "bg-green-500"
                         : notification.type === "warning"
-                        ? "bg-yellow-500"
-                        : "bg-blue-500"
+                          ? "bg-yellow-500"
+                          : "bg-blue-500"
                     }`}
                   ></div>
                   <span className="text-xs text-gray-500">
                     {notification.type === "success"
                       ? "Disetujui"
                       : notification.type === "warning"
-                      ? "Perhatian"
-                      : "Informasi"}
+                        ? "Perhatian"
+                        : "Informasi"}
                   </span>
                 </div>
                 {!notification.read && (
@@ -4637,7 +4814,9 @@ export default function Operator() {
 
   // ==================== MAIN RENDER ====================
   return (
-    <div className={`flex min-h-screen bg-gray-50 ${loading ? "cursor-wait": ""}`}>
+    <div
+      className={`flex min-h-screen bg-gray-50 ${loading ? "cursor-wait" : ""}`}
+    >
       {/* Overlay mobile */}
       {isSidebarOpen && (
         <div
@@ -4820,7 +4999,7 @@ export default function Operator() {
 
                     <button
                       onClick={() => {
-                        setActiveMenu('profile');
+                        setActiveMenu("profile");
                         setDropdownOpen(false);
                       }}
                       className="w-full flex items-center gap-3 px-4 py-2 text-gray-700 hover:bg-gray-100 text-left text-sm"
@@ -4866,12 +5045,12 @@ export default function Operator() {
       {isImageModalOpen && renderImageModal()}
       {isLiburModalOpen && renderLiburModal()}
       {isIzinModalOpen && renderIzinModal()}
-      {isSubmissionDetailModalOpen && selectedSubmission && renderSubmissionDetailModal()}
+      {isSubmissionDetailModalOpen &&
+        selectedSubmission &&
+        renderSubmissionDetailModal()}
 
       {/* Canvas untuk capture foto (hidden) */}
       <canvas ref={canvasRef} className="hidden" />
     </div>
   );
 }
-
-
