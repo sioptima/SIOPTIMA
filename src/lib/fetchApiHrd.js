@@ -112,7 +112,7 @@ export async function addShift({
 }){
   try {
     const res = await fetch(`/api/hrd/shift`, {
-      method: "PATCH",
+      method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         date,
@@ -126,7 +126,61 @@ export async function addShift({
     const data = await res.json();
 
     if (!res.ok) {
-      console.log(data.message || "Failed to approve a report");
+      console.log(data.message || "Failed to add a shift");
+      return;
+    }
+    return data.data
+  } catch (err) {
+    console.log("Error: ", err)
+  }
+}
+
+export async function editShift({
+  date,
+  time,
+  end,
+  userId,
+  siteId,
+  shiftId
+}){
+  try {
+    const res = await fetch(`/api/hrd/shift/${shiftId}`, {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        date,
+        time,
+        end,
+        userId,
+        siteId
+      })
+    });
+
+    const data = await res.json();
+    console.log(data)
+    if (!res.ok) {
+      console.log(data.message || "Failed to edit a shift");
+      return;
+    }
+    return data.data
+  } catch (err) {
+    console.log("Error: ", err)
+  }
+}
+
+export async function deleteShift({
+  id
+}){
+  try {
+    const res = await fetch(`/api/hrd/shift/${id}`, {
+      method: "DELETE",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({})
+    });
+
+    const data = await res.json();
+    if (!res.ok) {
+      console.log(data.message || "Failed to delete a shift");
       return;
     }
     return data.success

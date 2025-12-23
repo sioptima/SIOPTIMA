@@ -26,7 +26,7 @@ export class DashboardService {
 
         const result = {
             reportsSubmitted: (report !== null) ? report.total : "-",
-            attendanceRate: (attendanceRate !== null) ? `${attendanceRate}%` : "-",
+            attendanceRate: (attendanceRate) ? attendanceRate : 0,
             nextShift: (shift?.shiftDate) ? labelFuture(shift.shiftDate) : "No upcoming shift",
             nextShiftTime: (shift?.shiftDate) ? shift.shiftDate.toLocaleTimeString() : "-",
             currentSite: (shift?.site?.name) ? shift.site.name : "-",
@@ -39,7 +39,6 @@ export class DashboardService {
             pendingReports: (report !== null) ? report.pending : "-",
             rejectedReports: (report !== null) ? report.rejected : "-"
         }
-        console.log()
         return result
     }
 

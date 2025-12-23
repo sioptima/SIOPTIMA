@@ -9,6 +9,21 @@ export class ShiftValidation {
         userId: z.array(z.number().int()),
         siteId: z.number().int(),
     })
+
+    static UPDATE = z.object({
+        id: z.coerce.number().int(),
+        data: z.object({
+            date: z.string().date().optional(),
+            time: z.string().time().optional(),
+            end: z.string().time().optional(),
+            userId: z.array(z.number().int()),
+            siteId: z.number().int().optional(),
+        })
+    })
+
+    static DELETE = z.object({
+        id: z.coerce.number().int(),
+    })
     
     static GETASSIGNABLE = z.object({
         page: z.coerce.number("Invalid parameter").int(),

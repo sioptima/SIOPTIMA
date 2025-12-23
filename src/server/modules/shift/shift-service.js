@@ -33,14 +33,89 @@ export class ShiftService {
             type: "SHIFT", 
             title: `Anda mempunyai shift baru pada tanggal ${shift.shiftDate.toLocaleDateString()} di ${shift.site.name}`})
 
+
+        const dayNames = ["Minggu", "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu"];
         return {
+            id: shift.id,
             date: shift.shiftDate.toLocaleDateString(),
             time: shift.shiftDate.toLocaleTimeString(),
             user: shift.user.map(user => ({
                 username: user.username
             })),
             site: shift.site.name,
+            siteId: shift.site.id,
+            dayOfWeek: dayNames[shift.shiftDate.getDay()],
         }
+    }
+
+    static async update(request) {
+        // validate request
+        const updateRequest = ShiftValidation.UPDATE.parse(request);
+
+        //fetch each user that exist
+        let users
+        if(updateRequest.data.userId.length !== 0){
+            users = await UserRepository.findMultiple({userId: updateRequest.data.userId})
+        }
+
+        let site;
+        if(updateRequest.data.siteId)
+        {site = await SiteRepository.findById({siteId: updateRequest.data.siteId});}
+        if (!site) {
+            throw new ResponseError(200, `Site by id ${updateRequest.data.siteId} does not exist`)
+        }
+
+        // update shift -  only update for user that exist
+        const result = await ShiftRepository.update(updateRequest.data, users, updateRequest.id);
+        if (!result) {
+            throw new ResponseError(500, "Failed to create shift");
+        }
+
+        const {shift, oldShift} = result
+
+        //create notification for related operator
+        await NotificationRepository.bulkCreate({
+            users: shift.user, 
+            type: "SHIFT", 
+            title: `Shift anda pada tanggal ${oldShift.shiftDate} diperbarui`})
+        //create notification for related operator
+        await NotificationRepository.bulkCreate({
+            users: shift.user, 
+            type: "SHIFT", 
+            title: `Anda mempunyai shift baru pada tanggal ${shift.shiftDate.toLocaleDateString()} di ${shift.site.name}`})
+
+
+        const dayNames = ["Minggu", "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu"];
+        return {
+            id: shift.id,
+            date: shift.shiftDate.toLocaleDateString(),
+            time: shift.shiftDate.toLocaleTimeString(),
+            user: shift.user.map(user => ({
+                username: user.username
+            })),
+            site: shift.site.name,
+            siteId: shift.site.id,
+            dayOfWeek: dayNames[shift.shiftDate.getDay()],
+        }
+    }
+
+    static async hardDelete(request) {
+        // validate request
+        const deleteRequest = ShiftValidation.DELETE.parse(request);
+
+        // update shift -  only update for user that exist
+        const shift = await ShiftRepository.hardDelete(deleteRequest.id);
+        if (!shift) {
+            throw new ResponseError(500, "Failed to delete shift");
+        }
+
+        //create notification for related operator
+        await NotificationRepository.bulkCreate({
+            users: shift.user, 
+            type: "SHIFT", 
+            title: `Shift anda pada tanggal ${shift.shiftDate} dibatalkan`})
+
+        return
     }
 
     static async getAssignable(request) {
@@ -108,14 +183,14 @@ export class ShiftService {
         const dayNames = ["Minggu", "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu"];
         const result = shifts.result.map(shift => ({
             id: shift.id,
-            siteId: shift.id,
+            siteId: shift.site.id,
             name: `${shift.shiftDate.toLocaleTimeString()} - ${shift.shiftEnd.toLocaleTimeString()}`,
             startTime: shift.shiftDate.toLocaleTimeString(),
             endTime: shift.shiftEnd.toLocaleTimeString(),
             site: shift.site.name,
-            assignedOperators: shift.user.map(user =>  user.profile?.name || user.username),
-            daysOfWeek: dayNames[shift.shiftDate.getDay()],
-            maxOperators: 12,
+            assignedOperators: shift.user.map(user =>  user.id),
+            dayOfWeek: dayNames[shift.shiftDate.getDay()],
+            date: shift.shiftDate.toISOString().split('T')[0],
         }))
 
         return {
@@ -142,7 +217,7 @@ export class ShiftService {
 
         const shifts = await ShiftRepository.findAllByUserId(getRequest, user.userId);
         if (shifts.count === 0) {
-            throw new ResponseError (200, "No report found")
+            throw new ResponseError (200, "No shift found")
         }
 
         const dayNames = ["Minggu", "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu"];
@@ -154,7 +229,6 @@ export class ShiftService {
             endTime: s.shiftEnd.toLocaleTimeString(),
             location: s.site.name,
         }))
-
         return {
             result: shiftTransform,
             paging: {

@@ -42,6 +42,7 @@ import {
 import { fetchSitesData, fetchUsersData, fetchDailyReportsData, fetchTicketsData, createNewSite, updateSite, deleteSite, fetchAttendanceData, addNewUser, fetchReportsData, editUser, deleteUser, approveReport, rejectReport, respondTicket } from "@/src/lib/fetchApiAdmin";
 import { MapField } from "@/src/features/site/MapField";
 import { fetchCurrentUser } from "@/src/lib/fetchApiOperator";
+import { approveAttendance, rejectAttendance } from "@/src/lib/fetchApiHrd";
 
 // Data provinsi dan kota di Indonesia
 const provinsiList = [
@@ -334,10 +335,8 @@ export default function Admin() {
   // Data live hari ini (menggunakan tanggal hari ini)
   const getTodayDate = () => {
     const today = new Date();
-    const year = today.getFullYear();
-    const month = String(today.getMonth() + 1).padStart(2, '0');
-    const day = String(today.getDate()).padStart(2, '0');
-    return `${year}-${month}-${day}`;
+    const formattedDate = today.toISOString().split('T')[0];
+    return formattedDate;
   };
 
   const getCurrentTime = () => {
@@ -730,7 +729,8 @@ export default function Admin() {
     })
     
     if(!response){
-      setLoading(false)
+      setLoading(false);
+      alert("Failed to edit site")
       setFormErrors({});
       return
     }
@@ -748,11 +748,13 @@ export default function Admin() {
 
   const handleDeleteSite = async (id) => {
     if (window.confirm("Are you sure you want to delete this site?")) {
+      setLoading(true)
       const response = await deleteSite({id: id})
 
       if (!response){return}
 
       setSitesData(sitesData.filter((site) => site.id !== id));
+      setLoading(false)
     }
   };
 
@@ -822,10 +824,14 @@ export default function Admin() {
 
   const handleDeleteUser = async (id) => {
     if (window.confirm("Are you sure you want to delete this user?")) {
+      setLoading(true)
       const response = await deleteUser({id})
       if(response){
         setUsersData(usersData.filter((user) => user.id !== id));
+      } else {
+        alert ("Failed to delete user")
       }
+      setLoading(false)
     }
   };
 
@@ -851,6 +857,7 @@ export default function Admin() {
   };
 
   const handleApprove = async (reportId) => {
+    setLoading(true)
     const response = await approveReport({id:reportId})
     if(response){
       setReportsData(
@@ -859,9 +866,11 @@ export default function Admin() {
         )
       );
     }
+    setLoading(false)
   };
 
   const handleReject = async (reportId) => {
+    setLoading(true)
     const response = await rejectReport({id:reportId})
     if(response){      
       setReportsData(
@@ -870,6 +879,7 @@ export default function Admin() {
         )
       );
     }
+    setLoading(false)
   };
 
   // ==================== HANDLERS UNTUK ATTENDANCE ====================
@@ -878,7 +888,19 @@ export default function Admin() {
     setIsAttendanceModalOpen(true);
   };
 
-  const handleApproveAttendance = (attendanceId) => {
+  const handleApproveAttendance = async (attendanceId) => {
+    setLoading(true)
+
+    const response = await approveAttendance({
+      id: attendanceId
+    })
+
+    if(!response){
+      setLoading(false)
+      alert("Failed to approve")
+      return
+    }
+
     setAttendanceData(
       attendanceData.map((attendance) =>
         attendance.id === attendanceId 
@@ -886,9 +908,23 @@ export default function Admin() {
           : attendance
       )
     );
+    setLoading(false)
   };
 
-  const handleRejectAttendance = (attendanceId) => {
+  const handleRejectAttendance = async (attendanceId) => {
+    setLoading(true)
+
+    const response = await rejectAttendance({
+      id: attendanceId
+    })
+
+    if(!response){
+      setLoading(false)
+      alert("Failed to reject")
+      return
+    }
+
+
     setAttendanceData(
       attendanceData.map((attendance) =>
         attendance.id === attendanceId 
@@ -896,11 +932,13 @@ export default function Admin() {
           : attendance
       )
     );
+
+    setLoading(false)
   };
 
   // ==================== FUNGSI FILTER UNTUK EXPORT ====================
   const filterReportsForExport = () => {
-    let filtered = [...filteredReports]; // Gunakan data yang sudah difilter dari tabel
+    let filtered = [...reportsData];
 
     // Filter berdasarkan rentang waktu
     const today = getTodayDate();
@@ -1175,44 +1213,45 @@ export default function Admin() {
     setIsTicketModalOpen(true);
   };
 
-  const handleSubmitSolution = () => {
+  const handleSubmitSolution = async () => {
     if (!solutionText.trim() && ticketStatus === "resolved") {
       alert("Harap masukkan solusi sebelum menyelesaikan tiket!");
       return;
+    }
+
+    setLoading(true)
+    const response = await respondTicket({
+      ticketId: selectedTicket.id,
+      feedback: solutionText.trim(),
+      ticketStatus: "resolved",
+    })
+
+    if(!response){
+      setLoading(false)
+      alert("Failed to send feedback")
+      return
     }
 
     const updatedTickets = ticketsData.map((ticket) =>
       ticket.id === selectedTicket.id
         ? {
             ...ticket,
-            solution: solutionText.trim(),
-            status: ticketStatus,
-            resolvedDate:
-              ticketStatus === "resolved"
-                ? getTodayDate()
-                : "",
-            resolvedBy: "Admin",
+            solution: response.feedback,
+            status: response.status,
+            resolvedDate: response.resolvedDate,
+            resolvedBy: response.resolvedBy,
           }
         : ticket
     );
 
     setTicketsData(updatedTickets);
-
-    // Kirim notifikasi ke operator (simulasi)
-    const operator = usersData.find(
-      (user) => user.id === selectedTicket.operatorId
+    alert(
+      "Tiket berhasil ditutup."
     );
-    if (operator && ticketStatus === "resolved") {
-      alert(`Solusi telah dikirim ke ${operator.name} (${operator.email})`);
-    } else if (ticketStatus === "pending") {
-      alert(
-        "Tiket telah ditandai sebagai Pending, menunggu informasi tambahan dari operator."
-      );
-    }
-
     setIsTicketModalOpen(false);
     setSelectedTicket(null);
     setSolutionText("");
+    setLoading(false)
   };
 
   const handleReturnToOperator = async () => {
@@ -1230,6 +1269,7 @@ export default function Admin() {
 
     if(!response){
       setLoading(false)
+      alert("Failed to send feedback")
       return
     }
 
@@ -1599,21 +1639,6 @@ export default function Admin() {
       status: "active",
     });
 
-    // Inisialisasi form data saat modal terbuka
-    useEffect(() => {
-      if (isAddUserModalOpen) {
-        setFormData({
-          username: newUserData.username,
-          password: newUserData.password,
-          name: newUserData.name,
-          email: newUserData.email,
-          role: newUserData.role,
-          site: newUserData.site,
-          status: newUserData.status,
-        });
-      }
-    }, [isAddUserModalOpen]);
-
     const handleFormChange = (field, value) => {
       setFormData(prev => ({
         ...prev,
@@ -1660,6 +1685,7 @@ export default function Admin() {
 
       if(!response){
         setLoading(false)
+        alert("Failed to create user")
         setUserFormErrors({});
         return
       }
@@ -3214,7 +3240,7 @@ const AttendanceModal = () => {
     )
   } 
   return (
-    <div className="flex flex-col lg:flex-row min-h-screen bg-gray-50">
+    <div className={`flex flex-col lg:flex-row min-h-screen bg-gray-50 ${loading ? "cursor-wait": ""}`}>
       {/* Overlay mobile */}
       {isSidebarOpen && (
         <div
@@ -3345,7 +3371,7 @@ const AttendanceModal = () => {
                 ref={notificationRef}
                 className="relative flex flex-col items-end gap-2"
               >
-                <button
+                {/*<button
                   onClick={(e) => {
                     e.stopPropagation();
                     setNotificationOpen((prev) => !prev);
@@ -3358,7 +3384,7 @@ const AttendanceModal = () => {
                       {unreadCount}
                     </span>
                   )}
-                </button>
+                </button>*/}
 
                 {notificationOpen && (
                   <div

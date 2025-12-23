@@ -110,7 +110,7 @@ const checkCameraPermission = async () => {
 
     return true;
   } catch (error) {
-    console.error("Camera permission check failed:", error);
+    console.log("Camera permission check failed:", error);
     return false;
   }
 };
@@ -165,37 +165,13 @@ export default function Operator() {
       time: "2 jam yang lalu",
       type: "success",
       read: false,
-    },
-    {
-      id: 2,
-      title: "Absensi Perlu Konfirmasi",
-      message: "Absensi tanggal 9 Nov 2024 menunggu approval",
-      time: "1 hari yang lalu",
-      type: "warning",
-      read: false,
-    },
-    {
-      id: 3,
-      title: "Tiket Baru Direspons",
-      message: "Tiket #001 telah direspons oleh technical support",
-      time: "3 hari yang lalu",
-      type: "info",
-      read: true,
-    },
-    {
-      id: 4,
-      title: "Pemeliharaan Rutin",
-      message: "Jadwal pemeliharaan minggu depan telah ditetapkan",
-      time: "5 hari yang lalu",
-      type: "info",
-      read: false,
-    },
+    }
   ]);
 
   // State untuk Dashboard
   const [dashboardData, setDashboardData] = useState({
     reportsSubmitted: 0,
-    attendanceRate: "0%",
+    attendanceRate: 0,
     pHLevel: "0.0",
     flowRate: "0 L/h",
     tds: "0 ppm",
@@ -391,7 +367,7 @@ export default function Operator() {
   useEffect(() => {
     const loadData = async () => {
         try {
-            const result = await fetchOperatorShifts({limit: 10});
+            const result = await fetchOperatorShifts({limit: 50});
             if (!result) throw new Error("No data returned");
             setShiftData(result);
         } catch (err) {
@@ -426,8 +402,8 @@ export default function Operator() {
             if (!result) throw new Error("No data returned");
             const ijin = await fetchOperatorLibur({limit: 10});
             if (!ijin) throw new Error("No data returned");
-            setSubmissionHistory(result);
-            setSubmissionHistory(ijin);
+
+            setSubmissionHistory([...result, ...ijin]);
         } catch (err) {
           //setError
     } finally {
@@ -1207,7 +1183,7 @@ export default function Operator() {
         }
       },
       (error) => {
-        console.error("Error getting location:", error);
+        console.log("Error getting location:", error);
         let errorMessage = "Unknown error occurred";
         switch (error.code) {
           case error.PERMISSION_DENIED:
@@ -1245,7 +1221,7 @@ export default function Operator() {
     const videoElement = isCheckOut ? videoRef.current : videoRef.current;
     
     if (!videoElement) {
-      console.error("Video element tidak ditemukan");
+      console.log("Video element tidak ditemukan");
       return;
     }
 
@@ -1269,10 +1245,10 @@ export default function Operator() {
         }
         
         videoElement.srcObject = mediaStream;
-        videoElement.play().catch(err => console.error("Error playing video:", err));
+        videoElement.play().catch(err => console.log("Error playing video:", err));
       })
       .catch((error) => {
-        console.error("Error accessing camera:", error);
+        console.log("Error accessing camera:", error);
         alert("Tidak dapat mengakses kamera. Silakan periksa izin.");
       });
   };
@@ -1284,13 +1260,13 @@ export default function Operator() {
     const canvasElement = canvasRef.current;
     
     if (!videoElement || !canvasElement) {
-      console.error("Video atau canvas element tidak ditemukan");
+      console.log("Video atau canvas element tidak ditemukan");
       return;
     }
 
     const context = canvasElement.getContext("2d");
     if (!context) {
-      console.error("Tidak dapat mendapatkan context canvas");
+      console.log("Tidak dapat mendapatkan context canvas");
       return;
     }
 
@@ -1378,7 +1354,7 @@ export default function Operator() {
       }
     };
     reader.onerror = (error) => {
-      console.error("Error reading file:", error);
+      console.log("Error reading file:", error);
       alert("Error membaca file");
     };
     reader.readAsDataURL(file);
@@ -1393,7 +1369,7 @@ export default function Operator() {
     input.capture = "user"; // Untuk mobile devices
     input.onchange = (e) => handleSelfieUpload(e, isCheckOut);
     input.onerror = (error) => {
-      console.error("Error dengan input file:", error);
+      console.log("Error dengan input file:", error);
     };
     input.click();
   };
@@ -1596,11 +1572,11 @@ export default function Operator() {
 
   const getPriorityColor = (priority) => {
     switch (priority) {
-      case "High":
+      case "high":
         return "bg-red-100 text-red-800";
-      case "Medium":
+      case "medium":
         return "bg-yellow-100 text-yellow-800";
-      case "Low":
+      case "low":
         return "bg-green-100 text-green-800";
       default:
         return "bg-gray-100 text-gray-800";
@@ -1609,11 +1585,11 @@ export default function Operator() {
 
   const getTicketStatusColor = (status) => {
     switch (status) {
-      case "Open":
+      case "open":
         return "bg-blue-100 text-blue-800";
-      case "In Progress":
+      case "pending":
         return "bg-yellow-100 text-yellow-800";
-      case "Resolved":
+      case "resolved":
         return "bg-green-100 text-green-800";
       case "Closed":
         return "bg-gray-100 text-gray-800";
@@ -1622,8 +1598,8 @@ export default function Operator() {
     }
   };
 
-  const statusOptions = ["Semua Status", "Open", "In Progress", "Resolved"];
-  const priorityOptions = ["Semua Prioritas", "High", "Medium", "Low"];
+  const statusOptions = ["Semua Status", "open", "pending", "resolved"];
+  const priorityOptions = ["Semua Prioritas", "high", "medium", "low"];
 
   // ==================== FUNGSI LIHAT SHIFT ====================
   const handleSubmitLibur = async () => {
@@ -1766,7 +1742,7 @@ export default function Operator() {
             },
             {
               label: "Attendance Rate",
-              value: dashboardData.attendanceRate,
+              value: `${dashboardData.attendanceRate?.toFixed(2)}%`,
               icon: ChartBarIcon,
             },
             {
@@ -3179,7 +3155,7 @@ export default function Operator() {
           </p>
         </div>
         <div className="flex-shrink-0">
-          {!attendanceData.isCheckedIn ? (
+          {!attendanceData.isCheckedIn && !dashboardData.nextShiftTime === "-" ? (
             <button
               onClick={() => {
                 console.log("Check In button clicked");
@@ -3190,7 +3166,7 @@ export default function Operator() {
               <CheckCircleIcon className="w-5 h-5" />
               Check In Now
             </button>
-          ) : !attendanceData.isCheckedOut ? (
+          ) : !attendanceData.isCheckedOut && !dashboardData.nextShiftTime === "-" ? (
             <button
               onClick={() => {
                 console.log("Check Out button clicked");
@@ -3203,7 +3179,7 @@ export default function Operator() {
             </button>
           ) : (
             <div className="text-center px-4 py-3 bg-gray-100 text-gray-600 rounded-lg text-sm lg:text-base">
-              Attendance completed for today
+              Tidak ada shift lagi untuk hari ini
             </div>
           )}
         </div>
@@ -3353,7 +3329,7 @@ export default function Operator() {
                   </button>
                   
                   {/* Tombol Edit sesuai SRS - hanya untuk status pending */}
-                  {record.approvalStatus === "pending" && (
+                  {/*{record.approvalStatus === "pending" && (
                     <button
                       onClick={() => openEditPresenceModal(record)}
                       className="flex-1 flex items-center justify-center gap-1 text-green-600 hover:text-green-800 text-sm font-medium py-2 border border-gray-200 rounded-lg hover:bg-green-50 transition-colors"
@@ -3361,7 +3337,7 @@ export default function Operator() {
                       <PencilIcon className="w-4 h-4" />
                       Edit
                     </button>
-                  )}
+                  )}*/}
                 </div>
               </div>
             ))}
@@ -3446,7 +3422,7 @@ export default function Operator() {
                         </button>
                         
                         {/* Tombol Edit sesuai SRS - hanya untuk status pending */}
-                        {record.approvalStatus === "pending" && (
+                        {/*{record.approvalStatus === "pending" && (
                           <button
                             onClick={() => openEditPresenceModal(record)}
                             className="flex items-center gap-1 text-green-600 hover:text-green-800 text-sm font-medium whitespace-nowrap"
@@ -3454,7 +3430,7 @@ export default function Operator() {
                             <PencilIcon className="w-4 h-4" />
                             Edit
                           </button>
-                        )}
+                        )}*/}
                       </div>
                     </td>
                   </tr>
@@ -3495,199 +3471,7 @@ export default function Operator() {
             </p>
           </div>
           
-          {/* Waktu Masuk */}
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              Waktu Masuk (HH:MM AM/PM)
-            </label>
-            <select
-              value={editPresenceForm.checkIn}
-              onChange={(e) => setEditPresenceForm({...editPresenceForm, checkIn: e.target.value})}
-              className="w-full p-3 border border-gray-200 bg-white rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-900"
-            >
-              <option value="">Pilih waktu masuk</option>
-              <option value="08:00 AM">08:00 AM</option>
-              <option value="08:15 AM">08:15 AM</option>
-              <option value="08:30 AM">08:30 AM</option>
-              <option value="08:45 AM">08:45 AM</option>
-              <option value="09:00 AM">09:00 AM</option>
-              <option value="09:15 AM">09:15 AM</option>
-              <option value="09:30 AM">09:30 AM</option>
-              <option value="09:45 AM">09:45 AM</option>
-              <option value="10:00 AM">10:00 AM</option>
-              <option value="10:15 AM">10:15 AM</option>
-              <option value="10:30 AM">10:30 AM</option>
-              <option value="10:45 AM">10:45 AM</option>
-              <option value="11:00 AM">11:00 AM</option>
-              <option value="11:15 AM">11:15 AM</option>
-              <option value="11:30 AM">11:30 AM</option>
-              <option value="11:45 AM">11:45 AM</option>
-              <option value="12:00 PM">12:00 PM</option>
-              <option value="12:15 PM">12:15 PM</option>
-              <option value="12:30 PM">12:30 PM</option>
-              <option value="12:45 PM">12:45 PM</option>
-              <option value="01:00 PM">01:00 PM</option>
-              <option value="01:15 PM">01:15 PM</option>
-              <option value="01:30 PM">01:30 PM</option>
-              <option value="01:45 PM">01:45 PM</option>
-              <option value="02:00 PM">02:00 PM</option>
-              <option value="02:15 PM">02:15 PM</option>
-              <option value="02:30 PM">02:30 PM</option>
-              <option value="02:45 PM">02:45 PM</option>
-              <option value="03:00 PM">03:00 PM</option>
-              <option value="03:15 PM">03:15 PM</option>
-              <option value="03:30 PM">03:30 PM</option>
-              <option value="03:45 PM">03:45 PM</option>
-              <option value="04:00 PM">04:00 PM</option>
-              <option value="04:15 PM">04:15 PM</option>
-              <option value="04:30 PM">04:30 PM</option>
-              <option value="04:45 PM">04:45 PM</option>
-              <option value="05:00 PM">05:00 PM</option>
-              <option value="05:15 PM">05:15 PM</option>
-              <option value="05:30 PM">05:30 PM</option>
-              <option value="05:45 PM">05:45 PM</option>
-              <option value="06:00 PM">06:00 PM</option>
-              <option value="06:15 PM">06:15 PM</option>
-              <option value="06:30 PM">06:30 PM</option>
-              <option value="06:45 PM">06:45 PM</option>
-              <option value="07:00 PM">07:00 PM</option>
-              <option value="07:15 PM">07:15 PM</option>
-              <option value="07:30 PM">07:30 PM</option>
-              <option value="07:45 PM">07:45 PM</option>
-              <option value="08:00 PM">08:00 PM</option>
-              <option value="08:15 PM">08:15 PM</option>
-              <option value="08:30 PM">08:30 PM</option>
-              <option value="08:45 PM">08:45 PM</option>
-              <option value="09:00 PM">09:00 PM</option>
-              <option value="09:15 PM">09:15 PM</option>
-              <option value="09:30 PM">09:30 PM</option>
-              <option value="09:45 PM">09:45 PM</option>
-              <option value="10:00 PM">10:00 PM</option>
-              <option value="10:15 PM">10:15 PM</option>
-              <option value="10:30 PM">10:30 PM</option>
-              <option value="10:45 PM">10:45 PM</option>
-              <option value="11:00 PM">11:00 PM</option>
-              <option value="11:15 PM">11:15 PM</option>
-              <option value="11:30 PM">11:30 PM</option>
-              <option value="11:45 PM">11:45 PM</option>
-              <option value="12:00 AM">12:00 AM</option>
-            </select>
-            <p className="text-xs text-gray-500 mt-1">Format: HH:MM AM/PM</p>
-          </div>
-          
-          {/* Waktu Pulang */}
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              Waktu Pulang (HH:MM AM/PM)
-            </label>
-            <select
-              value={editPresenceForm.checkOut}
-              onChange={(e) => setEditPresenceForm({...editPresenceForm, checkOut: e.target.value})}
-              className="w-full p-3 border border-gray-200 bg-white rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-900"
-            >
-              <option value="">Pilih waktu pulang</option>
-              <option value="12:00 PM">12:00 PM</option>
-              <option value="12:15 PM">12:15 PM</option>
-              <option value="12:30 PM">12:30 PM</option>
-              <option value="12:45 PM">12:45 PM</option>
-              <option value="01:00 PM">01:00 PM</option>
-              <option value="01:15 PM">01:15 PM</option>
-              <option value="01:30 PM">01:30 PM</option>
-              <option value="01:45 PM">01:45 PM</option>
-              <option value="02:00 PM">02:00 PM</option>
-              <option value="02:15 PM">02:15 PM</option>
-              <option value="02:30 PM">02:30 PM</option>
-              <option value="02:45 PM">02:45 PM</option>
-              <option value="03:00 PM">03:00 PM</option>
-              <option value="03:15 PM">03:15 PM</option>
-              <option value="03:30 PM">03:30 PM</option>
-              <option value="03:45 PM">03:45 PM</option>
-              <option value="04:00 PM">04:00 PM</option>
-              <option value="04:15 PM">04:15 PM</option>
-              <option value="04:30 PM">04:30 PM</option>
-              <option value="04:45 PM">04:45 PM</option>
-              <option value="05:00 PM">05:00 PM</option>
-              <option value="05:15 PM">05:15 PM</option>
-              <option value="05:30 PM">05:30 PM</option>
-              <option value="05:45 PM">05:45 PM</option>
-              <option value="06:00 PM">06:00 PM</option>
-              <option value="06:15 PM">06:15 PM</option>
-              <option value="06:30 PM">06:30 PM</option>
-              <option value="06:45 PM">06:45 PM</option>
-              <option value="07:00 PM">07:00 PM</option>
-              <option value="07:15 PM">07:15 PM</option>
-              <option value="07:30 PM">07:30 PM</option>
-              <option value="07:45 PM">07:45 PM</option>
-              <option value="08:00 PM">08:00 PM</option>
-              <option value="08:15 PM">08:15 PM</option>
-              <option value="08:30 PM">08:30 PM</option>
-              <option value="08:45 PM">08:45 PM</option>
-              <option value="09:00 PM">09:00 PM</option>
-              <option value="09:15 PM">09:15 PM</option>
-              <option value="09:30 PM">09:30 PM</option>
-              <option value="09:45 PM">09:45 PM</option>
-              <option value="10:00 PM">10:00 PM</option>
-              <option value="10:15 PM">10:15 PM</option>
-              <option value="10:30 PM">10:30 PM</option>
-              <option value="10:45 PM">10:45 PM</option>
-              <option value="11:00 PM">11:00 PM</option>
-              <option value="11:15 PM">11:15 PM</option>
-              <option value="11:30 PM">11:30 PM</option>
-              <option value="11:45 PM">11:45 PM</option>
-              <option value="12:00 AM">12:00 AM</option>
-              <option value="12:15 AM">12:15 AM</option>
-              <option value="12:30 AM">12:30 AM</option>
-              <option value="12:45 AM">12:45 AM</option>
-              <option value="01:00 AM">01:00 AM</option>
-            </select>
-            <p className="text-xs text-gray-500 mt-1">Format: HH:MM AM/PM</p>
-          </div>
-          
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              Status Check-in
-            </label>
-            <select
-              value={editPresenceForm.checkInStatus}
-              onChange={(e) => setEditPresenceForm({...editPresenceForm, checkInStatus: e.target.value})}
-              className="w-full p-3 border border-gray-200 bg-white rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-900"
-            >
-              <option value="ontime">ontime</option>
-              <option value="late">Late</option>
-            </select>
-          </div>
-          
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              Lokasi Check-in
-            </label>
-            <select
-              value={editPresenceForm.checkInLocation}
-              onChange={(e) => setEditPresenceForm({...editPresenceForm, checkInLocation: e.target.value})}
-              className="w-full p-3 border border-gray-200 bg-white rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-900"
-            >
-              <option value="">Pilih lokasi check-in</option>
-              <option value="Jakarta Utara - Site A (Lat: -6.123456, Long: 106.789012)">Jakarta Utara - Site A</option>
-              <option value="Jakarta Utara - Site B (Lat: -6.123457, Long: 106.789013)">Jakarta Utara - Site B</option>
-              <option value="Jakarta Utara - Site C (Lat: -6.123458, Long: 106.789014)">Jakarta Utara - Site C</option>
-            </select>
-          </div>
-          
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              Lokasi Check-out
-            </label>
-            <select
-              value={editPresenceForm.checkOutLocation}
-              onChange={(e) => setEditPresenceForm({...editPresenceForm, checkOutLocation: e.target.value})}
-              className="w-full p-3 border border-gray-200 bg-white rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-900"
-            >
-              <option value="">Pilih lokasi check-out</option>
-              <option value="Jakarta Utara - Site A (Lat: -6.123456, Long: 106.789012)">Jakarta Utara - Site A</option>
-              <option value="Jakarta Utara - Site B (Lat: -6.123457, Long: 106.789013)">Jakarta Utara - Site B</option>
-              <option value="Jakarta Utara - Site C (Lat: -6.123458, Long: 106.789014)">Jakarta Utara - Site C</option>
-            </select>
-          </div>
+        
           
           <div className="bg-yellow-50 p-4 rounded-lg border border-yellow-200">
             <div className="flex items-start gap-3">
@@ -4248,6 +4032,9 @@ export default function Operator() {
                     <div className="ml-9">
                       <p className="text-sm text-gray-600 mb-3">
                         {ticket.description}
+                      </p>
+                      <p className="text-sm text-gray-600 mb-3">
+                        Solution: {ticket.solution || "-"}
                       </p>
                       <div className="flex justify-between items-center">
                         <span
@@ -4850,7 +4637,7 @@ export default function Operator() {
 
   // ==================== MAIN RENDER ====================
   return (
-    <div className="flex min-h-screen bg-gray-50">
+    <div className={`flex min-h-screen bg-gray-50 ${loading ? "cursor-wait": ""}`}>
       {/* Overlay mobile */}
       {isSidebarOpen && (
         <div

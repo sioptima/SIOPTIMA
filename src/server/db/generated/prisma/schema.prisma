@@ -122,7 +122,7 @@ model Site {
   name        String     @unique
   image       String?
   status      SiteStatus @default(ACTIVE)
-  maxCapacity Int        @default(10)
+  maxCapacity Int        @default(0) //deprecated
 
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt

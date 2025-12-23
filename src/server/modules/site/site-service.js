@@ -137,7 +137,7 @@ export class SiteService {
             province: updatedSite.address.province,
             operators: updatedSite._count,
             status: updatedSite.status,
-            lastReport: (!site.report?.length) ? timeSince(site.report[0].laporanDate) : "No report yet",
+            lastReport: (!!site.report?.length) ? timeSince(site.report[0]?.laporanDate) : "No report yet",
         }
 
         return  siteTransform;

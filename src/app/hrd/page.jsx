@@ -33,7 +33,7 @@ import {
   CameraIcon,
   MapIcon,
 } from "@heroicons/react/24/outline";
-import { addShift, approveAttendance, approveLeave, fetchAllShifts, fetchAttendance, fetchHrdSummary, fetchLeaveRequest, fetchUsersWithRoleData, rejectAttendance } from "@/src/lib/fetchApiHrd";
+import { addShift, approveAttendance, approveLeave, deleteShift, editShift, fetchAllShifts, fetchAttendance, fetchHrdSummary, fetchLeaveRequest, fetchUsersWithRoleData, rejectAttendance } from "@/src/lib/fetchApiHrd";
 import { fetchSitesData } from "@/src/lib/fetchApiAdmin";
 import { fetchCurrentUser } from "@/src/lib/fetchApiOperator";
 
@@ -49,56 +49,11 @@ const STORAGE_KEYS = {
   LAST_SYNC: "last_sync_timestamp",
 };
 
-// Data generator untuk data yang lebih realistis
-const generateIndonesianName = () => {
-  const firstNames = ["Ahmad", "Budi", "Cahyo", "Dewi", "Eko", "Fajar", "Gita", "Hadi", "Indra", "Joko", "Kartika", "Lina", "Mulyadi", "Nina", "Oki", "Putri", "Rudi", "Sari", "Tono", "Wati"];
-  const lastNames = ["Santoso", "Wijaya", "Kusuma", "Hidayat", "Purnama", "Saputra", "Lestari", "Prabowo", "Nugroho", "Siregar", "Halim", "Utama", "Wibowo", "Sihombing", "Pangestu", "Simbolon", "Tanuwijaya", "Kurniawan", "Setiawan", "Fernando"];
-  return `${firstNames[Math.floor(Math.random() * firstNames.length)]} ${lastNames[Math.floor(Math.random() * lastNames.length)]}`;
-};
-
-const generateSiteName = () => {
-  const cities = ["Jakarta", "Bandung", "Surabaya", "Semarang", "Yogyakarta", "Medan", "Makassar", "Denpasar", "Palembang", "Balikpapan"];
-  const types = ["IPAL", "WWTP", "STP", "WTP", "Pabrik", "Kawasan", "Industri"];
-  return `Site ${types[Math.floor(Math.random() * types.length)]} ${cities[Math.floor(Math.random() * cities.length)]}`;
-};
-
-// Fungsi untuk mendapatkan tanggal dalam minggu ini
-const getCurrentWeekDates = () => {
-  const now = new Date();
-  const currentDay = now.getDay(); // 0 = Minggu, 1 = Senin, dst
-  const startOfWeek = new Date(now);
-  startOfWeek.setDate(now.getDate() - currentDay + (currentDay === 0 ? -6 : 1)); // Mulai dari Senin
-  
-  const weekDates = [];
-  const dayNames = ["Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu", "Minggu"];
-  const englishDayNames = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
-  
-  for (let i = 0; i < 7; i++) {
-    const date = new Date(startOfWeek);
-    date.setDate(startOfWeek.getDate() + i);
-    
-    weekDates.push({
-      date: date.toISOString().split('T')[0],
-      dayName: dayNames[i],
-      englishDayName: englishDayNames[i],
-      displayDate: date.toLocaleDateString('id-ID', { day: 'numeric', month: 'short' })
-    });
-  }
-  
-  return weekDates;
-};
-
-// Fungsi untuk mendapatkan nama operator berdasarkan ID
-const getOperatorNameById = (operators, operatorId) => {
-  const operator = operators.find(op => op.id === operatorId);
-  return operator ? operator.name : `Operator ${operatorId}`;
-};
-
 // Fungsi untuk mendapatkan jadwal shift mendatang berdasarkan hari ini
 const getUpcomingShifts = (shifts, days = 7) => {
   const today = new Date();
   const upcoming = [];
-  const dayNames = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+  const dayNames = ["Minggu", "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu"];
   
   for (let i = 0; i < days; i++) {
     const date = new Date(today);
@@ -106,11 +61,7 @@ const getUpcomingShifts = (shifts, days = 7) => {
     const dayOfWeek = dayNames[date.getDay()];
     
     const dayShifts = shifts.filter(shift => 
-      shift.dayOfWeek === dayOfWeek || 
-      (shift.dayOfWeek === "Everyday") ||
-      (shift.dayOfWeek === "Weekdays" && date.getDay() >= 1 && date.getDay() <= 5) ||
-      (shift.dayOfWeek === "Weekends" && (date.getDay() === 0 || date.getDay() === 6))
-    );
+      shift.dayOfWeek === dayOfWeek);
     
     if (dayShifts.length > 0) {
       upcoming.push({
@@ -153,16 +104,17 @@ export default function HRD() {
   const [selectedPhoto, setSelectedPhoto] = useState(null);
   const [showMapModal, setShowMapModal] = useState(false);
   const [selectedLocation, setSelectedLocation] = useState(null);
+  
+  const [loading, setLoading] = useState(false)
 
   // Form state untuk shift
   const [shiftForm, setShiftForm] = useState({
-    name: "Morning Shift",
-    startTime: "08:00",
-    endTime: "17:00",
+    name: "",
+    startTime: "",
+    endTime: "",
     siteId: "",
-    maxOperators: 5,
     assignedOperators: [],
-    dayOfWeek: "Monday"
+    date: ""
   });
   
   // Form state untuk site - PERUBAHAN: contact harus angka
@@ -181,6 +133,7 @@ export default function HRD() {
   const shiftFormRef = useRef(null);
   const siteFormRef = useRef(null);
   const sidebarRef = useRef(null);
+  const dateInputRef = useRef(null);
 
   // ==================== FUNGSI SINKRONISASI ====================
 
@@ -518,7 +471,6 @@ export default function HRD() {
     { id: "dashboard", name: "Dashboard", icon: ChartBarIcon },
     { id: "attendance", name: "Attendance", icon: DocumentTextIcon },
     { id: "shiftManagement", name: "Shift Management", icon: ClockIcon },
-    { id: "siteManagement", name: "Site Management", icon: BuildingOfficeIcon },
     { id: "leaveManagement", name: "Leave Management", icon: CalendarIcon },
   ];
  
@@ -526,8 +478,12 @@ export default function HRD() {
   const handleApprove = async (id) => {
     const attendanceToApprove = attendances.find(item => item.id === id);
     
+    setLoading(true)
+
     const response = await approveAttendance({id})
     if(!response){
+        setLoading(false)
+        alert("Gagal untuk approve presensi")
         return
     }
     const updatedData = attendances.map((item) =>
@@ -535,24 +491,18 @@ export default function HRD() {
     );
     setAttendanceData(updatedData);
 
-    const newNotification = {
-      id: Date.now(),
-      title: "Attendance Approved",
-      message: `Data attendance ${attendanceToApprove.operator} telah disetujui`,
-      time: "Baru saja",
-      read: false,
-      type: "approval",
-      route: "attendance",
-    };
-    setNotifications((prev) => [newNotification, ...prev]);
+    setLoading(false)
   };
 
   // Fungsi untuk handle reject attendance - SESUAI SRS (Reject Presensi Operator)
   const handleReject = async (id) => {
     const attendanceToReject = attendances.find(item => item.id === id);
     
+    setLoading(true)
+
     const response = await rejectAttendance({id})
     if(!response){
+        setLoading(false)
         return
     }
 
@@ -561,16 +511,7 @@ export default function HRD() {
     );
     setAttendanceData(updatedData);
 
-    const newNotification = {
-      id: Date.now(),
-      title: "Attendance Rejected",
-      message: `Data attendance ${attendanceToReject.operator} telah ditolak`,
-      time: "Baru saja",
-      read: false,
-      type: "rejection",
-      route: "attendance",
-    };
-    setNotifications((prev) => [newNotification, ...prev]);
+    setLoading(false)
   };
 
   // ==================== FUNGSI EKSPOR DATA - SESUAI SRS ====================
@@ -643,7 +584,7 @@ export default function HRD() {
 
   // Fungsi untuk ekspor data shift ke CSV
   const exportShiftsToCSV = () => {
-    const headers = ["ID", "Nama Shift", "Hari", "Waktu Mulai", "Waktu Selesai", "Site", "Maks Operator", "Operator Ditugaskan"];
+    const headers = ["ID", "Waktu Mulai", "Waktu Selesai", "Site", "Maks Operator", "Operator Ditugaskan"];
     
     const csvData = shifts.map(shift => {
       const site = sitesData.find(s => s.id === shift.siteId);
@@ -656,8 +597,6 @@ export default function HRD() {
       
       return [
         shift.id,
-        shift.name,
-        shift.dayOfWeek,
         shift.startTime,
         shift.endTime,
         site ? site.name : "Unknown",
@@ -686,44 +625,54 @@ export default function HRD() {
 
   const resetShiftForm = () => {
     setShiftForm({
-      name: "Morning Shift",
-      startTime: "08:00",
-      endTime: "17:00",
+      name: "",
+      startTime: "",
+      endTime: "",
       siteId: "",
       maxOperators: 12, // PERUBAHAN: Default 12 operator
       assignedOperators: [],
-      dayOfWeek: "Monday"
+      dayOfWeek: ""
     });
     setEditingShift(null);
   };
 
   // Fungsi untuk mendapatkan operator yang tersedia untuk shift (SRS: Tambah Shift Operator)
-  const getAvailableOperatorsForShift = (shiftId = null, dayOfWeek = null) => {
+  const getAvailableOperatorsForShift = (shiftId = null, date = null) => {
     return operatorsData.filter(operator => {
       // Filter hanya operator aktif
       if (operator.status !== "active") return false;
-      
-      // Cek apakah operator sudah memiliki shift di hari yang sama
-      const hasShiftOnDay = shifts.some(shift => {
-        if (shift.id === shiftId) return false; // Skip shift yang sedang diedit
-        return shift.assignedOperators?.includes(operator.id) && 
-               (shift.dayOfWeek === dayOfWeek || !dayOfWeek);
-      });
+      if (operator.totalHours > 40) return false; 
       
       // Cek apakah operator memiliki cuti/izin
       const hasLeave = leaveData.some(leave => 
         leave.operatorId === operator.id && 
         leave.status === "approved" &&
-        isDateInLeaveRange(dayOfWeek, leave)
+        isDateInLeaveRange(date, leave)
       );
-      
-      return !hasShiftOnDay && !hasLeave;
+      if (hasLeave) return false;
+      return true;
     });
   };
 
-  const isDateInLeaveRange = (dayOfWeek, leaveRequest) => {
-    const dayMapping = { "Monday": 1, "Tuesday": 2, "Wednesday": 3, "Thursday": 4, "Friday": 5, "Saturday": 6, "Sunday": 0 };
-    return Math.random() < 0.1; // 10% kemungkinan operator cuti di hari tersebut
+  const isDateInLeaveRange = (date, leave) => {
+    if (!date || !leave?.startDate) return false;
+  
+    const target = new Date(date);
+    const start = new Date(leave.startDate);
+  
+    // If no endDate (0), treat as single-day leave
+    if (!leave.endDate || leave.endDate === 0) {
+      return target.toDateString() === start.toDateString();
+    }
+  
+    const end = new Date(leave.endDate);
+  
+    // Normalize times
+    target.setHours(0, 0, 0, 0);
+    start.setHours(0, 0, 0, 0);
+    end.setHours(0, 0, 0, 0);
+  
+    return target >= start && target <= end;
   };
 
   // UPDATE: Fungsi untuk mengambil jadwal shift minggu ini dimulai dari hari ini
@@ -732,97 +681,101 @@ export default function HRD() {
   };
 
   const handleAddShift = async () => {
-    if (!shiftForm.name || !shiftForm.siteId || !shiftForm.dayOfWeek) {
+    if (!shiftForm.siteId) {
       alert("Please fill all required fields");
       return;
     }
 
+    setLoading(true)
+
     if (editingShift) {
-      // Edit shift - SESUAI SRS (Edit shift Operator)
+      // Edit shift
+      
+      const response = await editShift({
+        date: shiftForm.date,
+        time: shiftForm.startTime,
+        end: shiftForm.endTime,
+        userId: shiftForm.assignedOperators,
+        siteId: parseInt(shiftForm.siteId),
+        shiftId: editingShift.id
+      })
+      
+      if(!response){
+        setLoading(false)
+        alert("Failed to edit a shift")
+        return
+      }
       const updatedShifts = shifts.map(shift =>
         shift.id === editingShift.id ? { 
           ...shift, 
           ...shiftForm, 
-          id: editingShift.id,
+          id: response.id,
           siteId: parseInt(shiftForm.siteId),
-          maxOperators: 12 // SELALU 12 OPERATOR
+          dayOfWeek: response.dayOfWeek
         } : shift
       );
-      console.log(shiftForm)
-      return
-     // const response = await addShift({
-     //    
-     // })
-
-      setShifts(updatedShifts);
       
-      const newNotification = {
-        id: Date.now(),
-        title: "Shift Updated",
-        message: `Shift ${shiftForm.name} has been updated`,
-        time: "Baru saja",
-        read: false,
-        type: "shift",
-        route: "shiftManagement",
-      };
-      setNotifications((prev) => [newNotification, ...prev]);
+      setShifts(updatedShifts);
     } else {
       // Tambah shift baru - SESUAI SRS (Tambah Shift Operator)
+      const response = await addShift({
+        date: shiftForm.date,
+        time: shiftForm.startTime,
+        end: shiftForm.endTime,
+        userId: shiftForm.assignedOperators,
+        siteId: parseInt(shiftForm.siteId)
+      })
+
+      if(!response){
+        setLoading(false)
+        alert("Failed to add a shift")
+        return
+      }
+
       const newShift = {
-        id: shifts.length > 0 ? Math.max(...shifts.map(s => s.id)) + 1 : 1,
+        id: response.id,
         ...shiftForm,
-        siteId: parseInt(shiftForm.siteId),
-        maxOperators: 12 // SELALU 12 OPERATOR
+        siteId: parseInt(response.siteId),
+        dayOfWeek: response.dayOfWeek
       };
       setShifts([...shifts, newShift]);
-      
-      const newNotification = {
-        id: Date.now(),
-        title: "New Shift Added",
-        message: `Shift ${shiftForm.name} has been added`,
-        time: "Baru saja",
-        read: false,
-        type: "shift",
-        route: "shiftManagement",
-      };
-      setNotifications((prev) => [newNotification, ...prev]);
     }
 
     setShowShiftForm(false);
     resetShiftForm();
+    setLoading(false)
   };
 
   const handleEditShift = (shift) => {
     setEditingShift(shift);
     setShiftForm({
+      id: shift.id,
       name: shift.name,
       startTime: shift.startTime,
       endTime: shift.endTime,
       siteId: shift.siteId.toString(),
-      maxOperators: 12, // SELALU 12 OPERATOR
       assignedOperators: shift.assignedOperators || [],
-      dayOfWeek: shift.dayOfWeek || "Monday"
+      date: shift.date,
+      siteId: shift.siteId
     });
     setShowShiftForm(true);
   };
 
-  const handleDeleteShift = (id) => {
+  const handleDeleteShift = async (id) => {
     if (window.confirm("Are you sure you want to delete this shift?")) {
+      setLoading(true)
       const shiftToDelete = shifts.find(shift => shift.id === id);
+      const response = await deleteShift({id: shiftToDelete.id})
+      if(!response){
+        setLoading(false)
+        alert("Failed to delete a shift")
+        return
+      }
+
       setShifts(shifts.filter(shift => shift.id !== id));
-      
-      const newNotification = {
-        id: Date.now(),
-        title: "Shift Deleted",
-        message: `Shift ${shiftToDelete.name} has been deleted`,
-        time: "Baru saja",
-        read: false,
-        type: "shift",
-        route: "shiftManagement",
-      };
-      setNotifications((prev) => [newNotification, ...prev]);
-    }
+      setLoading(false)
   };
+}
 
   // ==================== FUNGSI SITE MANAGEMENT ====================
 
@@ -937,23 +890,16 @@ export default function HRD() {
     const leave = leaveData.find(item => item.id === id);
     const type = (leave.type === "izin" ? "ijin" : "libur")
     const actualId = leave.actualId 
+    setLoading(true)
     const response = await approveLeave({id: actualId, type})
     if(!response){
+        setLoading(false)
         return
     }
     setLeaveRequests(updatedLeaveRequests);
 
     const approvedLeave = leaveData.find(request => request.id === id);
-    const newNotification = {
-      id: Date.now(),
-      title: "Leave Request Approved",
-      message: `${approvedLeave.type} request from ${approvedLeave.operator} has been approved`,
-      time: "Baru saja",
-      read: false,
-      type: "leave",
-      route: "leaveManagement",
-    };
-    setNotifications((prev) => [newNotification, ...prev]);
+    setLoading(false)
   };
 
   const handleRejectLeave = async(id) => {
@@ -963,8 +909,10 @@ export default function HRD() {
     const leave = leaveData.find(item => item.id === id);
     const type = (leave.type === "izin" ? "ijin" : "libur")
     const actualId = leave.actualId 
+    setLoading(true)
     const response = await approveLeave({id: actualId, type})
     if(!response){
+        setLoading(false)
         return
     }
     setLeaveRequests(updatedLeaveRequests);
@@ -972,16 +920,7 @@ export default function HRD() {
     setLeaveRequests(updatedLeaveRequests);
 
     const rejectedLeave = leaveData.find(request => request.id === id);
-    const newNotification = {
-      id: Date.now(),
-      title: "Leave Request Rejected",
-      message: `${rejectedLeave.type} request from ${rejectedLeave.operator} has been rejected`,
-      time: "Baru saja",
-      read: false,
-      type: "leave",
-      route: "leaveManagement",
-    };
-    setNotifications((prev) => [newNotification, ...prev]);
+    setLoading(false)
   };
 
   const openLeaveDetail = (leave) => {
@@ -1132,7 +1071,7 @@ export default function HRD() {
         operatorAttendanceMap[attendance.operatorId] = { total: 0, present: 0 };
       }
       operatorAttendanceMap[attendance.operatorId].total++;
-      if (attendance.status === "approved") {
+      if (attendance.attendanceStatus === "approved") {
         operatorAttendanceMap[attendance.operatorId].present++;
       }
     });
@@ -1216,19 +1155,19 @@ export default function HRD() {
 
     const matchesFilter =
       selectedFilter === "All" || 
-      (selectedFilter === "Pending" && item.status === "pending") ||
-      (selectedFilter === "Approved" && item.status === "approved") ||
-      (selectedFilter === "Rejected" && item.status === "rejected");
+      (selectedFilter === "Pending" && item.attendanceStatus === "pending") ||
+      (selectedFilter === "Approved" && item.attendanceStatus === "approved") ||
+      (selectedFilter === "Rejected" && item.attendanceStatus === "rejected");
 
     return matchesSearch && matchesFilter;
   });
 
   const stats = {
     total: attendances.length,
-    pending: attendances.filter((item) => item.status === "pending").length,
-    approved: attendances.filter((item) => item.status === "approved")
+    pending: attendances.filter((item) => item.attendanceStatus === "pending").length,
+    approved: attendances.filter((item) => item.attendanceStatus === "approved")
       .length,
-    rejected: attendances.filter((item) => item.status === "rejected")
+    rejected: attendances.filter((item) => item.attendanceStatus === "rejected")
       .length,
   };
 
@@ -1791,25 +1730,24 @@ export default function HRD() {
   const ShiftFormModal = () => {
     const availableOperators = getAvailableOperatorsForShift(
       editingShift?.id, 
-      shiftForm.dayOfWeek || "Monday"
+      shiftForm.date
     );
     
     // Ambil data jadwal minggu ini dimulai dari hari ini
     const upcomingShifts = getUpcomingShifts(shifts, 7);
     
     // Mapping hari Inggris ke Indonesia
-    const dayMapping = {
-      "Monday": "Senin",
-      "Tuesday": "Selasa", 
-      "Wednesday": "Rabu",
-      "Thursday": "Kamis",
-      "Friday": "Jumat",
-      "Saturday": "Sabtu",
-      "Sunday": "Minggu"
-    };
+    const dayNames = ["Minggu", "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu"];
     
     // Ambil nama hari dalam bahasa Indonesia untuk form
-    const currentDayName = dayMapping[shiftForm.dayOfWeek] || shiftForm.dayOfWeek;
+    const currentDayName = dayNames[new Date(shiftForm.date).getDay()]
+
+    const formatDate = (date) => {
+      if(!date) return;
+      const newDate = new Date(date)
+      const formatted = newDate.toISOString().split('T')[0]
+      return formatted;
+    }
     
     return (
       <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
@@ -1829,137 +1767,27 @@ export default function HRD() {
                 <XMarkIcon className="w-6 h-6" />
               </button>
             </div>
-
+            
             <div className="space-y-6">
               {/* UPDATE: Sistem menampilkan jadwal shift MENDATANG dari hari ini */}
               <div>
-                <h4 className="font-medium text-gray-700 mb-3">Jadwal Shift Mendatang (Mulai Hari Ini: {new Date().toLocaleDateString('id-ID', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' })})</h4>
-                <div className="bg-gray-50 p-4 rounded-lg border border-gray-200">
-                  <div className="grid grid-cols-7 gap-2 mb-4">
-                    {upcomingShifts.slice(0, 7).map((day, index) => {
-                      const isSelected = shiftForm.dayOfWeek === day.dayOfWeek;
-                      
-                      return (
-                        <div 
-                          key={index}
-                          className={`p-3 rounded-lg border cursor-pointer transition-all ${isSelected ? 'bg-blue-50 border-blue-300' : 'bg-white border-gray-200'} ${day.isToday ? 'ring-2 ring-blue-200' : ''}`}
-                          onClick={() => {
-                            setShiftForm({...shiftForm, dayOfWeek: day.dayOfWeek});
-                          }}
-                          title={`Klik untuk pilih ${day.dayName}`}
-                        >
-                          <div className="flex flex-col items-center">
-                            <p className={`text-sm font-medium ${isSelected ? 'text-blue-700' : 'text-gray-700'}`}>
-                              {day.dayName.substring(0, 3)}
-                            </p>
-                            <p className="text-xs text-gray-500 mt-1">{day.displayDate.split(' ')[0]}</p>
-                            <div className="mt-2">
-                              {day.shifts.length > 0 ? (
-                                <span className={`px-2 py-1 rounded-full text-xs font-medium ${isSelected ? 'bg-blue-100 text-blue-700' : 'bg-gray-100 text-gray-700'}`}>
-                                  {day.shifts.length} shift
-                                </span>
-                              ) : (
-                                <span className="text-xs text-gray-400">-</span>
-                              )}
-                            </div>
-                            {day.isToday && (
-                              <div className="mt-1">
-                                <span className="text-xs bg-green-100 text-green-700 px-2 py-0.5 rounded">Hari Ini</span>
-                              </div>
-                            )}
-                          </div>
-                        </div>
-                      );
-                    })}
-                  </div>
-                  
-                  {/* Detail jadwal untuk hari yang dipilih */}
-                  <div className="mt-4 p-4 bg-white rounded-lg border border-gray-200">
-                    <div className="flex items-center justify-between mb-3">
-                      <h5 className="font-medium text-gray-900">
-                        Detail Jadwal {currentDayName}
-                      </h5>
-                      <span className="text-sm text-gray-600">
-                        Total: {upcomingShifts.find(d => d.dayOfWeek === shiftForm.dayOfWeek)?.shifts.length || 0} shift
-                      </span>
-                    </div>
-                    
-                    {upcomingShifts.find(d => d.dayOfWeek === shiftForm.dayOfWeek)?.shifts.length > 0 ? (
-                      <div className="space-y-3">
-                        {upcomingShifts
-                          .find(d => d.dayOfWeek === shiftForm.dayOfWeek)
-                          ?.shifts.map((shift, idx) => {
-                            const site = sitesData.find(s => s.id === shift.siteId);
-                            
-                            return (
-                              <div key={idx} className="flex items-center justify-between p-3 bg-gray-50 rounded border border-gray-200">
-                                <div className="flex-1">
-                                  <div className="flex items-center gap-2">
-                                    <span className="font-medium text-gray-900">{shift.name}</span>
-                                    <span className="text-sm text-gray-600">{shift.startTime} - {shift.endTime}</span>
-                                  </div>
-                                  <div className="mt-1 flex items-center gap-3 text-sm text-gray-600">
-                                    <span>Site: {site ? site.name : "Unknown"}</span>
-                                    <span>•</span>
-                                  </div>
-                                </div>
-                              </div>
-                            );
-                          })}
-                      </div>
-                    ) : (
-                      <div className="text-center py-4">
-                        <ClockIcon className="w-8 h-8 text-gray-300 mx-auto mb-2" />
-                        <p className="text-gray-500">Belum ada jadwal shift untuk {currentDayName}</p>
-                        <p className="text-sm text-gray-400 mt-1">Tambahkan shift baru untuk hari ini</p>
-                      </div>
-                    )}
-                  </div>
-                </div>
-              </div>
-
-              <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Nama Shift *
-                  </label>
-                  <div className="relative">
-                    <select
-                      value={shiftForm.name}
-                      onChange={(e) => setShiftForm({ ...shiftForm, name: e.target.value })}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 appearance-none bg-white"
-                    >
-                      <option value="Morning Shift">Morning Shift (07:00-15:00)</option>
-                      <option value="Afternoon Shift">Afternoon Shift (15:00-23:00)</option>
-                      <option value="Night Shift">Night Shift (23:00-07:00)</option>
-                    </select>
-                    <ChevronDownIcon className="w-5 h-5 text-gray-400 absolute right-3 top-1/2 transform -translate-y-1/2 pointer-events-none" />
-                  </div>
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Hari *
-                  </label>
-                  <div className="relative">
-                    <select
-                      value={shiftForm.dayOfWeek || "Monday"}
-                      onChange={(e) => setShiftForm({ ...shiftForm, dayOfWeek: e.target.value })}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 appearance-none bg-white"
-                    >
-                      <option value="Monday">Senin</option>
-                      <option value="Tuesday">Selasa</option>
-                      <option value="Wednesday">Rabu</option>
-                      <option value="Thursday">Kamis</option>
-                      <option value="Friday">Jumat</option>
-                      <option value="Saturday">Sabtu</option>
-                      <option value="Sunday">Minggu</option>
-                      <option value="Weekdays">Weekdays (Senin-Jumat)</option>
-                      <option value="Weekends">Weekends (Sabtu-Minggu)</option>
-                      <option value="Everyday">Setiap Hari</option>
-                    </select>
-                    <ChevronDownIcon className="w-5 h-5 text-gray-400 absolute right-3 top-1/2 transform -translate-y-1/2 pointer-events-none" />
-                  </div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Tanggal <span className="text-red-500">*</span>
+                </label>
+                <div className="relative">
+                  <input
+                    ref={dateInputRef}
+                    type="date"
+                    value={shiftForm.date}
+                    onChange={(e) => setShiftForm({ ...shiftForm, date: e.target.value })}
+                    className={`w-full p-3 pr-10 border "border-gray-200"
+                     bg-white rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition placeholder-gray-400 text-gray-900`}
+                    style={{ 
+                      WebkitAppearance: 'none',
+                      MozAppearance: 'textfield',
+                      appearance: 'none'
+                    }}
+                  />
                 </div>
               </div>
 
@@ -1990,7 +1818,7 @@ export default function HRD() {
 
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Opsi (Site) *
+                  Site *
                 </label>
                 <div className="relative">
                   <select
@@ -2018,39 +1846,16 @@ export default function HRD() {
                 </div>
               </div>
 
-              {/* PERUBAHAN: Maximum Operators selalu 12 */}
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Maximum Operators (Maksimal 12)
-                </label>
-                <div className="relative">
-                  <select
-                    value={12} // SELALU 12
-                    onChange={(e) => setShiftForm({ ...shiftForm, maxOperators: 12 })}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 appearance-none bg-white"
-                    disabled
-                  >
-                    <option value={12}>12 operator (maksimal 12)</option>
-                  </select>
-                  <ChevronDownIcon className="w-5 h-5 text-gray-400 absolute right-3 top-1/2 transform -translate-y-1/2 pointer-events-none" />
-                </div>
-                {shiftForm.siteId && (
-                  <p className="text-xs text-gray-500 mt-1">
-                    Kapasitas site: {sitesData.find(s => s.id === parseInt(shiftForm.siteId))?.capacity || 0} operators (maksimal 12)
-                  </p>
-                )}
-              </div>
-
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-3">
-                  Assign Operators ({shiftForm.assignedOperators.length} selected, maksimal 12)
+                  Assign Operators ({shiftForm.assignedOperators.length} selected)
                 </label>
                 <div className="border border-gray-200 rounded-lg p-4 max-h-60 overflow-y-auto">
                   {availableOperators.length === 0 ? (
                     <div className="text-center py-4">
                       <UsersIcon className="w-8 h-8 text-gray-300 mx-auto mb-2" />
                       <p className="text-gray-500">Tidak ada operator tersedia untuk hari {currentDayName}</p>
-                      <p className="text-sm text-gray-400 mt-1">Semua operator sudah memiliki shift atau sedang cuti</p>
+                      <p className="text-sm text-gray-400 mt-1">Semua operator sudah mencapai jam kerja maksimal atau sedang cuti</p>
                     </div>
                   ) : (
                     <div className="space-y-2">
@@ -2058,7 +1863,7 @@ export default function HRD() {
                         const isAssigned = shiftForm.assignedOperators.includes(operator.id);
                         const operatorShifts = shifts.filter(s => 
                           s.assignedOperators?.includes(operator.id) && 
-                          s.dayOfWeek !== shiftForm.dayOfWeek
+                          s.date !== formatDate(shiftForm.date)
                         );
                         
                         return (
@@ -2069,22 +1874,12 @@ export default function HRD() {
                                 id={`operator-${operator.id}`}
                                 checked={isAssigned}
                                 onChange={(e) => {
-                                  if (e.target.checked) {
-                                    // Cek apakah sudah mencapai batas maksimal 12
-                                    if (shiftForm.assignedOperators.length >= 12) {
-                                      alert(`Maksimal 12 operator per shift`);
-                                      return;
-                                    }
-                                    setShiftForm({
-                                      ...shiftForm,
-                                      assignedOperators: [...shiftForm.assignedOperators, operator.id]
-                                    });
-                                  } else {
-                                    setShiftForm({
-                                      ...shiftForm,
-                                      assignedOperators: shiftForm.assignedOperators.filter(id => id !== operator.id)
-                                    });
-                                  }
+                                  setShiftForm(prev => ({
+                                    ...prev,
+                                    assignedOperators: e.target.checked
+                                      ? [...prev.assignedOperators, operator.id]
+                                      : prev.assignedOperators.filter(id => id !== operator.id)
+                                  }));
                                 }}
                                 className="rounded text-blue-600 focus:ring-blue-500"
                               />
@@ -2094,10 +1889,10 @@ export default function HRD() {
                                     {operator.name}
                                   </label>
                                   <span className="text-xs bg-gray-100 text-gray-600 px-2 py-0.5 rounded">
-                                    {operator.employeeId}
+                                    {operator.position}
                                   </span>
                                 </div>
-                                <p className="text-xs text-gray-500">{operator.position}</p>
+                                <p className="text-xs text-gray-500">Jam Kerja Minggu Ini: {operator.totalHours}</p>
                                 {operatorShifts.length > 0 && (
                                   <div className="mt-1">
                                     <p className="text-xs text-gray-500">
@@ -2117,7 +1912,7 @@ export default function HRD() {
                   )}
                 </div>
                 <p className="text-xs text-gray-500 mt-2">
-                  Operator yang sedang cuti atau telah melebihi waktu kerja tidak muncul dalam daftar. Maksimal 12 operator per shift.
+                  Operator yang sedang cuti atau telah melebihi waktu kerja tidak muncul dalam daftar.
                 </p>
               </div>
             </div>
@@ -2125,7 +1920,10 @@ export default function HRD() {
             <div className="mt-8 flex gap-3">
               <button
                 onClick={handleAddShift}
-                className="flex-1 bg-blue-600 text-white py-3 px-4 rounded-lg hover:bg-blue-700 transition font-medium"
+                disabled={loading}
+                className={`flex-1  text-white py-3 px-4 rounded-lg  transition font-medium
+                  ${loading ? "bg-gray-100 border-gray-300 cursor-not-allowed": "hover:bg-blue-700 bg-blue-600"}
+                  `}
               >
                 {editingShift ? "Update Shift" : "Add Shift"}
               </button>
@@ -2148,7 +1946,7 @@ export default function HRD() {
   // ==================== RENDER COMPONENT ====================
 
   return (
-    <div className="flex min-h-screen bg-gray-50">
+    <div className={`flex min-h-screen  ${loading ? "cursor-wait" : "bg-gray-50"}`}>
       {/* Overlay mobile */}
       {isSidebarOpen && (
         <div
@@ -2213,14 +2011,14 @@ export default function HRD() {
                     </label>
                     <span
                       className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium mt-1 ${
-                        selectedAttendance.status === "approved"
+                        selectedAttendance.attendanceStatus === "approved"
                           ? "bg-green-100 text-green-800"
-                          : selectedAttendance.status === "rejected"
+                          : selectedAttendance.attendanceStatus === "rejected"
                           ? "bg-red-100 text-red-800"
                           : "bg-yellow-100 text-yellow-800"
                       }`}
                     >
-                      {selectedAttendance.status}
+                      {selectedAttendance.attendanceStatus}
                     </span>
                   </div>
                 </div>
@@ -2254,26 +2052,13 @@ export default function HRD() {
                 <div className="grid grid-cols-2 gap-4">
                   <div>
                     <label className="text-sm font-medium text-gray-700">
-                      Distance to Site
+                      Jarak ke Site
                     </label>
                     <p className="mt-1 text-sm text-gray-900">
                       {selectedAttendance.distanceToSite} m
                     </p>
                   </div>
 
-                  <div>
-                    <label className="text-sm font-medium text-gray-700">
-                      Validation Status
-                    </label>
-                    <div className="mt-1 space-y-1">
-                      <p className={`text-xs ${selectedAttendance.locationValid ? 'text-green-600' : 'text-red-600'}`}>
-                        • Lokasi: {selectedAttendance.locationValid ? 'Valid' : 'Tidak Valid'}
-                      </p>
-                      <p className={`text-xs ${selectedAttendance.timeValid ? 'text-green-600' : 'text-red-600'}`}>
-                        • Waktu: {selectedAttendance.timeValid ? 'Valid' : 'Tidak Valid'}
-                      </p>
-                    </div>
-                  </div>
                 </div>
 
                 {/* UPDATE: Bagian Foto Presensi */}
@@ -2360,7 +2145,7 @@ export default function HRD() {
               </div>
 
               <div className="mt-6 flex gap-3">
-                {selectedAttendance.status === "pending" && (
+                {selectedAttendance.attendanceStatus === "pending" && (
                   <>
                     <button
                       onClick={() => {
@@ -2475,7 +2260,7 @@ export default function HRD() {
           </ul>
         </nav>
 
-        {/* HRD badge */}
+        {/* HRD    */}
         <div className="p-4 mt-auto border-t border-gray-200 flex-shrink-0">
           <div className="bg-gradient-to-r from-gray-50 to-blue-50 rounded-xl p-4 border border-gray-200 shadow-sm hover:shadow-md transition-shadow duration-200">
             <div className="flex items-center gap-3">
@@ -2506,7 +2291,7 @@ export default function HRD() {
               <div className="flex items-center justify-between text-xs text-gray-600">
                 <span className="truncate">{hrdUser.site}</span>
                 <span className="px-2 py-1 bg-gradient-to-r from-green-100 to-emerald-100 text-green-700 rounded-full font-medium">
-                  Active
+                  {hrdUser.status}
                 </span>
               </div>
             </div>
@@ -2539,7 +2324,7 @@ export default function HRD() {
                 ref={notificationRef}
                 className="relative flex flex-col items-end gap-2"
               >
-                <button
+                {/*<button
                   onClick={(e) => {
                     e.stopPropagation();
                     setNotificationOpen((prev) => !prev);
@@ -2552,7 +2337,7 @@ export default function HRD() {
 
                     </span>
                   )}
-                </button>
+                </button>*/}
 
                 {notificationOpen && (
                   <div
@@ -2822,9 +2607,6 @@ export default function HRD() {
                   <p className="text-sm font-medium text-gray-900">{day.dayName}</p>
                   <p className="text-xs text-gray-600">{shift.name} • {site ? site.name.split(' ')[1] : 'Site'}</p>
                 </div>
-                <span className="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded">
-                  {shift.assignedOperators?.length || 0}/12 ops
-                </span>
               </div>
             );
           });
@@ -3104,9 +2886,9 @@ export default function HRD() {
             <p className="text-gray-600 truncate text-xs sm:text-sm">{attendance.location} • {attendance.time} • {attendance.date}</p>
           </div>
           <div className="flex items-center gap-1 sm:gap-2 flex-shrink-0 ml-2">
-            {attendance.status === "approved" ? <CheckCircleIcon className="w-4 h-4 text-green-500" /> : attendance.status === "pending" ? <ExclamationTriangleIcon className="w-4 h-4 text-yellow-500" /> : <XCircleIcon className="w-4 h-4 text-red-500" />}
-            <span className={`px-2 py-1 rounded-full text-xs font-medium ${attendance.status === "approved" ? "bg-green-100 text-green-800" : attendance.status === "pending" ? "bg-yellow-100 text-yellow-800" : "bg-red-100 text-red-800"}`}>
-              {attendance.status}
+            {attendance.attendanceStatus === "approved" ? <CheckCircleIcon className="w-4 h-4 text-green-500" /> : attendance.attendanceStatus === "pending" ? <ExclamationTriangleIcon className="w-4 h-4 text-yellow-500" /> : <XCircleIcon className="w-4 h-4 text-red-500" />}
+            <span className={`px-2 py-1 rounded-full text-xs font-medium ${attendance.attendanceStatus === "approved" ? "bg-green-100 text-green-800" : attendance.attendanceStatus === "pending" ? "bg-yellow-100 text-yellow-800" : "bg-red-100 text-red-800"}`}>
+              {attendance.attendanceStatus}
             </span>
           </div>
         </div>
@@ -3136,15 +2918,10 @@ export default function HRD() {
                     Lihat Presensi Operator
                   </h1>
                   <p className="text-gray-600 text-sm sm:text-base">
-                    {attendances.filter(item => item.status === "pending").length === 0 
+                    {attendances.filter(item => item.attendanceStatus === "pending").length === 0 
                       ? "Semua data presensi telah divalidasi" 
-                      : "Review and validate operator attendance records"}
+                      : "Review dan validasi presensi"}
                   </p>
-                  <div className="text-sm text-blue-600 mt-1">
-                    {attendances.filter(item => item.status === "pending").length > 0 
-                      ? "Data perlu validasi HRD" 
-                      : "Data tersinkronisasi dengan Admin & Operator"}
-                  </div>
                 </div>
               <div className="flex gap-2">
   {/* SESUAI SRS: Ekspor Data Presensi Operator - hanya Export to Excel */}
@@ -3277,8 +3054,8 @@ export default function HRD() {
                                   <h3 className="font-semibold text-gray-900 text-base sm:text-lg truncate">{item.operator}</h3>
                                   <p className="text-gray-500 text-sm mt-1 truncate">{item.site}</p>
                                 </div>
-                                <span className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-medium ml-3 flex-shrink-0 ${item.status === "approved" ? "bg-green-100 text-green-800" : item.status === "rejected" ? "bg-red-100 text-red-800" : "bg-yellow-100 text-yellow-800"}`}>
-                                  {item.status === "approved" ? "Disetujui" : item.status === "rejected" ? "Ditolak" : "Pending"}
+                                <span className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-medium ml-3 flex-shrink-0 ${item.attendanceStatus === "approved" ? "bg-green-100 text-green-800" : item.attendanceStatus === "rejected" ? "bg-red-100 text-red-800" : "bg-yellow-100 text-yellow-800"}`}>
+                                  {item.attendanceStatus === "approved" ? "Disetujui" : item.attendanceStatus === "rejected" ? "Ditolak" : "Pending"}
                                 </span>
                               </div>
                               <div className="grid grid-cols-2 gap-4">
@@ -3352,7 +3129,7 @@ export default function HRD() {
                                 <button onClick={() => openDetailModal(item)} className="flex items-center gap-2 text-blue-600 hover:text-blue-800 transition px-3 py-2 rounded-lg hover:bg-blue-50 text-sm font-medium">
                                   <EyeIcon className="w-4 h-4" /> Lihat Detail
                                 </button>
-                                {item.status === "pending" && (
+                                {item.attendanceStatus === "pending" && (
                                   <div className="flex gap-2">
                                     {/* SESUAI SRS: Approve Presensi Operator */}
                                     <button onClick={() => handleApprove(item.id)} className="flex items-center gap-2 text-green-600 hover:text-green-800 transition px-3 py-2 rounded-lg hover:bg-green-50 text-sm font-medium">
@@ -3387,8 +3164,8 @@ export default function HRD() {
                                 </div>
                               </div>
                               <div className="col-span-2 flex items-center justify-center">
-                                <span className={`inline-flex items-center px-3 py-1 rounded-full text-sm font-medium ${item.status === "approved" ? "bg-green-100 text-green-800" : item.status === "rejected" ? "bg-red-100 text-red-800" : "bg-yellow-100 text-yellow-800"}`}>
-                                  {item.status === "approved" ? "Disetujui" : item.status === "rejected" ? "Ditolak" : "Pending"}
+                                <span className={`inline-flex items-center px-3 py-1 rounded-full text-sm font-medium ${item.attendanceStatus === "approved" ? "bg-green-100 text-green-800" : item.attendanceStatus === "rejected" ? "bg-red-100 text-red-800" : "bg-yellow-100 text-yellow-800"}`}>
+                                  {item.attendanceStatus === "approved" ? "Disetujui" : item.attendanceStatus === "rejected" ? "Ditolak" : "Pending"}
                                 </span>
                               </div>
                               <div className="col-span-1 flex items-center justify-center">
@@ -3405,7 +3182,7 @@ export default function HRD() {
                                   <button onClick={() => openMapModal(item.location, item.locationCoordinates)} className="text-green-600 hover:text-green-800 transition p-2 rounded-lg hover:bg-green-50" title="View Location">
                                     <MapPinIcon className="w-5 h-5" />
                                   </button>
-                                  {item.status === "pending" && (
+                                  {item.attendanceStatus === "pending" && (
                                     <>
                                       <button onClick={() => handleApprove(item.id)} className="text-green-600 hover:text-green-800 transition p-2 rounded-lg hover:bg-green-50" title="Approve">
                                         <CheckCircleIcon className="w-5 h-5" />
@@ -3522,7 +3299,7 @@ export default function HRD() {
               </div>
             </div>
 
-            {/* UPDATE: Jadwal Shift Mendatang (7 hari ke depan) */}
+            {/* UPDATE: Jadwal Shift Mendatang */}
             <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden mb-6">
               <div className="px-6 py-4 bg-gray-50 border-b border-gray-200">
                 <h3 className="font-semibold text-gray-800">Jadwal Shift Mendatang (7 Hari)</h3>
@@ -3548,12 +3325,10 @@ export default function HRD() {
                           <div key={idx} className="flex items-center justify-between p-3 bg-gray-50 rounded border border-gray-200">
                             <div className="flex-1">
                               <div className="flex items-center gap-3">
-                                <span className="font-medium text-gray-900">{shift.name}</span>
-                                <span className="text-sm text-gray-600">{shift.startTime} - {shift.endTime}</span>
+                                <span className="font-medium text-gray-900">{shift.startTime} - {shift.endTime}</span>
                               </div>
                               <div className="mt-1 flex items-center gap-3 text-sm text-gray-600">
-                                <span>Site: {site ? site.name : 'Unknown'}</span>
-                                <span>•</span>
+                                <span>{shift.site}</span>
                               </div>
                             </div>
                             <button
@@ -3590,10 +3365,9 @@ export default function HRD() {
               </div>
             ) : (
               <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
-                <div className="hidden lg:grid grid-cols-12 gap-4 px-6 py-4 bg-gray-50 border-b border-gray-200 text-sm font-semibold text-gray-700">
-                  <div className="col-span-3">Nama Shift</div>
+                <div className="hidden lg:grid grid-cols-9 gap-4 px-6 py-4 bg-gray-50 border-b border-gray-200 text-sm font-semibold text-gray-700">
                   <div className="col-span-2">Waktu</div>
-                  <div className="col-span-2">Hari</div>
+                  <div className="col-span-2">Tanggal</div>
                   <div className="col-span-2">Operator Bertugas</div>
                   <div className="col-span-3 text-center">Aksi</div>
                 </div>
@@ -3609,13 +3383,13 @@ export default function HRD() {
                       .join(", ");
                     
                     return (
-                      <div key={shift.id} className="block lg:grid lg:grid-cols-12 lg:gap-4 px-4 sm:px-6 py-4 hover:bg-gray-50 transition-colors">
+                      <div key={shift.id} className="block lg:grid lg:grid-cols-9 lg:gap-4 px-4 sm:px-6 py-4 hover:bg-gray-50 transition-colors">
                         <div className="lg:hidden space-y-4">
                           <div className="flex justify-between items-start">
                             <div className="flex-1 min-w-0">
-                              <h3 className="font-semibold text-gray-900 text-base sm:text-lg truncate">{shift.name}</h3>
+                              <h3 className="font-semibold text-gray-900 text-base sm:text-lg truncate">{shift.dayOfWeek}</h3>
                               <p className="text-gray-500 text-sm mt-1 truncate">
-                                {site ? `${site.name}` : 'Unknown Site'} • {shift.dayOfWeek}
+                                {shift.date}
                               </p>
                             </div>
                           </div>
@@ -3627,7 +3401,7 @@ export default function HRD() {
                             </div>
                             <div>
                               <p className="text-gray-500 text-xs uppercase font-medium mb-1">Site</p>
-                              <p className="text-gray-900 text-sm font-medium">{site ? site.name : 'Unknown'}</p>
+                              <p className="text-gray-900 text-sm font-medium">{shift.site}</p>
                             </div>
                           </div>
 
@@ -3662,23 +3436,18 @@ export default function HRD() {
 
                         {/* Desktop View */}
                         <div className="hidden lg:contents">
-                          <div className="col-span-3 flex items-center">
+                          <div className="col-span-2 flex items-center">
                             <div>
-                              <p className="font-medium text-gray-900">{shift.name}</p>
+                              <p className="font-medium text-gray-900">{shift.dayOfWeek}</p>
                               <p className="text-sm text-gray-500 mt-0.5">{shift.startTime} - {shift.endTime}</p>
                             </div>
                           </div>
                           <div className="col-span-2 flex items-center">
                             <p className="text-gray-700">
-                              {shift.startTime} - {shift.endTime}
+                              {shift.date}
                             </p>
                           </div>
-                          <div className="col-span-2 flex items-center">
-                            <div className="bg-gray-100 px-3 py-1 rounded-full">
-                              <p className="text-gray-700 text-sm">{shift.dayOfWeek}</p>
-                            </div>
-                          </div>
-                          <div className="col-span-2 flex items-center">
+                          <div className="col-span-2 flex ite ms-center">
                             <div className="min-w-0">
                               <p className="text-gray-700 truncate text-sm">
                                 {assignedOperatorNames || "Belum ada operator"}
@@ -3705,149 +3474,6 @@ export default function HRD() {
                       </div>
                     );
                   })}
-                </div>
-              </div>
-            )}
-          </div>
-        )}
-
-        {/* SITE MANAGEMENT CONTENT */}
-        {activeMenu === "siteManagement" && (
-          <div className="px-3 sm:px-4 lg:px-6 py-4 max-w-screen-2xl mx-auto bg-gradient-to-br from-gray-50 to-blue-50 min-h-screen">
-            <div className="mb-6">
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-4">
-                <div>
-                  <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-900 mb-2">
-                    Site Management
-                  </h1>
-                  <p className="text-gray-600 text-sm sm:text-base">
-                    Kelola lokasi dan informasi site IPAL
-                  </p>
-                </div>
-                <button
-                  onClick={() => {
-                    resetSiteForm();
-                    setShowSiteForm(true);
-                  }}
-                  className="bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white px-4 sm:px-6 py-3 rounded-lg font-medium flex items-center gap-2 transition w-full sm:w-auto justify-center shadow-sm hover:shadow-md"
-                >
-                  <PlusIcon className="w-5 h-5" />
-                  Tambah Site Baru
-                </button>
-              </div>
-            </div>
-
-            {sitesData.length === 0 ? (
-              <div className="bg-white p-8 rounded-xl shadow-sm border border-gray-200 text-center">
-                <BuildingOfficeIcon className="w-16 h-16 text-gray-300 mx-auto mb-4" />
-                <h3 className="text-lg font-medium text-gray-900 mb-2">Belum Ada Site Terdaftar</h3>
-                <p className="text-gray-600 mb-4">Tambahkan site IPAL untuk memulai manajemen lokasi.</p>
-                <button
-                  onClick={() => {
-                    resetSiteForm();
-                    setShowSiteForm(true);
-                  }}
-                  className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition font-medium inline-flex items-center gap-2"
-                >
-                  <PlusIcon className="w-5 h-5" />
-                  Tambah Site Pertama
-                </button>
-              </div>
-            ) : (
-              <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
-                <div className="hidden lg:grid grid-cols-12 gap-4 px-6 py-4 bg-gray-50 border-b border-gray-200 text-sm font-semibold text-gray-700">
-                  <div className="col-span-3">Nama Site</div>
-                  <div className="col-span-2">Lokasi</div>
-                  <div className="col-span-3">Alamat</div>
-                  <div className="col-span-2">Supervisor</div>
-                  <div className="col-span-2 text-center">Aksi</div>
-                </div>
-
-                <div className="divide-y divide-gray-200">
-                  {sitesData.map((site) => (
-                    <div key={site.id} className="block lg:grid lg:grid-cols-12 lg:gap-4 px-4 sm:px-6 py-4 hover:bg-gray-50 transition-colors">
-                      <div className="lg:hidden space-y-4">
-                        <div className="flex justify-between items-start">
-                          <div className="flex-1 min-w-0">
-                            <h3 className="font-semibold text-gray-900 text-base sm:text-lg truncate">{site.name}</h3>
-                            <p className="text-gray-500 text-sm mt-1 truncate">{site.location}</p>
-                          </div>
-                        </div>
-                        
-                        <div>
-                          <p className="text-gray-500 text-xs uppercase font-medium mb-1">Alamat</p>
-                          <p className="text-gray-900 text-sm line-clamp-2">{site.address}</p>
-                        </div>
-
-                        <div className="grid grid-cols-2 gap-4">
-                          <div>
-                            <p className="text-gray-500 text-xs uppercase font-medium mb-1">Supervisor</p>
-                            <p className="text-gray-900 text-sm font-medium">{site.supervisor}</p>
-                          </div>
-                          <div>
-                            <p className="text-gray-500 text-xs uppercase font-medium mb-1">Kontak</p>
-                            <p className="text-gray-900 text-sm font-medium">{site.contact}</p>
-                          </div>
-                        </div>
-
-                        <div className="flex justify-between items-center pt-3 border-t border-gray-200">
-                          <div className="flex gap-2">
-                            <button
-                              onClick={() => handleEditSite(site)}
-                              className="flex items-center gap-1 text-blue-600 hover:text-blue-800 transition px-3 py-2 rounded-lg hover:bg-blue-50 text-sm font-medium"
-                            >
-                              <PencilIcon className="w-4 h-4" />
-                              Edit
-                            </button>
-                            <button
-                              onClick={() => handleDeleteSite(site.id)}
-                              className="flex items-center gap-1 text-red-600 hover:text-red-800 transition px-3 py-2 rounded-lg hover:bg-red-50 text-sm font-medium"
-                            >
-                              <TrashIcon className="w-4 h-4" />
-                              Hapus
-                            </button>
-                          </div>
-                        </div>
-                      </div>
-
-                      {/* Desktop View */}
-                      <div className="hidden lg:contents">
-                        <div className="col-span-3 flex items-center">
-                          <div>
-                            <p className="font-medium text-gray-900">{site.name}</p>
-                          </div>
-                        </div>
-                        <div className="col-span-2 flex items-center">
-                          <p className="text-gray-700">{site.location}</p>
-                        </div>
-                        <div className="col-span-3 flex items-center">
-                          <p className="text-gray-700 truncate">{site.address}</p>
-                        </div>
-                        <div className="col-span-2 flex items-center">
-                          <div>
-                            <p className="font-medium text-gray-900">{site.supervisor}</p>
-                            <p className="text-sm text-gray-500">{site.contact}</p>
-                          </div>
-                        </div>
-                        <div className="col-span-2 flex items-center justify-center gap-2">
-                          <button
-                            onClick={() => handleEditSite(site)}
-                            className="text-blue-600 hover:text-blue-800 transition p-2 rounded-lg hover:bg-blue-50"
-                            title="Edit Site"
-                          >
-                            <PencilIcon className="w-5 h-5" />
-                          </button>
-                          <button
-                            onClick={() => handleDeleteSite(site.id)}
-                            className="text-red-600 hover:text-red-800 transition p-2 rounded-lg hover:bg-red-50"
-                            title="Delete Site"
-                          >
-                            <TrashIcon className="w-5 h-5" />
-                          </button>
-                        </div>
-                      </div>
-                    </div>
-                  ))}
                 </div>
               </div>
             )}

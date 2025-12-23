@@ -62,6 +62,9 @@ export class TicketRepository {
                             }}
                         }},
                         site: {select: {name: true,}},
+                        feedback: {select: {
+                            feedback: true,
+                        }}
                         
                     },
                     orderBy: {
@@ -166,7 +169,7 @@ export class TicketRepository {
             
             return {tickets, count};
         } catch (error) {
-            throw new ResponseError(500, error.message)
+            throw new ResponseError(500, "Failed when trying to fetch ticket list")
         }
     }
 

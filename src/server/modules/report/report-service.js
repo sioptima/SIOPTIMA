@@ -103,7 +103,7 @@ export class ReportService {
 
         const reportTransform = reports.result.map((report) => ({
             id: report.id,
-            date: report.laporanDate.toLocaleDateString(),
+            date: report.laporanDate.toISOString().split('T')[0],
             time: report.laporanDate.toLocaleTimeString(),
             site: report.siteName,
             operator: (report.user.profile?.name) ? report.user.profile.name : report.user.username,

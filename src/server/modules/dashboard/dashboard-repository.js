@@ -104,7 +104,7 @@ export class DashboardRepository {
             const queryActive = {
                 where: {
                     user: {
-                        every: {
+                        some: {
                             id: userId
                         }
                     },
@@ -134,7 +134,7 @@ export class DashboardRepository {
             const queryUpcoming = {
                     where: { 
                         user: {
-                            every: {
+                            some: {
                                 id: userId
                             }
                         },

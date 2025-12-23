@@ -1,6 +1,6 @@
 import { ResponseError } from "@/src/lib/response-error.js";
 import PrismaClient from "../../db/db.js"
-import { timeSince } from "../../utils/helper.js";
+import { daysOfWeek, timeSince } from "../../utils/helper.js";
 
 export class UserRepository {
 
@@ -82,6 +82,7 @@ export class UserRepository {
                 select: {
                     id: true,
                     username: true,
+                    status: true,
                     profile: {select:{
                         name: true,
                         email: true,
@@ -217,43 +218,56 @@ export class UserRepository {
         try {
             const skip = (data.page - 1) * data.size;
 
-            const query = {
-                include: {
-                    profile: {
-                        select: {
-                            name: true,
-                            email: true,
-                        }
-                    },
-                    role: {
-                        select: {
-                            name: true,
-                        }
-                    },
-                    sites: {
-                        select: {
-                            name: true,
-                        }
-                    },
-                    activity: {
-                        take: 1,
-                        orderBy: {
-                            createdAt: "desc"
-                        },
-                        select:{
-                            createdAt: true,
-                        }
-                    },
-                },
-                orderBy: {
-                        createdAt: 'desc',
-                },
-                take: data.size,
-                skip: skip
-            }
+            //find week range
+            const targetDate = new Date();//today
+            const weekDates = daysOfWeek(new Date(targetDate.getFullYear(), targetDate.getMonth(), targetDate.getDate())); // array of 7 days 
+            const weekStart = weekDates[0];
+            const weekEnd = weekDates[6];
 
             const [users, total, adminCount, operatorCount, hrdCount] = await PrismaClient.$transaction([
-                PrismaClient.user.findMany(query),
+                PrismaClient.user.findMany({
+                    include: {
+                        profile: {
+                            select: {
+                                name: true,
+                                email: true,
+                            }
+                        },
+                        role: {
+                            select: {
+                                name: true,
+                            }
+                        },
+                        sites: {
+                            select: {
+                                name: true,
+                            }
+                        },
+                        activity: {
+                            take: 1,
+                            orderBy: {
+                                createdAt: "desc"
+                            },
+                            select:{
+                                createdAt: true,
+                            }
+                        },
+                        jamKerja: {
+                            where: {
+                                weekStart: weekStart,
+                                weekEnd: weekEnd
+                            },
+                            select: {
+                                totalHours: true,
+                            }
+                        }
+                    },
+                    orderBy: {
+                            createdAt: 'desc',
+                    },
+                    take: data.size,
+                    skip: skip
+                }),
                 PrismaClient.user.count(),
                 PrismaClient.user.count({where: {role: {name: "ADMIN"}}}),
                 PrismaClient.user.count({where: {role: {name: "OPERATOR"}}}),
@@ -287,6 +301,13 @@ export class UserRepository {
     static async findByRole(data){
         try {
             const skip = (data.page - 1) * data.size;
+
+            //find week range
+            const targetDate = new Date();//today
+            const weekDates = daysOfWeek(new Date(targetDate.getFullYear(), targetDate.getMonth(), targetDate.getDate())); // array of 7 days 
+            const weekStart = weekDates[0];
+            const weekEnd = weekDates[6];
+
             const users = await PrismaClient.user.findMany({
                 where: {
                     role: {
@@ -319,6 +340,15 @@ export class UserRepository {
                         select:{
                             createdAt: true,
                         }
+                    },
+                    jamKerja: {
+                        where: {
+                            weekStart,
+                            weekEnd,
+                        },
+                        select: {
+                            totalHours: true,
+                        }
                     }
                 },
                 orderBy: {
@@ -337,7 +367,7 @@ export class UserRepository {
             })
             return {total, users};
         } catch (error) {
-            throw new ResponseError(500, "Failed when querying in database")
+            throw new ResponseError(500, "Failed when trying to fetch user list")
         }
     }
 

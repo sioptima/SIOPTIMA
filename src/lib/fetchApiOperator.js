@@ -11,7 +11,6 @@ export async function fetchOperatorDashboardData(){
         console.log(data.message || "Failed to fetch dashboard data");
         return;
       }
-
       return data.data;
     } catch (err) {
       console.log(err.message)
@@ -53,8 +52,7 @@ export async function fetchOperatorShifts({limit}){
         console.log(data.message || "Failed to fetch shifts data");
         return;
       }
-
-      return data.data.resultTransform;
+      return data.data;
     } catch (err) {
       console.log(err.message)
       return err;

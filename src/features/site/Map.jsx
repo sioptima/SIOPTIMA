@@ -15,10 +15,16 @@ const defaultCenter = {
 }
 
 function Map({onPositionChange, center}) {
+    let mapCenter;
+    if (!center.lat || !center.lng){
+      mapCenter = defaultCenter;  
+    } else {
+      mapCenter = center
+    }
     return (
         <div>
           <MapContainer
-              center={center || defaultCenter}
+              center={mapCenter}
               zoom={13}
               scrollWheelZoom={true}
               style={{

@@ -170,6 +170,7 @@ export class UserService {
             joinDate: user.createdAt,
             status: user.status.toLowerCase(),
             contact: user.profile?.phone || "-",
+            totalHours: user.jamKerja[0]?.totalHours || 0
         })
         )
 
@@ -337,7 +338,7 @@ export class UserService {
             role: user.role.name,
             site: (user.shift.length !== 0) ? user.shift[0].site.name : "-", 
             initial: (user.profile?.name) ? user.profile.name.slice(0,1).toUpperCase() : user.username.slice(0,1).toUpperCase(),
-            status: (user.status) ? user.status : "-",
+            status: (user.status) ? user.status.toLocaleLowerCase() : "-",
             lastActive: (!!user.activity?.length) ? timeSince(user.activity[0].createdAt) : "-",
             joinDate: user.createdAt.toLocaleDateString(),
             phone: user.profile?.phone || "-",
