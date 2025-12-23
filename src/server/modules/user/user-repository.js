@@ -276,7 +276,7 @@ export class UserRepository {
     
             return {total, users, adminCount, operatorCount, hrdCount};
         } catch (error) {
-            throw new ResponseError(500, "Failed when trying to fetch users in database")
+            throw new ResponseError(500, error.message)
         }
     }
 
