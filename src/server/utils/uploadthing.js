@@ -1,4 +1,5 @@
 import { ResponseError } from "@/src/lib/response-error";
+import sharp from "sharp";
 import { UTApi } from "uploadthing/server";
 
 //have a default param of token:env.UPLOADTHING_TOKEN 
@@ -7,6 +8,13 @@ export const utapi = new UTApi({
 });
 
 export async function uploadImage(images){
+  //reduce size
+  let compressed;
+  if (images.constructor === Array){
+    sharp(images)
+    .resize(200)
+  }
+  
   //upload image(s) to uploadthing
   const response = await utapi.uploadFiles(images)
   //check if error exist in uploadthing response, if exist then throw error

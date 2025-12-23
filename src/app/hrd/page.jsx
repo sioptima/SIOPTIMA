@@ -405,7 +405,9 @@ export default function HRD() {
   useEffect(() => {
     const loadData = async () => {
         try {
-            const result = await fetchLeaveRequest();
+            const result = await fetchLeaveRequest({
+              limit: 50
+            });
             if (!result) throw new Error("No data returned");
             setLeaveRequests(result);
         } catch (err) {

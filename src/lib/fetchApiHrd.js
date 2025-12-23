@@ -82,9 +82,9 @@ export async function fetchHrdSummary(){
     }
 }
 
-export async function fetchLeaveRequest(){
+export async function fetchLeaveRequest({limit}){
     try {
-      const res = await fetch(`/api/hrd/leave`, {
+      const res = await fetch(`/api/hrd/leave/?limit=${limit}`, {
         method: "GET",
         headers: { "Content-Type": "application/json" },
       });
