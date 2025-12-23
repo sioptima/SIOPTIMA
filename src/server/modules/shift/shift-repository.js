@@ -504,7 +504,7 @@ export class ShiftRepository {
             return {result: shifts, count: count};
             
         } catch (error) {
-            throw new ResponseError(500, "Failed when trying to fetch shift list in database")
+            throw new ResponseError(500, error.message)
         }
     }
 }
